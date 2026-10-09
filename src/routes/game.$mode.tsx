@@ -16,10 +16,10 @@ const MODE_IDS = Object.keys(MODES) as Mode[];
 export const Route = createFileRoute("/game/$mode")({
   ssr: false,
   validateSearch: (s: Record<string, unknown>): Search => ({
-    pool: ["world", "capitals", "countries", "landmarks"].includes(s.pool as string) ? (s.pool as Pool) : undefined,
-    difficulty: ["easy", "medium", "hard", "expert"].includes(s.difficulty as string) ? (s.difficulty as Difficulty) : undefined,
-    daily: s.daily ? 1 : undefined,
-    practice: s.practice ? 1 : undefined,
+    pool: ["world", "capitals", "countries", "landmarks"].includes(s["pool"] as string) ? (s["pool"] as Pool) : undefined,
+    difficulty: ["easy", "medium", "hard", "expert"].includes(s["difficulty"] as string) ? (s["difficulty"] as Difficulty) : undefined,
+    daily: s["daily"] ? 1 : undefined,
+    practice: s["practice"] ? 1 : undefined,
   }),
   beforeLoad: ({ params }) => { if (!MODE_IDS.includes(params.mode as Mode)) throw notFound(); },
   head: ({ params }) => {
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/game/$mode")({
 });
 
 interface Bot { name: string; guess: LatLng; km: number; points: number }
-interface Result { loc: Location; guess: LatLng | null; km: number | null; points: number; mult?: number; bots?: Bot[] }
+interface Result { loc: Location; guess: LatLng | null; km: number | null; points: number; mult?: number | undefined; bots?: Bot[] | undefined }
 
 function GamePage() {
   const { mode: modeParam } = Route.useParams();
@@ -166,7 +166,7 @@ function GamePage() {
 
   if (phase === "done") {
     const errs = results.map((r) => r.km).filter((x): x is number => x !== null);
-    const best = results.reduce((b, r, i) => (r.points > results[b].points ? i : b), 0);
+    const best = results.reduce((b, r, i) => (r.points > results[b]!.points ? i : b), 0);
     const share = `STRAFE · ${MODES[mode].name}${daily ? " · Daily " + new Date().toISOString().slice(0, 10) : ""}\n${total.toLocaleString()} / ${(MAX_POINTS * ROUNDS).toLocaleString()}\n${results.map((r) => (r.points >= 4000 ? "🟩" : r.points >= 2000 ? "🟨" : r.points > 0 ? "🟧" : "⬜")).join("")}`;
     return (
       <div className="min-h-screen px-5 pb-16">
@@ -178,7 +178,7 @@ function GamePage() {
           <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
             <Box k="Accuracy" v={`${Math.round((total / (MAX_POINTS * ROUNDS)) * 100)}%`} />
             <Box k="Avg error" v={errs.length ? formatDistance(errs.reduce((a, b) => a + b, 0) / errs.length, settings.unit) : "—"} />
-            <Box k="Best round" v={`R${best + 1} · ${results[best].points.toLocaleString()}`} />
+            <Box k="Best round" v={`R${best + 1} · ${results[best]!.points.toLocaleString()}`} />
             <Box k="Closest pin" v={errs.length ? formatDistance(Math.min(...errs), settings.unit) : "—"} />
           </div>
           {mode === "closest" && <Standings rows={standings} />}
@@ -218,7 +218,7 @@ function GamePage() {
           blind={blind && phase === "guess"}
           guess={guess}
           target={phase === "reveal" ? loc : null}
-          others={phase === "reveal" ? last?.bots?.map((b) => ({ ...b.guess, label: b.name })) : []}
+          others={phase === "reveal" ? last?.bots?.map((b) => ({ ...b.guess, label: b.name })) ?? [] : []}
           circle={mode === "shrink" && phase === "guess" && center ? { center, radiusKm: radius } : null}
           locked={phase !== "guess"}
           onPick={pick}
