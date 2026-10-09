@@ -9,7 +9,7 @@ export interface Location {
   category: Category;
   /** 1 = well known … 4 = obscure */
   difficulty: 1 | 2 | 3 | 4;
-  hint?: string;
+  hint?: string | undefined;
 }
 
 type Row = [string, string, number, number, Category, 1 | 2 | 3 | 4, string?];

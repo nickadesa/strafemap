@@ -10,7 +10,7 @@ import type { Location } from "@/lib/game/locations";
 import { saveRecord, useSettings } from "@/lib/game/storage";
 import { blip } from "@/lib/game/sound";
 
-interface Search { pool?: Pool; difficulty?: Difficulty; daily?: 1; practice?: 1 }
+interface Search { pool?: Pool | undefined; difficulty?: Difficulty | undefined; daily?: 1 | undefined; practice?: 1 | undefined }
 const MODE_IDS = Object.keys(MODES) as Mode[];
 
 export const Route = createFileRoute("/game/$mode")({

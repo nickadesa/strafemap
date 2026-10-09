@@ -83,7 +83,7 @@ export function pickRounds(list: Location[], n: number, rng: () => number = Math
   const arr = [...(src.length >= n ? src : list)];
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(rng() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
+    const t = arr[i]!; arr[i] = arr[j]!; arr[j] = t;
   }
   return arr.slice(0, n);
 }
