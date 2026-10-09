@@ -10,33 +10,91 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LeaderboardRouteImport } from './routes/leaderboard'
+import { Route as PlayRouteImport } from './routes/play'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as StatsRouteImport } from './routes/stats'
+import { Route as GameModeRouteImport } from './routes/game.$mode'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LeaderboardRoute = LeaderboardRouteImport.update({
+  id: '/leaderboard',
+  path: '/leaderboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlayRoute = PlayRouteImport.update({
+  id: '/play',
+  path: '/play',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StatsRoute = StatsRouteImport.update({
+  id: '/stats',
+  path: '/stats',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GameModeRoute = GameModeRouteImport.update({
+  id: '/game/$mode',
+  path: '/game/$mode',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/leaderboard': typeof LeaderboardRoute
+  '/play': typeof PlayRoute
+  '/settings': typeof SettingsRoute
+  '/stats': typeof StatsRoute
+  '/game/$mode': typeof GameModeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/leaderboard': typeof LeaderboardRoute
+  '/play': typeof PlayRoute
+  '/settings': typeof SettingsRoute
+  '/stats': typeof StatsRoute
+  '/game/$mode': typeof GameModeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/leaderboard': typeof LeaderboardRoute
+  '/play': typeof PlayRoute
+  '/settings': typeof SettingsRoute
+  '/stats': typeof StatsRoute
+  '/game/$mode': typeof GameModeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    '/' | '/leaderboard' | '/play' | '/settings' | '/stats' | '/game/$mode'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/leaderboard' | '/play' | '/settings' | '/stats' | '/game/$mode'
+  id:
+    | '__root__'
+    | '/'
+    | '/leaderboard'
+    | '/play'
+    | '/settings'
+    | '/stats'
+    | '/game/$mode'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LeaderboardRoute: typeof LeaderboardRoute
+  PlayRoute: typeof PlayRoute
+  SettingsRoute: typeof SettingsRoute
+  StatsRoute: typeof StatsRoute
+  GameModeRoute: typeof GameModeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +106,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/leaderboard': {
+      id: '/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof LeaderboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/play': {
+      id: '/play'
+      path: '/play'
+      fullPath: '/play'
+      preLoaderRoute: typeof PlayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stats': {
+      id: '/stats'
+      path: '/stats'
+      fullPath: '/stats'
+      preLoaderRoute: typeof StatsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/game/$mode': {
+      id: '/game/$mode'
+      path: '/game/$mode'
+      fullPath: '/game/$mode'
+      preLoaderRoute: typeof GameModeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LeaderboardRoute: LeaderboardRoute,
+  PlayRoute: PlayRoute,
+  SettingsRoute: SettingsRoute,
+  StatsRoute: StatsRoute,
+  GameModeRoute: GameModeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
