@@ -25,7 +25,7 @@ function Leaderboard() {
   const rows = Object.values(
     (records ?? []).filter((r) => new Date(r.date).getTime() >= cutoff).reduce<Record<string, { name: string; score: number; acc: number; games: number }>>((a, r) => {
       a[r.player] ??= { name: r.player, score: 0, acc: 0, games: 0 };
-      a[r.player].score += r.score; a[r.player].acc += r.score / r.max; a[r.player].games++;
+      a[r.player]!.score += r.score; a[r.player]!.acc += r.score / r.max; a[r.player]!.games++;
       return a;
     }, {}),
   ).sort((a, b) => b.score - a.score);
