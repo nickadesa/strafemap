@@ -63,7 +63,7 @@ function Play() {
             <input type="checkbox" checked={practice} onChange={(e) => setPractice(e.target.checked)} className="h-5 w-5 accent-[var(--color-foreground)]" />
             Practice mode — endless rounds, nothing saved to records
           </label>
-          <Link to="/game/$mode" params={{ mode }} search={{ pool, difficulty, practice: practice ? 1 : undefined }} className="btn btn-primary px-10 py-4 text-lg">
+          <Link to="/game/$mode" params={{ mode }} search={practice ? { pool, difficulty, practice: 1 } : { pool, difficulty }} className="btn btn-primary px-10 py-4 text-lg">
             Start {MODES[mode].name}
           </Link>
         </div>
