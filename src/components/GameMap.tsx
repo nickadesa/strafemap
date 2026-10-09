@@ -14,15 +14,16 @@ interface Props {
   resetKey: string | number;
 }
 
-const ATTR = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
-const tileUrl = (blind: boolean) =>
-  `https://{s}.basemaps.cartocdn.com/rastertiles/${blind ? "voyager_nolabels" : "voyager"}/{z}/{x}/{y}{r}.png`;
+const ATTR = "Tiles &copy; Esri &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap contributors";
+const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas";
+const BASE = `${ESRI}/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}`;
+const LABELS = `${ESRI}/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}`;
 
 export function GameMap({ blind, guess, target, others = [], circle, locked, onPick, resetKey }: Props) {
   const el = useRef<HTMLDivElement>(null);
   const L = useRef<typeof LT | null>(null);
   const map = useRef<LT.Map | null>(null);
-  const tiles = useRef<LT.TileLayer | null>(null);
+  const tiles = useRef<LT.LayerGroup | null>(null);
   const guessM = useRef<LT.Marker | null>(null);
   const reveal = useRef<LT.LayerGroup | null>(null);
   const circleL = useRef<LT.Circle | null>(null);
@@ -55,9 +56,12 @@ export function GameMap({ blind, guess, target, others = [], circle, locked, onP
     tiles.current?.remove();
     setTileErr(false);
     let errs = 0;
-    tiles.current = Lf.tileLayer(tileUrl(blind), { attribution: ATTR, subdomains: "abcd", maxZoom: 19 })
-      .on("tileerror", () => { if (++errs > 6) setTileErr(true); })
-      .addTo(m);
+    const onErr = () => { if (++errs > 6) setTileErr(true); };
+    const g = Lf.layerGroup().addTo(m);
+    Lf.tileLayer(BASE, { attribution: ATTR, maxZoom: 16 }).on("tileerror", onErr).addTo(g);
+    // Blind Map uses the label-free base style only; other modes add the place-name layer.
+    if (!blind) Lf.tileLayer(LABELS, { maxZoom: 16, pane: "overlayPane" }).on("tileerror", onErr).addTo(g);
+    tiles.current = g;
   }, [blind, status]);
 
   // reset view each round
