@@ -215,7 +215,7 @@ function GamePage() {
 
       <div className="relative mx-2 mb-2 flex-1 overflow-hidden rounded-2xl md:mx-4 md:mb-4">
         <GameMap
-          blind={blind}
+          blind={blind && phase === "guess"}
           guess={guess}
           target={phase === "reveal" ? loc : null}
           others={phase === "reveal" ? last?.bots?.map((b) => ({ ...b.guess, label: b.name })) : []}
