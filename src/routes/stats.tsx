@@ -60,7 +60,7 @@ function Stats() {
             </ul>
           </div>
         </div>
-        <p className="mt-4 text-sm text-muted-foreground">Stats are saved in this browser only and don't sync between devices.</p>
+        <p className="mt-4 text-sm text-muted-foreground">Signed in, your games are saved to your account. As a guest, they stay in this browser.</p>
       </main>
     </div>
   );
