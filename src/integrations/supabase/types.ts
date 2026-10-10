@@ -14,6 +14,92 @@ export type Database = {
   }
   public: {
     Tables: {
+      duel_guesses: {
+        Row: {
+          created_at: string
+          duel_id: string
+          id: string
+          lat: number | null
+          lng: number | null
+          round: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          duel_id: string
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          round: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          duel_id?: string
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          round?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "duel_guesses_duel_id_fkey"
+            columns: ["duel_id"]
+            isOneToOne: false
+            referencedRelation: "duels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      duels: {
+        Row: {
+          code: string
+          created_at: string
+          guest_hp: number
+          guest_id: string | null
+          guest_name: string | null
+          host_hp: number
+          host_id: string
+          host_name: string
+          id: string
+          location_ids: Json
+          round: number
+          round_started_at: string | null
+          status: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          guest_hp?: number
+          guest_id?: string | null
+          guest_name?: string | null
+          host_hp?: number
+          host_id: string
+          host_name?: string
+          id?: string
+          location_ids?: Json
+          round?: number
+          round_started_at?: string | null
+          status?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          guest_hp?: number
+          guest_id?: string | null
+          guest_name?: string | null
+          host_hp?: number
+          host_id?: string
+          host_name?: string
+          id?: string
+          location_ids?: Json
+          round?: number
+          round_started_at?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
       game_records: {
         Row: {
           daily: boolean
@@ -73,7 +159,8 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_duel_player: { Args: { _duel: string }; Returns: boolean }
+      join_duel: { Args: { _code: string; _name: string }; Returns: string }
     }
     Enums: {
       [_ in never]: never

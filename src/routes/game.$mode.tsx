@@ -133,6 +133,22 @@ function GamePage() {
 
   const total = results.reduce((a, r) => a + r.points, 0);
 
+  // Spacebar: confirm guess, or advance after reveal
+  const keyRef = useRef({ submit, next, phase, guess });
+  keyRef.current = { submit, next, phase, guess };
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.code !== "Space" || e.repeat) return;
+      const t = e.target as HTMLElement | null;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+      const k = keyRef.current;
+      if (k.phase === "guess" && k.guess) { e.preventDefault(); k.submit(); }
+      else if (k.phase === "reveal") { e.preventDefault(); k.next(); }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   // save record
   useEffect(() => {
     if (phase !== "done" || practice || saved.current) return;
@@ -248,7 +264,7 @@ function GamePage() {
         <div className="absolute inset-x-3 bottom-6 z-[500] flex justify-center">
           {phase === "guess" ? (
             <button onClick={submit} disabled={!guess} className="btn btn-primary px-10 py-4 text-lg">
-              {guess ? "Confirm guess" : "Click the map to pin"}
+              {guess ? <>Confirm guess <kbd className="hidden rounded-full bg-foreground/10 px-2 py-0.5 text-xs md:inline">Space</kbd></> : "Click the map to pin"}
             </button>
           ) : last && (
             <div className="plate w-full max-w-lg p-5">
