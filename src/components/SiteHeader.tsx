@@ -1,4 +1,6 @@
 import { Link } from "@tanstack/react-router";
+import { supabase } from "@/integrations/supabase/client";
+import { useUser } from "@/lib/auth";
 
 export function Logo({ className = "" }: { className?: string }) {
   return (
@@ -19,6 +21,7 @@ const links = [
 ] as const;
 
 export function SiteHeader() {
+  const user = useUser();
   return (
     <header className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-5">
       <Logo />
@@ -28,6 +31,8 @@ export function SiteHeader() {
             {l.label}
           </Link>
         ))}
+        {user === null && <Link to="/auth" className="rounded-full bg-foreground px-4 py-2 text-primary">Sign in</Link>}
+        {user && <button onClick={() => supabase.auth.signOut()} className="rounded-full px-3 py-2 hover:bg-card" title={user.email ?? ""}>Sign out</button>}
       </nav>
     </header>
   );

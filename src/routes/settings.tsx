@@ -41,8 +41,8 @@ function SettingsPage() {
             </div>
           </div>
           <div className="flex items-center justify-between border-t pt-6">
-            <span className="font-semibold">Reset all local records</span>
-            <button onClick={() => { if (confirm("Delete all games, stats and achievements on this device?")) { clearRecords(); setCleared(true); } }} className="btn btn-outline text-destructive">{cleared ? "Cleared" : "Reset"}</button>
+            <span className="font-semibold">Reset all records</span>
+            <button onClick={() => { if (confirm("Delete all games, stats and achievements on this device?")) { clearRecords().then(() => setCleared(true)); } }} className="btn btn-outline text-destructive">{cleared ? "Cleared" : "Reset"}</button>
           </div>
         </div>
         <div className="plate mt-4 p-6 text-sm text-muted-foreground">

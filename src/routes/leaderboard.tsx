@@ -59,7 +59,7 @@ function Leaderboard() {
             </tbody>
           </table>
         </div>
-        <p className="mt-4 text-sm text-muted-foreground">Rankings come from games played on this device. Change your player name in Settings to pass-and-play with friends. Global online rankings need an account backend, which isn't set up yet.</p>
+        <p className="mt-4 text-sm text-muted-foreground">Rankings come from your games (your account when signed in, this device otherwise). Change your player name in Settings to pass-and-play with friends. A shared global leaderboard isn't switched on yet.</p>
       </main>
     </div>
   );
