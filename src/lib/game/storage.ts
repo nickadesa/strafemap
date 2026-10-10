@@ -1,5 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import type { Mode } from "./engine";
+import { supabase } from "@/integrations/supabase/client";
+import { useUser } from "@/lib/auth";
 
 export interface Settings { name: string; sound: boolean; unit: "km" | "mi" }
 export interface GameRecord {
@@ -26,24 +28,56 @@ export function loadRecords(): GameRecord[] {
   if (typeof window === "undefined") return [];
   try { return JSON.parse(localStorage.getItem(RKEY) || "[]"); } catch { return []; }
 }
-export function saveRecord(r: GameRecord) {
+
+/** Saves locally, and to the player's account when signed in. */
+export async function saveRecord(r: GameRecord) {
   localStorage.setItem(RKEY, JSON.stringify([...loadRecords(), r]));
+  const { data } = await supabase.auth.getSession();
+  const uid = data.session?.user.id;
+  if (uid) {
+    const { error } = await supabase.from("game_records").insert({ ...r, user_id: uid, rounds: r.rounds as any });
+    if (error) console.error("Could not sync record", error);
+  }
 }
-export function clearRecords() { localStorage.removeItem(RKEY); }
+
+export async function clearRecords() {
+  localStorage.removeItem(RKEY);
+  const { data } = await supabase.auth.getSession();
+  const uid = data.session?.user.id;
+  if (uid) await supabase.from("game_records").delete().eq("user_id", uid);
+}
 
 export function useSettings() {
+  const user = useUser();
   const [s, setS] = useState<Settings>(defaults);
   useEffect(() => setS(loadSettings()), []);
+  useEffect(() => {
+    if (!user) return;
+    supabase.from("profiles").select("display_name").eq("id", user.id).maybeSingle().then(({ data }) => {
+      if (data?.display_name) setS((p) => ({ ...p, name: data.display_name }));
+    });
+  }, [user]);
   const update = useCallback((patch: Partial<Settings>) => {
     setS((prev) => { const n = { ...prev, ...patch }; localStorage.setItem(SKEY, JSON.stringify(n)); return n; });
-  }, []);
+    if (patch.name !== undefined && user) {
+      supabase.from("profiles").update({ display_name: patch.name || "Player" }).eq("id", user.id).then(() => {});
+    }
+  }, [user]);
   return [s, update] as const;
 }
 
+/** Account records when signed in, device records otherwise. */
 export function useRecords() {
+  const user = useUser();
   const [r, setR] = useState<GameRecord[] | null>(null);
-  useEffect(() => setR(loadRecords()), []);
-  return [r, () => setR(loadRecords())] as const;
+  const load = useCallback(async () => {
+    if (user === undefined) return;
+    if (!user) { setR(loadRecords()); return; }
+    const { data, error } = await supabase.from("game_records").select("*").order("date");
+    setR(error ? loadRecords() : (data as unknown as GameRecord[]));
+  }, [user]);
+  useEffect(() => { load(); }, [load]);
+  return [r, load] as const;
 }
 
 /* ---------- Derived stats ---------- */
