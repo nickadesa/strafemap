@@ -3,7 +3,13 @@ import { useState } from "react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { MODES, type Difficulty, type Mode, type Pool } from "@/lib/game/engine";
 
+const modeIds = Object.keys(MODES) as Mode[];
+
 export const Route = createFileRoute("/play")({
+  validateSearch: (search: Record<string, unknown>): { mode?: Mode } => {
+    const mode = typeof search.mode === "string" && modeIds.includes(search.mode as Mode) ? (search.mode as Mode) : undefined;
+    return { mode };
+  },
   head: () => ({
     meta: [
       { title: "Choose a mode — STRAFE" },
