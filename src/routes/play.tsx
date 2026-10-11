@@ -36,7 +36,8 @@ function Chip({ on, children, onClick }: { on: boolean; children: React.ReactNod
 }
 
 function Play() {
-  const [mode, setMode] = useState<Mode>("classic");
+  const initial = Route.useSearch().mode;
+  const [mode, setMode] = useState<Mode>(initial ?? "classic");
   const [pool, setPool] = useState<Pool>("world");
   const [difficulty, setDiff] = useState<Difficulty>("medium");
   const [practice, setPractice] = useState(false);
