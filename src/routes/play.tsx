@@ -7,8 +7,8 @@ const modeIds = Object.keys(MODES) as Mode[];
 
 export const Route = createFileRoute("/play")({
   validateSearch: (search: Record<string, unknown>): { mode?: Mode } => {
-    const mode = typeof search.mode === "string" && modeIds.includes(search.mode as Mode) ? (search.mode as Mode) : undefined;
-    return { mode };
+    const mode = typeof search["mode"] === "string" && modeIds.includes(search["mode"] as Mode) ? (search["mode"] as Mode) : undefined;
+    return mode ? { mode } : {};
   },
   head: () => ({
     meta: [
