@@ -60,7 +60,7 @@ function Home() {
 
         <section className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {(Object.keys(MODES) as Mode[]).map((m) => (
-            <Link key={m} to="/game/$mode" params={{ mode: m }} search={{}} className="plate group p-6 transition-colors hover:bg-primary-pale">
+            <Link key={m} to="/play" search={{ mode: m }} className="plate group p-6 transition-colors hover:bg-primary-pale">
               <span className="rounded-full bg-primary-pale px-3 py-1 text-xs font-semibold text-ink-deep group-hover:bg-card">{MODES[m].tag}</span>
               <h3 className="font-display mt-4 text-3xl">{MODES[m].name}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{MODES[m].blurb}</p>

@@ -3,7 +3,13 @@ import { useState } from "react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { MODES, type Difficulty, type Mode, type Pool } from "@/lib/game/engine";
 
+const modeIds = Object.keys(MODES) as Mode[];
+
 export const Route = createFileRoute("/play")({
+  validateSearch: (search: Record<string, unknown>): { mode?: Mode } => {
+    const mode = typeof search["mode"] === "string" && modeIds.includes(search["mode"] as Mode) ? (search["mode"] as Mode) : undefined;
+    return mode ? { mode } : {};
+  },
   head: () => ({
     meta: [
       { title: "Choose a mode — STRAFE" },
@@ -30,7 +36,8 @@ function Chip({ on, children, onClick }: { on: boolean; children: React.ReactNod
 }
 
 function Play() {
-  const [mode, setMode] = useState<Mode>("classic");
+  const initial = Route.useSearch().mode;
+  const [mode, setMode] = useState<Mode>(initial ?? "classic");
   const [pool, setPool] = useState<Pool>("world");
   const [difficulty, setDiff] = useState<Difficulty>("medium");
   const [practice, setPractice] = useState(false);
