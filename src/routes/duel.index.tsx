@@ -6,7 +6,7 @@ import { useUser } from "@/lib/auth";
 import { pickRounds, poolFor } from "@/lib/game/engine";
 import { useSettings } from "@/lib/game/storage";
 
-export const Route = createFileRoute("/duel")({
+export const Route = createFileRoute("/duel/")({
   head: () => ({
     meta: [
       { title: "Live Duels — STRAFE" },

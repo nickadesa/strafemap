@@ -11,10 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as DuelRouteImport } from './routes/duel'
 import { Route as LeaderboardRouteImport } from './routes/leaderboard'
 import { Route as PlayRouteImport } from './routes/play'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as StatsRouteImport } from './routes/stats'
+import { Route as DuelCodeRouteImport } from './routes/duel.$code'
 import { Route as GameModeRouteImport } from './routes/game.$mode'
 
 const IndexRoute = IndexRouteImport.update({
@@ -25,6 +27,11 @@ const IndexRoute = IndexRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DuelRoute = DuelRouteImport.update({
+  id: '/duel',
+  path: '/duel',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LeaderboardRoute = LeaderboardRouteImport.update({
@@ -47,6 +54,11 @@ const StatsRoute = StatsRouteImport.update({
   path: '/stats',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DuelCodeRoute = DuelCodeRouteImport.update({
+  id: '/$code',
+  path: '/$code',
+  getParentRoute: () => DuelRoute,
+} as any)
 const GameModeRoute = GameModeRouteImport.update({
   id: '/game/$mode',
   path: '/game/$mode',
@@ -56,29 +68,35 @@ const GameModeRoute = GameModeRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/duel': typeof DuelRouteWithChildren
   '/leaderboard': typeof LeaderboardRoute
   '/play': typeof PlayRoute
   '/settings': typeof SettingsRoute
   '/stats': typeof StatsRoute
+  '/duel/$code': typeof DuelCodeRoute
   '/game/$mode': typeof GameModeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/duel': typeof DuelRouteWithChildren
   '/leaderboard': typeof LeaderboardRoute
   '/play': typeof PlayRoute
   '/settings': typeof SettingsRoute
   '/stats': typeof StatsRoute
+  '/duel/$code': typeof DuelCodeRoute
   '/game/$mode': typeof GameModeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/duel': typeof DuelRouteWithChildren
   '/leaderboard': typeof LeaderboardRoute
   '/play': typeof PlayRoute
   '/settings': typeof SettingsRoute
   '/stats': typeof StatsRoute
+  '/duel/$code': typeof DuelCodeRoute
   '/game/$mode': typeof GameModeRoute
 }
 export interface FileRouteTypes {
@@ -86,34 +104,41 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/duel'
     | '/leaderboard'
     | '/play'
     | '/settings'
     | '/stats'
+    | '/duel/$code'
     | '/game/$mode'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
+    | '/duel'
     | '/leaderboard'
     | '/play'
     | '/settings'
     | '/stats'
+    | '/duel/$code'
     | '/game/$mode'
   id:
     | '__root__'
     | '/'
     | '/auth'
+    | '/duel'
     | '/leaderboard'
     | '/play'
     | '/settings'
     | '/stats'
+    | '/duel/$code'
     | '/game/$mode'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
+  DuelRoute: typeof DuelRouteWithChildren
   LeaderboardRoute: typeof LeaderboardRoute
   PlayRoute: typeof PlayRoute
   SettingsRoute: typeof SettingsRoute
@@ -135,6 +160,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/duel': {
+      id: '/duel'
+      path: '/duel'
+      fullPath: '/duel'
+      preLoaderRoute: typeof DuelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/leaderboard': {
@@ -165,6 +197,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StatsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/duel/$code': {
+      id: '/duel/$code'
+      path: '/$code'
+      fullPath: '/duel/$code'
+      preLoaderRoute: typeof DuelCodeRouteImport
+      parentRoute: typeof DuelRoute
+    }
     '/game/$mode': {
       id: '/game/$mode'
       path: '/game/$mode'
@@ -175,9 +214,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface DuelRouteChildren {
+  DuelCodeRoute: typeof DuelCodeRoute
+}
+
+const DuelRouteChildren: DuelRouteChildren = {
+  DuelCodeRoute: DuelCodeRoute,
+}
+
+const DuelRouteWithChildren = DuelRoute._addFileChildren(DuelRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
+  DuelRoute: DuelRouteWithChildren,
   LeaderboardRoute: LeaderboardRoute,
   PlayRoute: PlayRoute,
   SettingsRoute: SettingsRoute,
