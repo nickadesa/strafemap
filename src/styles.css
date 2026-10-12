@@ -2,7 +2,7 @@
 @source "../src";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -40,30 +40,56 @@
 
 :root {
   --radius: 1.5rem;
-  --background: oklch(0.932 0.008 130);      /* sage #e8ebe6 */
-  --foreground: oklch(0.155 0.008 120);      /* ink #0e0f0c */
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.155 0.008 120);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.155 0.008 120);
-  --primary: oklch(0.87 0.17 135);           /* lime #9fe870 */
-  --primary-foreground: oklch(0.155 0.008 120);
-  --primary-pale: oklch(0.95 0.05 135);      /* #e2f6d5 */
-  --primary-active: oklch(0.95 0.11 135);    /* #cdffad */
-  --ink-deep: oklch(0.29 0.08 135);          /* #163300 */
-  --secondary: oklch(0.155 0.008 120);
-  --secondary-foreground: oklch(0.87 0.17 135);
-  --muted: oklch(0.932 0.008 130);
-  --muted-foreground: oklch(0.42 0.005 140); /* #454745 */
-  --accent: oklch(0.95 0.05 135);
-  --accent-foreground: oklch(0.29 0.08 135);
+  --background: #f4f6f0;
+  --foreground: #111213;
+  --card: #ffffff;
+  --card-foreground: #111213;
+  --popover: #ffffff;
+  --popover-foreground: #111213;
+  --primary: #b9ff24;
+  --primary-foreground: #000000;
+  --primary-pale: #eefcd0;
+  --primary-active: #c8ff00;
+  --ink-deep: #2b3a00;
+  --secondary: #111213;
+  --secondary-foreground: #b9ff24;
+  --muted: #eceee8;
+  --muted-foreground: #5b5f58;
+  --accent: #eefcd0;
+  --accent-foreground: #2b3a00;
   --destructive: oklch(0.56 0.19 25);
-  --destructive-foreground: oklch(1 0 0);
+  --destructive-foreground: #ffffff;
   --warning: oklch(0.87 0.17 90);
   --positive: oklch(0.64 0.16 145);
-  --border: oklch(0.155 0.008 120 / 12%);
-  --input: oklch(0.155 0.008 120 / 20%);
-  --ring: oklch(0.155 0.008 120);
+  --border: #e6e8e2;
+  --input: #d6d9d1;
+  --ring: #111213;
+}
+
+.dark {
+  --background: #0f0f10;
+  --foreground: #f4f4f5;
+  --card: #1b1c1e;
+  --card-foreground: #f4f4f5;
+  --popover: #1b1c1e;
+  --popover-foreground: #f4f4f5;
+  --primary: #b9ff24;
+  --primary-foreground: #000000;
+  --primary-pale: #26301a;
+  --primary-active: #c8ff00;
+  --ink-deep: #b9ff24;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #111213;
+  --muted: #242528;
+  --muted-foreground: #8a8f98;
+  --accent: #26301a;
+  --accent-foreground: #b9ff24;
+  --destructive: oklch(0.65 0.2 25);
+  --destructive-foreground: #ffffff;
+  --border: #27282b;
+  --input: #34353a;
+  --ring: #b9ff24;
+  color-scheme: dark;
 }
 
 @layer base {
