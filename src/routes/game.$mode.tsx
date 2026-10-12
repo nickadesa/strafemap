@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GameMap } from "@/components/GameMap";
 import { Logo } from "@/components/SiteHeader";
 import {
-  BOTS, MAX_POINTS, MODES, ROUNDS, SHRINK, botGuess, dailyRounds, distanceKm, formatDistance, pickRounds, poolFor,
+  BOTS, MAX_POINTS, MODES, ROUNDS, botGuess, dailyRounds, distanceKm, formatDistance, pickRounds, poolFor,
   promptFor, scoreFor, shrinkCenter, shrinkRadius, timeMultiplier, TIME_OPTIONS, type TimeLimit, type Difficulty, type LatLng, type Mode, type Pool,
 } from "@/lib/game/engine";
 import type { Location } from "@/lib/game/locations";
