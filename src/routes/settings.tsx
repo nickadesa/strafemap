@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { clearRecords, useSettings } from "@/lib/game/storage";
 import { SCORING } from "@/lib/game/engine";
 import { blip } from "@/lib/game/sound";
+import { useMapStyle, useTheme, type MapStyle } from "@/lib/theme";
 
 export const Route = createFileRoute("/settings")({
   head: () => ({
@@ -20,6 +21,9 @@ export const Route = createFileRoute("/settings")({
 function SettingsPage() {
   const [s, update] = useSettings();
   const [cleared, setCleared] = useState(false);
+  const [theme, setTheme] = useTheme();
+  const [mapStyle, setMapStyle] = useMapStyle();
+  const chip = (on: boolean) => `rounded-full px-4 py-2 text-sm font-semibold ${on ? "bg-primary text-primary-foreground" : "bg-muted"}`;
   return (
     <div className="min-h-screen pb-16">
       <SiteHeader />
@@ -38,6 +42,18 @@ function SettingsPage() {
             <span className="font-semibold">Distance units</span>
             <div className="flex gap-2">
               {(["km", "mi"] as const).map((u) => <button key={u} onClick={() => update({ unit: u })} className={`rounded-full px-5 py-2 text-sm font-semibold ${s.unit === u ? "bg-foreground text-primary" : "bg-muted"}`}>{u}</button>)}
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <span className="font-semibold">Theme</span>
+            <div className="flex gap-2">
+              {(["light", "dark"] as const).map((t) => <button key={t} onClick={() => setTheme(t)} className={chip(theme === t)}>{t === "light" ? "Light" : "Dark"}</button>)}
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <span className="font-semibold">Map style</span>
+            <div className="flex flex-wrap gap-2">
+              {([["auto", "Match theme"], ["light", "Light"], ["dark", "Dark"], ["satellite", "Satellite"]] as [MapStyle, string][]).map(([v, l]) => <button key={v} onClick={() => setMapStyle(v)} className={chip(mapStyle === v)}>{l}</button>)}
             </div>
           </div>
           <div className="flex items-center justify-between border-t pt-6">

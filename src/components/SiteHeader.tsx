@@ -24,6 +24,7 @@ const links = [
 
 export function SiteHeader() {
   const user = useUser();
+  const [theme, setTheme] = useTheme();
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
 
@@ -68,6 +69,18 @@ export function SiteHeader() {
                   </Link>
                 ))}
                 <div className="my-2 h-px bg-border" />
+                <div className="mb-1 grid grid-cols-2 gap-1 rounded-full bg-muted p-1" role="group" aria-label="Theme">
+                  {(["light", "dark"] as const).map((t) => (
+                    <button
+                      key={t}
+                      onClick={() => setTheme(t)}
+                      aria-pressed={theme === t}
+                      className={`rounded-full py-1.5 text-xs font-semibold ${theme === t ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}
+                    >
+                      {t === "light" ? "☀ Light" : "☾ Dark"}
+                    </button>
+                  ))}
+                </div>
                 {user === null && (
                   <Link
                     to="/auth"
