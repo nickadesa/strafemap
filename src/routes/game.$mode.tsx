@@ -3,14 +3,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GameMap } from "@/components/GameMap";
 import { Logo } from "@/components/SiteHeader";
 import {
-  BOTS, MAX_POINTS, MODES, ROUNDS, SHRINK, botGuess, dailyRounds, distanceKm, formatDistance, pickRounds, poolFor,
-  promptFor, scoreFor, shrinkCenter, shrinkRadius, timeMultiplier, type Difficulty, type LatLng, type Mode, type Pool,
+  BOTS, MAX_POINTS, MODES, ROUNDS, botGuess, dailyRounds, distanceKm, formatDistance, pickRounds, poolFor,
+  promptFor, scoreFor, shrinkCenter, shrinkRadius, timeMultiplier, TIME_OPTIONS, type TimeLimit, type Difficulty, type LatLng, type Mode, type Pool,
 } from "@/lib/game/engine";
 import type { Location } from "@/lib/game/locations";
 import { saveRecord, useSettings } from "@/lib/game/storage";
 import { blip } from "@/lib/game/sound";
 
-interface Search { pool?: Pool | undefined; difficulty?: Difficulty | undefined; daily?: 1 | undefined; practice?: 1 | undefined }
+interface Search { pool?: Pool | undefined; difficulty?: Difficulty | undefined; daily?: 1 | undefined; practice?: 1 | undefined; time?: TimeLimit | undefined }
 const MODE_IDS = Object.keys(MODES) as Mode[];
 
 export const Route = createFileRoute("/game/$mode")({
@@ -20,6 +20,7 @@ export const Route = createFileRoute("/game/$mode")({
     difficulty: ["easy", "medium", "hard", "expert"].includes(s["difficulty"] as string) ? (s["difficulty"] as Difficulty) : undefined,
     daily: s["daily"] ? 1 : undefined,
     practice: s["practice"] ? 1 : undefined,
+    time: TIME_OPTIONS.includes(Number(s["time"]) as TimeLimit) ? (Number(s["time"]) as TimeLimit) : undefined,
   }),
   beforeLoad: ({ params }) => { if (!MODE_IDS.includes(params.mode as Mode)) throw notFound(); },
   head: ({ params }) => {
@@ -48,6 +49,7 @@ function GamePage() {
   const daily = !!search.daily;
   const practice = !!search.practice && !daily;
   const blind = mode === "blind";
+  const limit: number = search.time ?? 30;
 
   const [seed, setSeed] = useState(0);
   const [rounds, setRounds] = useState<Location[]>([]);
@@ -71,18 +73,19 @@ function GamePage() {
 
   // shrink zone setup per round
   useEffect(() => {
-    if (mode !== "shrink" || !loc) return;
-    setCenter(shrinkCenter(loc)); setElapsed(0);
+    if (!loc) return;
+    setElapsed(0);
+    if (mode === "shrink") setCenter(shrinkCenter(loc));
   }, [mode, loc]);
 
-  const radius = shrinkRadius(elapsed);
+  const radius = shrinkRadius(elapsed, limit);
 
   const submit = useCallback(() => {
     if (phase !== "guess" || !loc) return;
     const km = guess ? distanceKm(guess, loc) : null;
     let points = km === null ? 0 : scoreFor(km);
     let mult: number | undefined;
-    if (mode === "shrink") { mult = timeMultiplier(elapsed); points = Math.round(points * mult); }
+    if (mode === "shrink") { mult = timeMultiplier(elapsed, limit); points = Math.round(points * mult); }
     const bots = mode === "closest" ? BOTS.map((b) => {
       const g = botGuess(loc, b.meanKm); const d = distanceKm(g, loc);
       return { name: b.name, guess: g, km: d, points: scoreFor(d) };
@@ -97,15 +100,15 @@ function GamePage() {
 
   // shrink timer
   useEffect(() => {
-    if (mode !== "shrink" || phase !== "guess" || !loc) return;
+    if (phase !== "guess" || !loc) return;
     const start = performance.now();
     const t = setInterval(() => {
       const e = (performance.now() - start) / 1000;
-      setElapsed(Math.min(e, SHRINK.seconds));
-      if (e >= SHRINK.seconds) { clearInterval(t); setTimeout(() => submitRef.current(), 0); }
+      setElapsed(Math.min(e, limit));
+      if (e >= limit) { clearInterval(t); setTimeout(() => submitRef.current(), 0); }
     }, 100);
     return () => clearInterval(t);
-  }, [mode, phase, loc]);
+  }, [phase, loc, limit]);
 
   // zone shrinking past the guess invalidates it
   useEffect(() => {
@@ -118,11 +121,11 @@ function GamePage() {
 
   const pick = useCallback((p: LatLng) => {
     if (phase !== "guess") return;
-    if (mode === "shrink" && center && distanceKm(p, center) > shrinkRadius(elapsed)) {
+    if (mode === "shrink" && center && distanceKm(p, center) > shrinkRadius(elapsed, limit)) {
       setFlash("Outside the zone. Pin inside the circle."); return;
     }
     setGuess(p); blip(settings.sound, 520, 50);
-  }, [phase, mode, center, elapsed, settings.sound]);
+  }, [phase, mode, center, elapsed, limit, settings.sound]);
 
   const next = () => {
     if (practice && idx + 1 >= rounds.length) {
@@ -247,12 +250,12 @@ function GamePage() {
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{prompt.verb}{blind && " · labels hidden"}</p>
             <p className="font-display mt-1 text-3xl md:text-4xl">{loc.name}</p>
             {loc.category !== "country" && <p className="mt-1 text-sm text-muted-foreground">{loc.country}{showHint && loc.hint ? ` · ${loc.hint}` : ""}</p>}
-            {mode === "shrink" && phase === "guess" && (
+            {phase === "guess" && (
               <div className="mt-3">
                 <div className="h-2 overflow-hidden rounded-full bg-muted">
-                  <div className="h-full bg-foreground transition-[width] duration-100" style={{ width: `${100 - (elapsed / SHRINK.seconds) * 100}%` }} />
+                  <div className="h-full bg-foreground transition-[width] duration-100" style={{ width: `${100 - (elapsed / limit) * 100}%` }} />
                 </div>
-                <p className="mt-1 text-xs font-semibold">{Math.ceil(SHRINK.seconds - elapsed)}s · zone {Math.round(radius).toLocaleString()} km · bonus ×{timeMultiplier(elapsed).toFixed(2)}</p>
+                <p className="mt-1 text-xs font-semibold">{Math.ceil(limit - elapsed)}s{mode === "shrink" && <> · zone {Math.round(radius).toLocaleString()} km · bonus ×{timeMultiplier(elapsed, limit).toFixed(2)}</>}</p>
               </div>
             )}
           </div>

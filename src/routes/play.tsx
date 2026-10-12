@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { SiteHeader } from "@/components/SiteHeader";
-import { MODES, type Difficulty, type Mode, type Pool } from "@/lib/game/engine";
+import { MODES, TIME_OPTIONS, type TimeLimit, type Difficulty, type Mode, type Pool } from "@/lib/game/engine";
 
 const modeIds = Object.keys(MODES) as Mode[];
 
@@ -41,6 +41,7 @@ function Play() {
   const [pool, setPool] = useState<Pool>("world");
   const [difficulty, setDiff] = useState<Difficulty>("medium");
   const [practice, setPractice] = useState(false);
+  const [time, setTime] = useState<TimeLimit>(30);
 
   return (
     <div className="min-h-screen pb-16">
@@ -66,11 +67,15 @@ function Play() {
             <p className="mb-2 text-sm font-semibold text-muted-foreground">Difficulty</p>
             <div className="flex flex-wrap gap-2">{diffs.map((d) => <Chip key={d} on={difficulty === d} onClick={() => setDiff(d)}>{d}</Chip>)}</div>
           </div>
+          <div>
+            <p className="mb-2 text-sm font-semibold text-muted-foreground">Time per round</p>
+            <div className="flex flex-wrap gap-2">{TIME_OPTIONS.map((t) => <Chip key={t} on={time === t} onClick={() => setTime(t)}>{t}s</Chip>)}</div>
+          </div>
           <label className="flex items-center gap-3 text-sm font-semibold">
             <input type="checkbox" checked={practice} onChange={(e) => setPractice(e.target.checked)} className="h-5 w-5 accent-[var(--color-foreground)]" />
             Practice mode — endless rounds, nothing saved to records
           </label>
-          <Link to="/game/$mode" params={{ mode }} search={practice ? { pool, difficulty, practice: 1 } : { pool, difficulty }} className="btn btn-primary px-10 py-4 text-lg">
+          <Link to="/game/$mode" params={{ mode }} search={practice ? { pool, difficulty, time, practice: 1 } : { pool, difficulty, time }} className="btn btn-primary px-10 py-4 text-lg">
             Start {MODES[mode].name}
           </Link>
         </div>

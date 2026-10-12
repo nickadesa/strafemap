@@ -94,13 +94,15 @@ export function dailyRounds() {
 
 /* ---------- Map Shrink ---------- */
 export const SHRINK = { seconds: 30, startKm: 3000, endKm: 350 };
-export const shrinkRadius = (elapsed: number) =>
-  SHRINK.startKm - (SHRINK.startKm - SHRINK.endKm) * Math.min(1, elapsed / SHRINK.seconds);
+export const TIME_OPTIONS = [10, 20, 30, 60] as const;
+export type TimeLimit = (typeof TIME_OPTIONS)[number];
+export const shrinkRadius = (elapsed: number, secs: number = SHRINK.seconds) =>
+  SHRINK.startKm - (SHRINK.startKm - SHRINK.endKm) * Math.min(1, elapsed / secs);
 /** Zone centre is offset from the target but always keeps it inside the final zone. */
 export const shrinkCenter = (target: LatLng) =>
   destination(target, Math.random() * SHRINK.endKm * 0.75, Math.random() * 360);
 /** Time multiplier: 1.0 when instant, 0.5 at the buzzer. */
-export const timeMultiplier = (elapsed: number) => 1 - 0.5 * Math.min(1, elapsed / SHRINK.seconds);
+export const timeMultiplier = (elapsed: number, secs: number = SHRINK.seconds) => 1 - 0.5 * Math.min(1, elapsed / secs);
 
 /* ---------- Closest Wins bots (simulated, clearly labelled) ---------- */
 export const BOTS = [
