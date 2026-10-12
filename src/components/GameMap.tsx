@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type * as LT from "leaflet";
 import type { LatLng } from "@/lib/game/engine";
+import { useResolvedMapStyle } from "@/lib/theme";
 
 export interface MapOther extends LatLng { label: string }
 interface Props {
@@ -16,8 +17,11 @@ interface Props {
 
 const ATTR = "Tiles &copy; Esri &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap contributors";
 const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas";
-const BASE = `${ESRI}/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}`;
-const LABELS = `${ESRI}/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}`;
+const TILES = {
+  light: { base: `${ESRI}/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}`, labels: `${ESRI}/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}` },
+  dark: { base: `${ESRI}/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}`, labels: `${ESRI}/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}` },
+  satellite: { base: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", labels: "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}" },
+} as const;
 
 export function GameMap({ blind, guess, target, others = [], circle, locked, onPick, resetKey }: Props) {
   const el = useRef<HTMLDivElement>(null);
@@ -31,6 +35,7 @@ export function GameMap({ blind, guess, target, others = [], circle, locked, onP
   cb.current = { onPick, locked, guess };
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [tileErr, setTileErr] = useState(false);
+  const mapStyle = useResolvedMapStyle();
 
   useEffect(() => {
     let dead = false;
@@ -58,11 +63,11 @@ export function GameMap({ blind, guess, target, others = [], circle, locked, onP
     let errs = 0;
     const onErr = () => { if (++errs > 6) setTileErr(true); };
     const g = Lf.layerGroup().addTo(m);
-    Lf.tileLayer(BASE, { attribution: ATTR, maxZoom: 16 }).on("tileerror", onErr).addTo(g);
+    Lf.tileLayer(TILES[mapStyle].base, { attribution: ATTR, maxZoom: 16 }).on("tileerror", onErr).addTo(g);
     // Blind Map uses the label-free base style only; other modes add the place-name layer.
-    if (!blind) Lf.tileLayer(LABELS, { maxZoom: 16, pane: "overlayPane" }).on("tileerror", onErr).addTo(g);
+    if (!blind) Lf.tileLayer(TILES[mapStyle].labels, { maxZoom: 16, pane: "overlayPane" }).on("tileerror", onErr).addTo(g);
     tiles.current = g;
-  }, [blind, status]);
+  }, [blind, status, mapStyle]);
 
   // reset view each round
   useEffect(() => { map.current?.setView([20, 0], 2); }, [resetKey, status]);
@@ -93,7 +98,7 @@ export function GameMap({ blind, guess, target, others = [], circle, locked, onP
     if (!circle) { circleL.current?.remove(); circleL.current = null; return; }
     if (!circleL.current) {
       circleL.current = Lf.circle([circle.center.lat, circle.center.lng], {
-        radius: circle.radiusKm * 1000, color: "#0e0f0c", weight: 2, dashArray: "6 6", fillColor: "#9fe870", fillOpacity: 0.12, interactive: false,
+        radius: circle.radiusKm * 1000, color: "#b9ff24", weight: 2, dashArray: "6 6", fillColor: "#b9ff24", fillOpacity: 0.12, interactive: false,
       }).addTo(m);
     } else {
       circleL.current.setLatLng([circle.center.lat, circle.center.lng]);
@@ -115,7 +120,7 @@ export function GameMap({ blind, guess, target, others = [], circle, locked, onP
       pts.push([o.lat, o.lng]);
     }
     if (guess) {
-      Lf.polyline([[guess.lat, guess.lng], [target.lat, target.lng]], { color: "#0e0f0c", weight: 3, dashArray: "8 8" }).addTo(g);
+      Lf.polyline([[guess.lat, guess.lng], [target.lat, target.lng]], { color: mapStyle === "light" ? "#111213" : "#b9ff24", weight: 3, dashArray: "8 8" }).addTo(g);
       pts.push([guess.lat, guess.lng]);
     }
     Lf.marker([target.lat, target.lng], { icon: Lf.divIcon({ className: "pin pin-target", iconSize: [24, 24] }), zIndexOffset: 1000 }).addTo(g);
