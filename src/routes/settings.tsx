@@ -5,6 +5,9 @@ import { clearRecords, useSettings } from "@/lib/game/storage";
 import { SCORING } from "@/lib/game/engine";
 import { blip } from "@/lib/game/sound";
 import { useMapStyle, useTheme, type MapStyle } from "@/lib/theme";
+import { TILES } from "@/components/GameMap";
+
+const tile = (u: string) => u.replace("{z}", "2").replace("{y}", "1").replace("{x}", "2");
 
 export const Route = createFileRoute("/settings")({
   head: () => ({
@@ -52,9 +55,21 @@ function SettingsPage() {
           </div>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <span className="font-semibold">Map style</span>
-            <div className="flex flex-wrap gap-2">
-              {([["auto", "Match theme"], ["light", "Light"], ["dark", "Dark"], ["satellite", "Satellite"]] as [MapStyle, string][]).map(([v, l]) => <button key={v} onClick={() => setMapStyle(v)} className={chip(mapStyle === v)}>{l}</button>)}
-            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {([["auto", "Match theme"], ["light", "Light"], ["dark", "Dark"], ["satellite", "Satellite"]] as [MapStyle, string][]).map(([v, l]) => {
+              const k = v === "auto" ? theme : v;
+              const on = mapStyle === v;
+              return (
+                <button key={v} onClick={() => setMapStyle(v)} aria-pressed={on} className={`overflow-hidden rounded-2xl border-2 text-left outline-none transition focus-visible:ring-2 focus-visible:ring-ring ${on ? "border-primary" : "border-border hover:border-foreground/40"}`}>
+                  <div className="relative aspect-square bg-muted">
+                    <img src={tile(TILES[k].base)} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+                    <img src={tile(TILES[k].labels)} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+                  </div>
+                  <div className={`px-3 py-2 text-sm font-semibold ${on ? "bg-primary text-primary-foreground" : ""}`}>{l}</div>
+                </button>
+              );
+            })}
           </div>
           <div className="flex items-center justify-between border-t pt-6">
             <span className="font-semibold">Reset all records</span>
