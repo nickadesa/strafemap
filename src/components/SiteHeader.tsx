@@ -30,7 +30,7 @@ export function SiteHeader() {
   const close = () => setOpen(false);
 
   return (
-    <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-5">
+    <header className="glass sticky top-0 z-30 mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-4">
       <Logo />
 
       <div className="relative">
@@ -54,8 +54,7 @@ export function SiteHeader() {
             <div className="fixed inset-0 z-40" onClick={close} aria-hidden="true" />
             <div
               role="menu"
-              className="plate absolute right-0 z-50 mt-2 w-52 border border-border overflow-hidden p-2 shadow-lg"
-              style={{ boxShadow: "0 8px 32px rgb(0 0 0 / 0.25)" }}
+              className="plate glass-plate pop-in absolute right-0 z-50 mt-2 w-52 border border-border overflow-hidden p-2"
             >
               <nav className="flex flex-col">
                 {links.map((l) => (
