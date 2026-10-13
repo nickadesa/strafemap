@@ -7,7 +7,7 @@ import { blip } from "@/lib/game/sound";
 import { useMapStyle, useTheme, type MapStyle } from "@/lib/theme";
 import { TILES } from "@/components/GameMap";
 
-const tile = (u: string) => u.replace("{z}", "2").replace("{y}", "1").replace("{x}", "2");
+const tile = (u: string) => u.replace("{z}", "2").replace("{y}", "1").replace("{x}", "2").replace("{s}", "a").replace("{r}", "");
 
 export const Route = createFileRoute("/settings")({
   head: () => ({
