@@ -56,8 +56,8 @@ function SettingsPage() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <span className="font-semibold">Map style</span>
           </div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {([["auto", "Match theme"], ["light", "Light"], ["dark", "Dark"], ["satellite", "Satellite"]] as [MapStyle, string][]).map(([v, l]) => {
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+            {([["auto", "Match theme"], ["light", "Light"], ["dark", "Dark"], ["voyager", "Voyager"], ["satellite", "Satellite"]] as [MapStyle, string][]).map(([v, l]) => {
               const k = v === "auto" ? theme : v;
               const on = mapStyle === v;
               return (
