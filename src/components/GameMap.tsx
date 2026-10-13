@@ -18,7 +18,7 @@ interface Props {
 const ATTR = "&copy; CARTO &mdash; Tiles &copy; Esri &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap contributors";
 const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas";
 const CARTO = "https://{s}.basemaps.cartocdn.com/rastertiles";
-const CK = "?api_key=cb1_4ipy_1_ad1c7d1170897e7a7e147800";
+const CK = "?key=cb1_4ipy_1_ad1c7d1170897e7a7e147800";
 export const TILES = {
   light: { base: `${ESRI}/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}`, labels: `${ESRI}/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}` },
   dark: { base: `${ESRI}/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}`, labels: `${ESRI}/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}` },
