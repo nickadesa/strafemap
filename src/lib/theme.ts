@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 export type Theme = "light" | "dark";
-export type MapStyle = "auto" | "light" | "dark" | "voyager" | "satellite";
+export type MapStyle = "auto" | "light" | "dark" | "voyager" | "positron" | "darkmatter" | "satellite";
 const TKEY = "strafe-theme";
 const MKEY = "strafe-map";
 const EVT = "strafe-theme-change";
@@ -13,7 +13,7 @@ function readTheme(): Theme {
 }
 function readMap(): MapStyle {
   const v = localStorage.getItem(MKEY);
-  return v === "light" || v === "dark" || v === "voyager" || v === "satellite" ? v : "auto";
+  return v === "light" || v === "dark" || v === "voyager" || v === "positron" || v === "darkmatter" || v === "satellite" ? v : "auto";
 }
 
 export function useTheme() {
@@ -48,7 +48,7 @@ export function useMapStyle() {
 }
 
 /** Resolved tile style: auto follows the app theme. */
-export function useResolvedMapStyle(): "light" | "dark" | "voyager" | "satellite" {
+export function useResolvedMapStyle(): "light" | "dark" | "voyager" | "positron" | "darkmatter" | "satellite" {
   const [theme] = useTheme();
   const [style] = useMapStyle();
   return style === "auto" ? theme : style;

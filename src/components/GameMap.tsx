@@ -17,10 +17,14 @@ interface Props {
 
 const ATTR = "&copy; CARTO &mdash; Tiles &copy; Esri &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap contributors";
 const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas";
+const CARTO = "https://{s}.basemaps.cartocdn.com/rastertiles";
+const CK = "?api_key=cb1_4ipy_1_ad1c7d1170897e7a7e147800";
 export const TILES = {
   light: { base: `${ESRI}/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}`, labels: `${ESRI}/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}` },
   dark: { base: `${ESRI}/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}`, labels: `${ESRI}/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}` },
-  voyager: { base: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png", labels: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png" },
+  voyager: { base: `${CARTO}/voyager_nolabels/{z}/{x}/{y}{r}.png${CK}`, labels: `${CARTO}/voyager_only_labels/{z}/{x}/{y}{r}.png${CK}` },
+  positron: { base: `${CARTO}/light_nolabels/{z}/{x}/{y}{r}.png${CK}`, labels: `${CARTO}/light_only_labels/{z}/{x}/{y}{r}.png${CK}` },
+  darkmatter: { base: `${CARTO}/dark_nolabels/{z}/{x}/{y}{r}.png${CK}`, labels: `${CARTO}/dark_only_labels/{z}/{x}/{y}{r}.png${CK}` },
   satellite: { base: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", labels: "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}" },
 } as const;
 
