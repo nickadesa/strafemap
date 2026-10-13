@@ -7,7 +7,7 @@ import { blip } from "@/lib/game/sound";
 import { useMapStyle, useTheme, type MapStyle } from "@/lib/theme";
 import { TILES } from "@/components/GameMap";
 
-const tile = (u: string) => u.replace("{z}", "2").replace("{y}", "1").replace("{x}", "2");
+const tile = (u: string) => u.replace("{z}", "2").replace("{y}", "1").replace("{x}", "2").replace("{s}", "a").replace("{r}", "");
 
 export const Route = createFileRoute("/settings")({
   head: () => ({
@@ -56,8 +56,8 @@ function SettingsPage() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <span className="font-semibold">Map style</span>
           </div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {([["auto", "Match theme"], ["light", "Light"], ["dark", "Dark"], ["satellite", "Satellite"]] as [MapStyle, string][]).map(([v, l]) => {
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+            {([["auto", "Match theme"], ["light", "Light"], ["dark", "Dark"], ["voyager", "Voyager"], ["satellite", "Satellite"]] as [MapStyle, string][]).map(([v, l]) => {
               const k = v === "auto" ? theme : v;
               const on = mapStyle === v;
               return (
