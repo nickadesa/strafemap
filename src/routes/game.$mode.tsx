@@ -9,6 +9,7 @@ import {
 import type { Location } from "@/lib/game/locations";
 import { saveRecord, useSettings } from "@/lib/game/storage";
 import { blip } from "@/lib/game/sound";
+import { renderCard, shareCard, type CardData } from "@/lib/game/shareCard";
 
 interface Search { pool?: Pool | undefined; difficulty?: Difficulty | undefined; daily?: 1 | undefined; practice?: 1 | undefined; time?: TimeLimit | undefined }
 const MODE_IDS = Object.keys(MODES) as Mode[];
