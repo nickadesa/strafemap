@@ -211,6 +211,14 @@ function GamePage() {
           </div>
           <div className="mt-6 flex flex-wrap gap-3">
             {!daily && <button onClick={() => setSeed((s) => s + 1)} className="btn btn-primary">Play again</button>}
+            <StoryButton data={{
+              mode: MODES[mode].name, tag: daily ? "Daily challenge" : `${MODES[mode].name} · ${difficulty}`,
+              total, max: MAX_POINTS * ROUNDS,
+              avgKm: errs.length ? formatDistance(errs.reduce((a, b) => a + b, 0) / errs.length, settings.unit) : "—",
+              perfects: results.filter((r) => r.km !== null && r.km <= 25).length,
+              rounds: results.map((r) => ({ name: r.loc.name, points: r.points, km: r.km, guess: r.guess, target: { lat: r.loc.lat, lng: r.loc.lng } })),
+              url: "strafemap.lovable.app",
+            }} />
             <button onClick={() => { navigator.clipboard?.writeText(share).then(() => setCopied(true)); }} className="btn btn-ink">{copied ? "Copied!" : "Copy result"}</button>
             <Link to="/play" className="btn btn-outline">Change mode</Link>
             <Link to="/" className="btn btn-outline">Menu</Link>
