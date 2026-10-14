@@ -51,5 +51,5 @@ export function useMapStyle() {
 export function useResolvedMapStyle(): "light" | "dark" | "voyager" | "positron" | "darkmatter" | "satellite" {
   const [theme] = useTheme();
   const [style] = useMapStyle();
-  return style === "auto" ? theme : style;
+  return style === "auto" ? (theme === "dark" ? "darkmatter" : "voyager") : style;
 }

@@ -58,7 +58,7 @@ function SettingsPage() {
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {([["auto", "Match theme"], ["light", "Light"], ["dark", "Dark"], ["voyager", "Voyager"], ["positron", "Positron"], ["darkmatter", "Dark Matter"], ["satellite", "Satellite"]] as [MapStyle, string][]).map(([v, l]) => {
-              const k = v === "auto" ? theme : v;
+              const k = v === "auto" ? (theme === "dark" ? "darkmatter" : "voyager") : v;
               const on = mapStyle === v;
               return (
                 <button key={v} onClick={() => setMapStyle(v)} aria-pressed={on} className={`overflow-hidden rounded-2xl border-2 text-left outline-none transition focus-visible:ring-2 focus-visible:ring-ring ${on ? "border-primary" : "border-border hover:border-foreground/40"}`}>
