@@ -48,7 +48,8 @@ export function GameMap({ blind, guess, target, others = [], circle, locked, onP
       if (dead || !el.current) return;
       const Lf = (mod as any).default ?? mod;
       L.current = Lf;
-      const m = Lf.map(el.current, { worldCopyJump: true, minZoom: 2, maxZoom: 12, zoomControl: true }).setView([20, 0], 2);
+      const m = Lf.map(el.current, { worldCopyJump: true, minZoom: 2, maxZoom: 12, zoomControl: true, zoomSnap: 0.25, zoomDelta: 0.5, wheelPxPerZoomLevel: 90, wheelDebounceTime: 20, inertia: true, inertiaDeceleration: 2500, easeLinearity: 0.2, zoomAnimation: true, fadeAnimation: true, markerZoomAnimation: true, tapTolerance: 15 }).setView([20, 0], 2);
+      m.attributionControl.setPrefix(false);
       m.on("click", (e: LT.LeafletMouseEvent) => {
         if (!cb.current.locked) cb.current.onPick({ lat: e.latlng.lat, lng: e.latlng.wrap().lng });
       });
@@ -85,14 +86,18 @@ export function GameMap({ blind, guess, target, others = [], circle, locked, onP
     if (!guessM.current) {
       guessM.current = Lf.marker([guess.lat, guess.lng], {
         draggable: true,
-        icon: Lf.divIcon({ className: "pin pin-guess", iconSize: [18, 18] }),
+        icon: Lf.divIcon({ className: "pin-wrap", html: '<span class="pin pin-guess pin-drop"></span>', iconSize: [18, 18] }),
       }).addTo(m);
       guessM.current.on("dragend", (e: any) => {
         const p = e.target.getLatLng().wrap();
         cb.current.onPick({ lat: p.lat, lng: p.lng });
         setTimeout(() => { const g = cb.current.guess; if (g) guessM.current?.setLatLng([g.lat, g.lng]); }, 0);
       });
-    } else guessM.current.setLatLng([guess.lat, guess.lng]);
+    } else {
+      guessM.current.setLatLng([guess.lat, guess.lng]);
+      const n = guessM.current.getElement()?.firstElementChild as HTMLElement | null;
+      if (n && !locked) { n.classList.remove("pin-drop"); void n.offsetWidth; n.classList.add("pin-drop"); }
+    }
     locked ? guessM.current.dragging?.disable() : guessM.current.dragging?.enable();
   }, [guess, locked, status]);
 
