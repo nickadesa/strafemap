@@ -75,6 +75,13 @@ export function GameMap({ blind, guess, target, others = [], circle, locked, onP
     tiles.current = g;
   }, [blind, status, mapStyle]);
 
+  // crosshair cursor when actively guessing
+  useEffect(() => {
+    const elNode = el.current;
+    if (!elNode) return;
+    elNode.classList.toggle("crosshair", !locked);
+  }, [locked, status]);
+
   // reset view each round
   useEffect(() => { map.current?.setView([20, 0], 2); }, [resetKey, status]);
 

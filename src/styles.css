@@ -156,6 +156,7 @@
 .pin-target { background: var(--color-primary); }
 .pin-bot { background: var(--color-muted-foreground); opacity: 0.85; }
 .leaflet-container { font-family: var(--font-sans); background: var(--color-background); }
+.leaflet-container.crosshair { cursor: crosshair; }
 .bot-label { background: var(--color-card); border: none; border-radius: 9999px; font-weight: 600; font-size: 11px; padding: 2px 8px; box-shadow: none; }
 
 /* Round zoom buttons */
