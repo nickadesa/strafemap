@@ -18,6 +18,7 @@ import { Route as StatsRouteImport } from './routes/stats'
 import { Route as DuelIndexRouteImport } from './routes/duel.index'
 import { Route as DuelCodeRouteImport } from './routes/duel.$code'
 import { Route as GameModeRouteImport } from './routes/game.$mode'
+import { Route as ProfileRouteImport } from './routes/profile'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -64,6 +65,11 @@ const GameModeRoute = GameModeRouteImport.update({
   path: '/game/$mode',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -75,6 +81,8 @@ export interface FileRoutesByFullPath {
   '/duel/$code': typeof DuelCodeRoute
   '/game/$mode': typeof GameModeRoute
   '/duel/': typeof DuelIndexRoute
+  '/profile': typeof ProfileRoute
+  '/profile': typeof ProfileRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,6 +94,7 @@ export interface FileRoutesByTo {
   '/duel/$code': typeof DuelCodeRoute
   '/game/$mode': typeof GameModeRoute
   '/duel': typeof DuelIndexRoute
+  '/profile': typeof ProfileRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -98,6 +107,8 @@ export interface FileRoutesById {
   '/duel/$code': typeof DuelCodeRoute
   '/game/$mode': typeof GameModeRoute
   '/duel/': typeof DuelIndexRoute
+  '/profile': typeof ProfileRoute
+  '/profile': typeof ProfileRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -212,6 +223,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GameModeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -225,6 +243,7 @@ const rootRouteChildren: RootRouteChildren = {
   DuelCodeRoute: DuelCodeRoute,
   GameModeRoute: GameModeRoute,
   DuelIndexRoute: DuelIndexRoute,
+  ProfileRoute: ProfileRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
