@@ -62,6 +62,7 @@ function GamePage() {
   const [center, setCenter] = useState<LatLng | null>(null);
   const [flash, setFlash] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [promptCollapsed, setPromptCollapsed] = useState(false);
   const saved = useRef(false);
 
   // build round set on start / restart
@@ -69,6 +70,9 @@ function GamePage() {
     const list = daily ? dailyRounds() : pickRounds(poolFor(pool, difficulty), ROUNDS);
     setRounds(list); setIdx(0); setGuess(null); setPhase("guess"); setResults([]); saved.current = false;
   }, [seed, daily, pool, difficulty, mode]);
+
+  // reset prompt collapse each round
+  useEffect(() => { setPromptCollapsed(false); }, [idx, seed]);
 
   const loc = rounds[idx];
 
@@ -118,7 +122,14 @@ function GamePage() {
     }
   }, [radius, guess, center, mode, phase]);
 
-  useEffect(() => { if (!flash) return; const t = setTimeout(() => setFlash(null), 2200); return () => clearTimeout(t); }, [flash]);
+  
+  // auto-collapse prompt
+  useEffect(() => {
+    if (phase !== "guess" || settings.promptCollapseSeconds <= 0) return;
+    const t = setTimeout(() => setPromptCollapsed(true), settings.promptCollapseSeconds * 1000);
+    return () => clearTimeout(t);
+  }, [phase, idx, settings.promptCollapseSeconds]);
+useEffect(() => { if (!flash) return; const t = setTimeout(() => setFlash(null), 2200); return () => clearTimeout(t); }, [flash]);
 
   const pick = useCallback((p: LatLng) => {
     if (phase !== "guess") return;
@@ -255,19 +266,29 @@ function GamePage() {
           resetKey={`${seed}-${idx}`}
         />
 
-        {/* prompt card */}
+        {/* prompt card — collapsible */}
         <div className="pointer-events-none absolute inset-x-3 top-3 z-[500] flex justify-center">
-          <div className="plate pointer-events-auto max-w-md px-5 py-4 text-center">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{prompt.verb}{blind && " · labels hidden"}</p>
-            <p className="font-display mt-1 text-3xl md:text-4xl">{loc.name}</p>
-            {loc.category !== "country" && <p className="mt-1 text-sm text-muted-foreground">{loc.country}{showHint && loc.hint ? ` · ${loc.hint}` : ""}</p>}
-            {phase === "guess" && (
-              <div className="mt-3">
-                <div className="h-2 overflow-hidden rounded-full bg-muted">
-                  <div className="h-full bg-foreground transition-[width] duration-100" style={{ width: `${100 - (elapsed / limit) * 100}%` }} />
-                </div>
-                <p className="mt-1 text-xs font-semibold">{Math.ceil(limit - elapsed)}s{mode === "shrink" && <> · zone {Math.round(radius).toLocaleString()} km · bonus ×{timeMultiplier(elapsed, limit).toFixed(2)}</>}</p>
-              </div>
+          <div
+            className={`plate pointer-events-auto max-w-md cursor-pointer select-none text-center transition-all duration-300 ${promptCollapsed ? "px-4 py-2" : "px-5 py-4"}`}
+            onClick={() => setPromptCollapsed((c) => !c)}
+            title={promptCollapsed ? "Click to expand" : "Click to collapse"}
+          >
+            {promptCollapsed ? (
+              <p className="font-display text-xl">{loc.name}</p>
+            ) : (
+              <>
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{prompt.verb}{blind && " · labels hidden"}</p>
+                <p className="font-display mt-1 text-3xl md:text-4xl">{loc.name}</p>
+                {loc.category !== "country" && <p className="mt-1 text-sm text-muted-foreground">{loc.country}{showHint && loc.hint ? ` · ${loc.hint}` : ""}</p>}
+                {phase === "guess" && (
+                  <div className="mt-3">
+                    <div className="h-2 overflow-hidden rounded-full bg-muted">
+                      <div className="h-full bg-foreground transition-[width] duration-100" style={{ width: `${100 - (elapsed / limit) * 100}%` }} />
+                    </div>
+                    <p className="mt-1 text-xs font-semibold">{Math.ceil(limit - elapsed)}s{mode === "shrink" && <> · zone {Math.round(radius).toLocaleString()} km · bonus ×{timeMultiplier(elapsed, limit).toFixed(2)}</>}</p>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
