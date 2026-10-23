@@ -46,6 +46,18 @@ function SettingsPage() {
             <div className="flex gap-2">
               {(["km", "mi"] as const).map((u) => <button key={u} onClick={() => update({ unit: u })} className={`rounded-full px-5 py-2 text-sm font-semibold ${s.unit === u ? "bg-foreground text-primary" : "bg-muted"}`}>{u}</button>)}
             </div>
+
+          <div className="flex items-center justify-between">
+            <span className="font-semibold">Prompt auto-collapse</span>
+            <div className="flex gap-2">
+              {[0, 3, 5, 8].map((sec) => (
+                <button key={sec} onClick={() => update({ promptCollapseSeconds: sec })} className={`rounded-full px-4 py-2 text-sm font-semibold ${s.promptCollapseSeconds === sec ? "bg-foreground text-primary" : "bg-muted"}`}>
+                  {sec === 0 ? "Off" : `${sec}s`}
+                </button>
+              ))}
+            </div>
+          </div>
+
           </div>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <span className="font-semibold">Theme</span>
