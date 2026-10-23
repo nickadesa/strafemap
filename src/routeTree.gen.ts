@@ -19,6 +19,7 @@ import { Route as DuelIndexRouteImport } from './routes/duel.index'
 import { Route as DuelCodeRouteImport } from './routes/duel.$code'
 import { Route as GameModeRouteImport } from './routes/game.$mode'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as PartyRouteImport } from './routes/party'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -70,6 +71,11 @@ const ProfileRoute = ProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PartyRoute = PartyRouteImport.update({
+  id: '/party',
+  path: '/party',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -82,7 +88,7 @@ export interface FileRoutesByFullPath {
   '/game/$mode': typeof GameModeRoute
   '/duel/': typeof DuelIndexRoute
   '/profile': typeof ProfileRoute
-  '/profile': typeof ProfileRoute
+  '/party': typeof PartyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -95,6 +101,7 @@ export interface FileRoutesByTo {
   '/game/$mode': typeof GameModeRoute
   '/duel': typeof DuelIndexRoute
   '/profile': typeof ProfileRoute
+  '/party': typeof PartyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -108,7 +115,7 @@ export interface FileRoutesById {
   '/game/$mode': typeof GameModeRoute
   '/duel/': typeof DuelIndexRoute
   '/profile': typeof ProfileRoute
-  '/profile': typeof ProfileRoute
+  '/party': typeof PartyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -244,6 +251,7 @@ const rootRouteChildren: RootRouteChildren = {
   GameModeRoute: GameModeRoute,
   DuelIndexRoute: DuelIndexRoute,
   ProfileRoute: ProfileRoute,
+  PartyRoute: PartyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

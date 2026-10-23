@@ -17,7 +17,7 @@ export function Logo({ className = "" }: { className?: string }) {
 
 const links = [
   { to: "/play", label: "Play" },
-  { to: "/duel", label: "Duel" },
+  { to: "/party", label: "Party" },
   { to: "/leaderboard", label: "Leaderboard" },
   { to: "/stats", label: "Stats" },
   { to: "/profile", label: "Profile" },

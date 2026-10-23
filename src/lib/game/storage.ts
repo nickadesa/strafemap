@@ -113,12 +113,12 @@ export function achievements(records: GameRecord[]) {
   const s = computeStats(records);
   const rounds = records.flatMap((r) => r.rounds);
   return [
-    { id: "first", name: "First Drop", desc: "Finish your first game", done: s.games >= 1, icon: "🎯" },
-    { id: "sharp", name: "Sharpshooter", desc: "Land a pin within 50 km", done: rounds.some((x) => x.km !== null && x.km < 50), icon: "🏹" },
-    { id: "perfect", name: "Bullseye", desc: "Score a perfect 5,000 round", done: rounds.some((x) => x.points === 5000), icon: "💯" },
-    { id: "streak", name: "On a Run", desc: "5 accurate guesses in a row (<500 km)", done: s.bestStreak >= 5, icon: "🔥" },
-    { id: "daily", name: "Daily Regular", desc: "Complete a daily challenge", done: s.dailies >= 1, icon: "📅" },
-    { id: "20k", name: "Twenty Grand", desc: "Score 20,000 in one game", done: s.bestScore >= 20000, icon: "🏆" },
-    { id: "veteran", name: "Cartographer", desc: "Play 25 games", done: s.games >= 25, icon: "🗺️" },
+    { id: "first", name: "First Drop", desc: "Finish your first game", done: s.games >= 1 },
+    { id: "sharp", name: "Sharpshooter", desc: "Land a pin within 50 km", done: rounds.some((x) => x.km !== null && x.km < 50) },
+    { id: "perfect", name: "Bullseye", desc: "Score a perfect 5,000 round", done: rounds.some((x) => x.points === 5000) },
+    { id: "streak", name: "On a Run", desc: "5 accurate guesses in a row (<500 km)", done: s.bestStreak >= 5 },
+    { id: "daily", name: "Daily Regular", desc: "Complete a daily challenge", done: s.dailies >= 1 },
+    { id: "20k", name: "Twenty Grand", desc: "Score 20,000 in one game", done: s.bestScore >= 20000 },
+    { id: "veteran", name: "Cartographer", desc: "Play 25 games", done: s.games >= 25 },
   ];
 }
