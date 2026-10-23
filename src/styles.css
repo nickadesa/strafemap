@@ -46,10 +46,10 @@
   --card-foreground: #1d1d1f;
   --popover: #ffffff;
   --popover-foreground: #1d1d1f;
-  --primary: #0066cc;
-  --primary-foreground: #ffffff;
-  --primary-pale: #e8f2ff;
-  --primary-active: #0071e3;
+  --primary: #b9ff24;
+  --primary-foreground: #000000;
+  --primary-pale: #eefcd0;
+  --primary-active: #c8ff00;
   --ink-deep: #1d1d1f;
   --secondary: #1d1d1f;
   --secondary-foreground: #ffffff;
@@ -141,7 +141,7 @@
 }
 @utility plate {
   background: var(--color-card);
-  box-shadow: 3px 5px 30px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   color: var(--color-card-foreground);
   border-radius: var(--radius);
 }

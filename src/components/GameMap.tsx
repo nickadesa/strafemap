@@ -48,7 +48,7 @@ export function GameMap({ blind, guess, target, others = [], circle, locked, onP
       if (dead || !el.current) return;
       const Lf = (mod as any).default ?? mod;
       L.current = Lf;
-      const m = Lf.map(el.current, { worldCopyJump: true, minZoom: 2, maxZoom: 12, zoomControl: true, zoomSnap: 0.25, zoomDelta: 0.5, wheelPxPerZoomLevel: 90, wheelDebounceTime: 20, inertia: true, inertiaDeceleration: 2500, easeLinearity: 0.2, zoomAnimation: true, fadeAnimation: true, markerZoomAnimation: true, tapTolerance: 15 }).setView([20, 0], 2);
+      const m = Lf.map(el.current, { worldCopyJump: true, minZoom: 2, maxZoom: 12, zoomControl: true, zoomSnap: 0.1, zoomDelta: 0.35, wheelPxPerZoomLevel: 140, wheelDebounceTime: 0, inertia: true, inertiaDeceleration: 1800, easeLinearity: 0.15, zoomAnimation: true, fadeAnimation: false, markerZoomAnimation: true, tapTolerance: 15, preferCanvas: true }).setView([20, 0], 2);
       m.attributionControl.setPrefix(false);
       m.on("click", (e: LT.LeafletMouseEvent) => {
         if (!cb.current.locked) cb.current.onPick({ lat: e.latlng.lat, lng: e.latlng.wrap().lng });
