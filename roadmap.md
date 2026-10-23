@@ -5,5 +5,5 @@
 - [ ] Party mode replaces Duel: many players, host settings (time incl. unlimited, rounds, category, difficulty), live reveal + scoreboard
 - [ ] Bigger location pool (500+) + anti-repeat so places don't come back so often
   - [x] Custom plus cursor shipped
-  - [ ] Session + recent-play anti-repeat (avoid last N locations across games)
+  - [x] Session + recent-play anti-repeat (avoid last ~40 locations across games via localStorage)
   - [ ] Grow pool toward 500+
