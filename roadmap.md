@@ -3,7 +3,10 @@
 - [x] Map: smooth fractional zoom + inertia, Voyager default, pin drop bounce, tiny attribution
 - [x] Map cursor: plus crosshair
 - [ ] Party mode replaces Duel: many players, host settings (time incl. unlimited, rounds, category, difficulty), live reveal + scoreboard
+  - [ ] Lobby with ready-up before host starts
 - [x] Bigger location pool (500+) + anti-repeat so places don't come back so often
   - [x] Custom plus cursor shipped
   - [x] Session + recent-play anti-repeat (avoid last ~40 locations across games via localStorage)
   - [x] Expanded pool with additional cities, landmarks, and natural sites
+- [x] Collapsible location prompt (click or auto after N seconds, configurable)
+- [x] Game-like home page redesign + Profile page with icons
