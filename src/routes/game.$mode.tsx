@@ -274,7 +274,14 @@ useEffect(() => { if (!flash) return; const t = setTimeout(() => setFlash(null),
             title={promptCollapsed ? "Click to expand" : "Click to collapse"}
           >
             {promptCollapsed ? (
-              <p className="font-display text-xl">{loc.name}</p>
+              <div className="flex items-center gap-3">
+                <p className="font-display text-xl">{loc.name}</p>
+                {phase === "guess" && (
+                  <span className="rounded-full bg-foreground/10 px-2 py-0.5 text-xs font-semibold tabular-nums">
+                    {Math.ceil(limit - elapsed)}s
+                  </span>
+                )}
+              </div>
             ) : (
               <>
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{prompt.verb}{blind && " · labels hidden"}</p>
