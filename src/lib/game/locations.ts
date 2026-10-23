@@ -116,8 +116,12 @@ const rows: Row[] = [
   ["Burundi", "Burundi", -3.4, 29.9, "country", 4],
 ];
 
-import { LOCATIONS as BASE_LOCATIONS, type Location } from "./locations";
 import { EXTRA_LOCATIONS } from "./locations-extra";
 
-export type { Location, Category } from "./locations";
-export const LOCATIONS: Location[] = [...BASE_LOCATIONS, ...EXTRA_LOCATIONS];
+export const LOCATIONS: Location[] = [
+  ...rows.map(([name, country, lat, lng, category, difficulty, hint], i) => ({
+    id: `${category}-${i}`,
+    name, country, lat, lng, category, difficulty, hint,
+  })),
+  ...EXTRA_LOCATIONS,
+];
