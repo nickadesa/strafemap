@@ -57,9 +57,21 @@ function createSupabaseClient() {
       ...(!SUPABASE_URL ? ['SUPABASE_URL'] : []),
       ...(!SUPABASE_PUBLISHABLE_KEY ? ['SUPABASE_PUBLISHABLE_KEY'] : []),
     ];
-    const message = `Missing Supabase environment variable(s): ${missing.join(', ')}. Connect Supabase in Lovable Cloud.`;
-    console.error(`[Supabase] ${message}`);
-    throw new Error(message);
+    console.warn(`[Supabase] Missing env: ${missing.join(', ')}. Running in offline/demo mode.`);
+    // Return a minimal stub so the app doesn't crash on public sites without env
+    return {
+      auth: {
+        signOut: async () => ({ error: null }),
+        getSession: async () => ({ data: { session: null }, error: null }),
+        onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
+      },
+      from: () => ({
+        select: () => ({ data: [], error: null }),
+        insert: () => ({ data: null, error: null }),
+        update: () => ({ data: null, error: null }),
+        delete: () => ({ data: null, error: null }),
+      }),
+    } as any;
   }
 
   return createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
