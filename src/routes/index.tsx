@@ -6,10 +6,10 @@ import { computeStats, useRecords, useSettings } from "@/lib/game/storage";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "STRAFE — Know the map. Make your mark." },
-      { name: "description", content: "A fast 2D map guessing game. Drop one pin, beat the distance, climb your personal bests." },
-      { property: "og:title", content: "STRAFE — Map guessing game" },
-      { property: "og:description", content: "Drop one pin. Beat the distance. Five rounds, 25,000 points." },
+      { title: "STRAFE — Map guessing game" },
+      { name: "description", content: "Drop a pin. Beat the distance. Fast 2D map guessing." },
+      { property: "og:title", content: "STRAFE" },
+      { property: "og:description", content: "One pin. Closer means more points." },
     ],
   }),
   component: Home,
@@ -25,58 +25,71 @@ function Home() {
     <div className="min-h-screen pb-16">
       <SiteHeader />
       <main className="mx-auto max-w-6xl px-5">
-        <section className="py-10 md:py-16">
-          <h1 className="font-display text-[clamp(4rem,14vw,9.5rem)]">
-            Know the map.<br />Make your mark.
-          </h1>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Link to="/game/$mode" params={{ mode: "classic" }} search={{}} className="btn btn-primary px-10 py-4 text-lg">PLAY</Link>
-            <Link to="/play" className="btn btn-outline">All modes</Link>
+        {/* Hero — compact, game-like */}
+        <section className="flex flex-col items-center py-10 text-center md:py-14">
+          <div className="mb-6 grid h-20 w-20 place-items-center rounded-full bg-primary text-4xl shadow-lg">🎯</div>
+          <h1 className="font-display text-5xl md:text-7xl">STRAFE</h1>
+          <p className="mt-3 max-w-md text-lg text-muted-foreground">Drop one pin. Closer = more points.</p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Link to="/game/$mode" params={{ mode: "classic" }} search={{}} className="btn btn-primary px-10 py-4 text-lg">Play now</Link>
+            <Link to="/play" className="btn btn-outline">Modes</Link>
+            <Link to="/duel" className="btn btn-ink">Party / Duel</Link>
           </div>
         </section>
 
-        <section className="grid gap-4 md:grid-cols-3">
-          <div className="plate-ink p-6 md:col-span-1">
-            <p className="text-sm font-semibold opacity-80">Daily challenge · {todayKey()}</p>
-            <p className="font-display mt-3 text-5xl">{today ? today.score.toLocaleString() : "5 pins"}</p>
-            <p className="mt-2 text-sm opacity-80">{today ? "Done for today. Come back tomorrow." : "Same five places for everyone today."}</p>
+        {/* Quick stats row */}
+        <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <QuickStat icon="🏆" label="Best" value={stats.bestScore.toLocaleString()} />
+          <QuickStat icon="🎮" label="Games" value={String(stats.games)} />
+          <QuickStat icon="📏" label="Avg error" value={stats.avgError === null ? "—" : formatDistance(stats.avgError, settings.unit)} />
+          <QuickStat icon="🔥" label="Streak" value={String(stats.bestStreak)} />
+        </section>
+
+        {/* Daily + modes */}
+        <section className="mt-6 grid gap-4 md:grid-cols-3">
+          <div className="plate-ink flex flex-col justify-between p-6">
+            <div>
+              <p className="text-sm font-semibold opacity-80">📅 Daily · {todayKey()}</p>
+              <p className="font-display mt-3 text-4xl">{today ? today.score.toLocaleString() : "5 pins"}</p>
+              <p className="mt-2 text-sm opacity-80">{today ? "Done today" : "Same places for everyone"}</p>
+            </div>
             {!today && (
-              <Link to="/game/$mode" params={{ mode: "classic" }} search={{ daily: 1 }} className="btn btn-primary mt-5">Play daily</Link>
+              <Link to="/game/$mode" params={{ mode: "classic" }} search={{ daily: 1 }} className="btn btn-primary mt-5 self-start">Play daily</Link>
             )}
           </div>
-          <div className="plate p-6 md:col-span-2">
-            <div className="flex items-baseline justify-between">
-              <p className="text-sm font-semibold text-muted-foreground">Your stats · {settings.name}</p>
-              <Link to="/stats" className="text-sm font-semibold underline">Details</Link>
-            </div>
-            <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
-              <Stat k="Best score" v={stats.bestScore.toLocaleString()} />
-              <Stat k="Games" v={String(stats.games)} />
-              <Stat k="Avg error" v={stats.avgError === null ? "—" : formatDistance(stats.avgError, settings.unit)} />
-              <Stat k="Best streak" v={String(stats.bestStreak)} />
-            </div>
+          <div className="plate col-span-2 grid gap-3 p-6 sm:grid-cols-2">
+            {(Object.keys(MODES) as Mode[]).map((m) => (
+              <Link key={m} to="/play" search={{ mode: m }} className="flex items-center gap-3 rounded-2xl bg-muted/50 p-4 transition-colors hover:bg-primary-pale">
+                <span className="text-2xl">{modeIcon(m)}</span>
+                <div>
+                  <p className="font-display text-xl">{MODES[m].name}</p>
+                  <p className="text-xs text-muted-foreground">{MODES[m].tag}</p>
+                </div>
+              </Link>
+            ))}
           </div>
         </section>
 
-        <section className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {(Object.keys(MODES) as Mode[]).map((m) => (
-            <Link key={m} to="/play" search={{ mode: m }} className="plate group p-6 transition-colors hover:bg-primary-pale">
-              <span className="rounded-full bg-primary-pale px-3 py-1 text-xs font-semibold text-ink-deep group-hover:bg-card">{MODES[m].tag}</span>
-              <h3 className="font-display mt-4 text-3xl">{MODES[m].name}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{MODES[m].blurb}</p>
-            </Link>
-          ))}
-        </section>
+        <div className="mt-6 text-center">
+          <Link to="/stats" className="text-sm font-semibold underline">View full stats & achievements →</Link>
+        </div>
       </main>
     </div>
   );
 }
 
-function Stat({ k, v }: { k: string; v: string }) {
+function QuickStat({ icon, label, value }: { icon: string; label: string; value: string }) {
   return (
-    <div>
-      <p className="font-display text-3xl">{v}</p>
-      <p className="mt-1 text-xs font-semibold text-muted-foreground">{k}</p>
+    <div className="plate flex items-center gap-3 p-4">
+      <span className="text-2xl">{icon}</span>
+      <div>
+        <p className="font-display text-2xl">{value}</p>
+        <p className="text-xs font-semibold text-muted-foreground">{label}</p>
+      </div>
     </div>
   );
+}
+
+function modeIcon(m: Mode) {
+  return { classic: "📍", shrink: "⏱️", closest: "🏁", blind: "👁️" }[m] ?? "🎯";
 }
