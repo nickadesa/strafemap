@@ -78,8 +78,33 @@ export function poolFor(pool: Pool, difficulty: Difficulty): Location[] {
   return filtered.length >= ROUNDS ? filtered : base;
 }
 
+/** Remember recently played location IDs so they come back less often. */
+const RECENT_KEY = "strafe-recent-locs";
+const RECENT_MAX = 40;
+
+export function loadRecent(): string[] {
+  if (typeof localStorage === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(RECENT_KEY);
+    const arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr.filter((x) => typeof x === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveRecent(ids: string[]) {
+  if (typeof localStorage === "undefined") return;
+  try {
+    const merged = [...ids, ...loadRecent()].filter((id, i, a) => a.indexOf(id) === i).slice(0, RECENT_MAX);
+    localStorage.setItem(RECENT_KEY, JSON.stringify(merged));
+  } catch { /* ignore quota */ }
+}
+
 export function pickRounds(list: Location[], n: number, rng: () => number = Math.random, avoid: string[] = []) {
-  const src = list.filter((l) => !avoid.includes(l.id));
+  const recent = loadRecent();
+  const avoidSet = new Set([...avoid, ...recent]);
+  const src = list.filter((l) => !avoidSet.has(l.id));
   const arr = [...(src.length >= n ? src : list)];
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(rng() * (i + 1));
