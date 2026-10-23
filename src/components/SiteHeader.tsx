@@ -20,6 +20,7 @@ const links = [
   { to: "/duel", label: "Duel" },
   { to: "/leaderboard", label: "Leaderboard" },
   { to: "/stats", label: "Stats" },
+  { to: "/profile", label: "Profile" },
   { to: "/settings", label: "Settings" },
 ] as const;
 
