@@ -5,7 +5,7 @@ import { Logo } from "./SiteHeader";
 
 const items = [
   { to: "/", key: "home" },
-  { to: "/play", key: "rank" },
+  { to: "/rank", key: "rank" },
   { to: "/leaderboard", key: "leaderboard" },
   { to: "/party", key: "party" },
   { to: "/play", key: "modes" },
