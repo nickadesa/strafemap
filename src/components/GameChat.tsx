@@ -32,7 +32,7 @@ export function GameChat() {
   return (
     <div className="absolute bottom-4 left-4 z-[600] flex flex-col items-start">
       {open && (
-        <div className="mb-2 w-72 overflow-hidden rounded-2xl border border-border/40 bg-card/80 shadow-lg backdrop-blur-md">
+        <div className="mb-2 w-72 overflow-hidden rounded-xl border border-border/40 bg-card/80 shadow-lg backdrop-blur-md">
           <div className="flex items-center justify-between border-b border-border/30 px-3 py-2">
             <span className="text-xs font-semibold text-muted-foreground">Chat</span>
             <button onClick={() => setOpen(false)} className="text-muted-foreground hover:text-foreground">
@@ -43,7 +43,7 @@ export function GameChat() {
             {messages.map((m) => (
               <div key={m.id} className={`${m.me ? "text-right" : ""}`}>
                 <span className="text-[10px] text-muted-foreground">{m.name}</span>
-                <p className={`mt-0.5 inline-block rounded-xl px-2.5 py-1 ${m.me ? "bg-primary text-primary-foreground" : "bg-muted"}`}>
+                <p className={`mt-0.5 inline-block rounded-lg px-2.5 py-1 ${m.me ? "bg-primary text-primary-foreground" : "bg-muted"}`}>
                   {m.text}
                 </p>
               </div>
@@ -56,9 +56,9 @@ export function GameChat() {
               onChange={(e) => setText(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && send()}
               placeholder="Type a message…"
-              className="flex-1 rounded-lg bg-background/60 px-3 py-1.5 text-sm outline-none"
+              className="flex-1 rounded-md bg-background/60 px-3 py-1.5 text-sm outline-none"
             />
-            <button onClick={send} className="ml-1 rounded-lg bg-primary px-3 text-sm font-semibold text-primary-foreground">
+            <button onClick={send} className="ml-1 rounded-md bg-primary px-3 text-sm font-semibold text-primary-foreground">
               Send
             </button>
           </div>
