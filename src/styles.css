@@ -86,7 +86,7 @@
   --accent-foreground: #b9ff24;
   --destructive: oklch(0.65 0.2 25);
   --destructive-foreground: #ffffff;
-  --border: #333333;
+  --border: transparent;
   --input: #3a3a3a;
   --ring: #b9ff24;
   color-scheme: dark;
@@ -144,11 +144,13 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
   color: var(--color-card-foreground);
   border-radius: var(--radius);
+  border: none;
 }
 @utility plate-ink {
   background: var(--color-secondary);
   color: var(--color-secondary-foreground);
   border-radius: var(--radius);
+  border: none;
 }
 
 /* Map pins */
@@ -165,7 +167,7 @@
 .leaflet-touch .leaflet-bar, .leaflet-bar { border: none !important; box-shadow: none !important; background: transparent; display: flex; flex-direction: column; gap: 8px; }
 .leaflet-bar a, .leaflet-touch .leaflet-bar a {
   width: 42px !important; height: 42px !important; line-height: 40px !important;
-  border-radius: 9999px !important; border: 1px solid var(--color-border) !important;
+  border-radius: 9999px !important; border: none !important;
   background: var(--color-card); color: var(--color-foreground); font-size: 20px; font-weight: 700;
   transition: transform 380ms var(--ease-spring), background-color 150ms ease;
   -webkit-tap-highlight-color: transparent;
