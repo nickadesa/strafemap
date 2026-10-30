@@ -53,7 +53,6 @@ function RankPage() {
       <Sidebar />
       <main className="md:ml-56 flex min-h-screen items-start justify-center px-5 py-10">
         <div className="w-full max-w-2xl">
-          {/* Tabs with border */}
           <div className="mb-8 flex justify-center gap-2">
             <button
               onClick={() => setTab("play")}
@@ -121,7 +120,7 @@ function PlayTab({ rank, tier }: { rank: RankedProfile; tier: ReturnType<typeof 
           <div><p className="font-display text-2xl">{rank.bestStreak}</p><p className="text-muted-foreground">Best streak</p></div>
         </div>
 
-        <Link to="/game/$mode" params={{ mode: "classic" }} search={{}} className="btn btn-primary mt-6 px-10 py-3">
+        <Link to="/game/$mode" params={{ mode: "classic" }} search={{ ranked: 1 }} className="btn btn-primary mt-6 px-10 py-3">
           Play Ranked
         </Link>
       </div>
