@@ -67,20 +67,20 @@
 }
 
 .dark {
-  --background: #1a1a1a;
+  --background: #161616;
   --foreground: #f4f4f5;
-  --card: #242424;
+  --card: #2a2a2a;
   --card-foreground: #f4f4f5;
-  --popover: #242424;
+  --popover: #2a2a2a;
   --popover-foreground: #f4f4f5;
   --primary: #b9ff24;
   --primary-foreground: #000000;
   --primary-pale: #2a331c;
   --primary-active: #c8ff00;
   --ink-deep: #b9ff24;
-  --secondary: #2a2a2a;
+  --secondary: #333333;
   --secondary-foreground: #f4f4f5;
-  --muted: #2e2e2e;
+  --muted: #333333;
   --muted-foreground: #a0a0a0;
   --accent: #2a331c;
   --accent-foreground: #b9ff24;
@@ -141,7 +141,6 @@
 }
 @utility plate {
   background: var(--color-card);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
   color: var(--color-card-foreground);
   border-radius: var(--radius);
   border: none;
