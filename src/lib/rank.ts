@@ -5,23 +5,26 @@ export interface RankTierInfo {
   name: string;
   minElo: number;
   color: string;
+  icon: string;
 }
 
 export const RANK_TIERS: RankTierInfo[] = [
-  { id: "bronze", name: "Bronze", minElo: 0, color: "#cd7f32" },
-  { id: "silver", name: "Silver", minElo: 1000, color: "#c0c0c0" },
-  { id: "gold", name: "Gold", minElo: 1200, color: "#ffd700" },
-  { id: "platinum", name: "Platinum", minElo: 1400, color: "#e5e4e2" },
-  { id: "diamond", name: "Diamond", minElo: 1600, color: "#b9f2ff" },
-  { id: "master", name: "Master", minElo: 1800, color: "#9b59b6" },
-  { id: "champion", name: "Champion", minElo: 2000, color: "#b9ff24" },
+  { id: "bronze", name: "Bronze", minElo: 0, color: "#cd7f32", icon: "/ranks/bronze.svg" },
+  { id: "silver", name: "Silver", minElo: 1000, color: "#c0c0c0", icon: "/ranks/silver.svg" },
+  { id: "gold", name: "Gold", minElo: 1500, color: "#ffd700", icon: "/ranks/gold.svg" },
+  { id: "platinum", name: "Platinum", minElo: 2000, color: "#e5e4e2", icon: "/ranks/platinum.svg" },
+  { id: "diamond", name: "Diamond", minElo: 2500, color: "#b9f2ff", icon: "/ranks/diamond.svg" },
+  { id: "master", name: "Master", minElo: 3000, color: "#9b59b6", icon: "/ranks/master.svg" },
+  { id: "champion", name: "Champion", minElo: 99999, color: "#b9ff24", icon: "/ranks/champion.svg" },
 ];
 
 export function getTier(elo: number): RankTierInfo {
-  for (let i = RANK_TIERS.length - 1; i >= 0; i--) {
-    if (elo >= RANK_TIERS[i].minElo) return RANK_TIERS[i];
+  // Champion is top 50 only — not ELO based
+  const tiers = RANK_TIERS.filter((t) => t.id !== "champion");
+  for (let i = tiers.length - 1; i >= 0; i--) {
+    if (elo >= tiers[i].minElo) return tiers[i];
   }
-  return RANK_TIERS[0];
+  return tiers[0];
 }
 
 export interface RankedProfile {
@@ -64,7 +67,6 @@ export function calcEloChange(myElo: number, oppElo: number, result: 1 | 0 | 0.5
   return Math.round(k * (result - expected));
 }
 
-/** Apply a match result and return the new profile + elo change */
 export function applyMatchResult(result: "win" | "loss" | "draw", oppElo = 1000): { profile: RankedProfile; change: number } {
   const cur = loadRank();
   const r = result === "win" ? 1 : result === "loss" ? 0 : 0.5;
