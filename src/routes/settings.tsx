@@ -121,12 +121,12 @@ function SettingsPage() {
                   const k = v === "auto" ? (theme === "dark" ? "darkmatter" : "voyager") : v;
                   const on = mapStyle === v;
                   return (
-                    <button key={v} onClick={() => setMapStyle(v)} className={`overflow-hidden rounded-xl border-2 text-left ${on ? "border-primary" : "border-transparent hover:border-muted"}`}>
+                    <button key={v} onClick={() => setMapStyle(v)} className={`overflow-hidden rounded-xl border-2 text-left transition-all ${on ? "border-primary ring-2 ring-primary/40" : "border-border/50 hover:border-muted"}`}>
                       <div className="relative aspect-square bg-muted">
                         <img src={tile(TILES[k].base)} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
                         <img src={tile(TILES[k].labels)} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
                       </div>
-                      <div className={`px-2 py-1.5 text-xs font-medium ${on ? "bg-primary text-primary-foreground" : ""}`}>{l}</div>
+                      <div className={`px-2 py-1.5 text-xs font-medium ${on ? "bg-primary text-primary-foreground" : "bg-card"}`}>{l}</div>
                     </button>
                   );
                 })}
