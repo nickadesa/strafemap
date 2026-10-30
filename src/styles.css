@@ -67,27 +67,27 @@
 }
 
 .dark {
-  --background: #0f0f10;
+  --background: #1a1a1a;
   --foreground: #f4f4f5;
-  --card: #1b1c1e;
+  --card: #242424;
   --card-foreground: #f4f4f5;
-  --popover: #1b1c1e;
+  --popover: #242424;
   --popover-foreground: #f4f4f5;
   --primary: #b9ff24;
   --primary-foreground: #000000;
-  --primary-pale: #26301a;
+  --primary-pale: #2a331c;
   --primary-active: #c8ff00;
   --ink-deep: #b9ff24;
-  --secondary: #f4f4f5;
-  --secondary-foreground: #111213;
-  --muted: #242528;
-  --muted-foreground: #8a8f98;
-  --accent: #26301a;
+  --secondary: #2a2a2a;
+  --secondary-foreground: #f4f4f5;
+  --muted: #2e2e2e;
+  --muted-foreground: #a0a0a0;
+  --accent: #2a331c;
   --accent-foreground: #b9ff24;
   --destructive: oklch(0.65 0.2 25);
   --destructive-foreground: #ffffff;
-  --border: #27282b;
-  --input: #34353a;
+  --border: #333333;
+  --input: #3a3a3a;
   --ring: #b9ff24;
   color-scheme: dark;
 }
@@ -141,7 +141,7 @@
 }
 @utility plate {
   background: var(--color-card);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
   color: var(--color-card-foreground);
   border-radius: var(--radius);
 }
