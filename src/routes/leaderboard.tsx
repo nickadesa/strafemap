@@ -1,17 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { SiteHeader } from "@/components/SiteHeader";
+import { Sidebar } from "@/components/Sidebar";
 import { useRecords } from "@/lib/game/storage";
 
 export const Route = createFileRoute("/leaderboard")({
-  head: () => ({
-    meta: [
-      { title: "Leaderboard — STRAFE" },
-      { name: "description", content: "Daily, weekly and all-time STRAFE scores recorded on this device." },
-      { property: "og:title", content: "Leaderboard — STRAFE" },
-      { property: "og:description", content: "Who knows the map best? Daily, weekly and all-time rankings." },
-    ],
-  }),
   component: Leaderboard,
 });
 
@@ -31,35 +23,37 @@ function Leaderboard() {
   ).sort((a, b) => b.score - a.score);
 
   return (
-    <div className="min-h-screen pb-16">
-      <SiteHeader />
-      <main className="mx-auto max-w-4xl px-5">
-        <h1 className="font-display py-8 text-6xl md:text-8xl">Leaderboard</h1>
-        <div className="mb-4 flex gap-2">
-          {(Object.keys(tabs) as Tab[]).map((t) => (
-            <button key={t} onClick={() => setTab(t)} className={`rounded-full px-4 py-2 text-sm font-semibold ${tab === t ? "bg-foreground text-primary" : "bg-card"}`}>
-              {t === "all" ? "All-time" : t === "daily" ? "Daily" : "Weekly"}
-            </button>
-          ))}
+    <div className="min-h-screen">
+      <Sidebar />
+      <main className="md:ml-56 px-5 py-8">
+        <div className="mx-auto max-w-4xl">
+          <h1 className="font-display mb-6 text-5xl">Leaderboard</h1>
+          <div className="mb-4 flex gap-2">
+            {(Object.keys(tabs) as Tab[]).map((t) => (
+              <button key={t} onClick={() => setTab(t)} className={`rounded-full px-4 py-2 text-sm font-semibold ${tab === t ? "bg-foreground text-primary" : "bg-card"}`}>
+                {t === "all" ? "All-time" : t === "daily" ? "Daily" : "Weekly"}
+              </button>
+            ))}
+          </div>
+          <div className="plate overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="text-xs text-muted-foreground"><tr>{["#", "Player", "Total score", "Accuracy", "Games"].map((h) => <th key={h} className="px-5 py-4 font-semibold">{h}</th>)}</tr></thead>
+              <tbody>
+                {rows.map((r, i) => (
+                  <tr key={r.name} className="border-t">
+                    <td className="font-display px-5 py-4 text-xl">{i + 1}</td>
+                    <td className="px-5 py-4 font-semibold">{r.name}</td>
+                    <td className="px-5 py-4 font-semibold">{r.score.toLocaleString()}</td>
+                    <td className="px-5 py-4">{Math.round((r.acc / r.games) * 100)}%</td>
+                    <td className="px-5 py-4">{r.games}</td>
+                  </tr>
+                ))}
+                {records && rows.length === 0 && <tr><td colSpan={5} className="px-5 py-10 text-center text-muted-foreground">No games in this period yet.</td></tr>}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-4 text-sm text-muted-foreground">Rankings come from your games (your account when signed in, this device otherwise).</p>
         </div>
-        <div className="plate overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead className="text-xs text-muted-foreground"><tr>{["#", "Player", "Total score", "Accuracy", "Games"].map((h) => <th key={h} className="px-5 py-4 font-semibold">{h}</th>)}</tr></thead>
-            <tbody>
-              {rows.map((r, i) => (
-                <tr key={r.name} className="border-t">
-                  <td className="font-display px-5 py-4 text-xl">{i + 1}</td>
-                  <td className="px-5 py-4 font-semibold">{r.name}</td>
-                  <td className="px-5 py-4 font-semibold">{r.score.toLocaleString()}</td>
-                  <td className="px-5 py-4">{Math.round((r.acc / r.games) * 100)}%</td>
-                  <td className="px-5 py-4">{r.games}</td>
-                </tr>
-              ))}
-              {records && rows.length === 0 && <tr><td colSpan={5} className="px-5 py-10 text-center text-muted-foreground">No games in this period yet.</td></tr>}
-            </tbody>
-          </table>
-        </div>
-        <p className="mt-4 text-sm text-muted-foreground">Rankings come from your games (your account when signed in, this device otherwise). Change your player name in Settings to pass-and-play with friends. A shared global leaderboard isn't switched on yet.</p>
       </main>
     </div>
   );
