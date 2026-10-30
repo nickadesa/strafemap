@@ -4,12 +4,12 @@ import { t, type Lang } from "@/lib/i18n";
 import { Logo } from "./SiteHeader";
 
 const items = [
-  { to: "/", key: "daily", icon: "📅" },
-  { to: "/leaderboard", key: "rank", icon: "🏆" },
-  { to: "/party", key: "party", icon: "👥" },
-  { to: "/play", key: "modes", icon: "🎯" },
-  { to: "/stats", key: "stats", icon: "📊" },
-  { to: "/settings", key: "settings", icon: "⚙️" },
+  { to: "/", key: "daily" },
+  { to: "/leaderboard", key: "rank" },
+  { to: "/party", key: "party" },
+  { to: "/play", key: "modes" },
+  { to: "/stats", key: "stats" },
+  { to: "/settings", key: "settings" },
 ] as const;
 
 export function Sidebar() {
@@ -24,10 +24,9 @@ export function Sidebar() {
           <Link
             key={it.to}
             to={it.to}
-            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            className="rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             activeProps={{ className: "!bg-primary/10 !text-primary font-semibold" }}
           >
-            <span className="text-base">{it.icon}</span>
             {t(lang, it.key)}
           </Link>
         ))}
