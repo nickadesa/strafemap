@@ -5,6 +5,13 @@ import { blip } from "@/lib/game/sound";
 import { useMapStyle, useTheme, type MapStyle } from "@/lib/theme";
 import { LANGS, t, type Lang } from "@/lib/i18n";
 import { TILES } from "@/components/GameMap";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const tile = (u: string) => u.replace("{z}", "2").replace("{y}", "1").replace("{x}", "2").replace("{s}", "a").replace("{r}", "");
 
@@ -37,51 +44,55 @@ function SettingsPage() {
 
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">{t(lang, "language")}</span>
-              <select
-                value={lang}
-                onChange={(e) => update({ language: e.target.value as Lang })}
-                className="w-40 rounded-lg border border-input bg-background px-3 py-1.5 text-sm"
-              >
-                {LANGS.map((l) => (
-                  <option key={l.id} value={l.id}>{l.label}</option>
-                ))}
-              </select>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="w-40 justify-between">{LANGS.find((l) => l.id === lang)?.label ?? lang}</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {LANGS.map((l) => (
+                    <DropdownMenuItem key={l.id} onClick={() => update({ language: l.id })}>{l.label}</DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
 
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">{t(lang, "sound")}</span>
-              <select
-                value={s.sound ? "on" : "off"}
-                onChange={(e) => { const on = e.target.value === "on"; update({ sound: on }); blip(on); }}
-                className="w-32 rounded-lg border border-input bg-background px-3 py-1.5 text-sm"
-              >
-                <option value="on">{t(lang, "on")}</option>
-                <option value="off">{t(lang, "off")}</option>
-              </select>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="w-32 justify-between">{s.sound ? t(lang, "on") : t(lang, "off")}</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem onClick={() => { update({ sound: true }); blip(true); }}>{t(lang, "on")}</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => { update({ sound: false }); blip(false); }}>{t(lang, "off")}</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
 
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">{t(lang, "units")}</span>
-              <select
-                value={s.unit}
-                onChange={(e) => update({ unit: e.target.value as "km" | "mi" })}
-                className="w-28 rounded-lg border border-input bg-background px-3 py-1.5 text-sm"
-              >
-                <option value="km">km</option>
-                <option value="mi">mi</option>
-              </select>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="w-28 justify-between">{s.unit}</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem onClick={() => update({ unit: "km" })}>km</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => update({ unit: "mi" })}>mi</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
 
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">{t(lang, "theme")}</span>
-              <select
-                value={theme}
-                onChange={(e) => setTheme(e.target.value as "light" | "dark")}
-                className="w-32 rounded-lg border border-input bg-background px-3 py-1.5 text-sm"
-              >
-                <option value="light">{t(lang, "light")}</option>
-                <option value="dark">{t(lang, "dark")}</option>
-              </select>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="w-32 justify-between">{theme === "light" ? t(lang, "light") : t(lang, "dark")}</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem onClick={() => setTheme("light")}>{t(lang, "light")}</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTheme("dark")}>{t(lang, "dark")}</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
 
             <div>
