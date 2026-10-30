@@ -2,6 +2,8 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GameMap } from "@/components/GameMap";
 import { Logo } from "@/components/SiteHeader";
+import { GameChat } from "@/components/GameChat";
+import { GameSettingsButton } from "@/components/GameSettingsButton";
 import {
   BOTS, MAX_POINTS, MODES, ROUNDS, botGuess, dailyRounds, distanceKm, formatDistance, pickRounds, poolFor, saveRecent,
   promptFor, scoreFor, shrinkCenter, shrinkRadius, timeMultiplier, TIME_OPTIONS, type TimeLimit, type Difficulty, type LatLng, type Mode, type Pool,
@@ -122,14 +124,13 @@ function GamePage() {
     }
   }, [radius, guess, center, mode, phase]);
 
-  
   // auto-collapse prompt
   useEffect(() => {
     if (phase !== "guess" || settings.promptCollapseSeconds <= 0) return;
     const t = setTimeout(() => setPromptCollapsed(true), settings.promptCollapseSeconds * 1000);
     return () => clearTimeout(t);
   }, [phase, idx, settings.promptCollapseSeconds]);
-useEffect(() => { if (!flash) return; const t = setTimeout(() => setFlash(null), 2200); return () => clearTimeout(t); }, [flash]);
+  useEffect(() => { if (!flash) return; const t = setTimeout(() => setFlash(null), 2200); return () => clearTimeout(t); }, [flash]);
 
   const pick = useCallback((p: LatLng) => {
     if (phase !== "guess") return;
@@ -172,7 +173,6 @@ useEffect(() => { if (!flash) return; const t = setTimeout(() => setFlash(null),
       id: crypto.randomUUID(), player: settings.name || "Guest", mode, daily, date: new Date().toISOString(),
       score: total, max: MAX_POINTS * ROUNDS, rounds: results.map((r) => ({ km: r.km, points: r.points })),
     });
-    // remember these locations so they come back less often
     if (results.length) saveRecent(results.map((r) => r.loc.id));
   }, [phase]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -335,6 +335,10 @@ useEffect(() => { if (!flash) return; const t = setTimeout(() => setFlash(null),
             </div>
           )}
         </div>
+
+        {/* Chat + Settings buttons */}
+        <GameChat />
+        <GameSettingsButton />
       </div>
     </div>
   );
@@ -358,30 +362,22 @@ function Standings({ rows }: { rows: [string, { pts: number; wins: number; km: n
 }
 
 function StoryButton({ data }: { data: CardData }) {
-  const [url, setUrl] = useState<string | null>(null);
-  const [blob, setBlob] = useState<Blob | null>(null);
   const [busy, setBusy] = useState(false);
-  const open = async () => {
-    setBusy(true);
-    try { const b = await renderCard(data); setBlob(b); setUrl(URL.createObjectURL(b)); } finally { setBusy(false); }
-  };
-  const close = () => { if (url) URL.revokeObjectURL(url); setUrl(null); };
+  const [done, setDone] = useState(false);
   return (
-    <>
-      <button onClick={open} disabled={busy} className="btn btn-primary">{busy ? "Creating…" : "Share to Instagram"}</button>
-      {url && blob && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-background/80 p-5 backdrop-blur-md" onClick={close}>
-          <div className="rise-in flex max-h-full flex-col items-center gap-4" onClick={(e) => e.stopPropagation()}>
-            <img src={url} alt="Your result card" className="max-h-[70dvh] w-auto rounded-3xl shadow-2xl" />
-            <div className="flex flex-wrap justify-center gap-3">
-              <button onClick={() => shareCard(blob)} className="btn btn-primary">Share</button>
-              <a href={url} download="strafe-result.png" className="btn btn-ink">Save image</a>
-              <button onClick={close} className="btn btn-outline">Close</button>
-            </div>
-            <p className="text-center text-xs font-semibold text-muted-foreground">On a phone, tap Share and pick Instagram Stories.</p>
-          </div>
-        </div>
-      )}
-    </>
+    <button
+      onClick={async () => {
+        setBusy(true);
+        try {
+          const canvas = await renderCard(data);
+          await shareCard(canvas);
+          setDone(true);
+        } finally { setBusy(false); }
+      }}
+      disabled={busy}
+      className="btn btn-outline"
+    >
+      {busy ? "Creating…" : done ? "Shared!" : "Share card"}
+    </button>
   );
 }
