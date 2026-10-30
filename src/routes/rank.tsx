@@ -13,8 +13,8 @@ function Avatar({ name, size = 48 }: { name: string; size?: number }) {
   const initial = name?.[0]?.toUpperCase() ?? "?";
   return (
     <div
-      className="grid place-items-center rounded-full bg-muted text-foreground font-semibold"
-      style={{ width: size, height: size, fontSize: size * 0.4 }}
+      className="grid place-items-center rounded-full border border-border/40 bg-muted font-semibold"
+      style={{ width: size, height: size, fontSize: size * 0.38 }}
     >
       {initial}
     </div>
@@ -53,23 +53,23 @@ function RankPage() {
       <Sidebar />
       <main className="md:ml-56 flex min-h-screen items-start justify-center px-5 py-10">
         <div className="w-full max-w-2xl">
-          {/* Tabs centered */}
+          {/* Tabs with border */}
           <div className="mb-8 flex justify-center gap-2">
             <button
               onClick={() => setTab("play")}
-              className={`rounded-full px-5 py-2 text-sm font-semibold ${tab === "play" ? "bg-primary text-primary-foreground" : "bg-card"}`}
+              className={`rounded-full border px-5 py-2 text-sm font-semibold transition-colors ${tab === "play" ? "border-primary bg-primary text-primary-foreground" : "border-border/50 bg-card hover:bg-muted"}`}
             >
               {t(lang, "play")}
             </button>
             <button
               onClick={() => setTab("leaderboard")}
-              className={`rounded-full px-5 py-2 text-sm font-semibold ${tab === "leaderboard" ? "bg-primary text-primary-foreground" : "bg-card"}`}
+              className={`rounded-full border px-5 py-2 text-sm font-semibold transition-colors ${tab === "leaderboard" ? "border-primary bg-primary text-primary-foreground" : "border-border/50 bg-card hover:bg-muted"}`}
             >
               {t(lang, "leaderboard")}
             </button>
             <button
               onClick={() => setTab("guide")}
-              className={`rounded-full px-5 py-2 text-sm font-semibold ${tab === "guide" ? "bg-primary text-primary-foreground" : "bg-card"}`}
+              className={`rounded-full border px-5 py-2 text-sm font-semibold transition-colors ${tab === "guide" ? "border-primary bg-primary text-primary-foreground" : "border-border/50 bg-card hover:bg-muted"}`}
             >
               Guide
             </button>
@@ -85,27 +85,50 @@ function RankPage() {
 }
 
 function PlayTab({ rank, tier }: { rank: RankedProfile; tier: ReturnType<typeof getTier> }) {
+  const nextTier = RANK_TIERS.find((t) => t.minElo > rank.elo);
+  const progress = nextTier ? Math.min(100, ((rank.elo - tier.minElo) / (nextTier.minElo - tier.minElo)) * 100) : 100;
+
   return (
-    <div className="plate flex flex-col items-center p-8 text-center">
-      <div
-        className="mb-4 grid h-24 w-24 place-items-center rounded-2xl text-4xl font-bold"
-        style={{ background: tier.color + "22", color: tier.color }}
-      >
-        {tier.name[0]}
-      </div>
-      <p className="text-sm text-muted-foreground">Current Rank</p>
-      <h2 className="font-display text-5xl" style={{ color: tier.color }}>{tier.name}</h2>
-      <p className="mt-1 text-2xl font-semibold">{rank.elo} ELO</p>
+    <div className="space-y-4">
+      <div className="plate flex flex-col items-center p-8 text-center">
+        <div
+          className="mb-4 grid h-24 w-24 place-items-center rounded-2xl text-4xl font-bold"
+          style={{ background: tier.color + "22", color: tier.color }}
+        >
+          {tier.name[0]}
+        </div>
+        <p className="text-sm text-muted-foreground">Current Rank</p>
+        <h2 className="font-display text-5xl" style={{ color: tier.color }}>{tier.name}</h2>
+        <p className="mt-1 text-2xl font-semibold">{rank.elo} ELO</p>
 
-      <div className="mt-6 flex gap-6 text-sm">
-        <div><p className="font-display text-xl">{rank.wins}</p><p className="text-muted-foreground">Wins</p></div>
-        <div><p className="font-display text-xl">{rank.losses}</p><p className="text-muted-foreground">Losses</p></div>
-        <div><p className="font-display text-xl">{rank.games ? Math.round((rank.wins / rank.games) * 100) : 0}%</p><p className="text-muted-foreground">Win rate</p></div>
+        {nextTier && (
+          <div className="mt-4 w-full max-w-xs">
+            <div className="mb-1 flex justify-between text-xs text-muted-foreground">
+              <span>{tier.name}</span>
+              <span>{nextTier.name}</span>
+            </div>
+            <div className="h-2 overflow-hidden rounded-full bg-muted">
+              <div className="h-full bg-primary" style={{ width: `${progress}%` }} />
+            </div>
+            <p className="mt-1 text-xs text-muted-foreground">{nextTier.minElo - rank.elo} ELO to {nextTier.name}</p>
+          </div>
+        )}
+
+        <div className="mt-6 flex gap-8 text-sm">
+          <div><p className="font-display text-2xl">{rank.wins}</p><p className="text-muted-foreground">Wins</p></div>
+          <div><p className="font-display text-2xl">{rank.losses}</p><p className="text-muted-foreground">Losses</p></div>
+          <div><p className="font-display text-2xl">{rank.games ? Math.round((rank.wins / rank.games) * 100) : 0}%</p><p className="text-muted-foreground">Win rate</p></div>
+          <div><p className="font-display text-2xl">{rank.bestStreak}</p><p className="text-muted-foreground">Best streak</p></div>
+        </div>
+
+        <Link to="/game/$mode" params={{ mode: "classic" }} search={{}} className="btn btn-primary mt-6 px-10 py-3">
+          Play Ranked
+        </Link>
       </div>
 
-      <Link to="/game/$mode" params={{ mode: "classic" }} search={{}} className="btn btn-primary mt-6 px-8 py-3">
-        Play Ranked (vs Bot)
-      </Link>
+      <div className="plate p-5">
+        <p className="text-sm text-muted-foreground">Recent matches will appear here after you play ranked games.</p>
+      </div>
     </div>
   );
 }
@@ -116,7 +139,7 @@ function GuideTab() {
       <h3 className="mb-4 text-center font-semibold">All Ranks</h3>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {RANK_TIERS.map((t) => (
-          <div key={t.id} className="rounded-xl bg-muted/50 p-3 text-center">
+          <div key={t.id} className="rounded-xl border border-border/30 bg-muted/50 p-3 text-center">
             <div className="mx-auto mb-1 grid h-10 w-10 place-items-center rounded-lg text-lg font-bold" style={{ background: t.color + "33", color: t.color }}>
               {t.name[0]}
             </div>
@@ -145,7 +168,7 @@ function LeaderboardTab({ board }: { board: { name: string; elo: number; me: boo
             <Avatar name={top3[1].name} size={56} />
             <p className="mt-2 text-sm font-semibold">{top3[1].name}</p>
             <p className="text-xs text-muted-foreground">{top3[1].elo}</p>
-            <div className="mt-2 grid h-20 w-20 place-items-center rounded-t-xl bg-muted text-2xl font-bold">2</div>
+            <div className="mt-2 grid h-20 w-20 place-items-center rounded-t-xl border border-border/30 bg-muted text-2xl font-bold">2</div>
           </div>
         )}
         {top3[0] && (
@@ -153,7 +176,7 @@ function LeaderboardTab({ board }: { board: { name: string; elo: number; me: boo
             <Avatar name={top3[0].name} size={72} />
             <p className="mt-2 font-semibold">{top3[0].name}</p>
             <p className="text-sm text-primary">{top3[0].elo}</p>
-            <div className="mt-2 grid h-28 w-24 place-items-center rounded-t-xl bg-primary/20 text-3xl font-bold text-primary">1</div>
+            <div className="mt-2 grid h-28 w-24 place-items-center rounded-t-xl border border-primary/40 bg-primary/20 text-3xl font-bold text-primary">1</div>
           </div>
         )}
         {top3[2] && (
@@ -161,7 +184,7 @@ function LeaderboardTab({ board }: { board: { name: string; elo: number; me: boo
             <Avatar name={top3[2].name} size={48} />
             <p className="mt-2 text-sm font-semibold">{top3[2].name}</p>
             <p className="text-xs text-muted-foreground">{top3[2].elo}</p>
-            <div className="mt-2 grid h-16 w-20 place-items-center rounded-t-xl bg-muted/70 text-xl font-bold">3</div>
+            <div className="mt-2 grid h-16 w-20 place-items-center rounded-t-xl border border-border/30 bg-muted/70 text-xl font-bold">3</div>
           </div>
         )}
       </div>
