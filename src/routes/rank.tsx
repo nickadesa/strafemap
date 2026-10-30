@@ -51,24 +51,24 @@ function RankPage() {
   return (
     <div className="min-h-screen">
       <Sidebar />
-      <main className="md:ml-56 flex min-h-screen items-start justify-center px-5 py-10">
+      <main className="md:ml-56 flex min-h-screen items-start justify-center px-4 py-6 md:px-5 md:py-10">
         <div className="w-full max-w-3xl">
-          <div className="mb-10 flex justify-center gap-3">
+          <div className="mb-6 flex justify-center gap-2 md:mb-10 md:gap-3">
             <button
               onClick={() => setTab("play")}
-              className={`rounded-full border px-6 py-2.5 text-base font-semibold transition-colors ${tab === "play" ? "border-primary bg-primary text-primary-foreground" : "border-border/50 bg-card hover:bg-muted"}`}
+              className={`rounded-full border px-4 py-2 text-sm font-semibold transition-colors md:px-6 md:py-2.5 md:text-base ${tab === "play" ? "border-primary bg-primary text-primary-foreground" : "border-border/50 bg-card hover:bg-muted"}`}
             >
               {t(lang, "play")}
             </button>
             <button
               onClick={() => setTab("leaderboard")}
-              className={`rounded-full border px-6 py-2.5 text-base font-semibold transition-colors ${tab === "leaderboard" ? "border-primary bg-primary text-primary-foreground" : "border-border/50 bg-card hover:bg-muted"}`}
+              className={`rounded-full border px-4 py-2 text-sm font-semibold transition-colors md:px-6 md:py-2.5 md:text-base ${tab === "leaderboard" ? "border-primary bg-primary text-primary-foreground" : "border-border/50 bg-card hover:bg-muted"}`}
             >
               {t(lang, "leaderboard")}
             </button>
             <button
               onClick={() => setTab("guide")}
-              className={`rounded-full border px-6 py-2.5 text-base font-semibold transition-colors ${tab === "guide" ? "border-primary bg-primary text-primary-foreground" : "border-border/50 bg-card hover:bg-muted"}`}
+              className={`rounded-full border px-4 py-2 text-sm font-semibold transition-colors md:px-6 md:py-2.5 md:text-base ${tab === "guide" ? "border-primary bg-primary text-primary-foreground" : "border-border/50 bg-card hover:bg-muted"}`}
             >
               Guide
             </button>
@@ -88,40 +88,40 @@ function PlayTab({ rank, tier }: { rank: RankedProfile; tier: ReturnType<typeof 
   const progress = nextTier ? Math.min(100, ((rank.elo - tier.minElo) / (nextTier.minElo - tier.minElo)) * 100) : 100;
 
   return (
-    <div className="space-y-6">
-      <div className="plate flex flex-col items-center p-10 text-center">
-        <img src={tier.icon} alt={tier.name} className="mb-6 h-36 w-36" />
-        <p className="text-base text-muted-foreground">Current Rank</p>
-        <h2 className="font-display text-6xl" style={{ color: tier.color }}>{tier.name}</h2>
-        <p className="mt-2 text-3xl font-semibold">{rank.elo} ELO</p>
+    <div className="space-y-4 md:space-y-6">
+      <div className="plate flex flex-col items-center p-6 text-center md:p-10">
+        <img src={tier.icon} alt={tier.name} className="mb-4 h-24 w-24 md:mb-6 md:h-36 md:w-36" />
+        <p className="text-sm text-muted-foreground md:text-base">Current Rank</p>
+        <h2 className="font-display text-4xl md:text-6xl" style={{ color: tier.color }}>{tier.name}</h2>
+        <p className="mt-1 text-xl font-semibold md:mt-2 md:text-3xl">{rank.elo} ELO</p>
 
         {nextTier && (
-          <div className="mt-6 w-full max-w-sm">
-            <div className="mb-2 flex justify-between text-sm text-muted-foreground">
+          <div className="mt-4 w-full max-w-sm md:mt-6">
+            <div className="mb-1 flex justify-between text-xs text-muted-foreground md:mb-2 md:text-sm">
               <span>{tier.name}</span>
               <span>{nextTier.name}</span>
             </div>
-            <div className="h-3 overflow-hidden rounded-full bg-muted">
+            <div className="h-2 overflow-hidden rounded-full bg-muted md:h-3">
               <div className="h-full bg-primary" style={{ width: `${progress}%` }} />
             </div>
-            <p className="mt-2 text-sm text-muted-foreground">{nextTier.minElo - rank.elo} ELO to {nextTier.name}</p>
+            <p className="mt-1 text-xs text-muted-foreground md:mt-2 md:text-sm">{nextTier.minElo - rank.elo} ELO to {nextTier.name}</p>
           </div>
         )}
 
-        <div className="mt-8 flex gap-10 text-base">
-          <div><p className="font-display text-3xl">{rank.wins}</p><p className="text-muted-foreground">Wins</p></div>
-          <div><p className="font-display text-3xl">{rank.losses}</p><p className="text-muted-foreground">Losses</p></div>
-          <div><p className="font-display text-3xl">{rank.games ? Math.round((rank.wins / rank.games) * 100) : 0}%</p><p className="text-muted-foreground">Win rate</p></div>
-          <div><p className="font-display text-3xl">{rank.bestStreak}</p><p className="text-muted-foreground">Best streak</p></div>
+        <div className="mt-6 flex flex-wrap justify-center gap-6 text-sm md:mt-8 md:gap-10 md:text-base">
+          <div><p className="font-display text-2xl md:text-3xl">{rank.wins}</p><p className="text-muted-foreground">Wins</p></div>
+          <div><p className="font-display text-2xl md:text-3xl">{rank.losses}</p><p className="text-muted-foreground">Losses</p></div>
+          <div><p className="font-display text-2xl md:text-3xl">{rank.games ? Math.round((rank.wins / rank.games) * 100) : 0}%</p><p className="text-muted-foreground">Win rate</p></div>
+          <div><p className="font-display text-2xl md:text-3xl">{rank.bestStreak}</p><p className="text-muted-foreground">Best streak</p></div>
         </div>
 
-        <Link to="/game/$mode" params={{ mode: "classic" }} search={{ ranked: 1 }} className="btn btn-primary mt-8 px-12 py-4 text-lg">
+        <Link to="/game/$mode" params={{ mode: "classic" }} search={{ ranked: 1 }} className="btn btn-primary mt-6 px-8 py-3 text-base md:mt-8 md:px-12 md:py-4 md:text-lg">
           Play Ranked
         </Link>
       </div>
 
-      <div className="plate p-6">
-        <p className="text-base text-muted-foreground">Recent matches will appear here after you play ranked games.</p>
+      <div className="plate p-4 md:p-6">
+        <p className="text-sm text-muted-foreground md:text-base">Recent matches will appear here after you play ranked games.</p>
       </div>
     </div>
   );
@@ -129,22 +129,22 @@ function PlayTab({ rank, tier }: { rank: RankedProfile; tier: ReturnType<typeof 
 
 function GuideTab() {
   return (
-    <div className="plate p-8">
-      <h3 className="mb-6 text-center text-xl font-semibold">All Ranks</h3>
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+    <div className="plate p-4 md:p-8">
+      <h3 className="mb-4 text-center text-lg font-semibold md:mb-6 md:text-xl">All Ranks</h3>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:gap-4">
         {RANK_TIERS.map((t) => (
-          <div key={t.id} className="rounded-2xl border border-border/30 bg-muted/50 p-4 text-center">
-            <img src={t.icon} alt={t.name} className="mx-auto mb-2 h-16 w-16" />
-            <p className="text-base font-semibold">{t.name}</p>
-            <p className="text-sm text-muted-foreground">
+          <div key={t.id} className="rounded-xl border border-border/30 bg-muted/50 p-3 text-center md:rounded-2xl md:p-4">
+            <img src={t.icon} alt={t.name} className="mx-auto mb-1 h-12 w-12 md:mb-2 md:h-16 md:w-16" />
+            <p className="text-sm font-semibold md:text-base">{t.name}</p>
+            <p className="text-xs text-muted-foreground md:text-sm">
               {t.id === "champion" ? "Top 1–50" : `${t.minElo}+ ELO`}
             </p>
           </div>
         ))}
       </div>
-      <div className="mt-8 text-base text-muted-foreground">
+      <div className="mt-6 text-sm text-muted-foreground md:mt-8 md:text-base">
         <p className="font-semibold text-foreground">How ELO works</p>
-        <p className="mt-2">Start at 1000 ELO. Win to gain points, lose to lose points. Master is the highest ELO rank. Champion is reserved for the Top 50 players.</p>
+        <p className="mt-1 md:mt-2">Start at 1000 ELO. Win to gain points, lose to lose points. Master is the highest ELO rank. Champion is reserved for the Top 50 players.</p>
       </div>
     </div>
   );
@@ -156,44 +156,44 @@ function LeaderboardTab({ board }: { board: { name: string; elo: number; me: boo
 
   return (
     <div>
-      <div className="mb-10 flex items-end justify-center gap-6">
+      <div className="mb-6 flex items-end justify-center gap-3 md:mb-10 md:gap-6">
         {top3[1] && (
           <div className="flex flex-col items-center">
-            <Avatar name={top3[1].name} size={64} />
-            <p className="mt-3 text-base font-semibold">{top3[1].name}</p>
-            <p className="text-sm text-muted-foreground">{top3[1].elo}</p>
-            <div className="mt-3 grid h-24 w-24 place-items-center rounded-t-xl border border-border/30 bg-muted text-3xl font-bold">2</div>
+            <Avatar name={top3[1].name} size={48} />
+            <p className="mt-2 text-sm font-semibold md:mt-3 md:text-base">{top3[1].name}</p>
+            <p className="text-xs text-muted-foreground md:text-sm">{top3[1].elo}</p>
+            <div className="mt-2 grid h-16 w-16 place-items-center rounded-t-xl border border-border/30 bg-muted text-xl font-bold md:mt-3 md:h-24 md:w-24 md:text-3xl">2</div>
           </div>
         )}
         {top3[0] && (
           <div className="flex flex-col items-center">
-            <Avatar name={top3[0].name} size={80} />
-            <p className="mt-3 text-lg font-semibold">{top3[0].name}</p>
-            <p className="text-base text-primary">{top3[0].elo}</p>
-            <div className="mt-3 grid h-32 w-28 place-items-center rounded-t-xl border border-primary/40 bg-primary/20 text-4xl font-bold text-primary">1</div>
+            <Avatar name={top3[0].name} size={56} />
+            <p className="mt-2 text-base font-semibold md:mt-3 md:text-lg">{top3[0].name}</p>
+            <p className="text-sm text-primary md:text-base">{top3[0].elo}</p>
+            <div className="mt-2 grid h-20 w-20 place-items-center rounded-t-xl border border-primary/40 bg-primary/20 text-2xl font-bold text-primary md:mt-3 md:h-32 md:w-28 md:text-4xl">1</div>
           </div>
         )}
         {top3[2] && (
           <div className="flex flex-col items-center">
-            <Avatar name={top3[2].name} size={56} />
-            <p className="mt-3 text-base font-semibold">{top3[2].name}</p>
-            <p className="text-sm text-muted-foreground">{top3[2].elo}</p>
-            <div className="mt-3 grid h-20 w-24 place-items-center rounded-t-xl border border-border/30 bg-muted/70 text-2xl font-bold">3</div>
+            <Avatar name={top3[2].name} size={44} />
+            <p className="mt-2 text-sm font-semibold md:mt-3 md:text-base">{top3[2].name}</p>
+            <p className="text-xs text-muted-foreground md:text-sm">{top3[2].elo}</p>
+            <div className="mt-2 grid h-14 w-16 place-items-center rounded-t-xl border border-border/30 bg-muted/70 text-lg font-bold md:mt-3 md:h-20 md:w-24 md:text-2xl">3</div>
           </div>
         )}
       </div>
 
       <div className="plate divide-y">
         {rest.map((p, i) => (
-          <div key={p.name} className="flex items-center gap-4 px-5 py-4">
-            <span className="w-8 text-base text-muted-foreground">{i + 4}</span>
-            <Avatar name={p.name} size={44} />
-            <span className={`flex-1 text-base font-medium ${p.me ? "text-primary" : ""}`}>{p.name}</span>
-            <span className="text-base font-semibold">{p.elo}</span>
+          <div key={p.name} className="flex items-center gap-3 px-3 py-3 md:gap-4 md:px-5 md:py-4">
+            <span className="w-6 text-sm text-muted-foreground md:w-8 md:text-base">{i + 4}</span>
+            <Avatar name={p.name} size={36} />
+            <span className={`flex-1 text-sm font-medium md:text-base ${p.me ? "text-primary" : ""}`}>{p.name}</span>
+            <span className="text-sm font-semibold md:text-base">{p.elo}</span>
           </div>
         ))}
         {rest.length === 0 && (
-          <p className="px-5 py-10 text-center text-base text-muted-foreground">Play more games to see rankings</p>
+          <p className="px-4 py-8 text-center text-sm text-muted-foreground md:px-5 md:py-10 md:text-base">Play more games to see rankings</p>
         )}
       </div>
     </div>
