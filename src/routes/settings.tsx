@@ -46,11 +46,15 @@ function SettingsPage() {
               <span className="text-sm font-medium">{t(lang, "language")}</span>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="w-40 justify-between">{LANGS.find((l) => l.id === lang)?.label ?? lang}</Button>
+                  <Button variant="outline" className="w-40 justify-between">
+                    {LANGS.find((l) => l.id === lang)?.label ?? lang}
+                  </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
+                <DropdownMenuContent align="end">
                   {LANGS.map((l) => (
-                    <DropdownMenuItem key={l.id} onClick={() => update({ language: l.id })}>{l.label}</DropdownMenuItem>
+                    <DropdownMenuItem key={l.id} onSelect={() => update({ language: l.id })}>
+                      {l.label}
+                    </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -60,11 +64,17 @@ function SettingsPage() {
               <span className="text-sm font-medium">{t(lang, "sound")}</span>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="w-32 justify-between">{s.sound ? t(lang, "on") : t(lang, "off")}</Button>
+                  <Button variant="outline" className="w-32 justify-between">
+                    {s.sound ? t(lang, "on") : t(lang, "off")}
+                  </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem onClick={() => { update({ sound: true }); blip(true); }}>{t(lang, "on")}</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => { update({ sound: false }); blip(false); }}>{t(lang, "off")}</DropdownMenuItem>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onSelect={() => { update({ sound: true }); blip(true); }}>
+                    {t(lang, "on")}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => { update({ sound: false }); blip(false); }}>
+                    {t(lang, "off")}
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -73,11 +83,13 @@ function SettingsPage() {
               <span className="text-sm font-medium">{t(lang, "units")}</span>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="w-28 justify-between">{s.unit}</Button>
+                  <Button variant="outline" className="w-28 justify-between">
+                    {s.unit}
+                  </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem onClick={() => update({ unit: "km" })}>km</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => update({ unit: "mi" })}>mi</DropdownMenuItem>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onSelect={() => update({ unit: "km" })}>km</DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => update({ unit: "mi" })}>mi</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -86,11 +98,13 @@ function SettingsPage() {
               <span className="text-sm font-medium">{t(lang, "theme")}</span>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="w-32 justify-between">{theme === "light" ? t(lang, "light") : t(lang, "dark")}</Button>
+                  <Button variant="outline" className="w-32 justify-between">
+                    {theme === "light" ? t(lang, "light") : t(lang, "dark")}
+                  </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem onClick={() => setTheme("light")}>{t(lang, "light")}</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setTheme("dark")}>{t(lang, "dark")}</DropdownMenuItem>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onSelect={() => setTheme("light")}>{t(lang, "light")}</DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => setTheme("dark")}>{t(lang, "dark")}</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
