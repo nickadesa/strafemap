@@ -4,8 +4,9 @@ import { t, type Lang } from "@/lib/i18n";
 import { Logo } from "./SiteHeader";
 
 const items = [
-  { to: "/", key: "daily" },
-  { to: "/leaderboard", key: "rank" },
+  { to: "/", key: "home" },
+  { to: "/play", key: "rank" },
+  { to: "/leaderboard", key: "leaderboard" },
   { to: "/party", key: "party" },
   { to: "/play", key: "modes" },
   { to: "/stats", key: "stats" },
@@ -22,7 +23,7 @@ export function Sidebar() {
       <nav className="flex flex-1 flex-col gap-1">
         {items.map((it) => (
           <Link
-            key={it.to}
+            key={it.key}
             to={it.to}
             className="rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             activeProps={{ className: "!bg-primary/10 !text-primary font-semibold" }}
