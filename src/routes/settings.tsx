@@ -12,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
 
 const tile = (u: string) => u.replace("{z}", "2").replace("{y}", "1").replace("{x}", "2").replace("{s}", "a").replace("{r}", "");
 
@@ -48,6 +49,7 @@ function SettingsPage() {
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="w-40 justify-between">
                     {LANGS.find((l) => l.id === lang)?.label ?? lang}
+                    <ChevronDown className="h-4 w-4 opacity-60" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
@@ -66,6 +68,7 @@ function SettingsPage() {
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="w-32 justify-between">
                     {s.sound ? t(lang, "on") : t(lang, "off")}
+                    <ChevronDown className="h-4 w-4 opacity-60" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
@@ -85,6 +88,7 @@ function SettingsPage() {
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="w-28 justify-between">
                     {s.unit}
+                    <ChevronDown className="h-4 w-4 opacity-60" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
@@ -100,6 +104,7 @@ function SettingsPage() {
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="w-32 justify-between">
                     {theme === "light" ? t(lang, "light") : t(lang, "dark")}
+                    <ChevronDown className="h-4 w-4 opacity-60" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
