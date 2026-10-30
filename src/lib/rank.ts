@@ -63,3 +63,22 @@ export function calcEloChange(myElo: number, oppElo: number, result: 1 | 0 | 0.5
   const expected = 1 / (1 + Math.pow(10, (oppElo - myElo) / 400));
   return Math.round(k * (result - expected));
 }
+
+/** Apply a match result and return the new profile + elo change */
+export function applyMatchResult(result: "win" | "loss" | "draw", oppElo = 1000): { profile: RankedProfile; change: number } {
+  const cur = loadRank();
+  const r = result === "win" ? 1 : result === "loss" ? 0 : 0.5;
+  const change = calcEloChange(cur.elo, oppElo, r as 1 | 0 | 0.5);
+  const next: RankedProfile = {
+    ...cur,
+    elo: Math.max(0, cur.elo + change),
+    games: cur.games + 1,
+    wins: cur.wins + (result === "win" ? 1 : 0),
+    losses: cur.losses + (result === "loss" ? 1 : 0),
+    draws: cur.draws + (result === "draw" ? 1 : 0),
+    winStreak: result === "win" ? cur.winStreak + 1 : 0,
+    bestStreak: result === "win" ? Math.max(cur.bestStreak, cur.winStreak + 1) : cur.bestStreak,
+  };
+  saveRank(next);
+  return { profile: next, change };
+}
