@@ -84,18 +84,13 @@ function RankPage() {
 }
 
 function PlayTab({ rank, tier }: { rank: RankedProfile; tier: ReturnType<typeof getTier> }) {
-  const nextTier = RANK_TIERS.find((t) => t.minElo > rank.elo);
+  const nextTier = RANK_TIERS.filter((t) => t.id !== "champion").find((t) => t.minElo > rank.elo);
   const progress = nextTier ? Math.min(100, ((rank.elo - tier.minElo) / (nextTier.minElo - tier.minElo)) * 100) : 100;
 
   return (
     <div className="space-y-4">
       <div className="plate flex flex-col items-center p-8 text-center">
-        <div
-          className="mb-4 grid h-24 w-24 place-items-center rounded-2xl text-4xl font-bold"
-          style={{ background: tier.color + "22", color: tier.color }}
-        >
-          {tier.name[0]}
-        </div>
+        <img src={tier.icon} alt={tier.name} className="mb-4 h-24 w-24" />
         <p className="text-sm text-muted-foreground">Current Rank</p>
         <h2 className="font-display text-5xl" style={{ color: tier.color }}>{tier.name}</h2>
         <p className="mt-1 text-2xl font-semibold">{rank.elo} ELO</p>
@@ -139,17 +134,17 @@ function GuideTab() {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {RANK_TIERS.map((t) => (
           <div key={t.id} className="rounded-xl border border-border/30 bg-muted/50 p-3 text-center">
-            <div className="mx-auto mb-1 grid h-10 w-10 place-items-center rounded-lg text-lg font-bold" style={{ background: t.color + "33", color: t.color }}>
-              {t.name[0]}
-            </div>
+            <img src={t.icon} alt={t.name} className="mx-auto mb-1 h-10 w-10" />
             <p className="text-sm font-semibold">{t.name}</p>
-            <p className="text-xs text-muted-foreground">{t.minElo}+ ELO</p>
+            <p className="text-xs text-muted-foreground">
+              {t.id === "champion" ? "Top 1–50" : `${t.minElo}+ ELO`}
+            </p>
           </div>
         ))}
       </div>
       <div className="mt-6 text-sm text-muted-foreground">
         <p className="font-semibold text-foreground">How ELO works</p>
-        <p className="mt-1">Start at 1000 ELO. Win to gain points, lose to lose points. The amount depends on your opponent's ELO. Higher rank = higher ELO threshold.</p>
+        <p className="mt-1">Start at 1000 ELO. Win to gain points, lose to lose points. Master is the highest ELO rank. Champion is reserved for the Top 50 players.</p>
       </div>
     </div>
   );
