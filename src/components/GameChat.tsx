@@ -42,7 +42,7 @@ export function GameChat() {
   };
 
   return (
-    <div className="absolute bottom-4 left-4 z-[600] flex flex-col items-start">
+    <div className="pointer-events-auto absolute bottom-4 left-4 z-[900] flex flex-col items-start">
       {open && (
         <div className="mb-2 w-72 overflow-hidden rounded-xl border border-border/40 bg-card/80 shadow-lg backdrop-blur-md">
           <div className="flex items-center justify-between border-b border-border/30 px-3 py-2">
@@ -79,7 +79,7 @@ export function GameChat() {
 
       <button
         onClick={toggle}
-        className="grid h-11 w-11 place-items-center rounded-full border border-border/40 bg-card/80 shadow-md backdrop-blur-md hover:bg-card"
+        className="pointer-events-auto grid h-11 w-11 place-items-center rounded-full border border-border/40 bg-card/80 shadow-md backdrop-blur-md hover:bg-card"
         title="Chat"
       >
         <MessageCircle className="h-5 w-5" />
