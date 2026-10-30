@@ -20,6 +20,18 @@ export function GameChat() {
     bottom.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, open]);
 
+  useEffect(() => {
+    const close = () => setOpen(false);
+    window.addEventListener("close-game-panels", close);
+    return () => window.removeEventListener("close-game-panels", close);
+  }, []);
+
+  const toggle = () => {
+    const next = !open;
+    setOpen(next);
+    if (next) window.dispatchEvent(new Event("close-game-panels"));
+  };
+
   const send = () => {
     if (!text.trim()) return;
     setMessages((m) => [
@@ -66,7 +78,7 @@ export function GameChat() {
       )}
 
       <button
-        onClick={() => setOpen((o) => !o)}
+        onClick={toggle}
         className="grid h-11 w-11 place-items-center rounded-full border border-border/40 bg-card/80 shadow-md backdrop-blur-md hover:bg-card"
         title="Chat"
       >
