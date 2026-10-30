@@ -12,8 +12,9 @@ import type { Location } from "@/lib/game/locations";
 import { saveRecord, useSettings } from "@/lib/game/storage";
 import { blip } from "@/lib/game/sound";
 import { renderCard, shareCard, type CardData } from "@/lib/game/shareCard";
+import { applyMatchResult } from "@/lib/rank";
 
-interface Search { pool?: Pool | undefined; difficulty?: Difficulty | undefined; daily?: 1 | undefined; practice?: 1 | undefined; time?: TimeLimit | undefined }
+interface Search { pool?: Pool | undefined; difficulty?: Difficulty | undefined; daily?: 1 | undefined; practice?: 1 | undefined; time?: TimeLimit | undefined; ranked?: 1 | undefined }
 const MODE_IDS = Object.keys(MODES) as Mode[];
 
 export const Route = createFileRoute("/game/$mode")({
@@ -24,6 +25,7 @@ export const Route = createFileRoute("/game/$mode")({
     daily: s["daily"] ? 1 : undefined,
     practice: s["practice"] ? 1 : undefined,
     time: TIME_OPTIONS.includes(Number(s["time"]) as TimeLimit) ? (Number(s["time"]) as TimeLimit) : undefined,
+    ranked: s["ranked"] ? 1 : undefined,
   }),
   beforeLoad: ({ params }) => { if (!MODE_IDS.includes(params.mode as Mode)) throw notFound(); },
   head: ({ params }) => {
@@ -51,6 +53,7 @@ function GamePage() {
   const difficulty = search.difficulty ?? "medium";
   const daily = !!search.daily;
   const practice = !!search.practice && !daily;
+  const ranked = !!search.ranked;
   const blind = mode === "blind";
   const limit: number = search.time ?? 30;
 
@@ -65,20 +68,18 @@ function GamePage() {
   const [flash, setFlash] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [promptCollapsed, setPromptCollapsed] = useState(false);
+  const [eloChange, setEloChange] = useState<number | null>(null);
   const saved = useRef(false);
 
-  // build round set on start / restart
   useEffect(() => {
     const list = daily ? dailyRounds() : pickRounds(poolFor(pool, difficulty), ROUNDS);
     setRounds(list); setIdx(0); setGuess(null); setPhase("guess"); setResults([]); saved.current = false;
   }, [seed, daily, pool, difficulty, mode]);
 
-  // reset prompt collapse each round
   useEffect(() => { setPromptCollapsed(false); }, [idx, seed]);
 
   const loc = rounds[idx];
 
-  // shrink zone setup per round
   useEffect(() => {
     if (!loc) return;
     setElapsed(0);
@@ -105,7 +106,6 @@ function GamePage() {
   const submitRef = useRef(submit);
   submitRef.current = submit;
 
-  // shrink timer
   useEffect(() => {
     if (phase !== "guess" || !loc) return;
     const start = performance.now();
@@ -117,14 +117,12 @@ function GamePage() {
     return () => clearInterval(t);
   }, [phase, loc, limit]);
 
-  // zone shrinking past the guess invalidates it
   useEffect(() => {
     if (mode === "shrink" && phase === "guess" && guess && center && distanceKm(guess, center) > radius) {
       setGuess(null); setFlash("The zone closed over your pin — place it again.");
     }
   }, [radius, guess, center, mode, phase]);
 
-  // auto-collapse prompt
   useEffect(() => {
     if (phase !== "guess" || settings.promptCollapseSeconds <= 0) return;
     const t = setTimeout(() => setPromptCollapsed(true), settings.promptCollapseSeconds * 1000);
@@ -149,7 +147,6 @@ function GamePage() {
 
   const total = results.reduce((a, r) => a + r.points, 0);
 
-  // Spacebar: confirm guess, or advance after reveal
   const keyRef = useRef({ submit, next, phase, guess });
   keyRef.current = { submit, next, phase, guess };
   useEffect(() => {
@@ -165,7 +162,7 @@ function GamePage() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // save record
+  // save record + update ELO if ranked
   useEffect(() => {
     if (phase !== "done" || practice || saved.current) return;
     saved.current = true;
@@ -174,6 +171,14 @@ function GamePage() {
       score: total, max: MAX_POINTS * ROUNDS, rounds: results.map((r) => ({ km: r.km, points: r.points })),
     });
     if (results.length) saveRecent(results.map((r) => r.loc.id));
+
+    if (ranked) {
+      // Simple win/loss based on score threshold
+      const avg = total / results.length;
+      const result = avg >= 3000 ? "win" : avg >= 1500 ? "draw" : "loss";
+      const { change } = applyMatchResult(result, 1000);
+      setEloChange(change);
+    }
   }, [phase]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const standings = useMemo(() => {
@@ -205,9 +210,14 @@ function GamePage() {
       <div className="min-h-screen px-5 pb-16">
         <div className="mx-auto max-w-4xl py-5"><Logo /></div>
         <main className="mx-auto max-w-4xl">
-          <p className="text-sm font-semibold text-muted-foreground">{MODES[mode].name}{daily && " · Daily challenge"} · Final</p>
+          <p className="text-sm font-semibold text-muted-foreground">{MODES[mode].name}{daily && " · Daily challenge"}{ranked && " · Ranked"} · Final</p>
           <h1 className="font-display mt-2 text-[clamp(4rem,16vw,8rem)]">{total.toLocaleString()}</h1>
           <p className="mt-2 font-semibold text-muted-foreground">out of {(MAX_POINTS * ROUNDS).toLocaleString()}</p>
+          {ranked && eloChange !== null && (
+            <p className={`mt-2 text-lg font-semibold ${eloChange >= 0 ? "text-primary" : "text-destructive"}`}>
+              ELO {eloChange >= 0 ? "+" : ""}{eloChange}
+            </p>
+          )}
           <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
             <Box k="Accuracy" v={`${Math.round((total / (MAX_POINTS * ROUNDS)) * 100)}%`} />
             <Box k="Avg error" v={errs.length ? formatDistance(errs.reduce((a, b) => a + b, 0) / errs.length, settings.unit) : "—"} />
@@ -234,7 +244,7 @@ function GamePage() {
               url: "strafemap.lovable.app",
             }} />
             <button onClick={() => { navigator.clipboard?.writeText(share).then(() => setCopied(true)); }} className="btn btn-ink">{copied ? "Copied!" : "Copy result"}</button>
-            <Link to="/play" className="btn btn-outline">Change mode</Link>
+            {ranked ? <Link to="/rank" className="btn btn-outline">Back to Rank</Link> : <Link to="/play" className="btn btn-outline">Change mode</Link>}
             <Link to="/" className="btn btn-outline">Menu</Link>
           </div>
         </main>
@@ -247,7 +257,7 @@ function GamePage() {
       <header className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
         <Logo />
         <div className="flex items-center gap-2 text-sm font-semibold">
-          <span className="rounded-full bg-card px-3 py-1.5">{MODES[mode].name}{daily && " · Daily"}</span>
+          <span className="rounded-full bg-card px-3 py-1.5">{MODES[mode].name}{daily && " · Daily"}{ranked && " · Ranked"}</span>
           <span className="rounded-full bg-card px-3 py-1.5">{roundLabel}</span>
           <span className="rounded-full bg-foreground px-3 py-1.5 text-primary">{total.toLocaleString()} pts</span>
           {practice && <button onClick={() => setPhase("done")} className="rounded-full bg-card px-3 py-1.5 hover:bg-primary-pale">End</button>}
@@ -266,7 +276,6 @@ function GamePage() {
           resetKey={`${seed}-${idx}`}
         />
 
-        {/* prompt card — collapsible */}
         <div className="pointer-events-none absolute inset-x-3 top-3 z-[500] flex justify-center">
           <div
             className={`plate pointer-events-auto max-w-md cursor-pointer select-none text-center transition-all duration-300 ${promptCollapsed ? "px-4 py-2" : "px-5 py-4"}`}
@@ -302,7 +311,6 @@ function GamePage() {
 
         {flash && <div className="absolute left-1/2 top-40 z-[600] -translate-x-1/2 rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-primary">{flash}</div>}
 
-        {/* bottom action */}
         <div className="absolute inset-x-3 bottom-6 z-[500] flex justify-center">
           {phase === "guess" ? (
             <button onClick={submit} disabled={!guess} className="btn btn-primary px-10 py-4 text-lg">
@@ -336,7 +344,6 @@ function GamePage() {
           )}
         </div>
 
-        {/* Chat + Settings buttons */}
         <GameChat />
         <GameSettingsButton />
       </div>
