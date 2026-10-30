@@ -26,7 +26,7 @@ export function Sidebar() {
             key={it.key}
             to={it.to}
             className="rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            activeProps={{ className: "!bg-primary/10 !text-primary font-semibold" }}
+            activeProps={{ className: "!bg-primary !text-primary-foreground font-semibold" }}
           >
             {t(lang, it.key)}
           </Link>
