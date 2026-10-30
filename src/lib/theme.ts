@@ -6,10 +6,10 @@ const TKEY = "strafe-theme";
 const MKEY = "strafe-map";
 const EVT = "strafe-theme-change";
 
-export const themeInitScript = `try{if(localStorage.getItem("${TKEY}")==="dark")document.documentElement.classList.add("dark")}catch(e){}`;
+export const themeInitScript = `try{if(localStorage.getItem("${TKEY}")!=="light")document.documentElement.classList.add("dark")}catch(e){document.documentElement.classList.add("dark")}`;
 
 function readTheme(): Theme {
-  return localStorage.getItem(TKEY) === "dark" ? "dark" : "light";
+  return localStorage.getItem(TKEY) === "light" ? "light" : "dark";
 }
 function readMap(): MapStyle {
   const v = localStorage.getItem(MKEY);
@@ -17,7 +17,7 @@ function readMap(): MapStyle {
 }
 
 export function useTheme() {
-  const [theme, setT] = useState<Theme>("light");
+  const [theme, setT] = useState<Theme>("dark");
   useEffect(() => {
     const sync = () => setT(readTheme());
     sync();
