@@ -22,9 +22,9 @@ export function getTier(elo: number): RankTierInfo {
   // Champion is top 50 only — not ELO based
   const tiers = RANK_TIERS.filter((t) => t.id !== "champion");
   for (let i = tiers.length - 1; i >= 0; i--) {
-    if (elo >= tiers[i].minElo) return tiers[i];
+    const tier = tiers[i]; if (tier && elo >= tier.minElo) return tier;
   }
-  return tiers[0];
+  return tiers[0]!;
 }
 
 export interface RankedProfile {

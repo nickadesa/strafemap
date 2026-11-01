@@ -30,7 +30,7 @@ function ProfilePage() {
   return (
     <div className="min-h-screen">
       <Sidebar />
-      <main className="md:ml-56 px-5 py-8">
+      <main className="md:ml-56 px-5 pb-8 pt-20 md:pt-8">
         <div className="mx-auto max-w-2xl">
           <div className="plate flex flex-col items-center p-8 text-center">
             <div className="grid h-24 w-24 place-items-center rounded-full bg-primary text-primary-foreground text-4xl font-display">

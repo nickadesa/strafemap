@@ -61,8 +61,8 @@ export function useSettings() {
   useEffect(() => setS(loadSettings()), []);
   useEffect(() => {
     if (!user) return;
-    supabase.from("profiles").select("display_name").eq("id", user.id).maybeSingle().then(({ data }) => {
-      if (data?.display_name) setS((p) => ({ ...p, name: data.display_name }));
+    supabase.from("profiles").select("display_name").eq("id", user.id).maybeSingle().then(({ data }: { data: { display_name: string | null } | null }) => {
+      if (data?.display_name) setS((p) => ({ ...p, name: data.display_name ?? p.name }));
     });
   }, [user]);
   const update = useCallback((patch: Partial<Settings>) => {

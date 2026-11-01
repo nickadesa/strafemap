@@ -38,13 +38,13 @@ function Play() {
   return (
     <div className="min-h-screen">
       <Sidebar />
-      <main className="md:ml-56 px-5 py-8">
+      <main className="md:ml-56 px-5 pb-8 pt-20 md:pt-8">
         <div className="mx-auto max-w-6xl">
           <h1 className="font-display mb-6 text-5xl">Pick your game.</h1>
           <div className="grid gap-4 sm:grid-cols-2">
             {(Object.keys(MODES) as Mode[]).map((m) => (
               <button key={m} onClick={() => setMode(m)} className={`p-6 text-left transition-colors rounded-3xl border-2 ${mode === m ? "border-primary bg-primary/10" : "border-transparent plate hover:bg-muted/50"}`}>
-                <span className="text-xs font-semibold uppercase tracking-wider opacity-70">{MODES[m].tag}</span>
+                <span className="text-xs opacity-70">{MODES[m].tag}</span>
                 <h2 className="font-display mt-2 text-4xl">{MODES[m].name}</h2>
                 <p className="mt-2 text-sm opacity-80">{MODES[m].blurb}</p>
               </button>

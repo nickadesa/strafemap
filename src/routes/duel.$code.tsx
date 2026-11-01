@@ -54,8 +54,8 @@ function DuelRoom() {
       const { data: g } = await supabase.from("duel_guesses").select("*").eq("duel_id", data.id);
       if (!dead) setGuesses(g ?? []);
       ch = supabase.channel(`duel-${data.id}`)
-        .on("postgres_changes", { event: "UPDATE", schema: "public", table: "duels", filter: `id=eq.${data.id}` }, (p) => setDuel(p.new as Duel))
-        .on("postgres_changes", { event: "INSERT", schema: "public", table: "duel_guesses", filter: `duel_id=eq.${data.id}` }, (p) =>
+        .on("postgres_changes", { event: "UPDATE", schema: "public", table: "duels", filter: `id=eq.${data.id}` }, (p: { new: unknown }) => setDuel(p.new as Duel))
+        .on("postgres_changes", { event: "INSERT", schema: "public", table: "duel_guesses", filter: `duel_id=eq.${data.id}` }, (p: { new: unknown }) =>
           setGuesses((gs) => gs.some((x) => x.id === (p.new as Guess).id) ? gs : [...gs, p.new as Guess]))
         .subscribe();
     })();
@@ -176,7 +176,7 @@ function DuelRoom() {
           target={revealed ? loc : null} others={opPin} locked={!!mine} onPick={setPin} resetKey={`${duel.id}-${round}`} />
         <div className="pointer-events-none absolute inset-x-3 top-3 z-[500] flex justify-center">
           <div className="plate pointer-events-auto max-w-md px-5 py-4 text-center">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Pin the location</p>
+            <p className="text-sm text-muted-foreground">Pin the location</p>
             <p className="font-display mt-1 text-3xl md:text-4xl">{loc.name}</p>
             {loc.category !== "country" && <p className="mt-1 text-sm text-muted-foreground">{loc.country}</p>}
             {!revealed && (

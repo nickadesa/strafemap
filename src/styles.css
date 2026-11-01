@@ -36,12 +36,13 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-link: var(--link);
 }
 
 :root {
   --radius: 1.5rem;
-  --background: #ffffff;
-  --foreground: #1d1d1f;
+  --background: #f6f6f2;
+  --foreground: #17181a;
   --card: #ffffff;
   --card-foreground: #1d1d1f;
   --popover: #ffffff;
@@ -53,42 +54,44 @@
   --ink-deep: #1d1d1f;
   --secondary: #1d1d1f;
   --secondary-foreground: #ffffff;
-  --muted: #f5f5f7;
-  --muted-foreground: #7a7a7a;
-  --accent: #f5f5f7;
+  --muted: #efefe9;
+  --muted-foreground: #6b6d68;
+  --accent: #efefe9;
   --accent-foreground: #1d1d1f;
   --destructive: oklch(0.56 0.19 25);
   --destructive-foreground: #ffffff;
   --warning: oklch(0.87 0.17 90);
   --positive: oklch(0.64 0.16 145);
-  --border: #e6e8e2;
+  --border: rgb(23 24 26 / 0.09);
   --input: #d6d9d1;
   --ring: #111213;
+  --link: #17181a;
 }
 
 .dark {
-  --background: #161616;
+  --background: #121312;
   --foreground: #f4f4f5;
-  --card: #2a2a2a;
+  --card: #1c1d1c;
   --card-foreground: #f4f4f5;
-  --popover: #2a2a2a;
+  --popover: #1c1d1c;
   --popover-foreground: #f4f4f5;
   --primary: #b9ff24;
   --primary-foreground: #000000;
   --primary-pale: #2a331c;
   --primary-active: #c8ff00;
   --ink-deep: #b9ff24;
-  --secondary: #333333;
+  --secondary: #262826;
   --secondary-foreground: #f4f4f5;
-  --muted: #333333;
-  --muted-foreground: #a0a0a0;
+  --muted: #242624;
+  --muted-foreground: #9a9d97;
   --accent: #2a331c;
   --accent-foreground: #b9ff24;
   --destructive: oklch(0.65 0.2 25);
   --destructive-foreground: #ffffff;
-  --border: #3a3a3a;
+  --border: rgb(255 255 255 / 0.08);
   --input: #3a3a3a;
   --ring: #b9ff24;
+  --link: #b9ff24;
   color-scheme: dark;
 }
 
@@ -99,14 +102,16 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    font-feature-settings: "tnum" 1, "cv11" 1;
   }
 }
 
 @utility font-display {
   font-family: var(--font-display);
-  font-weight: 900;
-  letter-spacing: -0.035em;
-  line-height: 0.88;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 @utility btn {
@@ -144,14 +149,13 @@
   color: var(--color-card-foreground);
   border-radius: var(--radius);
   border: 1px solid var(--color-border);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
 }
 @utility plate-ink {
   background: var(--color-secondary);
   color: var(--color-secondary-foreground);
   border-radius: var(--radius);
   border: 1px solid var(--color-border);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 /* Map pins */
@@ -169,7 +173,7 @@
 .leaflet-bar a, .leaflet-touch .leaflet-bar a {
   width: 42px !important; height: 42px !important; line-height: 40px !important;
   border-radius: 9999px !important; border: 1px solid var(--color-border) !important;
-  background: var(--color-card); color: var(--color-foreground); font-size: 20px; font-weight: 700;
+  background: var(--color-card); color: var(--color-foreground); font-size: 18px; font-weight: 500;
   transition: transform 380ms var(--ease-spring), background-color 150ms ease;
   -webkit-tap-highlight-color: transparent;
 }

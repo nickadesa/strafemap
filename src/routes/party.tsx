@@ -53,7 +53,7 @@ function PartyPage() {
   return (
     <div className="min-h-screen">
       <Sidebar />
-      <main className="md:ml-56 px-5 py-8">
+      <main className="md:ml-56 px-5 pb-8 pt-20 md:pt-8">
         <div className="mx-auto max-w-lg">
           <div className="text-center">
             <div className="mx-auto mb-4 grid h-16 w-16 place-items-center rounded-full bg-primary text-primary-foreground">
@@ -84,7 +84,7 @@ function PartyPage() {
           ) : (
             <div className="plate mt-8 p-6">
               <div className="flex items-center justify-between">
-                <p className="font-display text-3xl tracking-widest">{room}</p>
+                <p className="font-display text-3xl tracking-[0.2em]">{room}</p>
                 <button onClick={() => { setRoom(null); setPlayers([]); }} className="text-sm text-muted-foreground">Leave</button>
               </div>
               <ul className="mt-6 space-y-3">
