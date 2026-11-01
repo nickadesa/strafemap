@@ -24,7 +24,7 @@ export function getTier(elo: number): RankTierInfo {
   for (let i = tiers.length - 1; i >= 0; i--) {
     if (elo >= tiers[i].minElo) return tiers[i];
   }
-  return tiers[0];
+  return tiers[0]!;
 }
 
 export interface RankedProfile {

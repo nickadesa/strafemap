@@ -38,7 +38,7 @@ function Play() {
   return (
     <div className="min-h-screen">
       <Sidebar />
-      <main className="md:ml-56 px-5 py-8">
+      <main className="md:ml-56 px-5 pb-8 pt-20 md:pt-8">
         <div className="mx-auto max-w-6xl">
           <h1 className="font-display mb-6 text-5xl">Pick your game.</h1>
           <div className="grid gap-4 sm:grid-cols-2">

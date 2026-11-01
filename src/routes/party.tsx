@@ -53,7 +53,7 @@ function PartyPage() {
   return (
     <div className="min-h-screen">
       <Sidebar />
-      <main className="md:ml-56 px-5 py-8">
+      <main className="md:ml-56 px-5 pb-8 pt-20 md:pt-8">
         <div className="mx-auto max-w-lg">
           <div className="text-center">
             <div className="mx-auto mb-4 grid h-16 w-16 place-items-center rounded-full bg-primary text-primary-foreground">

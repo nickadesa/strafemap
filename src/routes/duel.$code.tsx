@@ -54,8 +54,8 @@ function DuelRoom() {
       const { data: g } = await supabase.from("duel_guesses").select("*").eq("duel_id", data.id);
       if (!dead) setGuesses(g ?? []);
       ch = supabase.channel(`duel-${data.id}`)
-        .on("postgres_changes", { event: "UPDATE", schema: "public", table: "duels", filter: `id=eq.${data.id}` }, (p) => setDuel(p.new as Duel))
-        .on("postgres_changes", { event: "INSERT", schema: "public", table: "duel_guesses", filter: `duel_id=eq.${data.id}` }, (p) =>
+        .on("postgres_changes", { event: "UPDATE", schema: "public", table: "duels", filter: `id=eq.${data.id}` }, (p: { new: unknown }) => setDuel(p.new as Duel))
+        .on("postgres_changes", { event: "INSERT", schema: "public", table: "duel_guesses", filter: `duel_id=eq.${data.id}` }, (p: { new: unknown }) =>
           setGuesses((gs) => gs.some((x) => x.id === (p.new as Guess).id) ? gs : [...gs, p.new as Guess]))
         .subscribe();
     })();

@@ -34,8 +34,8 @@ function RankPage() {
   const others = (records ?? [])
     .reduce<Record<string, { name: string; score: number }>>((a, r) => {
       if (r.player === myName) return a;
-      a[r.player] ??= { name: r.player, score: 0 };
-      a[r.player].score += r.score;
+      const e = (a[r.player] ??= { name: r.player, score: 0 });
+      e.score += r.score;
       return a;
     }, {});
 
