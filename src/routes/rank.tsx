@@ -169,8 +169,8 @@ function LeaderboardTab({ board }: { board: { name: string; elo: number; me: boo
           <div className="flex flex-col items-center">
             <Avatar name={top3[0].name} size={56} />
             <p className="mt-2 text-base font-semibold md:mt-3 md:text-lg">{top3[0].name}</p>
-            <p className="text-sm text-primary md:text-base">{top3[0].elo}</p>
-            <div className="mt-2 grid h-20 w-20 place-items-center rounded-t-xl border border-primary/40 bg-primary/20 text-2xl font-bold text-primary md:mt-3 md:h-32 md:w-28 md:text-4xl">1</div>
+            <p className="text-sm text-muted-foreground md:text-base">{top3[0].elo}</p>
+            <div className="mt-2 grid h-20 w-20 place-items-center rounded-t-xl border border-border bg-primary text-2xl font-semibold text-primary-foreground md:mt-3 md:h-32 md:w-28 md:text-4xl">1</div>
           </div>
         )}
         {top3[2] && (
@@ -188,7 +188,7 @@ function LeaderboardTab({ board }: { board: { name: string; elo: number; me: boo
           <div key={p.name} className="flex items-center gap-3 px-3 py-3 md:gap-4 md:px-5 md:py-4">
             <span className="w-6 text-sm text-muted-foreground md:w-8 md:text-base">{i + 4}</span>
             <Avatar name={p.name} size={36} />
-            <span className={`flex-1 text-sm font-medium md:text-base ${p.me ? "text-primary" : ""}`}>{p.name}</span>
+            <span className={`flex-1 text-sm font-medium md:text-base ${p.me ? "font-semibold underline decoration-primary decoration-2 underline-offset-4" : ""}`}>{p.name}</span>
             <span className="text-sm font-semibold md:text-base">{p.elo}</span>
           </div>
         ))}

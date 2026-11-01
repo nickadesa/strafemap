@@ -176,7 +176,7 @@ function DuelRoom() {
           target={revealed ? loc : null} others={opPin} locked={!!mine} onPick={setPin} resetKey={`${duel.id}-${round}`} />
         <div className="pointer-events-none absolute inset-x-3 top-3 z-[500] flex justify-center">
           <div className="plate pointer-events-auto max-w-md px-5 py-4 text-center">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Pin the location</p>
+            <p className="text-sm text-muted-foreground">Pin the location</p>
             <p className="font-display mt-1 text-3xl md:text-4xl">{loc.name}</p>
             {loc.category !== "country" && <p className="mt-1 text-sm text-muted-foreground">{loc.country}</p>}
             {!revealed && (

@@ -84,7 +84,7 @@ function PartyPage() {
           ) : (
             <div className="plate mt-8 p-6">
               <div className="flex items-center justify-between">
-                <p className="font-display text-3xl tracking-widest">{room}</p>
+                <p className="font-display text-3xl tracking-[0.2em]">{room}</p>
                 <button onClick={() => { setRoom(null); setPlayers([]); }} className="text-sm text-muted-foreground">Leave</button>
               </div>
               <ul className="mt-6 space-y-3">

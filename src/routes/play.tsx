@@ -44,7 +44,7 @@ function Play() {
           <div className="grid gap-4 sm:grid-cols-2">
             {(Object.keys(MODES) as Mode[]).map((m) => (
               <button key={m} onClick={() => setMode(m)} className={`p-6 text-left transition-colors rounded-3xl border-2 ${mode === m ? "border-primary bg-primary/10" : "border-transparent plate hover:bg-muted/50"}`}>
-                <span className="text-xs font-semibold uppercase tracking-wider opacity-70">{MODES[m].tag}</span>
+                <span className="text-xs opacity-70">{MODES[m].tag}</span>
                 <h2 className="font-display mt-2 text-4xl">{MODES[m].name}</h2>
                 <p className="mt-2 text-sm opacity-80">{MODES[m].blurb}</p>
               </button>

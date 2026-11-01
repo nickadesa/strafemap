@@ -214,7 +214,7 @@ function GamePage() {
           <h1 className="font-display mt-2 text-[clamp(4rem,16vw,8rem)]">{total.toLocaleString()}</h1>
           <p className="mt-2 font-semibold text-muted-foreground">out of {(MAX_POINTS * ROUNDS).toLocaleString()}</p>
           {ranked && eloChange !== null && (
-            <p className={`mt-2 text-lg font-semibold ${eloChange >= 0 ? "text-primary" : "text-destructive"}`}>
+            <p className={`mt-2 text-lg font-semibold ${eloChange >= 0 ? "text-positive" : "text-destructive"}`}>
               ELO {eloChange >= 0 ? "+" : ""}{eloChange}
             </p>
           )}
@@ -293,7 +293,7 @@ function GamePage() {
               </div>
             ) : (
               <>
-                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{prompt.verb}{blind && " · labels hidden"}</p>
+                <p className="text-sm text-muted-foreground">{prompt.verb}{blind && " · labels hidden"}</p>
                 <p className="font-display mt-1 text-3xl md:text-4xl">{loc.name}</p>
                 {loc.category !== "country" && <p className="mt-1 text-sm text-muted-foreground">{loc.country}{showHint && loc.hint ? ` · ${loc.hint}` : ""}</p>}
                 {phase === "guess" && (
