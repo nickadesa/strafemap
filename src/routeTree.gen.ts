@@ -12,14 +12,15 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as LeaderboardRouteImport } from './routes/leaderboard'
+import { Route as PartyRouteImport } from './routes/party'
 import { Route as PlayRouteImport } from './routes/play'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as RankRouteImport } from './routes/rank'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as StatsRouteImport } from './routes/stats'
 import { Route as DuelIndexRouteImport } from './routes/duel.index'
 import { Route as DuelCodeRouteImport } from './routes/duel.$code'
 import { Route as GameModeRouteImport } from './routes/game.$mode'
-import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as PartyRouteImport } from './routes/party'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -36,9 +37,24 @@ const LeaderboardRoute = LeaderboardRouteImport.update({
   path: '/leaderboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PartyRoute = PartyRouteImport.update({
+  id: '/party',
+  path: '/party',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlayRoute = PlayRouteImport.update({
   id: '/play',
   path: '/play',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RankRoute = RankRouteImport.update({
+  id: '/rank',
+  path: '/rank',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsRoute = SettingsRouteImport.update({
@@ -66,56 +82,49 @@ const GameModeRoute = GameModeRouteImport.update({
   path: '/game/$mode',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PartyRoute = PartyRouteImport.update({
-  id: '/party',
-  path: '/party',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/leaderboard': typeof LeaderboardRoute
+  '/party': typeof PartyRoute
   '/play': typeof PlayRoute
+  '/profile': typeof ProfileRoute
+  '/rank': typeof RankRoute
   '/settings': typeof SettingsRoute
   '/stats': typeof StatsRoute
   '/duel/$code': typeof DuelCodeRoute
   '/game/$mode': typeof GameModeRoute
   '/duel/': typeof DuelIndexRoute
-  '/profile': typeof ProfileRoute
-  '/party': typeof PartyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/leaderboard': typeof LeaderboardRoute
+  '/party': typeof PartyRoute
   '/play': typeof PlayRoute
+  '/profile': typeof ProfileRoute
+  '/rank': typeof RankRoute
   '/settings': typeof SettingsRoute
   '/stats': typeof StatsRoute
   '/duel/$code': typeof DuelCodeRoute
   '/game/$mode': typeof GameModeRoute
   '/duel': typeof DuelIndexRoute
-  '/profile': typeof ProfileRoute
-  '/party': typeof PartyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/leaderboard': typeof LeaderboardRoute
+  '/party': typeof PartyRoute
   '/play': typeof PlayRoute
+  '/profile': typeof ProfileRoute
+  '/rank': typeof RankRoute
   '/settings': typeof SettingsRoute
   '/stats': typeof StatsRoute
   '/duel/$code': typeof DuelCodeRoute
   '/game/$mode': typeof GameModeRoute
   '/duel/': typeof DuelIndexRoute
-  '/profile': typeof ProfileRoute
-  '/party': typeof PartyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -123,7 +132,10 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/leaderboard'
+    | '/party'
     | '/play'
+    | '/profile'
+    | '/rank'
     | '/settings'
     | '/stats'
     | '/duel/$code'
@@ -134,7 +146,10 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/leaderboard'
+    | '/party'
     | '/play'
+    | '/profile'
+    | '/rank'
     | '/settings'
     | '/stats'
     | '/duel/$code'
@@ -145,7 +160,10 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/leaderboard'
+    | '/party'
     | '/play'
+    | '/profile'
+    | '/rank'
     | '/settings'
     | '/stats'
     | '/duel/$code'
@@ -157,7 +175,10 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   LeaderboardRoute: typeof LeaderboardRoute
+  PartyRoute: typeof PartyRoute
   PlayRoute: typeof PlayRoute
+  ProfileRoute: typeof ProfileRoute
+  RankRoute: typeof RankRoute
   SettingsRoute: typeof SettingsRoute
   StatsRoute: typeof StatsRoute
   DuelCodeRoute: typeof DuelCodeRoute
@@ -188,11 +209,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LeaderboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/party': {
+      id: '/party'
+      path: '/party'
+      fullPath: '/party'
+      preLoaderRoute: typeof PartyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/play': {
       id: '/play'
       path: '/play'
       fullPath: '/play'
       preLoaderRoute: typeof PlayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rank': {
+      id: '/rank'
+      path: '/rank'
+      fullPath: '/rank'
+      preLoaderRoute: typeof RankRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings': {
@@ -230,13 +272,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GameModeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -244,14 +279,15 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   LeaderboardRoute: LeaderboardRoute,
+  PartyRoute: PartyRoute,
   PlayRoute: PlayRoute,
+  ProfileRoute: ProfileRoute,
+  RankRoute: RankRoute,
   SettingsRoute: SettingsRoute,
   StatsRoute: StatsRoute,
   DuelCodeRoute: DuelCodeRoute,
   GameModeRoute: GameModeRoute,
   DuelIndexRoute: DuelIndexRoute,
-  ProfileRoute: ProfileRoute,
-  PartyRoute: PartyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
