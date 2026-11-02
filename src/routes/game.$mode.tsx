@@ -2,15 +2,13 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GameMap } from "@/components/GameMap";
 import { Logo } from "@/components/SiteHeader";
-import { GameChat } from "@/components/GameChat";
-import { GameSettingsButton } from "@/components/GameSettingsButton";
 import {
   BOTS, MAX_POINTS, MODES, ROUNDS, botGuess, dailyRounds, distanceKm, formatDistance, pickRounds, poolFor, saveRecent,
   promptFor, scoreFor, shrinkCenter, shrinkRadius, timeMultiplier, TIME_OPTIONS, type TimeLimit, type Difficulty, type LatLng, type Mode, type Pool,
 } from "@/lib/game/engine";
 import type { Location } from "@/lib/game/locations";
 import { saveRecord, useSettings } from "@/lib/game/storage";
-import { blip } from "@/lib/game/sound";
+import { blip, buzz } from "@/lib/game/sound";
 import { renderCard, shareCard, type CardData } from "@/lib/game/shareCard";
 import { applyMatchResult } from "@/lib/rank";
 
@@ -100,6 +98,7 @@ function GamePage() {
     }) : undefined;
     setResults((r) => [...r, { loc, guess, km, points, mult, bots }]);
     setPhase("reveal");
+    buzz(10);
     blip(settings.sound, points > 3500 ? 880 : points > 1000 ? 660 : 330, 140);
   }, [phase, loc, guess, mode, elapsed, settings.sound]);
 
@@ -135,7 +134,7 @@ function GamePage() {
     if (mode === "shrink" && center && distanceKm(p, center) > shrinkRadius(elapsed, limit)) {
       setFlash("Outside the zone. Pin inside the circle."); return;
     }
-    setGuess(p); blip(settings.sound, 520, 50);
+    setGuess(p); blip(settings.sound, 520, 50); buzz(10);
   }, [phase, mode, center, elapsed, limit, settings.sound]);
 
   const next = () => {
@@ -344,8 +343,6 @@ function GamePage() {
           )}
         </div>
 
-        <GameChat />
-        <GameSettingsButton />
       </div>
     </div>
   );
