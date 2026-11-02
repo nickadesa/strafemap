@@ -1,4 +1,5 @@
 # Roadmap
+- [x] In-game HUD clean pass: no chat/quick-settings over the map, coords readout under Confirm guess, 10ms haptic tap on pin + confirm
 - [x] Instagram story share card (9:16) on game results
 - [x] Map: smooth fractional zoom + inertia, Voyager default, pin drop bounce, tiny attribution
 - [x] Map cursor: plus crosshair

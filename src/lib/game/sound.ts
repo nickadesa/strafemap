@@ -1,3 +1,8 @@
+export function buzz(ms = 10) {
+  if (typeof navigator === "undefined" || typeof navigator.vibrate !== "function") return;
+  try { navigator.vibrate(ms); } catch { /* haptics unavailable */ }
+}
+
 let ctx: AudioContext | null = null;
 export function blip(enabled: boolean, freq = 660, ms = 90) {
   if (!enabled || typeof window === "undefined") return;
