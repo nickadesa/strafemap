@@ -1,16 +1,17 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { buzz } from "@/lib/game/sound";
 
-const nav = globalThis.navigator as Navigator & { vibrate?: (pattern: number | number[]) => boolean };
+type Vibrate = (pattern: number | number[]) => boolean;
+const nav = globalThis.navigator as unknown as { vibrate?: Vibrate };
 
 afterEach(() => {
-  delete nav.vibrate;
+  nav.vibrate = undefined;
   vi.restoreAllMocks();
 });
 
 describe("buzz (haptic feedback)", () => {
   it("vibrates for the requested 10 ms when the device supports it", () => {
-    const vibrate = vi.fn(() => true);
+    const vibrate = vi.fn<Vibrate>(() => true);
     nav.vibrate = vibrate;
 
     buzz(10);
@@ -20,7 +21,7 @@ describe("buzz (haptic feedback)", () => {
   });
 
   it("defaults to a 10 ms tap", () => {
-    const vibrate = vi.fn(() => true);
+    const vibrate = vi.fn<Vibrate>(() => true);
     nav.vibrate = vibrate;
 
     buzz();
@@ -29,7 +30,7 @@ describe("buzz (haptic feedback)", () => {
   });
 
   it("stays silent on devices without vibrate support", () => {
-    delete nav.vibrate;
+    nav.vibrate = undefined;
 
     expect(() => buzz(10)).not.toThrow();
   });
