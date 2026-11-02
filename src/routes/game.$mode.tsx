@@ -257,9 +257,9 @@ function GamePage() {
       <header className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
         <Logo />
         <div className="flex items-center gap-2 text-sm font-semibold">
-          <span className="rounded-full bg-card px-3 py-1.5">{MODES[mode].name}{daily && " · Daily"}{ranked && " · Ranked"}</span>
-          <span className="rounded-full bg-card px-3 py-1.5">{roundLabel}</span>
-          <span className="rounded-full bg-foreground px-3 py-1.5 text-primary">{total.toLocaleString()} pts</span>
+          <span className="rounded-full border border-border bg-card px-3 py-1.5">{MODES[mode].name}{daily && " · Daily"}{ranked && " · Ranked"}</span>
+          <span className="readout rounded-full border border-border bg-card px-3 py-1.5">{roundLabel}</span>
+          <span className="readout rounded-full bg-foreground px-3 py-1.5 text-primary">{total.toLocaleString()} pts</span>
           {practice && <button onClick={() => setPhase("done")} className="rounded-full bg-card px-3 py-1.5 hover:bg-primary-pale">End</button>}
         </div>
       </header>
@@ -286,7 +286,7 @@ function GamePage() {
               <div className="flex items-center gap-3">
                 <p className="font-display text-xl">{loc.name}</p>
                 {phase === "guess" && (
-                  <span className="rounded-full bg-foreground/10 px-2 py-0.5 text-xs font-semibold tabular-nums">
+                  <span className="readout rounded-full bg-foreground/10 px-2 py-0.5 text-xs font-semibold">
                     {Math.ceil(limit - elapsed)}s
                   </span>
                 )}
@@ -321,7 +321,7 @@ function GamePage() {
               <div className="flex items-end justify-between gap-4">
                 <div>
                   <p className="text-xs font-semibold text-muted-foreground">{last.loc.name}, {last.loc.country}</p>
-                  <p className="font-display mt-1 text-5xl">+{last.points.toLocaleString()}</p>
+                  <p className="font-display readout mt-1 text-5xl">+{last.points.toLocaleString()}</p>
                 </div>
                 <div className="text-right text-sm font-semibold">
                   <p>{last.km === null ? "No guess" : formatDistance(last.km, settings.unit) + " off"}</p>

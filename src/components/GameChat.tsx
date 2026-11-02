@@ -12,7 +12,7 @@ export function GameChat() {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const [messages, setMessages] = useState<Message[]>([
-    { id: "1", name: "System", text: "Welcome to the match!" },
+    { id: "1", name: "System", text: "Match started" },
   ]);
   const bottom = useRef<HTMLDivElement>(null);
 
@@ -44,7 +44,7 @@ export function GameChat() {
   return (
     <div className="fixed bottom-4 left-4 z-[9999] flex flex-col items-start">
       {open && (
-        <div className="mb-2 w-72 overflow-hidden rounded-xl border border-border/40 bg-card/95 shadow-lg backdrop-blur-md">
+        <div className="mb-2 w-72 overflow-hidden rounded-xl border border-border/40 bg-card/95 backdrop-blur-md">
           <div className="flex items-center justify-between border-b border-border/30 px-3 py-2">
             <span className="text-xs font-semibold text-muted-foreground">Chat</span>
             <button onClick={() => setOpen(false)} className="text-muted-foreground hover:text-foreground">
@@ -79,7 +79,7 @@ export function GameChat() {
 
       <button
         onClick={toggle}
-        className="grid h-11 w-11 place-items-center rounded-full border border-border/40 bg-card/95 shadow-md backdrop-blur-md hover:bg-card"
+        className="grid h-11 w-11 place-items-center rounded-full border border-border/40 bg-card/95 backdrop-blur-md hover:bg-card"
         title="Chat"
       >
         <MessageCircle className="h-5 w-5" />

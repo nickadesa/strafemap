@@ -115,7 +115,7 @@ export function GameMap({ blind, guess, target, others = [], circle, locked, onP
     if (!circle) { circleL.current?.remove(); circleL.current = null; return; }
     if (!circleL.current) {
       circleL.current = Lf.circle([circle.center.lat, circle.center.lng], {
-        radius: circle.radiusKm * 1000, color: "#b9ff24", weight: 2, dashArray: "6 6", fillColor: "#b9ff24", fillOpacity: 0.12, interactive: false,
+        radius: circle.radiusKm * 1000, color: "#b9ff24", weight: 1, dashArray: "4 6", fillColor: "#b9ff24", fillOpacity: 0.06, interactive: false,
       }).addTo(m);
     } else {
       circleL.current.setLatLng([circle.center.lat, circle.center.lng]);
@@ -131,13 +131,13 @@ export function GameMap({ blind, guess, target, others = [], circle, locked, onP
     if (!target) return;
     const pts: LT.LatLngExpression[] = [[target.lat, target.lng]];
     for (const o of others) {
-      Lf.polyline([[o.lat, o.lng], [target.lat, target.lng]], { color: "#868685", weight: 2, dashArray: "4 6" }).addTo(g);
+      Lf.polyline([[o.lat, o.lng], [target.lat, target.lng]], { color: "#868685", weight: 1, dashArray: "2 6" }).addTo(g);
       Lf.marker([o.lat, o.lng], { icon: Lf.divIcon({ className: "pin pin-bot", iconSize: [14, 14] }), interactive: false })
         .bindTooltip(o.label, { permanent: true, direction: "top", className: "bot-label", offset: [0, -8] }).addTo(g);
       pts.push([o.lat, o.lng]);
     }
     if (guess) {
-      Lf.polyline([[guess.lat, guess.lng], [target.lat, target.lng]], { color: mapStyle === "light" ? "#111213" : "#b9ff24", weight: 3, dashArray: "8 8" }).addTo(g);
+      Lf.polyline([[guess.lat, guess.lng], [target.lat, target.lng]], { color: mapStyle === "light" ? "#111213" : "#b9ff24", weight: 1.25, dashArray: "4 4" }).addTo(g);
       pts.push([guess.lat, guess.lng]);
     }
     Lf.marker([target.lat, target.lng], { icon: Lf.divIcon({ className: "pin pin-target", iconSize: [24, 24] }), zIndexOffset: 1000 }).addTo(g);

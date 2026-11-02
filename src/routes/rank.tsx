@@ -53,26 +53,26 @@ function RankPage() {
       <Sidebar />
       <main className="md:ml-56 flex min-h-screen items-start justify-center px-4 py-6 md:px-5 md:py-10">
         <div className="w-full max-w-3xl">
-          <div className="mb-6 flex justify-center gap-2 md:mb-10 md:gap-3">
+          <div className="mb-8 flex justify-center"><div className="seg">
             <button
               onClick={() => setTab("play")}
-              className={`rounded-full border px-4 py-2 text-sm font-semibold transition-colors md:px-6 md:py-2.5 md:text-base ${tab === "play" ? "border-primary bg-primary text-primary-foreground" : "border-border/50 bg-card hover:bg-muted"}`}
+              data-on={tab === "play"} className="seg-item"
             >
               {t(lang, "play")}
             </button>
             <button
               onClick={() => setTab("leaderboard")}
-              className={`rounded-full border px-4 py-2 text-sm font-semibold transition-colors md:px-6 md:py-2.5 md:text-base ${tab === "leaderboard" ? "border-primary bg-primary text-primary-foreground" : "border-border/50 bg-card hover:bg-muted"}`}
+              data-on={tab === "leaderboard"} className="seg-item"
             >
               {t(lang, "leaderboard")}
             </button>
             <button
               onClick={() => setTab("guide")}
-              className={`rounded-full border px-4 py-2 text-sm font-semibold transition-colors md:px-6 md:py-2.5 md:text-base ${tab === "guide" ? "border-primary bg-primary text-primary-foreground" : "border-border/50 bg-card hover:bg-muted"}`}
+              data-on={tab === "guide"} className="seg-item"
             >
               Guide
             </button>
-          </div>
+          </div></div>
 
           {tab === "play" && <PlayTab rank={rank} tier={tier} />}
           {tab === "leaderboard" && <LeaderboardTab board={board} />}
@@ -93,7 +93,7 @@ function PlayTab({ rank, tier }: { rank: RankedProfile; tier: ReturnType<typeof 
         <img src={tier.icon} alt={tier.name} className="mb-4 h-24 w-24 md:mb-6 md:h-36 md:w-36" />
         <p className="text-sm text-muted-foreground md:text-base">Current Rank</p>
         <h2 className="font-display text-4xl md:text-6xl" style={{ color: tier.color }}>{tier.name}</h2>
-        <p className="mt-1 text-xl font-semibold md:mt-2 md:text-3xl">{rank.elo} ELO</p>
+        <p className="mt-1 text-xl font-semibold md:mt-2 md:text-3xl"><span className="readout">{rank.elo}</span> ELO</p>
 
         {nextTier && (
           <div className="mt-4 w-full max-w-sm md:mt-6">

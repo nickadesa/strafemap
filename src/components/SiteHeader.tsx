@@ -79,7 +79,7 @@ export function SiteHeader() {
                       aria-pressed={theme === t}
                       className={`rounded-full py-1.5 text-xs font-semibold outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring ${theme === t ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-card hover:text-foreground"}`}
                     >
-                      {t === "light" ? "☀ Light" : "☾ Dark"}
+                      {t === "light" ? "Light" : "Dark"}
                     </button>
                   ))}
                 </div>
