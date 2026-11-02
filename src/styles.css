@@ -237,3 +237,10 @@ button:not(.btn), [role="button"] { transition: transform 380ms var(--ease-sprin
   scrollbar-width: none;
   &::-webkit-scrollbar { display: none; }
 }
+
+.clue-pill { transition: padding 380ms var(--ease-spring, cubic-bezier(.2,.9,.3,1.2)), border-radius 380ms ease, transform 160ms ease; }
+.clue-pill:active { transform: scale(0.97); }
+.clue-flag { transition: width 380ms var(--ease-spring, ease), height 380ms var(--ease-spring, ease); }
+.clue-reveal { display: grid; grid-template-rows: 1fr; opacity: 1; transition: grid-template-rows 340ms ease, opacity 260ms ease 80ms; }
+.clue-reveal.clue-hide { grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 300ms ease, opacity 120ms ease; }
+@media (prefers-reduced-motion: reduce) { .clue-pill, .clue-flag, .clue-reveal { transition: none; } }

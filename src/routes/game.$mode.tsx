@@ -8,6 +8,7 @@ import {
 } from "@/lib/game/engine";
 import type { Location } from "@/lib/game/locations";
 import { saveRecord, useSettings } from "@/lib/game/storage";
+import { Flag } from "@/components/Flag";
 import { blip, buzz } from "@/lib/game/sound";
 import { renderCard, shareCard, type CardData } from "@/lib/game/shareCard";
 import { applyMatchResult } from "@/lib/rank";
@@ -276,36 +277,43 @@ function GamePage() {
         />
 
         <div className="pointer-events-none absolute inset-x-3 top-3 z-[500] flex justify-center">
-          <div
-            className={`plate pointer-events-auto max-w-md cursor-pointer select-none text-center transition-all duration-300 ${promptCollapsed ? "px-4 py-2" : "px-5 py-4"}`}
-            onClick={() => setPromptCollapsed((c) => !c)}
-            title={promptCollapsed ? "Click to expand" : "Click to collapse"}
+          <button
+            type="button"
+            aria-expanded={!promptCollapsed}
+            onClick={() => { setPromptCollapsed((c) => !c); buzz(8); }}
+            className={`clue-pill glass-plate pointer-events-auto max-w-[min(28rem,100%)] select-none text-left ${promptCollapsed ? "rounded-full px-2 py-1.5 pr-3" : "rounded-[22px] px-4 py-3.5"}`}
           >
-            {promptCollapsed ? (
-              <div className="flex items-center gap-3">
-                <p className="font-display text-xl">{loc.name}</p>
-                {phase === "guess" && (
-                  <span className="readout rounded-full bg-foreground/10 px-2 py-0.5 text-xs font-semibold">
-                    {Math.ceil(limit - elapsed)}s
-                  </span>
-                )}
+            <div className="flex items-center gap-3">
+              <Flag country={loc.country} size={promptCollapsed ? 26 : 40} className="clue-flag" />
+              <div className="min-w-0 flex-1">
+                <div className={`clue-reveal ${promptCollapsed ? "clue-hide" : ""}`}>
+                  <div className="overflow-hidden">
+                    <p className="text-xs font-medium text-muted-foreground">{prompt.verb}{blind && " · labels hidden"}</p>
+                  </div>
+                </div>
+                <p className={`font-display truncate leading-tight transition-[font-size] duration-300 ${promptCollapsed ? "text-base" : "text-2xl md:text-3xl"}`}>{loc.name}</p>
               </div>
-            ) : (
-              <>
-                <p className="text-sm text-muted-foreground">{prompt.verb}{blind && " · labels hidden"}</p>
-                <p className="font-display mt-1 text-3xl md:text-4xl">{loc.name}</p>
-                {loc.category !== "country" && <p className="mt-1 text-sm text-muted-foreground">{loc.country}{showHint && loc.hint ? ` · ${loc.hint}` : ""}</p>}
+              {phase === "guess" && (
+                <span className="readout shrink-0 rounded-full border border-border bg-muted px-2 py-0.5 text-xs font-semibold tabular-nums">
+                  {Math.ceil(limit - elapsed)}s
+                </span>
+              )}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" className={`shrink-0 opacity-50 transition-transform duration-300 ${promptCollapsed ? "" : "rotate-180"}`}><path d="M6 9l6 6 6-6" /></svg>
+            </div>
+            <div className={`clue-reveal ${promptCollapsed ? "clue-hide" : ""}`}>
+              <div className="overflow-hidden">
+                {loc.category !== "country" && <p className="mt-2 text-sm text-muted-foreground">{loc.country}{showHint && loc.hint ? ` · ${loc.hint}` : ""}</p>}
                 {phase === "guess" && (
                   <div className="mt-3">
-                    <div className="h-2 overflow-hidden rounded-full bg-muted">
+                    <div className="h-1 overflow-hidden rounded-full bg-muted">
                       <div className="h-full bg-foreground transition-[width] duration-100" style={{ width: `${100 - (elapsed / limit) * 100}%` }} />
                     </div>
-                    <p className="mt-1 text-xs font-semibold">{Math.ceil(limit - elapsed)}s{mode === "shrink" && <> · zone {Math.round(radius).toLocaleString()} km · bonus ×{timeMultiplier(elapsed, limit).toFixed(2)}</>}</p>
+                    {mode === "shrink" && <p className="readout mt-1.5 text-xs text-muted-foreground">zone {Math.round(radius).toLocaleString()} km · bonus ×{timeMultiplier(elapsed, limit).toFixed(2)}</p>}
                   </div>
                 )}
-              </>
-            )}
-          </div>
+              </div>
+            </div>
+          </button>
         </div>
 
         {flash && <div className="absolute left-1/2 top-40 z-[600] -translate-x-1/2 rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-primary">{flash}</div>}
