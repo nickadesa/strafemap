@@ -212,12 +212,15 @@ button:not(.btn), [role="button"] { transition: transform 380ms var(--ease-sprin
 
 /* Unslop: sunken segmented control + quiet chip + mono readout */
 @utility seg {
-  display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px;
+  display: inline-flex; flex-wrap: nowrap; gap: 4px; padding: 4px; max-width: 100%;
+  overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar { display: none; }
   border-radius: 9999px; background: var(--color-muted);
   border: 1px solid var(--color-border);
 }
 @utility seg-item {
   border-radius: 9999px; padding: 8px 16px; font-size: 0.875rem; font-weight: 500;
+  flex-shrink: 0; white-space: nowrap; scroll-snap-align: start; min-height: 40px;
   color: var(--color-muted-foreground);
   &:hover { color: var(--color-foreground); }
   &[data-on="true"] {
@@ -228,4 +231,9 @@ button:not(.btn), [role="button"] { transition: transform 380ms var(--ease-sprin
 @utility readout {
   font-family: ui-monospace, "JetBrains Mono", SFMono-Regular, Menlo, monospace;
   font-variant-numeric: tabular-nums; letter-spacing: -0.01em;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
 }
