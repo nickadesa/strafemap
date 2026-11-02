@@ -187,7 +187,7 @@ button, a, [role="button"] { -webkit-tap-highlight-color: transparent; touch-act
 button:not(.btn):active, [role="button"]:active { transform: scale(0.97); }
 button:not(.btn), [role="button"] { transition: transform 380ms var(--ease-spring), background-color 150ms ease, color 150ms ease; }
 .glass { background: color-mix(in oklab, var(--color-background) 72%, transparent); backdrop-filter: blur(20px) saturate(160%); }
-.glass-plate { background: color-mix(in oklab, var(--color-card) 82%, transparent); backdrop-filter: blur(24px) saturate(160%); box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 12px 40px -12px rgb(0 0 0 / 0.25); }
+.glass-plate { background: color-mix(in oklab, var(--color-card) 82%, transparent); backdrop-filter: blur(24px) saturate(160%); border: 1px solid var(--color-border); }
 @keyframes pop-in { from { opacity: 0; transform: translateY(-6px) scale(0.96); } to { opacity: 1; transform: none; } }
 .pop-in { animation: pop-in 320ms var(--ease-spring) both; transform-origin: top right; }
 @keyframes rise-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
@@ -208,4 +208,24 @@ button:not(.btn), [role="button"] { transition: transform 380ms var(--ease-sprin
   .leaflet-control-attribution { max-width: 22px; height: 18px; overflow: hidden; white-space: nowrap; border-radius: 9999px !important; margin: 0 6px 6px 0 !important; cursor: pointer; }
   .leaflet-control-attribution::before { content: "ℹ"; display: inline-block; width: 12px; }
   .leaflet-control-attribution:hover, .leaflet-control-attribution:focus-within { max-width: 90vw; }
+}
+
+/* Unslop: sunken segmented control + quiet chip + mono readout */
+@utility seg {
+  display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px;
+  border-radius: 9999px; background: var(--color-muted);
+  border: 1px solid var(--color-border);
+}
+@utility seg-item {
+  border-radius: 9999px; padding: 8px 16px; font-size: 0.875rem; font-weight: 500;
+  color: var(--color-muted-foreground);
+  &:hover { color: var(--color-foreground); }
+  &[data-on="true"] {
+    background: var(--color-card); color: var(--color-foreground);
+    box-shadow: inset 0 0 0 1px var(--color-border), 0 1px 0 rgb(255 255 255 / 0.04);
+  }
+}
+@utility readout {
+  font-family: ui-monospace, "JetBrains Mono", SFMono-Regular, Menlo, monospace;
+  font-variant-numeric: tabular-nums; letter-spacing: -0.01em;
 }

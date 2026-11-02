@@ -33,7 +33,7 @@ export function GameSettingsButton() {
   return (
     <div className="fixed bottom-4 left-16 z-[9999] flex flex-col items-start">
       {open && (
-        <div className="mb-2 w-64 overflow-hidden rounded-xl border border-border/40 bg-card/95 p-3 shadow-lg backdrop-blur-md">
+        <div className="mb-2 w-64 overflow-hidden rounded-xl border border-border/40 bg-card/95 p-3 backdrop-blur-md">
           <div className="mb-3 flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground">Quick settings</span>
             <button onClick={() => setOpen(false)} className="text-muted-foreground hover:text-foreground">
@@ -108,7 +108,7 @@ export function GameSettingsButton() {
 
       <button
         onClick={toggle}
-        className="grid h-11 w-11 place-items-center rounded-full border border-border/40 bg-card/95 shadow-md backdrop-blur-md hover:bg-card"
+        className="grid h-11 w-11 place-items-center rounded-full border border-border/40 bg-card/95 backdrop-blur-md hover:bg-card"
         title="Settings"
       >
         <Settings className="h-5 w-5" />
