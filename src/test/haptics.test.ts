@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { buzz } from "@/lib/game/sound";
 
 type Vibrate = (pattern: number | number[]) => boolean;
-const nav = globalThis.navigator as unknown as { vibrate?: Vibrate };
+const nav = globalThis.navigator as unknown as { vibrate?: Vibrate | undefined };
 
 afterEach(() => {
   nav.vibrate = undefined;
