@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Sidebar } from "@/components/Sidebar";
 import { MODES, TIME_OPTIONS, type TimeLimit, type Difficulty, type Mode, type Pool } from "@/lib/game/engine";
 
@@ -41,15 +41,7 @@ function Play() {
       <main className="md:ml-56 px-5 pb-8 pt-20 md:pt-8">
         <div className="mx-auto max-w-6xl">
           <h1 className="font-display mb-6 text-5xl">Pick your game.</h1>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {(Object.keys(MODES) as Mode[]).map((m) => (
-              <button key={m} onClick={() => setMode(m)} className={`p-6 text-left transition-colors plate ${mode === m ? "ring-1 ring-foreground" : "hover:bg-muted/50"}`}>
-                <span className="text-xs opacity-70">{MODES[m].tag}</span>
-                <h2 className="font-display mt-2 text-4xl">{MODES[m].name}</h2>
-                <p className="mt-2 text-sm opacity-80">{MODES[m].blurb}</p>
-              </button>
-            ))}
-          </div>
+          <ModeCarousel mode={mode} setMode={setMode} />
 
           <div className="plate mt-4 space-y-5 p-6">
             <div>
@@ -74,6 +66,50 @@ function Play() {
           </div>
         </div>
       </main>
+    </div>
+  );
+}
+
+function Arrow({ dir, onClick }: { dir: "left" | "right"; onClick: () => void }) {
+  return (
+    <button onClick={onClick} aria-label={dir === "left" ? "Previous modes" : "Next modes"}
+      className={`absolute top-1/2 z-10 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-border bg-card text-foreground shadow-sm transition hover:bg-muted ${dir === "left" ? "-left-3" : "-right-3"}`}>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <path d={dir === "left" ? "M15 18l-6-6 6-6" : "M9 18l6-6-6-6"} />
+      </svg>
+    </button>
+  );
+}
+
+function ModeCarousel({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => void }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [canL, setL] = useState(false);
+  const [canR, setR] = useState(false);
+  const update = () => {
+    const el = ref.current; if (!el) return;
+    setL(el.scrollLeft > 4);
+    setR(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  };
+  useEffect(() => {
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+  const go = (d: number) => { const el = ref.current; if (el) el.scrollBy({ left: d * el.clientWidth * 0.85, behavior: "smooth" }); };
+  return (
+    <div className="relative">
+      {canL && <Arrow dir="left" onClick={() => go(-1)} />}
+      {canR && <Arrow dir="right" onClick={() => go(1)} />}
+      <div ref={ref} onScroll={update} className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-5 py-1 md:mx-0 md:px-0">
+        {modeIds.map((m) => (
+          <button key={m} onClick={() => setMode(m)}
+            className={`plate w-[82%] shrink-0 snap-start p-6 text-left transition-colors sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.667rem)] ${mode === m ? "ring-1 ring-foreground" : "hover:bg-muted/50"}`}>
+            <span className="text-xs opacity-70">{MODES[m].tag}</span>
+            <h2 className="font-display mt-2 text-4xl">{MODES[m].name}</h2>
+            <p className="mt-2 text-sm opacity-80">{MODES[m].blurb}</p>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
