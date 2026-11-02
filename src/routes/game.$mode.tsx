@@ -312,8 +312,13 @@ function GamePage() {
 
         <div className="absolute inset-x-3 bottom-6 z-[500] flex justify-center">
           {phase === "guess" ? (
-            <button onClick={submit} disabled={!guess} className="btn btn-primary px-10 py-4 text-lg">
-              {guess ? <>Confirm guess <kbd className="hidden rounded-full bg-foreground/10 px-2 py-0.5 text-xs md:inline">Space</kbd></> : "Click the map to pin"}
+            <button onClick={submit} disabled={!guess} className="btn btn-primary flex-col gap-1 px-10 py-3.5 text-lg">
+              {guess ? (
+                <>
+                  <span className="flex items-center gap-2">Confirm guess <kbd className="hidden rounded-full bg-foreground/10 px-2 py-0.5 text-xs md:inline">Space</kbd></span>
+                  <span className="readout text-xs font-medium opacity-60">{guess.lat.toFixed(4)}, {guess.lng.toFixed(4)}</span>
+                </>
+              ) : "Click the map to pin"}
             </button>
           ) : last && (
             <div className="plate w-full max-w-lg p-5">
