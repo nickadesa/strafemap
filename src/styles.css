@@ -114,6 +114,11 @@
   font-variant-numeric: tabular-nums;
 }
 
+@utility font-clue {
+  font-family: var(--font-clue);
+  letter-spacing: -0.015em;
+}
+
 @utility btn {
   display: inline-flex;
   align-items: center;
