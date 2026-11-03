@@ -281,33 +281,35 @@ function GamePage() {
             type="button"
             aria-expanded={!promptCollapsed}
             onClick={() => { setPromptCollapsed((c) => !c); buzz(8); }}
-            className={`clue-pill glass-plate font-clue pointer-events-auto max-w-[min(30rem,100%)] select-none text-left ${promptCollapsed ? "rounded-full px-3 py-2" : "rounded-[20px] px-4 py-3.5"}`}
+            className={`clue-pill glass-plate font-clue pointer-events-auto max-w-[min(30rem,100%)] select-none text-left ${promptCollapsed ? "rounded-full px-3 py-2" : "rounded-[20px] px-4 pt-3 pb-4"}`}
           >
-            <div className={`flex items-center ${promptCollapsed ? "gap-2.5" : "gap-3.5"}`}>
-              <Flag country={loc.country} size={promptCollapsed ? 26 : 44} className="clue-flag" />
+            <div className={`flex ${promptCollapsed ? "items-center gap-2" : "items-end gap-3.5"}`}>
+              <Flag country={loc.country} size={promptCollapsed ? 26 : 44} className={`clue-flag ${promptCollapsed ? "" : "mb-1.5"}`} />
               <div className="min-w-0 flex-1">
                 <div className={`clue-reveal ${promptCollapsed ? "clue-hide" : ""}`}>
                   <div className="overflow-hidden">
-                    <p className="mb-1.5 text-[11px] font-medium leading-none text-muted-foreground">{prompt.verb}{blind && " · labels hidden"}</p>
+                    <p className="mb-2 text-[11px] font-medium leading-none text-muted-foreground">{prompt.verb}{blind && " · labels hidden"}</p>
                   </div>
                 </div>
                 <p className={`truncate leading-[1.15] transition-[font-size] duration-300 ${promptCollapsed ? "text-[15px] font-semibold" : "text-[26px] font-semibold md:text-[30px]"}`}>{loc.name}</p>
               </div>
-              {phase === "guess" && (
-                <span className="readout shrink-0 rounded-full border border-border bg-muted px-2 py-1 text-[11px] font-semibold tabular-nums">
-                  {Math.ceil(limit - elapsed)}s
-                </span>
-              )}
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" className={`shrink-0 opacity-40 transition-transform duration-300 ${promptCollapsed ? "" : "rotate-180"}`}><path d="M6 9l6 6 6-6" /></svg>
+              <div className={`flex shrink-0 items-center gap-2 ${promptCollapsed ? "" : "mb-1"}`}>
+                {phase === "guess" && (
+                  <span className="readout rounded-full border border-border bg-muted px-2 py-0.5 text-[11px] font-semibold tabular-nums">
+                    {Math.ceil(limit - elapsed)}s
+                  </span>
+                )}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" className={`opacity-60 transition-transform duration-300 ${promptCollapsed ? "" : "rotate-180"}`}><path d="M6 9l6 6 6-6" /></svg>
+              </div>
             </div>
             {(loc.category !== "country" || phase === "guess") && (
               <div className={`clue-reveal ${promptCollapsed ? "clue-hide" : ""}`}>
                 <div className="overflow-hidden">
-                  <div className="mt-3 border-t border-border pt-3">
+                  <div className="mt-2.5 border-t border-border pt-2.5">
                     {loc.category !== "country" && <p className="text-[13px] leading-relaxed text-muted-foreground">{loc.country}{showHint && loc.hint ? ` · ${loc.hint}` : ""}</p>}
                     {phase === "guess" && (
-                      <div className={`h-[3px] overflow-hidden rounded-full bg-muted ${loc.category !== "country" ? "mt-3" : ""}`}>
-                        <div className="h-full bg-foreground transition-[width] duration-100" style={{ width: `${100 - (elapsed / limit) * 100}%` }} />
+                      <div className={`h-[2px] overflow-hidden rounded-full bg-muted ${loc.category !== "country" ? "mt-2.5" : ""}`}>
+                        <div className="h-full bg-foreground/85 transition-[width] duration-100" style={{ width: `${100 - (elapsed / limit) * 100}%` }} />
                       </div>
                     )}
                     {mode === "shrink" && phase === "guess" && <p className="readout mt-2 text-[11px] text-muted-foreground">zone {Math.round(radius).toLocaleString()} km · bonus ×{timeMultiplier(elapsed, limit).toFixed(2)}</p>}
