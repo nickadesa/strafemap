@@ -8,7 +8,7 @@ import {
 } from "@/lib/game/engine";
 import type { Location } from "@/lib/game/locations";
 import { saveRecord, useSettings } from "@/lib/game/storage";
-import { Flag } from "@/components/Flag";
+import { SmartClue } from "@/components/SmartClue";
 import { blip, buzz } from "@/lib/game/sound";
 import { renderCard, shareCard, type CardData } from "@/lib/game/shareCard";
 import { applyMatchResult } from "@/lib/rank";
@@ -277,35 +277,13 @@ function GamePage() {
         />
 
         <div className="pointer-events-none absolute inset-x-3 top-3 z-[500] flex justify-center">
-          <button
-            type="button"
-            aria-expanded={!promptCollapsed}
-            onClick={() => { setPromptCollapsed((c) => !c); buzz(8); }}
-            className={`clue-pill glass-plate font-clue pointer-events-auto max-w-[min(30rem,100%)] select-none text-left ${promptCollapsed ? "rounded-full px-3 py-2" : "rounded-[20px] px-4 pt-4 pb-[18px]"}`}
-          >
-            <div className={`flex ${promptCollapsed ? "items-center gap-2" : "items-end gap-3.5"}`}>
-              <Flag country={loc.country} size={promptCollapsed ? 26 : 44} className={`clue-flag ${promptCollapsed ? "" : "mb-1.5"}`} />
-              <div className={`min-w-0 ${promptCollapsed ? "" : "flex-1"}`}>
-                <div className={`clue-reveal ${promptCollapsed ? "clue-hide" : ""}`}>
-                  <div className="overflow-hidden">
-                    <p className="mb-3.5 text-[11px] font-medium leading-[1.35] text-muted-foreground">{prompt.verb}{blind && " · labels hidden"}</p>
-                  </div>
-                </div>
-                <p className={`leading-[1.15] transition-[font-size] duration-300 ${promptCollapsed ? "truncate text-[15px] font-semibold" : "text-[26px] font-semibold md:text-[30px]"}`}>{loc.name}</p>
-              </div>
-              <div className={`flex shrink-0 items-center gap-2 ${promptCollapsed ? "" : "mb-1"}`}>
-                {phase === "guess" && (
-                  <span className="readout rounded-full border border-border bg-muted px-2 py-0.5 text-[11px] font-semibold tabular-nums">
-                    {Math.ceil(limit - elapsed)}s
-                  </span>
-                )}
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" className={`opacity-60 transition-transform duration-300 ${promptCollapsed ? "" : "rotate-180"}`}><path d="M6 9l6 6 6-6" /></svg>
-              </div>
-            </div>
+          <SmartClue collapsed={promptCollapsed} onToggle={() => { setPromptCollapsed((c) => !c); buzz(8); }}
+            country={loc.country} name={loc.name} label={`${prompt.verb}${blind ? " · labels hidden" : ""}`}
+            seconds={phase === "guess" ? Math.ceil(limit - elapsed) : null}>
             {(loc.category !== "country" || phase === "guess") && (
-              <div className={`clue-reveal ${promptCollapsed ? "clue-hide" : ""}`}>
+              <div>
                 <div className="overflow-hidden">
-                  <div className={`mt-2.5 border-t border-border pt-2.5 ${promptCollapsed ? "" : "ml-[58px]"}`}>
+                  <div className="border-t border-border pt-3">
                     {loc.category !== "country" && <p className="text-[13px] leading-relaxed text-muted-foreground">{loc.country}{showHint && loc.hint ? ` · ${loc.hint}` : ""}</p>}
                     {phase === "guess" && (
                       <div className={`h-[2px] overflow-hidden rounded-full bg-muted ${loc.category !== "country" ? "mt-2.5" : ""}`}>
@@ -317,7 +295,7 @@ function GamePage() {
                 </div>
               </div>
             )}
-          </button>
+          </SmartClue>
         </div>
 
         {flash && <div className="absolute left-1/2 top-40 z-[600] -translate-x-1/2 rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-primary">{flash}</div>}

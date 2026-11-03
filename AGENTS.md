@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep game clue layout and measured, cancellable animation in SmartClue; inactive details must not contribute to compact width.

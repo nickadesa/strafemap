@@ -27,7 +27,8 @@ function build() {
 
 export function countryCode(country: string): string | null {
   table ??= build();
-  const first = country.split("/")[0]!.trim().toLowerCase();
+  const first = (country.split("/")[0] ?? country).trim().toLowerCase();
+  if (/^[a-z]{2}$/.test(first)) return first;
   return table[first] ?? null;
 }
 
