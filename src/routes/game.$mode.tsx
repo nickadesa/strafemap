@@ -281,14 +281,14 @@ function GamePage() {
             type="button"
             aria-expanded={!promptCollapsed}
             onClick={() => { setPromptCollapsed((c) => !c); buzz(8); }}
-            className={`clue-pill glass-plate font-clue pointer-events-auto max-w-[min(30rem,100%)] select-none text-left ${promptCollapsed ? "rounded-full px-3 py-2" : "rounded-[20px] px-4 pt-3.5 pb-5"}`}
+            className={`clue-pill glass-plate font-clue pointer-events-auto max-w-[min(30rem,100%)] select-none text-left ${promptCollapsed ? "rounded-full px-3 py-2" : "rounded-[20px] px-4 pt-4 pb-5"}`}
           >
             <div className={`flex ${promptCollapsed ? "items-center gap-2" : "items-end gap-3.5"}`}>
               <Flag country={loc.country} size={promptCollapsed ? 26 : 44} className={`clue-flag ${promptCollapsed ? "" : "mb-1.5"}`} />
               <div className={`min-w-0 ${promptCollapsed ? "" : "flex-1"}`}>
                 <div className={`clue-reveal ${promptCollapsed ? "clue-hide" : ""}`}>
                   <div className="overflow-hidden">
-                    <p className="mb-3 text-[11px] font-medium leading-[1.35] text-muted-foreground">{prompt.verb}{blind && " · labels hidden"}</p>
+                    <p className="mb-3.5 text-[11px] font-medium leading-[1.35] text-muted-foreground">{prompt.verb}{blind && " · labels hidden"}</p>
                   </div>
                 </div>
                 <p className={`leading-[1.15] transition-[font-size] duration-300 ${promptCollapsed ? "truncate text-[15px] font-semibold" : "text-[26px] font-semibold md:text-[30px]"}`}>{loc.name}</p>
@@ -305,7 +305,7 @@ function GamePage() {
             {(loc.category !== "country" || phase === "guess") && (
               <div className={`clue-reveal ${promptCollapsed ? "clue-hide" : ""}`}>
                 <div className="overflow-hidden">
-                  <div className="mt-2.5 border-t border-border pt-2.5">
+                  <div className={`mt-2.5 border-t border-border pt-2.5 ${promptCollapsed ? "" : "pl-[58px]"}`}>
                     {loc.category !== "country" && <p className="text-[13px] leading-relaxed text-muted-foreground">{loc.country}{showHint && loc.hint ? ` · ${loc.hint}` : ""}</p>}
                     {phase === "guess" && (
                       <div className={`h-[2px] overflow-hidden rounded-full bg-muted ${loc.category !== "country" ? "mt-2.5" : ""}`}>
