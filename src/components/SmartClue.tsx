@@ -18,6 +18,7 @@ export function SmartClue({ collapsed, onToggle, country, name, label, seconds, 
   const flag = useRef<HTMLDivElement>(null);
   const previous = useRef<boolean | null>(null);
   const animations = useRef<Animation[]>([]);
+  const lastFlag = useRef<DOMRect | null>(null);
   const [viewport, setViewport] = useState(0);
 
   useLayoutEffect(() => {
@@ -32,13 +33,16 @@ export function SmartClue({ collapsed, onToggle, country, name, label, seconds, 
     const badge = flag.current;
     if (!card || !content || !badge) return;
     const oldCard = card.getBoundingClientRect();
-    const oldFlag = badge.getBoundingClientRect();
+    const oldFlag = lastFlag.current ?? badge.getBoundingClientRect();
     animations.current.forEach((a) => a.cancel());
+    card.style.width = "auto";
+    card.style.height = "auto";
     const width = content.offsetWidth + 2;
     const height = content.offsetHeight + 2;
     card.style.width = `${width}px`;
     card.style.height = `${height}px`;
     const newFlag = badge.getBoundingClientRect();
+    lastFlag.current = newFlag;
     const changing = previous.current !== null && previous.current !== collapsed;
     previous.current = collapsed;
     if (!changing || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
