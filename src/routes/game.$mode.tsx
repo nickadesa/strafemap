@@ -288,7 +288,7 @@ function GamePage() {
               <div className={`min-w-0 ${promptCollapsed ? "" : "flex-1"}`}>
                 <div className={`clue-reveal ${promptCollapsed ? "clue-hide" : ""}`}>
                   <div className="overflow-hidden">
-                    <p className="mb-2.5 text-[11px] font-medium leading-none text-muted-foreground">{prompt.verb}{blind && " · labels hidden"}</p>
+                    <p className="mb-3 text-[11px] font-medium leading-[1.35] text-muted-foreground">{prompt.verb}{blind && " · labels hidden"}</p>
                   </div>
                 </div>
                 <p className={`leading-[1.15] transition-[font-size] duration-300 ${promptCollapsed ? "truncate text-[15px] font-semibold" : "text-[26px] font-semibold md:text-[30px]"}`}>{loc.name}</p>
