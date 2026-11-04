@@ -26,7 +26,7 @@ export function Sidebar() {
       <button
         onClick={() => setOpen(true)}
         className="fixed left-4 top-4 z-50 grid h-10 w-10 place-items-center rounded-full border border-border/40 bg-card/80 backdrop-blur md:hidden"
-        aria-label="Open menu"
+        aria-label={t(lang, "openMenu")}
       >
         <Menu className="h-5 w-5" />
       </button>
@@ -48,7 +48,7 @@ export function Sidebar() {
           <button
             onClick={() => setOpen(false)}
             className="grid h-8 w-8 place-items-center rounded-full hover:bg-muted md:hidden"
-            aria-label="Close menu"
+            aria-label={t(lang, "closeMenu")}
           >
             <X className="h-4 w-4" />
           </button>

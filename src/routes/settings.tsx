@@ -33,17 +33,17 @@ function SettingsPage() {
         <div className="mx-auto max-w-2xl">
           <h1 className="font-display mb-6 text-4xl">{t(lang, "settings")}</h1>
           <div className="plate space-y-4 p-6">
-            <label className="flex items-center justify-between">
+            <label className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
               <span className="text-sm font-medium">{t(lang, "playerName")}</span>
               <input
                 value={s.name}
                 maxLength={20}
                 onChange={(e) => update({ name: e.target.value })}
-                className="w-48 rounded-lg border border-input bg-background px-3 py-1.5 text-sm outline-none focus:border-primary"
+                className="w-36 sm:w-48 rounded-lg border border-input bg-background px-3 py-1.5 text-sm outline-none focus:border-primary"
               />
             </label>
 
-            <div className="flex items-center justify-between">
+            <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
               <span className="text-sm font-medium">{t(lang, "language")}</span>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -62,7 +62,7 @@ function SettingsPage() {
               </DropdownMenu>
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
               <span className="text-sm font-medium">{t(lang, "sound")}</span>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -82,7 +82,7 @@ function SettingsPage() {
               </DropdownMenu>
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
               <span className="text-sm font-medium">{t(lang, "units")}</span>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -98,7 +98,7 @@ function SettingsPage() {
               </DropdownMenu>
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
               <span className="text-sm font-medium">{t(lang, "theme")}</span>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -126,7 +126,7 @@ function SettingsPage() {
                         <img src={tile(TILES[k].base)} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
                         <img src={tile(TILES[k].labels)} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
                       </div>
-                      <div className={`px-2 py-1.5 text-xs font-medium ${on ? "bg-primary text-primary-foreground" : "bg-card"}`}>{l}</div>
+                      <div className={`px-2 py-1.5 text-xs font-medium ${on ? "bg-primary text-primary-foreground" : "bg-card"}`}>{["auto", "light", "dark", "satellite"].includes(v) ? t(lang, v) : l}</div>
                     </button>
                   );
                 })}

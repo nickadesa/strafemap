@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import { t, type Lang } from "@/lib/i18n";
+import { useSettings } from "@/lib/game/storage";
 import { Sidebar } from "@/components/Sidebar";
 import { MODES, TIME_OPTIONS, type TimeLimit, type Difficulty, type Mode, type Pool } from "@/lib/game/engine";
 
@@ -28,6 +30,8 @@ function Chip({ on, children, onClick }: { on: boolean; children: React.ReactNod
 }
 
 function Play() {
+  const [settings] = useSettings();
+  const lang = settings.language;
   const initial = Route.useSearch().mode;
   const [mode, setMode] = useState<Mode>(initial ?? "classic");
   const [pool, setPool] = useState<Pool>("world");
@@ -40,28 +44,28 @@ function Play() {
       <Sidebar />
       <main className="md:ml-56 px-5 pb-8 pt-20 md:pt-8">
         <div className="mx-auto max-w-6xl">
-          <h1 className="font-display mb-6 text-5xl">Pick your game.</h1>
-          <ModeCarousel mode={mode} setMode={setMode} />
+          <h1 className="font-display mb-6 text-5xl">{t(lang, "pickGame")}</h1>
+          <ModeCarousel lang={lang} mode={mode} setMode={setMode} />
 
           <div className="plate mt-4 space-y-5 p-6">
             <div>
-              <p className="mb-2 text-sm font-semibold text-muted-foreground">Category</p>
-              <div className="seg">{pools.map((p) => <Chip key={p.id} on={pool === p.id} onClick={() => setPool(p.id)}>{p.label}</Chip>)}</div>
+              <p className="mb-2 text-sm font-semibold text-muted-foreground">{t(lang, "category")}</p>
+              <div className="seg">{pools.map((p) => <Chip key={p.id} on={pool === p.id} onClick={() => setPool(p.id)}>{t(lang, p.id)}</Chip>)}</div>
             </div>
             <div>
-              <p className="mb-2 text-sm font-semibold text-muted-foreground">Difficulty</p>
-              <div className="seg">{diffs.map((d) => <Chip key={d} on={difficulty === d} onClick={() => setDiff(d)}>{d}</Chip>)}</div>
+              <p className="mb-2 text-sm font-semibold text-muted-foreground">{t(lang, "difficulty")}</p>
+              <div className="seg">{diffs.map((d) => <Chip key={d} on={difficulty === d} onClick={() => setDiff(d)}>{t(lang, d)}</Chip>)}</div>
             </div>
             <div>
-              <p className="mb-2 text-sm font-semibold text-muted-foreground">Time per round</p>
+              <p className="mb-2 text-sm font-semibold text-muted-foreground">{t(lang, "timePerRound")}</p>
               <div className="seg">{TIME_OPTIONS.map((t) => <Chip key={t} on={time === t} onClick={() => setTime(t)}>{t}s</Chip>)}</div>
             </div>
             <label className="flex items-center gap-3 text-sm font-semibold">
               <input type="checkbox" checked={practice} onChange={(e) => setPractice(e.target.checked)} className="h-5 w-5 accent-[var(--color-foreground)]" />
-              Practice · endless rounds, not recorded
+              {t(lang, "practiceNote")}
             </label>
             <Link to="/game/$mode" params={{ mode }} search={practice ? { pool, difficulty, time, practice: 1 } : { pool, difficulty, time }} className="btn btn-primary px-10 py-4 text-lg">
-              Start {MODES[mode].name}
+              {t(lang, "startMode", { mode: t(lang, mode) })}
             </Link>
           </div>
         </div>
@@ -70,9 +74,9 @@ function Play() {
   );
 }
 
-function Arrow({ dir, onClick }: { dir: "left" | "right"; onClick: () => void }) {
+function Arrow({ dir, onClick, lang }: { lang: Lang; dir: "left" | "right"; onClick: () => void }) {
   return (
-    <button onClick={onClick} aria-label={dir === "left" ? "Previous modes" : "Next modes"}
+    <button onClick={onClick} aria-label={t(lang, dir === "left" ? "previousModes" : "nextModes")}
       className={`absolute top-1/2 z-10 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-border bg-card text-foreground shadow-sm transition hover:bg-muted ${dir === "left" ? "-left-3" : "-right-3"}`}>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
         <path d={dir === "left" ? "M15 18l-6-6 6-6" : "M9 18l6-6-6-6"} />
@@ -81,7 +85,7 @@ function Arrow({ dir, onClick }: { dir: "left" | "right"; onClick: () => void })
   );
 }
 
-function ModeCarousel({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => void }) {
+function ModeCarousel({ mode, setMode, lang }: { lang: Lang; mode: Mode; setMode: (m: Mode) => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const [canL, setL] = useState(false);
   const [canR, setR] = useState(false);
@@ -98,15 +102,15 @@ function ModeCarousel({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => voi
   const go = (d: number) => { const el = ref.current; if (el) el.scrollBy({ left: d * el.clientWidth * 0.85, behavior: "smooth" }); };
   return (
     <div className="relative">
-      {canL && <Arrow dir="left" onClick={() => go(-1)} />}
-      {canR && <Arrow dir="right" onClick={() => go(1)} />}
+      {canL && <Arrow lang={lang} dir="left" onClick={() => go(-1)} />}
+      {canR && <Arrow lang={lang} dir="right" onClick={() => go(1)} />}
       <div ref={ref} onScroll={update} className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-5 py-1 md:mx-0 md:px-0">
         {modeIds.map((m) => (
           <button key={m} onClick={() => setMode(m)}
             className={`plate w-[82%] shrink-0 snap-start p-6 text-left transition-colors sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.667rem)] ${mode === m ? "ring-1 ring-foreground" : "hover:bg-muted/50"}`}>
-            <span className="text-xs opacity-70">{MODES[m].tag}</span>
-            <h2 className="font-display mt-2 text-4xl">{MODES[m].name}</h2>
-            <p className="mt-2 text-sm opacity-80">{MODES[m].blurb}</p>
+            <span className="text-xs opacity-70">{t(lang, `${m}Tag`)}</span>
+            <h2 className="font-display mt-2 text-4xl">{t(lang, m)}</h2>
+            <p className="mt-2 text-sm opacity-80">{t(lang, `${m}Blurb`)}</p>
           </button>
         ))}
       </div>

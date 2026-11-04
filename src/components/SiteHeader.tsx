@@ -1,3 +1,5 @@
+import { t as translate } from "@/lib/i18n";
+import { useSettings } from "@/lib/game/storage";
 import { useTheme } from "@/lib/theme";
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
@@ -25,6 +27,8 @@ const links = [
 ] as const;
 
 export function SiteHeader() {
+  const [settings] = useSettings();
+  const lang = settings.language;
   const user = useUser();
   const [theme, setTheme] = useTheme();
   const [open, setOpen] = useState(false);
@@ -46,7 +50,7 @@ export function SiteHeader() {
             <span className="block h-[2px] w-4 bg-foreground" />
             <span className="block h-[2px] w-4 bg-foreground" />
           </span>
-          Menu
+          {translate(lang, "menu")}
         </button>
 
         {open && (
@@ -67,11 +71,11 @@ export function SiteHeader() {
                     className="rounded-2xl px-4 py-2.5 text-sm font-semibold text-foreground outline-none transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
                     activeProps={{ className: "!bg-primary !text-primary-foreground", "aria-current": "page" }}
                   >
-                    {l.label}
+                    {translate(lang, l.label.toLowerCase())}
                   </Link>
                 ))}
                 <div className="my-2 h-px bg-border" />
-                <div className="mb-1 grid grid-cols-2 gap-1 rounded-full bg-muted p-1" role="group" aria-label="Theme">
+                <div className="mb-1 grid grid-cols-2 gap-1 rounded-full bg-muted p-1" role="group" aria-label={translate(lang, "theme")}>
                   {(["light", "dark"] as const).map((t) => (
                     <button
                       key={t}
@@ -79,7 +83,7 @@ export function SiteHeader() {
                       aria-pressed={theme === t}
                       className={`rounded-full py-1.5 text-xs font-semibold outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring ${theme === t ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-card hover:text-foreground"}`}
                     >
-                      {t === "light" ? "Light" : "Dark"}
+                      {translate(lang, t)}
                     </button>
                   ))}
                 </div>
@@ -89,7 +93,7 @@ export function SiteHeader() {
                     onClick={close}
                     className="btn btn-primary mt-1 !px-4 !py-2.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
                   >
-                    Sign in
+                    {translate(lang, "signIn")}
                   </Link>
                 )}
                 {user && (
@@ -104,7 +108,7 @@ export function SiteHeader() {
                       }}
                       className="btn btn-outline mt-1 !px-4 !py-2.5 text-sm outline-none hover:!bg-muted focus-visible:ring-2 focus-visible:ring-ring"
                     >
-                      Sign out
+                      {translate(lang, "signOut")}
                     </button>
                   </>
                 )}
