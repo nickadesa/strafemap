@@ -6,6 +6,7 @@ import { useUser } from "@/lib/auth";
 import { useSettings } from "@/lib/game/storage";
 
 export const Route = createFileRoute("/party")({
+  head: () => ({ meta: [{"title": "Party \u2014 STRAFE"}, {"name": "description", "content": "Create a STRAFE party and play map guessing rounds with friends."}, {"property": "og:title", "content": "Party \u2014 STRAFE"}, {"property": "og:description", "content": "Create a STRAFE party and play map guessing rounds with friends."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary_large_image"}] }),
   component: PartyPage,
 });
 

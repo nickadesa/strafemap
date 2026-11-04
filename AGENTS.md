@@ -10,3 +10,5 @@
 <!-- LOVABLE:END -->
 
 - Keep game clue layout and measured, cancellable animation in SmartClue; inactive details must not contribute to compact width.
+- Keep UI translations in the existing i18n dictionaries with matching keys in every language and parameter interpolation; preserve source location names and hints.
+- Broadcast local settings changes to mounted settings consumers so language changes update navigation and game UI immediately.

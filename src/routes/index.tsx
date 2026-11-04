@@ -6,6 +6,7 @@ import { computeStats, useRecords, useSettings } from "@/lib/game/storage";
 import { t, type Lang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
+  head: () => ({ meta: [{"title": "STRAFE \u2014 Map guessing game"}, {"name": "description", "content": "Play daily map challenges and precision geography games on STRAFE."}, {"property": "og:title", "content": "STRAFE \u2014 Map guessing game"}, {"property": "og:description", "content": "Play daily map challenges and precision geography games on STRAFE."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary_large_image"}] }),
   component: Home,
 });
 

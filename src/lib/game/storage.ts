@@ -58,7 +58,16 @@ export async function clearRecords() {
 export function useSettings() {
   const user = useUser();
   const [s, setS] = useState<Settings>(defaults);
-  useEffect(() => setS(loadSettings()), []);
+  useEffect(() => {
+    const refresh = () => setS(loadSettings());
+    refresh();
+    window.addEventListener("strafe:settings", refresh);
+    window.addEventListener("storage", refresh);
+    return () => {
+      window.removeEventListener("strafe:settings", refresh);
+      window.removeEventListener("storage", refresh);
+    };
+  }, []);
   useEffect(() => {
     if (!user) return;
     supabase.from("profiles").select("display_name").eq("id", user.id).maybeSingle().then(({ data }: { data: { display_name: string | null } | null }) => {
@@ -66,7 +75,10 @@ export function useSettings() {
     });
   }, [user]);
   const update = useCallback((patch: Partial<Settings>) => {
-    setS((prev) => { const n = { ...prev, ...patch }; localStorage.setItem(SKEY, JSON.stringify(n)); return n; });
+    const next = { ...loadSettings(), ...patch };
+    localStorage.setItem(SKEY, JSON.stringify(next));
+    setS(next);
+    window.dispatchEvent(new Event("strafe:settings"));
     if (patch.name !== undefined && user) {
       supabase.from("profiles").update({ display_name: patch.name || "Player" }).eq("id", user.id).then(() => {});
     }

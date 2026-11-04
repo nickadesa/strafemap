@@ -5,6 +5,7 @@ import { useUser } from "@/lib/auth";
 import { achievements, computeStats, useRecords, useSettings } from "@/lib/game/storage";
 
 export const Route = createFileRoute("/profile")({
+  head: () => ({ meta: [{"title": "Player profile \u2014 STRAFE"}, {"name": "description", "content": "Your STRAFE player profile, performance and achievements."}, {"property": "og:title", "content": "Player profile \u2014 STRAFE"}, {"property": "og:description", "content": "Your STRAFE player profile, performance and achievements."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary_large_image"}] }),
   component: ProfilePage,
 });
 

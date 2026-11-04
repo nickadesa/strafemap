@@ -164,16 +164,13 @@
 .pin-target { background: var(--color-primary); }
 .pin-bot { background: var(--color-muted-foreground); opacity: 0.85; }
 .leaflet-container { font-family: var(--font-sans); background: var(--color-background); }
-/* keep the zoom buttons clear of the clue box on phones */
-@media (max-width: 767px) {
-  .leaflet-control-container .leaflet-top.leaflet-left {
-    top: 50%;
-    bottom: auto;
-    left: auto;
-    right: 10px;
-    margin-left: 0;
-    transform: translateY(-50%);
-  }
+/* Leave room for map credits and keep controls clear of the clue. */
+.leaflet-bottom.leaflet-left .leaflet-control-zoom { margin: 0 0 28px 10px; }
+@media (max-width: 639px) {
+  .game-logo { gap: 5px; }
+  .game-logo > span:first-child { width: 24px; height: 24px; flex-shrink: 0; }
+  .game-logo > span:last-child { font-size: 16px; letter-spacing: 0; }
+  .game-hud:has(button) { grid-template-columns: minmax(0, max-content) auto auto auto; }
 }
 /* Native OS crosshair (Windows-style plus cursor) */
 .leaflet-container.crosshair { cursor: crosshair; }
@@ -216,9 +213,7 @@ button:not(.btn), [role="button"] { transition: transform 380ms var(--ease-sprin
 .leaflet-control-attribution { font-size: 9px !important; line-height: 1.4; padding: 1px 6px !important; border-radius: 9999px 0 0 0; background: color-mix(in oklab, var(--color-card) 70%, transparent) !important; color: var(--color-muted-foreground) !important; }
 .leaflet-control-attribution a { color: inherit !important; }
 @media (max-width: 640px) {
-  .leaflet-control-attribution { max-width: 22px; height: 18px; overflow: hidden; white-space: nowrap; border-radius: 9999px !important; margin: 0 6px 6px 0 !important; cursor: pointer; }
-  .leaflet-control-attribution::before { content: "ℹ"; display: inline-block; width: 12px; }
-  .leaflet-control-attribution:hover, .leaflet-control-attribution:focus-within { max-width: 90vw; }
+  .leaflet-control-attribution { max-width: calc(100vw - 32px); white-space: normal; font-size: 7px !important; border-radius: 4px !important; margin: 0 4px 4px 0 !important; }
 }
 
 /* Unslop: sunken segmented control + quiet chip + mono readout */
