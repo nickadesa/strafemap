@@ -4,6 +4,7 @@ import { MODES, formatDistance, type Mode } from "@/lib/game/engine";
 import { achievements, computeStats, useRecords, useSettings } from "@/lib/game/storage";
 
 export const Route = createFileRoute("/stats")({
+  head: () => ({ meta: [{"title": "Your stats \u2014 STRAFE"}, {"name": "description", "content": "Review your STRAFE accuracy, personal bests and recent games."}, {"property": "og:title", "content": "Your stats \u2014 STRAFE"}, {"property": "og:description", "content": "Review your STRAFE accuracy, personal bests and recent games."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary_large_image"}] }),
   component: Stats,
 });
 

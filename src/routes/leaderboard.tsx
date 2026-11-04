@@ -4,6 +4,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { useRecords } from "@/lib/game/storage";
 
 export const Route = createFileRoute("/leaderboard")({
+  head: () => ({ meta: [{"title": "Leaderboard \u2014 STRAFE"}, {"name": "description", "content": "Compare scores and accuracy from your STRAFE games."}, {"property": "og:title", "content": "Leaderboard \u2014 STRAFE"}, {"property": "og:description", "content": "Compare scores and accuracy from your STRAFE games."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary_large_image"}] }),
   component: Leaderboard,
 });
 

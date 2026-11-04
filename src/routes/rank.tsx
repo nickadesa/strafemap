@@ -6,6 +6,7 @@ import { loadRank, getTier, RANK_TIERS, type RankedProfile } from "@/lib/rank";
 import { t, type Lang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/rank")({
+  head: () => ({ meta: [{"title": "Rank \u2014 STRAFE"}, {"name": "description", "content": "Track your STRAFE rank and play ranked geography challenges."}, {"property": "og:title", "content": "Rank \u2014 STRAFE"}, {"property": "og:description", "content": "Track your STRAFE rank and play ranked geography challenges."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary_large_image"}] }),
   component: RankPage,
 });
 

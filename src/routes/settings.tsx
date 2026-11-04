@@ -17,6 +17,7 @@ import { ChevronDown } from "lucide-react";
 const tile = (u: string) => u.replace("{z}", "2").replace("{y}", "1").replace("{x}", "2").replace("{s}", "a").replace("{r}", "");
 
 export const Route = createFileRoute("/settings")({
+  head: () => ({ meta: [{"title": "Settings \u2014 STRAFE"}, {"name": "description", "content": "Set your STRAFE language, sound, distance units and map style."}, {"property": "og:title", "content": "Settings \u2014 STRAFE"}, {"property": "og:description", "content": "Set your STRAFE language, sound, distance units and map style."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary_large_image"}] }),
   component: SettingsPage,
 });
 

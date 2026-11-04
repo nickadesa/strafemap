@@ -8,6 +8,7 @@ import { MODES, TIME_OPTIONS, type TimeLimit, type Difficulty, type Mode, type P
 const modeIds = Object.keys(MODES) as Mode[];
 
 export const Route = createFileRoute("/play")({
+  head: () => ({ meta: [{"title": "Choose a game \u2014 STRAFE"}, {"name": "description", "content": "Choose your STRAFE mode, category, difficulty and round timer."}, {"property": "og:title", "content": "Choose a game \u2014 STRAFE"}, {"property": "og:description", "content": "Choose your STRAFE mode, category, difficulty and round timer."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary_large_image"}] }),
   validateSearch: (search: Record<string, unknown>): { mode?: Mode } => {
     const mode = typeof search["mode"] === "string" && modeIds.includes(search["mode"] as Mode) ? (search["mode"] as Mode) : undefined;
     return mode ? { mode } : {};
