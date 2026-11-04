@@ -1,4 +1,5 @@
 # Roadmap
+- [ ] Compact one-row mobile game header and confirm button; bottom-left zoom; remove emoji attribution badge; add seven-language game/navigation/settings translations and verify mobile/desktop.
 - [x] Smart clue: Inter, content-fit compact state, sequenced flag animation; verified short/long country and city clues on desktop/mobile and reduced motion.
 - [x] In-game HUD clean pass: no chat/quick-settings over the map, coords readout under Confirm guess, 10ms haptic tap on pin + confirm
 - [x] Instagram story share card (9:16) on game results
