@@ -170,7 +170,7 @@
   .game-logo { gap: 5px; }
   .game-logo > span:first-child { width: 24px; height: 24px; flex-shrink: 0; }
   .game-logo > span:last-child { font-size: 16px; letter-spacing: 0; }
-  .game-hud:has(button) { grid-template-columns: minmax(0, 1fr) auto auto auto; }
+  .game-hud:has(button) { grid-template-columns: minmax(0, max-content) auto auto auto; }
 }
 /* Native OS crosshair (Windows-style plus cursor) */
 .leaflet-container.crosshair { cursor: crosshair; }

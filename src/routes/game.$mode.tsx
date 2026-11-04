@@ -189,16 +189,16 @@ function GamePage() {
 
   const standings = useMemo(() => {
     if (mode !== "closest") return [];
-    const t: Record<string, { pts: number; wins: number; km: number }> = {};
+    const totals: Record<string, { pts: number; wins: number; km: number }> = {};
     const add = (n: string, pts: number, km: number | null, win: boolean) => {
-      t[n] ??= { pts: 0, wins: 0, km: 0 }; t[n].pts += pts; t[n].km += km ?? 20000; if (win) t[n].wins++;
+      totals[n] ??= { pts: 0, wins: 0, km: 0 }; totals[n].pts += pts; totals[n].km += km ?? 20000; if (win) totals[n].wins++;
     };
     for (const r of results) {
       const all = [{ n: settings.name || t(lang, "you"), km: r.km, p: r.points }, ...(r.bots ?? []).map((b) => ({ n: b.name, km: b.km, p: b.points }))];
       const best = Math.min(...all.map((a) => a.km ?? Infinity));
       all.forEach((a) => add(a.n, a.p, a.km, a.km === best));
     }
-    return Object.entries(t).sort((a, b) => b[1].pts - a[1].pts);
+    return Object.entries(totals).sort((a, b) => b[1].pts - a[1].pts);
   }, [results, mode, settings.name, lang]);
 
   if (!loc) return <div className="grid min-h-screen place-items-center font-semibold text-muted-foreground">{tr("preparing")}</div>;
@@ -262,12 +262,12 @@ function GamePage() {
     <div className="flex h-[100dvh] flex-col">
       <header className="game-header grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2 px-2 py-2 sm:flex sm:justify-between sm:gap-3 sm:px-4 sm:py-3">
         <Logo className="game-logo shrink-0" />
-        <div className="game-hud grid min-w-0 grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-1 text-[11px] font-semibold sm:flex sm:gap-2 sm:text-sm">
+        <div className="game-hud grid min-w-0 grid-cols-[minmax(0,max-content)_auto_auto] items-center justify-end gap-1 text-[11px] font-semibold sm:flex sm:gap-2 sm:text-sm">
           <span className="game-mode min-w-0 truncate rounded-full border border-border bg-card px-2 py-1.5 sm:px-3" title={`${tr(mode)}${daily ? ` · ${tr("daily")}` : ""}${ranked ? ` · ${tr("ranked")}` : ""}`}>{tr(mode)}{daily && ` · ${tr("daily")}`}{ranked && ` · ${tr("ranked")}`}</span>
           <span className="shrink-0 whitespace-nowrap rounded-full border border-border bg-card px-2 py-1.5 sm:px-3" title={roundLabel}>
             <span className="hidden sm:inline">{roundLabel}</span><span className="readout sm:hidden">{practice ? `∞ · ${idx + 1}` : `${Math.min(idx + 1, ROUNDS)}/${ROUNDS}`}</span>
           </span>
-          <span className="readout shrink-0 whitespace-nowrap rounded-full bg-foreground px-2 py-1.5 text-primary sm:px-3">{total.toLocaleString()} <span className="hidden sm:inline">{tr("points")}</span></span>
+          <span className="readout shrink-0 whitespace-nowrap rounded-full bg-foreground px-2 py-1.5 text-primary sm:px-3" title={`${total.toLocaleString()} ${tr("points")}`}>{total.toLocaleString()} <span className="hidden sm:inline">{tr("points")}</span></span>
           {practice && <Button variant="ghost" onClick={() => setPhase("done")} className="h-8 shrink-0 rounded-full bg-card px-2 text-[11px] sm:text-sm">{tr("end")}</Button>}
         </div>
       </header>
@@ -362,7 +362,7 @@ function Standings({ rows, lang }: { lang: Lang; rows: [string, { pts: number; w
       <p className="text-sm font-semibold opacity-80">{t(lang, "standings")}</p>
       <ol className="mt-3 space-y-2">
         {rows.map(([n, s], i) => (
-          <li key={n} className="flex justify-between font-semibold"><span>{i + 1}. {n}</span><span>{s.wins} {t(lang, "wins")} · {s.pts.toLocaleString()} pts</span></li>
+          <li key={n} className="flex justify-between font-semibold"><span>{i + 1}. {n}</span><span>{s.wins} {t(lang, "wins")} · {s.pts.toLocaleString()} {t(lang, "points")}</span></li>
         ))}
       </ol>
     </div>
