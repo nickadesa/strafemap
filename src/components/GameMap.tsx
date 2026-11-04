@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import type * as LT from "leaflet";
 import type { LatLng } from "@/lib/game/engine";
+import { t, type Lang } from "@/lib/i18n";
 import { useResolvedMapStyle } from "@/lib/theme";
 
 export interface MapOther extends LatLng { label: string }
 interface Props {
+  lang?: Lang;
   blind: boolean;
   guess: LatLng | null;
   target: LatLng | null;
@@ -28,7 +30,7 @@ export const TILES = {
   satellite: { base: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", labels: "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}" },
 } as const;
 
-export function GameMap({ blind, guess, target, others = [], circle, locked, onPick, resetKey }: Props) {
+export function GameMap({ lang = "en", blind, guess, target, others = [], circle, locked, onPick, resetKey }: Props) {
   const el = useRef<HTMLDivElement>(null);
   const L = useRef<typeof LT | null>(null);
   const map = useRef<LT.Map | null>(null);
@@ -50,6 +52,7 @@ export function GameMap({ blind, guess, target, others = [], circle, locked, onP
       L.current = Lf;
       const m = Lf.map(el.current, { worldCopyJump: true, minZoom: 2, maxZoom: 12, zoomControl: true, zoomSnap: 0.1, zoomDelta: 0.35, wheelPxPerZoomLevel: 140, wheelDebounceTime: 0, inertia: true, inertiaDeceleration: 1800, easeLinearity: 0.15, zoomAnimation: true, fadeAnimation: false, markerZoomAnimation: true, tapTolerance: 15, preferCanvas: true }).setView([20, 0], 2);
       m.attributionControl.setPrefix(false);
+      m.zoomControl.setPosition("bottomleft");
       m.on("click", (e: LT.LeafletMouseEvent) => {
         if (!cb.current.locked) cb.current.onPick({ lat: e.latlng.lat, lng: e.latlng.wrap().lng });
       });
@@ -150,12 +153,12 @@ export function GameMap({ blind, guess, target, others = [], circle, locked, onP
       <div ref={el} className="h-full w-full" />
       {status !== "ready" && (
         <div className="absolute inset-0 grid place-items-center bg-background">
-          <p className="font-semibold text-muted-foreground">{status === "loading" ? "Loading map…" : "The map failed to load. Check your connection and reload."}</p>
+          <p className="font-semibold text-muted-foreground">{status === "loading" ? t(lang, "loadingMap") : t(lang, "mapFailed")}</p>
         </div>
       )}
       {tileErr && (
         <div className="absolute left-1/2 top-3 z-[500] -translate-x-1/2 plate px-4 py-2 text-sm font-semibold text-destructive">
-          Map tiles are having trouble loading.
+          {t(lang, "tilesFailed")}
         </div>
       )}
     </div>

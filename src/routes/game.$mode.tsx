@@ -4,13 +4,15 @@ import { GameMap } from "@/components/GameMap";
 import { Logo } from "@/components/SiteHeader";
 import {
   BOTS, MAX_POINTS, MODES, ROUNDS, botGuess, dailyRounds, distanceKm, formatDistance, pickRounds, poolFor, saveRecent,
-  promptFor, scoreFor, shrinkCenter, shrinkRadius, timeMultiplier, TIME_OPTIONS, type TimeLimit, type Difficulty, type LatLng, type Mode, type Pool,
+  scoreFor, shrinkCenter, shrinkRadius, timeMultiplier, TIME_OPTIONS, type TimeLimit, type Difficulty, type LatLng, type Mode, type Pool,
 } from "@/lib/game/engine";
 import type { Location } from "@/lib/game/locations";
 import { saveRecord, useSettings } from "@/lib/game/storage";
 import { SmartClue } from "@/components/SmartClue";
 import { blip, buzz } from "@/lib/game/sound";
 import { renderCard, shareCard, type CardData } from "@/lib/game/shareCard";
+import { Button } from "@/components/ui/button";
+import { t, type Lang } from "@/lib/i18n";
 import { applyMatchResult } from "@/lib/rank";
 
 interface Search { pool?: Pool | undefined; difficulty?: Difficulty | undefined; daily?: 1 | undefined; practice?: 1 | undefined; time?: TimeLimit | undefined; ranked?: 1 | undefined }
@@ -35,6 +37,8 @@ export const Route = createFileRoute("/game/$mode")({
       { name: "description", content: m?.blurb ?? "Play STRAFE." },
       { property: "og:title", content: t },
       { property: "og:description", content: m?.blurb ?? "Play STRAFE." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ] };
   },
   component: GamePage,
@@ -48,6 +52,8 @@ function GamePage() {
   const mode = modeParam as Mode;
   const search = Route.useSearch();
   const [settings] = useSettings();
+  const lang = settings.language;
+  const tr = (key: string, values: Record<string, string | number> = {}) => t(lang, key, values);
   const pool = search.pool ?? "world";
   const difficulty = search.difficulty ?? "medium";
   const daily = !!search.daily;
@@ -119,9 +125,9 @@ function GamePage() {
 
   useEffect(() => {
     if (mode === "shrink" && phase === "guess" && guess && center && distanceKm(guess, center) > radius) {
-      setGuess(null); setFlash("The zone closed over your pin — place it again.");
+      setGuess(null); setFlash(t(lang, "zoneClosed"));
     }
-  }, [radius, guess, center, mode, phase]);
+  }, [radius, guess, center, mode, phase, lang]);
 
   useEffect(() => {
     if (phase !== "guess" || settings.promptCollapseSeconds <= 0) return;
@@ -133,10 +139,10 @@ function GamePage() {
   const pick = useCallback((p: LatLng) => {
     if (phase !== "guess") return;
     if (mode === "shrink" && center && distanceKm(p, center) > shrinkRadius(elapsed, limit)) {
-      setFlash("Outside the zone. Pin inside the circle."); return;
+      setFlash(t(lang, "outsideZone")); return;
     }
     setGuess(p); blip(settings.sound, 520, 50); buzz(10);
-  }, [phase, mode, center, elapsed, limit, settings.sound]);
+  }, [phase, mode, center, elapsed, limit, settings.sound, lang]);
 
   const next = () => {
     if (practice && idx + 1 >= rounds.length) {
@@ -188,64 +194,64 @@ function GamePage() {
       t[n] ??= { pts: 0, wins: 0, km: 0 }; t[n].pts += pts; t[n].km += km ?? 20000; if (win) t[n].wins++;
     };
     for (const r of results) {
-      const all = [{ n: settings.name || "You", km: r.km, p: r.points }, ...(r.bots ?? []).map((b) => ({ n: b.name, km: b.km, p: b.points }))];
+      const all = [{ n: settings.name || t(lang, "you"), km: r.km, p: r.points }, ...(r.bots ?? []).map((b) => ({ n: b.name, km: b.km, p: b.points }))];
       const best = Math.min(...all.map((a) => a.km ?? Infinity));
       all.forEach((a) => add(a.n, a.p, a.km, a.km === best));
     }
     return Object.entries(t).sort((a, b) => b[1].pts - a[1].pts);
-  }, [results, mode, settings.name]);
+  }, [results, mode, settings.name, lang]);
 
-  if (!loc) return <div className="grid min-h-screen place-items-center font-semibold text-muted-foreground">Preparing rounds…</div>;
+  if (!loc) return <div className="grid min-h-screen place-items-center font-semibold text-muted-foreground">{tr("preparing")}</div>;
 
   const last = results[results.length - 1];
-  const prompt = promptFor(loc);
+  
   const showHint = difficulty === "easy" || difficulty === "medium";
-  const roundLabel = practice ? `Practice · ${idx + 1}` : `Round ${Math.min(idx + 1, ROUNDS)} / ${ROUNDS}`;
+  const roundLabel = practice ? `${tr("practice")} · ${idx + 1}` : `${tr("round")} ${Math.min(idx + 1, ROUNDS)} / ${ROUNDS}`;
 
   if (phase === "done") {
     const errs = results.map((r) => r.km).filter((x): x is number => x !== null);
-    const best = results.reduce((b, r, i) => (r.points > results[b]!.points ? i : b), 0);
-    const share = `STRAFE · ${MODES[mode].name}${daily ? " · Daily " + new Date().toISOString().slice(0, 10) : ""}\n${total.toLocaleString()} / ${(MAX_POINTS * ROUNDS).toLocaleString()}\n${results.map((r) => (r.points >= 4000 ? "🟩" : r.points >= 2000 ? "🟨" : r.points > 0 ? "🟧" : "⬜")).join("")}`;
+    const best = results.reduce((b, r, i) => (r.points > (results[b]?.points ?? 0) ? i : b), 0);
+    const share = `STRAFE · ${tr(mode)}${daily ? " · Daily " + new Date().toISOString().slice(0, 10) : ""}\n${total.toLocaleString()} / ${(MAX_POINTS * ROUNDS).toLocaleString()}\n${results.map((r) => (r.points >= 4000 ? "🟩" : r.points >= 2000 ? "🟨" : r.points > 0 ? "🟧" : "⬜")).join("")}`;
     return (
       <div className="min-h-screen px-5 pb-16">
         <div className="mx-auto max-w-4xl py-5"><Logo /></div>
         <main className="mx-auto max-w-4xl">
-          <p className="text-sm font-semibold text-muted-foreground">{MODES[mode].name}{daily && " · Daily challenge"}{ranked && " · Ranked"} · Final</p>
+          <p className="text-sm font-semibold text-muted-foreground">{tr(mode)}{daily && ` · ${tr("daily")}`}{ranked && ` · ${tr("ranked")}`} · {tr("final")}</p>
           <h1 className="font-display mt-2 text-[clamp(4rem,16vw,8rem)]">{total.toLocaleString()}</h1>
-          <p className="mt-2 font-semibold text-muted-foreground">out of {(MAX_POINTS * ROUNDS).toLocaleString()}</p>
+          <p className="mt-2 font-semibold text-muted-foreground">{tr("outOf", { max: (MAX_POINTS * ROUNDS).toLocaleString() })}</p>
           {ranked && eloChange !== null && (
             <p className={`mt-2 text-lg font-semibold ${eloChange >= 0 ? "text-positive" : "text-destructive"}`}>
               ELO {eloChange >= 0 ? "+" : ""}{eloChange}
             </p>
           )}
           <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <Box k="Accuracy" v={`${Math.round((total / (MAX_POINTS * ROUNDS)) * 100)}%`} />
-            <Box k="Avg error" v={errs.length ? formatDistance(errs.reduce((a, b) => a + b, 0) / errs.length, settings.unit) : "—"} />
-            <Box k="Best round" v={`R${best + 1} · ${results[best]!.points.toLocaleString()}`} />
-            <Box k="Closest pin" v={errs.length ? formatDistance(Math.min(...errs), settings.unit) : "—"} />
+            <Box k={tr("accuracy")} v={`${Math.round((total / (MAX_POINTS * ROUNDS)) * 100)}%`} />
+            <Box k={tr("avgError")} v={errs.length ? formatDistance(errs.reduce((a, b) => a + b, 0) / errs.length, settings.unit) : "—"} />
+            <Box k={tr("bestRound")} v={`R${best + 1} · ${(results[best]?.points ?? 0).toLocaleString()}`} />
+            <Box k={tr("closestPin")} v={errs.length ? formatDistance(Math.min(...errs), settings.unit) : "—"} />
           </div>
-          {mode === "closest" && <Standings rows={standings} />}
+          {mode === "closest" && <Standings rows={standings} lang={lang} />}
           <div className="plate mt-4 divide-y">
             {results.map((r, i) => (
               <div key={i} className="flex items-center justify-between gap-4 px-6 py-4">
-                <div><p className="text-xs font-semibold text-muted-foreground">Round {i + 1}</p><p className="font-semibold">{r.loc.name}, {r.loc.country}</p></div>
-                <div className="text-right"><p className="font-display text-2xl">{r.points.toLocaleString()}</p><p className="text-xs text-muted-foreground">{r.km === null ? "No guess" : formatDistance(r.km, settings.unit)}</p></div>
+                <div><p className="text-xs font-semibold text-muted-foreground">{tr("round")} {i + 1}</p><p className="font-semibold">{r.loc.name}, {r.loc.country}</p></div>
+                <div className="text-right"><p className="font-display text-2xl">{r.points.toLocaleString()}</p><p className="text-xs text-muted-foreground">{r.km === null ? tr("noGuess") : formatDistance(r.km, settings.unit)}</p></div>
               </div>
             ))}
           </div>
           <div className="mt-6 flex flex-wrap gap-3">
-            {!daily && <button onClick={() => setSeed((s) => s + 1)} className="btn btn-primary">Play again</button>}
-            <StoryButton data={{
-              mode: MODES[mode].name, tag: daily ? "Daily challenge" : `${MODES[mode].name} · ${difficulty}`,
+            {!daily && <button onClick={() => setSeed((s) => s + 1)} className="btn btn-primary">{tr("playAgain")}</button>}
+            <StoryButton lang={lang} data={{
+              mode: MODES[mode].name, tag: daily ? "Daily challenge" : `${tr(mode)} · ${difficulty}`,
               total, max: MAX_POINTS * ROUNDS,
               avgKm: errs.length ? formatDistance(errs.reduce((a, b) => a + b, 0) / errs.length, settings.unit) : "—",
               perfects: results.filter((r) => r.km !== null && r.km <= 25).length,
               rounds: results.map((r) => ({ name: r.loc.name, points: r.points, km: r.km, guess: r.guess, target: { lat: r.loc.lat, lng: r.loc.lng } })),
               url: "strafemap.lovable.app",
             }} />
-            <button onClick={() => { navigator.clipboard?.writeText(share).then(() => setCopied(true)); }} className="btn btn-ink">{copied ? "Copied!" : "Copy result"}</button>
-            {ranked ? <Link to="/rank" className="btn btn-outline">Back to Rank</Link> : <Link to="/play" className="btn btn-outline">Change mode</Link>}
-            <Link to="/" className="btn btn-outline">Menu</Link>
+            <button onClick={() => { navigator.clipboard?.writeText(share).then(() => setCopied(true)); }} className="btn btn-ink">{copied ? tr("copied") : tr("copyResult")}</button>
+            {ranked ? <Link to="/rank" className="btn btn-outline">{tr("backRank")}</Link> : <Link to="/play" className="btn btn-outline">{tr("changeMode")}</Link>}
+            <Link to="/" className="btn btn-outline">{tr("menu")}</Link>
           </div>
         </main>
       </div>
@@ -254,18 +260,21 @@ function GamePage() {
 
   return (
     <div className="flex h-[100dvh] flex-col">
-      <header className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
-        <Logo />
-        <div className="flex items-center gap-2 text-sm font-semibold">
-          <span className="rounded-full border border-border bg-card px-3 py-1.5">{MODES[mode].name}{daily && " · Daily"}{ranked && " · Ranked"}</span>
-          <span className="readout rounded-full border border-border bg-card px-3 py-1.5">{roundLabel}</span>
-          <span className="readout rounded-full bg-foreground px-3 py-1.5 text-primary">{total.toLocaleString()} pts</span>
-          {practice && <button onClick={() => setPhase("done")} className="rounded-full bg-card px-3 py-1.5 hover:bg-primary-pale">End</button>}
+      <header className="game-header grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2 px-2 py-2 sm:flex sm:justify-between sm:gap-3 sm:px-4 sm:py-3">
+        <Logo className="game-logo shrink-0" />
+        <div className="game-hud grid min-w-0 grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-1 text-[11px] font-semibold sm:flex sm:gap-2 sm:text-sm">
+          <span className="game-mode min-w-0 truncate rounded-full border border-border bg-card px-2 py-1.5 sm:px-3" title={`${tr(mode)}${daily ? ` · ${tr("daily")}` : ""}${ranked ? ` · ${tr("ranked")}` : ""}`}>{tr(mode)}{daily && ` · ${tr("daily")}`}{ranked && ` · ${tr("ranked")}`}</span>
+          <span className="shrink-0 whitespace-nowrap rounded-full border border-border bg-card px-2 py-1.5 sm:px-3" title={roundLabel}>
+            <span className="hidden sm:inline">{roundLabel}</span><span className="readout sm:hidden">{practice ? `∞ · ${idx + 1}` : `${Math.min(idx + 1, ROUNDS)}/${ROUNDS}`}</span>
+          </span>
+          <span className="readout shrink-0 whitespace-nowrap rounded-full bg-foreground px-2 py-1.5 text-primary sm:px-3">{total.toLocaleString()} <span className="hidden sm:inline">{tr("points")}</span></span>
+          {practice && <Button variant="ghost" onClick={() => setPhase("done")} className="h-8 shrink-0 rounded-full bg-card px-2 text-[11px] sm:text-sm">{tr("end")}</Button>}
         </div>
       </header>
 
       <div className="relative mx-2 mb-2 flex-1 overflow-hidden rounded-2xl md:mx-4 md:mb-4">
         <GameMap
+          lang={lang}
           blind={blind && phase === "guess"}
           guess={guess}
           target={phase === "reveal" ? loc : null}
@@ -278,7 +287,7 @@ function GamePage() {
 
         <div className="pointer-events-none absolute inset-x-3 top-3 z-[500] flex justify-center">
           <SmartClue collapsed={promptCollapsed} onToggle={() => { setPromptCollapsed((c) => !c); buzz(8); }}
-            country={loc.country} name={loc.name} label={`${prompt.verb}${blind ? " · labels hidden" : ""}`}
+            country={loc.country} name={loc.name} lang={lang} label={`${tr(loc.category === "country" ? "findCountry" : "pinLocation")}${blind ? ` · ${tr("labelsHidden")}` : ""}`}
             seconds={phase === "guess" ? Math.ceil(limit - elapsed) : null}>
             {(loc.category !== "country" || phase === "guess") && (
               <div>
@@ -290,7 +299,7 @@ function GamePage() {
                         <div className="h-full bg-foreground/85 transition-[width] duration-100" style={{ width: `${100 - (elapsed / limit) * 100}%` }} />
                       </div>
                     )}
-                    {mode === "shrink" && phase === "guess" && <p className="readout mt-2 text-[11px] text-muted-foreground">zone {Math.round(radius).toLocaleString()} km · bonus ×{timeMultiplier(elapsed, limit).toFixed(2)}</p>}
+                    {mode === "shrink" && phase === "guess" && <p className="readout mt-2 text-[11px] text-muted-foreground">{tr("zone")} {Math.round(radius).toLocaleString()} km · {tr("bonus")} ×{timeMultiplier(elapsed, limit).toFixed(2)}</p>}
                   </div>
                 </div>
               </div>
@@ -302,14 +311,14 @@ function GamePage() {
 
         <div className="absolute inset-x-3 bottom-6 z-[500] flex justify-center">
           {phase === "guess" ? (
-            <button onClick={submit} disabled={!guess} className="btn btn-primary flex-col gap-1 px-10 py-3.5 text-lg">
+            <Button onClick={submit} disabled={!guess} className="game-confirm h-auto min-h-11 max-w-full flex-col gap-0.5 whitespace-normal rounded-full px-5 py-2.5 text-sm font-semibold shadow-none sm:px-6">
               {guess ? (
                 <>
-                  <span className="flex items-center gap-2">Confirm guess <kbd className="hidden rounded-full bg-foreground/10 px-2 py-0.5 text-xs md:inline">Space</kbd></span>
-                  <span className="readout text-xs font-medium opacity-60">{guess.lat.toFixed(4)}, {guess.lng.toFixed(4)}</span>
+                  <span className="flex min-w-0 items-center justify-center gap-2"><span>{tr("confirmGuess")}</span> <kbd className="hidden rounded-full bg-foreground/10 px-2 py-0.5 text-xs md:inline">{tr("space")}</kbd></span>
+                  <span className="readout whitespace-nowrap text-[10px] font-medium opacity-60">{guess.lat.toFixed(4)}, {guess.lng.toFixed(4)}</span>
                 </>
-              ) : "Click the map to pin"}
-            </button>
+              ) : tr("pinMap")}
+            </Button>
           ) : last && (
             <div className="plate w-full max-w-lg p-5">
               <div className="flex items-end justify-between gap-4">
@@ -318,13 +327,13 @@ function GamePage() {
                   <p className="font-display readout mt-1 text-5xl">+{last.points.toLocaleString()}</p>
                 </div>
                 <div className="text-right text-sm font-semibold">
-                  <p>{last.km === null ? "No guess" : formatDistance(last.km, settings.unit) + " off"}</p>
-                  {last.mult !== undefined && <p className="text-muted-foreground">time ×{last.mult.toFixed(2)}</p>}
+                  <p>{last.km === null ? tr("noGuess") : tr("distanceOff", { distance: formatDistance(last.km, settings.unit) })}</p>
+                  {last.mult !== undefined && <p className="text-muted-foreground">{tr("time")} ×{last.mult.toFixed(2)}</p>}
                 </div>
               </div>
               {last.bots && (
                 <ol className="mt-3 space-y-1 text-sm">
-                  {[{ name: settings.name || "You", km: last.km ?? Infinity, points: last.points }, ...last.bots].sort((a, b) => a.km - b.km).map((p, i) => (
+                  {[{ name: settings.name || t(lang, "you"), km: last.km ?? Infinity, points: last.points }, ...last.bots].sort((a, b) => a.km - b.km).map((p, i) => (
                     <li key={p.name} className={`flex justify-between rounded-full px-3 py-1 ${i === 0 ? "bg-primary-pale font-semibold" : ""}`}>
                       <span>{i + 1}. {p.name}</span><span>{Number.isFinite(p.km) ? formatDistance(p.km, settings.unit) : "—"} · {p.points.toLocaleString()}</span>
                     </li>
@@ -332,7 +341,7 @@ function GamePage() {
                 </ol>
               )}
               <button onClick={next} className="btn btn-ink mt-4 w-full">
-                {!practice && idx + 1 >= ROUNDS ? "See results" : "Next round"}
+                {!practice && idx + 1 >= ROUNDS ? tr("seeResults") : tr("nextRound")}
               </button>
             </div>
           )}
@@ -347,20 +356,20 @@ function Box({ k, v }: { k: string; v: string }) {
   return <div className="plate p-5"><p className="font-display text-2xl md:text-3xl">{v}</p><p className="mt-1 text-xs font-semibold text-muted-foreground">{k}</p></div>;
 }
 
-function Standings({ rows }: { rows: [string, { pts: number; wins: number; km: number }][] }) {
+function Standings({ rows, lang }: { lang: Lang; rows: [string, { pts: number; wins: number; km: number }][] }) {
   return (
     <div className="plate-ink mt-4 p-6">
-      <p className="text-sm font-semibold opacity-80">Closest Wins · standings (bots are simulated locally)</p>
+      <p className="text-sm font-semibold opacity-80">{t(lang, "standings")}</p>
       <ol className="mt-3 space-y-2">
         {rows.map(([n, s], i) => (
-          <li key={n} className="flex justify-between font-semibold"><span>{i + 1}. {n}</span><span>{s.wins} wins · {s.pts.toLocaleString()} pts</span></li>
+          <li key={n} className="flex justify-between font-semibold"><span>{i + 1}. {n}</span><span>{s.wins} {t(lang, "wins")} · {s.pts.toLocaleString()} pts</span></li>
         ))}
       </ol>
     </div>
   );
 }
 
-function StoryButton({ data }: { data: CardData }) {
+function StoryButton({ data, lang }: { data: CardData; lang: Lang }) {
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
   return (
@@ -376,7 +385,7 @@ function StoryButton({ data }: { data: CardData }) {
       disabled={busy}
       className="btn btn-outline"
     >
-      {busy ? "Creating…" : done ? "Shared!" : "Share card"}
+      {busy ? t(lang, "creating") : done ? t(lang, "shared") : t(lang, "shareCard")}
     </button>
   );
 }

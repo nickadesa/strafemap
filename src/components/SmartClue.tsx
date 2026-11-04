@@ -1,7 +1,9 @@
 import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { t, type Lang } from "@/lib/i18n";
 import { Flag } from "@/components/Flag";
 
 interface Props {
+  lang?: Lang;
   collapsed: boolean;
   onToggle: () => void;
   country: string;
@@ -12,7 +14,7 @@ interface Props {
 }
 
 // Measure only the active content; hidden details cannot widen a short pill.
-export function SmartClue({ collapsed, onToggle, country, name, label, seconds, children }: Props) {
+export function SmartClue({ lang = "en", collapsed, onToggle, country, name, label, seconds, children }: Props) {
   const shell = useRef<HTMLButtonElement>(null);
   const body = useRef<HTMLDivElement>(null);
   const flag = useRef<HTMLDivElement>(null);
@@ -79,7 +81,7 @@ export function SmartClue({ collapsed, onToggle, country, name, label, seconds, 
 
   return (
     <button ref={shell} type="button" onClick={onToggle} aria-expanded={!collapsed}
-      aria-label={`${name} — ${collapsed ? "Expand" : "Collapse"} clue`}
+      aria-label={`${name} — ${t(lang, collapsed ? "expandClue" : "collapseClue")}`}
       className="clue-pill glass-plate pointer-events-auto" data-collapsed={collapsed}>
       <div ref={flag} className="clue-badge"><Flag country={country} size={collapsed ? 28 : 44} /></div>
       <div ref={body} className={collapsed ? "clue-body clue-compact" : "clue-body clue-full"}>
