@@ -12,3 +12,6 @@
   - [x] Expanded pool with additional cities, landmarks, and natural sites
 - [x] Collapsible location prompt (click or auto after N seconds, configurable) + timer visible when collapsed
 - [x] Game-like home page redesign + Profile page with custom icons (no emoji)
+- [x] Bundled SVG flag pack with name aliases; clue card flag-left/centred/timer-right, max 320px, 620ms motion
+- [x] Round reveal auto-advances after 5s with bar; emoji reactions only on reveal; chat only on finished ranked/bot games
+- [x] Desktop 64px collapsible icon rail, mobile bottom bar; accent colour presets; optional Liquid Glass presets (Bend/Dispersion/Frost/Rim)
