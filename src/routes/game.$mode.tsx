@@ -14,6 +14,10 @@ import { renderCard, shareCard, type CardData } from "@/lib/game/shareCard";
 import { Button } from "@/components/ui/button";
 import { t, type Lang } from "@/lib/i18n";
 import { applyMatchResult } from "@/lib/rank";
+import { GameChat } from "@/components/GameChat";
+
+const AUTO_NEXT_SECONDS = 5;
+const REACTIONS = ["🔥", "😮", "😂", "👏", "😭"];
 
 interface Search { pool?: Pool | undefined; difficulty?: Difficulty | undefined; daily?: 1 | undefined; practice?: 1 | undefined; time?: TimeLimit | undefined; ranked?: 1 | undefined }
 const MODE_IDS = Object.keys(MODES) as Mode[];
@@ -153,6 +157,30 @@ function GamePage() {
 
   const total = results.reduce((a, r) => a + r.points, 0);
 
+  // Reveal auto-advances after a short countdown.
+  const [revealLeft, setRevealLeft] = useState(AUTO_NEXT_SECONDS);
+  const nextRef = useRef(next);
+  nextRef.current = next;
+  useEffect(() => {
+    if (phase !== "reveal") return;
+    const start = performance.now();
+    setRevealLeft(AUTO_NEXT_SECONDS);
+    const id = window.setInterval(() => {
+      const left = AUTO_NEXT_SECONDS - (performance.now() - start) / 1000;
+      if (left <= 0) { window.clearInterval(id); nextRef.current(); return; }
+      setRevealLeft(left);
+    }, 100);
+    return () => window.clearInterval(id);
+  }, [phase, idx]);
+
+  const [floaters, setFloaters] = useState<{ id: number; e: string; x: number }[]>([]);
+  const react = (e: string) => {
+    const id = Date.now() + Math.random();
+    setFloaters((f) => [...f.slice(-8), { id, e, x: Math.random() * 60 - 30 }]);
+    buzz(6);
+    window.setTimeout(() => setFloaters((f) => f.filter((x) => x.id !== id)), 1600);
+  };
+
   const keyRef = useRef({ submit, next, phase, guess });
   keyRef.current = { submit, next, phase, guess };
   useEffect(() => {
@@ -215,6 +243,7 @@ function GamePage() {
     return (
       <div className="min-h-screen px-5 pb-16">
         <div className="mx-auto max-w-4xl py-5"><Logo /></div>
+        {(ranked || mode === "closest") && <GameChat />}
         <main className="mx-auto max-w-4xl">
           <p className="text-sm font-semibold text-muted-foreground">{tr(mode)}{daily && ` · ${tr("daily")}`}{ranked && ` · ${tr("ranked")}`} · {tr("final")}</p>
           <h1 className="font-display mt-2 text-[clamp(4rem,16vw,8rem)]">{total.toLocaleString()}</h1>
@@ -272,7 +301,7 @@ function GamePage() {
         </div>
       </header>
 
-      <div className="relative mx-2 mb-2 flex-1 overflow-hidden rounded-2xl md:mx-4 md:mb-4">
+      <div className={`relative mx-2 mb-2 flex-1 overflow-hidden rounded-2xl md:mx-4 md:mb-4 ${phase === "reveal" ? "reveal-on" : ""}`}>
         <GameMap
           lang={lang}
           blind={blind && phase === "guess"}
@@ -320,7 +349,7 @@ function GamePage() {
               ) : tr("pinMap")}
             </Button>
           ) : last && (
-            <div className="plate w-full max-w-lg p-5">
+            <div className="plate relative w-full max-w-lg p-5">
               <div className="flex items-end justify-between gap-4">
                 <div>
                   <p className="text-xs font-semibold text-muted-foreground">{last.loc.name}, {last.loc.country}</p>
@@ -340,9 +369,19 @@ function GamePage() {
                   ))}
                 </ol>
               )}
-              <button onClick={next} className="btn btn-ink mt-4 w-full">
-                {!practice && idx + 1 >= ROUNDS ? tr("seeResults") : tr("nextRound")}
+              <div className="mt-4 flex items-center gap-1.5" role="group" aria-label={tr("react")}>
+                {REACTIONS.map((e) => (
+                  <button key={e} type="button" onClick={() => react(e)} className="reaction-btn" aria-label={`${tr("react")} ${e}`}>{e}</button>
+                ))}
+              </div>
+              <button onClick={next} className="btn btn-ink relative mt-3 w-full overflow-hidden">
+                <span className="absolute inset-y-0 left-0 bg-primary/25" style={{ width: `${(1 - revealLeft / AUTO_NEXT_SECONDS) * 100}%` }} aria-hidden="true" />
+                <span className="relative">{!practice && idx + 1 >= ROUNDS ? tr("seeResults") : tr("nextRound")}</span>
+                <span className="readout relative ml-2 text-xs opacity-70">{Math.ceil(revealLeft)}s</span>
               </button>
+              <div className="pointer-events-none absolute inset-x-0 bottom-full h-40" aria-hidden="true">
+                {floaters.map((f) => <span key={f.id} className="reaction-float" style={{ left: `calc(50% + ${f.x}%)` }}>{f.e}</span>)}
+              </div>
             </div>
           )}
         </div>

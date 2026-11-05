@@ -27,7 +27,7 @@ function Home() {
   return (
     <div className="min-h-screen">
       <Sidebar />
-      <main className="md:ml-56 px-5 pb-8 pt-20 md:pt-8">
+      <main className="rail-offset px-5 pb-8 pt-8">
         <div className="mx-auto max-w-4xl">
           <header className="mb-8">
             <h1 className="font-display text-3xl">STRAFE</h1>
