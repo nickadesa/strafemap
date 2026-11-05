@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Sidebar } from "@/components/Sidebar";
 import { useSettings } from "@/lib/game/storage";
 import { blip } from "@/lib/game/sound";
-import { useMapStyle, useTheme, type MapStyle } from "@/lib/theme";
+import { ACCENTS, GLASS_PRESETS, useAppearance, useMapStyle, useTheme, type Accent, type MapStyle } from "@/lib/theme";
 import { LANGS, t, type Lang } from "@/lib/i18n";
 import { TILES } from "@/components/GameMap";
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,7 @@ function SettingsPage() {
   const [theme, setTheme] = useTheme();
   const [mapStyle, setMapStyle] = useMapStyle();
   const lang = (s.language ?? "en") as Lang;
+  const { accent, setAccent, glass, setGlass } = useAppearance();
 
   return (
     <div className="min-h-screen">
@@ -113,6 +114,34 @@ function SettingsPage() {
                   <DropdownMenuItem onSelect={() => setTheme("dark")}>{t(lang, "dark")}</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+            </div>
+
+            <div>
+              <span className="mb-3 block text-sm font-medium">{t(lang, "accentColor")}</span>
+              <div className="flex flex-wrap gap-2.5">
+                {(Object.keys(ACCENTS) as Accent[]).map((k) => (
+                  <button key={k} onClick={() => setAccent(k)} aria-label={ACCENTS[k].label} title={ACCENTS[k].label} aria-pressed={accent === k}
+                    className={`h-9 w-9 rounded-full ring-offset-2 ring-offset-card transition-all ${accent === k ? "ring-2 ring-foreground" : "ring-1 ring-border"}`}
+                    style={{ background: ACCENTS[k].primary }} />
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <span className="mb-3 block text-sm font-medium">{t(lang, "liquidGlass")}</span>
+              <div className="seg">
+                {GLASS_PRESETS.map((g) => (
+                  <button key={g} onClick={() => setGlass(g)} className="seg-item" data-on={glass === g}>
+                    {t(lang, g === "off" ? "glassOff" : g)}
+                  </button>
+                ))}
+              </div>
+              {glass !== "off" && (
+                <div className="glass-plate mt-3 grid h-20 place-items-center overflow-hidden rounded-[20px] text-sm font-semibold"
+                  style={{ backgroundImage: `url(${tile(TILES.voyager.base)})`, backgroundSize: "cover" }}>
+                  <span className="glass-plate rounded-full px-4 py-2">STRAFE</span>
+                </div>
+              )}
             </div>
 
             <div>
