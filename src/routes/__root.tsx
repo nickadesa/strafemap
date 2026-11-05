@@ -1,4 +1,5 @@
-import { themeInitScript } from "@/lib/theme";
+import { themeInitScript, appearanceInitScript } from "@/lib/theme";
+import { LiquidGlassDefs } from "@/components/LiquidGlassDefs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -103,10 +104,11 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript + appearanceInitScript }} />
         <HeadContent />
       </head>
       <body>
+        <LiquidGlassDefs />
         {children}
         <Scripts />
       </body>

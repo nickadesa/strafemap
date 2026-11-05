@@ -270,3 +270,24 @@ button:not(.btn), [role="button"] { transition: transform 380ms var(--ease-sprin
 .reaction-float { position: absolute; bottom: 0; font-size: 28px; animation: reaction-rise 1.6s cubic-bezier(.2,.7,.2,1) forwards; }
 @keyframes reaction-rise { 0% { opacity: 0; transform: translateY(0) scale(.6); } 15% { opacity: 1; transform: translateY(-20px) scale(1.1); } 100% { opacity: 0; transform: translateY(-150px) scale(1); } }
 @media (prefers-reduced-motion: reduce) { .reaction-float { animation-duration: 1ms; } }
+
+/* Optional Liquid Glass (Settings). Fallback first; Chromium uses the SVG lens. */
+html[data-glass] .glass-plate {
+  background: color-mix(in oklab, var(--color-card) 38%, transparent);
+  backdrop-filter: blur(6px) saturate(1.8);
+  box-shadow: inset 1px 1px 0 0 rgb(255 255 255 / 0.55), inset -1px -1px 0 0 rgb(255 255 255 / 0.2), 0 8px 28px -12px rgb(0 0 0 / 0.35);
+}
+@supports (backdrop-filter: url(#lg-bend)) and (not (-webkit-hyphens: none)) {
+  html[data-glass="bend"] .glass-plate { backdrop-filter: url(#lg-bend) blur(2px) saturate(1.7); }
+  html[data-glass="dispersion"] .glass-plate { backdrop-filter: url(#lg-dispersion) blur(1.5px) saturate(1.9); }
+}
+html[data-glass="frost"] .glass-plate { background: color-mix(in oklab, var(--color-card) 55%, transparent); backdrop-filter: blur(18px) saturate(1.4); }
+html[data-glass="rim"] .glass-plate {
+  background: color-mix(in oklab, var(--color-card) 30%, transparent); backdrop-filter: blur(4px) saturate(1.6);
+  box-shadow: inset 1.5px 1.5px 0 0 rgb(255 255 255 / 0.9), inset -1.5px -1.5px 0 0 rgb(255 255 255 / 0.45), inset 0 0 18px 0 rgb(255 255 255 / 0.18), 0 10px 30px -14px rgb(0 0 0 / 0.4);
+}
+
+/* Navigation: 64px rail on desktop, bottom bar on mobile. */
+.rail-offset { transition: margin-left 380ms var(--ease-spring, ease); }
+@media (min-width: 768px) { .rail-offset { margin-left: var(--rail-w, 64px); } }
+@media (max-width: 767px) { .rail-offset { padding-bottom: calc(88px + env(safe-area-inset-bottom)); } }
