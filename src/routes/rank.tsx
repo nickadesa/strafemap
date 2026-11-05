@@ -52,7 +52,7 @@ function RankPage() {
   return (
     <div className="min-h-screen">
       <Sidebar />
-      <main className="md:ml-56 flex min-h-screen items-start justify-center px-4 py-6 md:px-5 md:py-10">
+      <main className="rail-offset flex min-h-screen items-start justify-center px-4 py-6 md:px-5 md:py-10">
         <div className="w-full max-w-3xl">
           <div className="mb-8 flex justify-center"><div className="seg">
             <button
