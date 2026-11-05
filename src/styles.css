@@ -291,3 +291,4 @@ html[data-glass="rim"] .glass-plate {
 .rail-offset { transition: margin-left 380ms var(--ease-spring, ease); }
 @media (min-width: 768px) { .rail-offset { margin-left: var(--rail-w, 64px); } }
 @media (max-width: 767px) { .rail-offset { padding-bottom: calc(88px + env(safe-area-inset-bottom)); } }
+.reveal-on .leaflet-control-zoom { opacity: 0; pointer-events: none; }

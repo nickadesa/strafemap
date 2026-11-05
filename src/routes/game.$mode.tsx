@@ -301,7 +301,7 @@ function GamePage() {
         </div>
       </header>
 
-      <div className="relative mx-2 mb-2 flex-1 overflow-hidden rounded-2xl md:mx-4 md:mb-4">
+      <div className={`relative mx-2 mb-2 flex-1 overflow-hidden rounded-2xl md:mx-4 md:mb-4 ${phase === "reveal" ? "reveal-on" : ""}`}>
         <GameMap
           lang={lang}
           blind={blind && phase === "guess"}
