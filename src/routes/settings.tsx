@@ -137,7 +137,7 @@ function SettingsPage() {
                 ))}
               </div>
               {glass !== "off" && (
-                <div className="glass-plate mt-3 grid h-20 place-items-center overflow-hidden rounded-[20px] text-sm font-semibold"
+                <div className="mt-3 grid h-20 place-items-center overflow-hidden rounded-[20px] text-sm font-semibold"
                   style={{ backgroundImage: `url(${tile(TILES.voyager.base)})`, backgroundSize: "cover" }}>
                   <span className="glass-plate rounded-full px-4 py-2">STRAFE</span>
                 </div>
