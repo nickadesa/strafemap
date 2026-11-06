@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Sidebar } from "@/components/Sidebar";
 import { useSettings, useRecords } from "@/lib/game/storage";
-import { loadRank, getTier, RANK_TIERS, type RankedProfile } from "@/lib/rank";
+import { loadRank, getRank, RANK_TIERS, RANK_STEPS, type RankedProfile } from "@/lib/rank";
 import { t, type Lang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/rank")({
@@ -28,7 +28,6 @@ function RankPage() {
   const lang = (s.language ?? "en") as Lang;
   const [tab, setTab] = useState<"play" | "leaderboard" | "guide">("play");
   const rank = loadRank();
-  const tier = getTier(rank.elo);
 
   const myName = s.name || "Guest";
 
@@ -41,10 +40,10 @@ function RankPage() {
     }, {});
 
   const board = [
-    { name: myName, elo: rank.elo, me: true },
+    { name: myName, elo: rank.rp, me: true },
     ...Object.values(others).slice(0, 9).map((o) => ({
       name: o.name,
-      elo: 800 + Math.floor(o.score / 100),
+      elo: Math.floor(o.score / 100),
       me: false,
     })),
   ].sort((a, b) => b.elo - a.elo);
@@ -71,81 +70,87 @@ function RankPage() {
               onClick={() => setTab("guide")}
               data-on={tab === "guide"} className="seg-item"
             >
-              Guide
+              {t(lang, "guide")}
             </button>
           </div></div>
 
-          {tab === "play" && <PlayTab rank={rank} tier={tier} />}
+          {tab === "play" && <PlayTab rank={rank} lang={lang} />}
           {tab === "leaderboard" && <LeaderboardTab board={board} />}
-          {tab === "guide" && <GuideTab />}
+          {tab === "guide" && <GuideTab lang={lang} rp={rank.rp} />}
         </div>
       </main>
     </div>
   );
 }
 
-function PlayTab({ rank, tier }: { rank: RankedProfile; tier: ReturnType<typeof getTier> }) {
-  const nextTier = RANK_TIERS.filter((t) => t.id !== "champion").find((t) => t.minElo > rank.elo);
-  const progress = nextTier ? Math.min(100, ((rank.elo - tier.minElo) / (nextTier.minElo - tier.minElo)) * 100) : 100;
-
+function PlayTab({ rank, lang }: { rank: RankedProfile; lang: Lang }) {
+  const cur = getRank(rank.rp);
+  const nxt = cur.next !== null ? getRank(cur.next) : null;
+  const progress = cur.next !== null ? ((rank.rp - cur.min) / (cur.next - cur.min)) * 100 : 100;
+  const stats = [
+    [rank.wins, t(lang, "winsLabel")], [rank.losses, t(lang, "lossesLabel")],
+    [`${rank.games ? Math.round((rank.wins / rank.games) * 100) : 0}%`, t(lang, "winRate")], [rank.bestStreak, t(lang, "bestStreakLabel")],
+  ] as const;
   return (
-    <div className="space-y-4 md:space-y-6">
+    <div className="space-y-4">
       <div className="plate flex flex-col items-center p-6 text-center md:p-10">
-        <img src={tier.icon} alt={tier.name} className="mb-4 h-24 w-24 md:mb-6 md:h-36 md:w-36" />
-        <p className="text-sm text-muted-foreground md:text-base">Current Rank</p>
-        <h2 className="font-display text-4xl md:text-6xl" style={{ color: tier.color }}>{tier.name}</h2>
-        <p className="mt-1 text-xl font-semibold md:mt-2 md:text-3xl"><span className="readout">{rank.elo}</span> ELO</p>
-
-        {nextTier && (
-          <div className="mt-4 w-full max-w-sm md:mt-6">
-            <div className="mb-1 flex justify-between text-xs text-muted-foreground md:mb-2 md:text-sm">
-              <span>{tier.name}</span>
-              <span>{nextTier.name}</span>
-            </div>
-            <div className="h-2 overflow-hidden rounded-full bg-muted md:h-3">
-              <div className="h-full bg-primary" style={{ width: `${progress}%` }} />
-            </div>
-            <p className="mt-1 text-xs text-muted-foreground md:mt-2 md:text-sm">{nextTier.minElo - rank.elo} ELO to {nextTier.name}</p>
+        <img src={cur.icon} alt={cur.name} className="h-36 w-36 md:h-48 md:w-48" />
+        <p className="mt-2 text-sm text-muted-foreground">{t(lang, "currentRank")}</p>
+        <h2 className="font-display text-4xl md:text-5xl" style={{ color: cur.tier.color }}>{cur.name}</h2>
+        <p className="mt-1 text-lg font-semibold"><span className="readout">{rank.rp.toLocaleString()}</span> RP</p>
+        <div className="mt-5 w-full max-w-sm">
+          <div className="mb-1.5 flex justify-between text-xs text-muted-foreground">
+            <span>{cur.name}</span><span>{nxt?.name ?? t(lang, "topRank")}</span>
           </div>
-        )}
-
-        <div className="mt-6 flex flex-wrap justify-center gap-6 text-sm md:mt-8 md:gap-10 md:text-base">
-          <div><p className="font-display text-2xl md:text-3xl">{rank.wins}</p><p className="text-muted-foreground">Wins</p></div>
-          <div><p className="font-display text-2xl md:text-3xl">{rank.losses}</p><p className="text-muted-foreground">Losses</p></div>
-          <div><p className="font-display text-2xl md:text-3xl">{rank.games ? Math.round((rank.wins / rank.games) * 100) : 0}%</p><p className="text-muted-foreground">Win rate</p></div>
-          <div><p className="font-display text-2xl md:text-3xl">{rank.bestStreak}</p><p className="text-muted-foreground">Best streak</p></div>
+          <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+            <div className="h-full rounded-full bg-primary transition-[width] duration-700" style={{ width: `${progress}%` }} />
+          </div>
+          {nxt && <p className="readout mt-1.5 text-xs text-muted-foreground">{t(lang, "rpToNext", { n: cur.next! - rank.rp, rank: nxt.name })}</p>}
         </div>
-
-        <Link to="/game/$mode" params={{ mode: "classic" }} search={{ ranked: 1 }} className="btn btn-primary mt-6 px-8 py-3 text-base md:mt-8 md:px-12 md:py-4 md:text-lg">
-          Play Ranked
+        <div className="mt-6 grid w-full max-w-md grid-cols-4 divide-x divide-border rounded-2xl border border-border">
+          {stats.map(([v, l]) => (
+            <div key={l} className="px-2 py-3"><p className="readout text-xl font-semibold">{v}</p><p className="text-[11px] text-muted-foreground">{l}</p></div>
+          ))}
+        </div>
+        <Link to="/game/$mode" params={{ mode: "classic" }} search={{ ranked: 1 }} className="btn btn-primary mt-6 px-10 py-3">
+          {t(lang, "playRanked")}
         </Link>
       </div>
-
-      <div className="plate p-4 md:p-6">
-        <p className="text-sm text-muted-foreground md:text-base">Recent matches will appear here after you play ranked games.</p>
-      </div>
+      <Link to="/achievements" className="plate flex items-center justify-between p-4 transition-colors hover:bg-muted/50">
+        <span className="font-semibold">{t(lang, "achievements")}</span>
+        <span className="text-sm text-muted-foreground">{t(lang, "viewAll")} →</span>
+      </Link>
     </div>
   );
 }
 
-function GuideTab() {
+function GuideTab({ lang, rp }: { lang: Lang; rp: number }) {
+  const mine = getRank(rp);
   return (
     <div className="plate p-4 md:p-8">
-      <h3 className="mb-4 text-center text-lg font-semibold md:mb-6 md:text-xl">All Ranks</h3>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:gap-4">
-        {RANK_TIERS.map((t) => (
-          <div key={t.id} className="rounded-xl border border-border/30 bg-muted/50 p-3 text-center md:rounded-2xl md:p-4">
-            <img src={t.icon} alt={t.name} className="mx-auto mb-1 h-12 w-12 md:mb-2 md:h-16 md:w-16" />
-            <p className="text-sm font-semibold md:text-base">{t.name}</p>
-            <p className="text-xs text-muted-foreground md:text-sm">
-              {t.id === "champion" ? "Top 1–50" : `${t.minElo}+ ELO`}
-            </p>
-          </div>
-        ))}
+      <h3 className="mb-5 text-center text-lg font-semibold">{t(lang, "allRanks")}</h3>
+      <div className="space-y-5">
+        {RANK_TIERS.map((tier) => {
+          const steps = RANK_STEPS.filter((s) => s.tier.id === tier.id);
+          return (
+            <div key={tier.id}>
+              <p className="mb-2 text-sm font-semibold" style={{ color: tier.color }}>{tier.name}</p>
+              <div className="grid grid-cols-4 gap-2">
+                {steps.map((s) => (
+                  <div key={s.name} className={`rounded-2xl border p-2 text-center ${s.name === mine.name ? "border-primary bg-primary/10" : "border-border"}`}>
+                    <img src={s.icon} alt={s.name} loading="lazy" className="mx-auto h-14 w-14 md:h-16 md:w-16" />
+                    <p className="text-xs font-semibold">{s.division ? s.name.split(" ")[1] : s.name}</p>
+                    <p className="readout text-[10px] text-muted-foreground">{s.min.toLocaleString()} RP</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </div>
-      <div className="mt-6 text-sm text-muted-foreground md:mt-8 md:text-base">
-        <p className="font-semibold text-foreground">How ELO works</p>
-        <p className="mt-1 md:mt-2">Start at 1000 ELO. Win to gain points, lose to lose points. Master is the highest ELO rank. Champion is reserved for the Top 50 players.</p>
+      <div className="mt-6 border-t border-border pt-5 text-sm text-muted-foreground">
+        <p className="font-semibold text-foreground">{t(lang, "howRp")}</p>
+        <p className="mt-1">{t(lang, "howRpBody")}</p>
       </div>
     </div>
   );
