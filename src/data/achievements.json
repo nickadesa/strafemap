@@ -1,0 +1,5914 @@
+{
+ "version": 1,
+ "rarityOrder": [
+  "Common",
+  "Uncommon",
+  "Rare",
+  "Epic",
+  "Legendary"
+ ],
+ "rarityColors": {
+  "Common": "#9AA4AE",
+  "Uncommon": "#3DBB7E",
+  "Rare": "#3F8CFF",
+  "Epic": "#A66CFF",
+  "Legendary": "#F2A93B"
+ },
+ "secretBadge": "/badges/secret-locked.svg",
+ "groups": [
+  {
+   "key": "A",
+   "name": "Career & Progression",
+   "badges": 14
+  },
+  {
+   "key": "B",
+   "name": "Precision & Accuracy",
+   "badges": 14
+  },
+  {
+   "key": "C",
+   "name": "High Score & Performance",
+   "badges": 12
+  },
+  {
+   "key": "D",
+   "name": "Streak & Consistency",
+   "badges": 12
+  },
+  {
+   "key": "E",
+   "name": "Daily Challenge",
+   "badges": 12
+  },
+  {
+   "key": "F",
+   "name": "Classic Mastery",
+   "badges": 14
+  },
+  {
+   "key": "G",
+   "name": "Map Shrink & Timed",
+   "badges": 12
+  },
+  {
+   "key": "H",
+   "name": "Competitive & Bot Mastery",
+   "badges": 14
+  },
+  {
+   "key": "I",
+   "name": "Blind Map Mastery",
+   "badges": 12
+  },
+  {
+   "key": "J",
+   "name": "Geographic Knowledge",
+   "badges": 12
+  },
+  {
+   "key": "K",
+   "name": "Hidden & Legendary",
+   "badges": 4
+  },
+  {
+   "key": "L",
+   "name": "Special Challenges",
+   "badges": 10
+  },
+  {
+   "key": "X",
+   "name": "Hidden",
+   "badges": 23
+  },
+  {
+   "key": "S",
+   "name": "Social",
+   "badges": 25
+  },
+  {
+   "key": "N",
+   "name": "Ranks, Completion & Events",
+   "badges": 23
+  },
+  {
+   "key": "T",
+   "name": "Milestones & Trophies",
+   "badges": 37
+  }
+ ],
+ "units": [
+  {
+   "id": "A-games-played",
+   "name": "Games Played",
+   "group": "A",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "A-01",
+     "name": "First Drop",
+     "requirement": "Complete your first game.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/A-01-first-drop.svg",
+       "locked": "/badges/full/locked/A-01-first-drop.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/A-01-first-drop.svg",
+       "locked": "/badges/compact/locked/A-01-first-drop.svg"
+      }
+     }
+    },
+    {
+     "id": "A-12",
+     "name": "First Milestone",
+     "requirement": "Complete 10 games.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "10",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/A-12-first-milestone.svg",
+       "locked": "/badges/full/locked/A-12-first-milestone.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/A-12-first-milestone.svg",
+       "locked": "/badges/compact/locked/A-12-first-milestone.svg"
+      }
+     }
+    },
+    {
+     "id": "A-03",
+     "name": "Dedicated Player",
+     "requirement": "Complete 50 games.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "50",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/A-03-dedicated-player.svg",
+       "locked": "/badges/full/locked/A-03-dedicated-player.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/A-03-dedicated-player.svg",
+       "locked": "/badges/compact/locked/A-03-dedicated-player.svg"
+      }
+     }
+    },
+    {
+     "id": "A-04",
+     "name": "Veteran",
+     "requirement": "Complete 250 games.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "250",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/A-04-veteran.svg",
+       "locked": "/badges/full/locked/A-04-veteran.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/A-04-veteran.svg",
+       "locked": "/badges/compact/locked/A-04-veteran.svg"
+      }
+     }
+    },
+    {
+     "id": "A-05",
+     "name": "Map Addict",
+     "requirement": "Complete 500 games.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "500",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/A-05-map-addict.svg",
+       "locked": "/badges/full/locked/A-05-map-addict.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/A-05-map-addict.svg",
+       "locked": "/badges/compact/locked/A-05-map-addict.svg"
+      }
+     }
+    },
+    {
+     "id": "A-06",
+     "name": "Veteran Explorer",
+     "requirement": "Complete 1,000 games.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "1K",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/A-06-veteran-explorer.svg",
+       "locked": "/badges/full/locked/A-06-veteran-explorer.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/A-06-veteran-explorer.svg",
+       "locked": "/badges/compact/locked/A-06-veteran-explorer.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "A-game-modes",
+   "name": "Game Modes",
+   "group": "A",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "A-02",
+     "name": "Explorer",
+     "requirement": "Complete 3 different game modes.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "3",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/A-02-explorer.svg",
+       "locked": "/badges/full/locked/A-02-explorer.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/A-02-explorer.svg",
+       "locked": "/badges/compact/locked/A-02-explorer.svg"
+      }
+     }
+    },
+    {
+     "id": "A-08",
+     "name": "Loyal Explorer",
+     "requirement": "Complete games in 5 different modes.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "5",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/A-08-loyal-explorer.svg",
+       "locked": "/badges/full/locked/A-08-loyal-explorer.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/A-08-loyal-explorer.svg",
+       "locked": "/badges/compact/locked/A-08-loyal-explorer.svg"
+      }
+     }
+    },
+    {
+     "id": "A-09",
+     "name": "All-Rounder",
+     "requirement": "Complete every currently available game mode.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "ALL",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/A-09-all-rounder.svg",
+       "locked": "/badges/full/locked/A-09-all-rounder.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/A-09-all-rounder.svg",
+       "locked": "/badges/compact/locked/A-09-all-rounder.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "A-time-played",
+   "name": "Time Played",
+   "group": "A",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "A-07",
+     "name": "Regular Visitor",
+     "requirement": "Play and complete games on 7 different days.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "7",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/A-07-regular-visitor.svg",
+       "locked": "/badges/full/locked/A-07-regular-visitor.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/A-07-regular-visitor.svg",
+       "locked": "/badges/compact/locked/A-07-regular-visitor.svg"
+      }
+     }
+    },
+    {
+     "id": "A-13",
+     "name": "Season Veteran",
+     "requirement": "Complete games in 3 different seasons.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "3",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/A-13-season-veteran.svg",
+       "locked": "/badges/full/locked/A-13-season-veteran.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/A-13-season-veteran.svg",
+       "locked": "/badges/compact/locked/A-13-season-veteran.svg"
+      }
+     }
+    },
+    {
+     "id": "A-10",
+     "name": "Long Journey",
+     "requirement": "Play across a period of at least one year.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "1 YR",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/A-10-long-journey.svg",
+       "locked": "/badges/full/locked/A-10-long-journey.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/A-10-long-journey.svg",
+       "locked": "/badges/compact/locked/A-10-long-journey.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "A-11",
+   "name": "STRAFE Legend",
+   "group": "A",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "A-11",
+     "name": "STRAFE Legend",
+     "requirement": "Complete designated Career and Mastery milestones.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/A-11-strafe-legend.svg",
+       "locked": "/badges/full/locked/A-11-strafe-legend.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/A-11-strafe-legend.svg",
+       "locked": "/badges/compact/locked/A-11-strafe-legend.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "A-14",
+   "name": "Career Collector",
+   "group": "A",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "A-14",
+     "name": "Career Collector",
+     "requirement": "Unlock the required number of Career achievements.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/A-14-career-collector.svg",
+       "locked": "/badges/full/locked/A-14-career-collector.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/A-14-career-collector.svg",
+       "locked": "/badges/compact/locked/A-14-career-collector.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "B-guess-distance",
+   "name": "Guess Distance",
+   "group": "B",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "B-01",
+     "name": "Close Enough",
+     "requirement": "Guess within 1,000 km.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "1K KM",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/B-01-close-enough.svg",
+       "locked": "/badges/full/locked/B-01-close-enough.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/B-01-close-enough.svg",
+       "locked": "/badges/compact/locked/B-01-close-enough.svg"
+      }
+     }
+    },
+    {
+     "id": "B-02",
+     "name": "Good Eye",
+     "requirement": "Guess within 250 km.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "250 KM",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/B-02-good-eye.svg",
+       "locked": "/badges/full/locked/B-02-good-eye.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/B-02-good-eye.svg",
+       "locked": "/badges/compact/locked/B-02-good-eye.svg"
+      }
+     }
+    },
+    {
+     "id": "B-03",
+     "name": "Sharpshooter",
+     "requirement": "Guess within 100 km.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "100 KM",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/B-03-sharpshooter.svg",
+       "locked": "/badges/full/locked/B-03-sharpshooter.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/B-03-sharpshooter.svg",
+       "locked": "/badges/compact/locked/B-03-sharpshooter.svg"
+      }
+     }
+    },
+    {
+     "id": "B-04",
+     "name": "Pinpoint",
+     "requirement": "Guess within 10 km.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "10 KM",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/B-04-pinpoint.svg",
+       "locked": "/badges/full/locked/B-04-pinpoint.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/B-04-pinpoint.svg",
+       "locked": "/badges/compact/locked/B-04-pinpoint.svg"
+      }
+     }
+    },
+    {
+     "id": "B-05",
+     "name": "Dead Center",
+     "requirement": "Make an exact or near-exact guess according to the game's precision tolerance.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/B-05-dead-center.svg",
+       "locked": "/badges/full/locked/B-05-dead-center.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/B-05-dead-center.svg",
+       "locked": "/badges/compact/locked/B-05-dead-center.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "B-average-accuracy",
+   "name": "Average Accuracy",
+   "group": "B",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "B-07",
+     "name": "Consistent Aim",
+     "requirement": "Maintain the required average distance across 10 rounds.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "10",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/B-07-consistent-aim.svg",
+       "locked": "/badges/full/locked/B-07-consistent-aim.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/B-07-consistent-aim.svg",
+       "locked": "/badges/compact/locked/B-07-consistent-aim.svg"
+      }
+     }
+    },
+    {
+     "id": "B-08",
+     "name": "Precision Expert",
+     "requirement": "Maintain the required average distance across 25 rounds.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "25",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/B-08-precision-expert.svg",
+       "locked": "/badges/full/locked/B-08-precision-expert.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/B-08-precision-expert.svg",
+       "locked": "/badges/compact/locked/B-08-precision-expert.svg"
+      }
+     }
+    },
+    {
+     "id": "B-12",
+     "name": "Long-Term Accuracy",
+     "requirement": "Maintain the required average across 100 rounds.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "100",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/B-12-long-term-accuracy.svg",
+       "locked": "/badges/full/locked/B-12-long-term-accuracy.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/B-12-long-term-accuracy.svg",
+       "locked": "/badges/compact/locked/B-12-long-term-accuracy.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "B-06",
+   "name": "Lucky Guess",
+   "group": "B",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "B-06",
+     "name": "Lucky Guess",
+     "requirement": "Make an exceptionally accurate guess in your first completed game.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/B-06-lucky-guess.svg",
+       "locked": "/badges/full/locked/B-06-lucky-guess.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/B-06-lucky-guess.svg",
+       "locked": "/badges/compact/locked/B-06-lucky-guess.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "B-09",
+   "name": "Perfect Journey",
+   "group": "B",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "B-09",
+     "name": "Perfect Journey",
+     "requirement": "Achieve a perfect score in every round of one game.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/B-09-perfect-journey.svg",
+       "locked": "/badges/full/locked/B-09-perfect-journey.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/B-09-perfect-journey.svg",
+       "locked": "/badges/compact/locked/B-09-perfect-journey.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "B-10",
+   "name": "Precision Streak",
+   "group": "B",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "B-10",
+     "name": "Precision Streak",
+     "requirement": "Meet the precision target for 10 consecutive rounds.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "10",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/B-10-precision-streak.svg",
+       "locked": "/badges/full/locked/B-10-precision-streak.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/B-10-precision-streak.svg",
+       "locked": "/badges/compact/locked/B-10-precision-streak.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "B-11",
+   "name": "Regional Accuracy",
+   "group": "B",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "B-11",
+     "name": "Regional Accuracy",
+     "requirement": "Meet the accuracy target in 5 different regions.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "5",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/B-11-regional-accuracy.svg",
+       "locked": "/badges/full/locked/B-11-regional-accuracy.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/B-11-regional-accuracy.svg",
+       "locked": "/badges/compact/locked/B-11-regional-accuracy.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "B-13",
+   "name": "Impossible Shot",
+   "group": "B",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "B-13",
+     "name": "Impossible Shot",
+     "requirement": "Make an exceptionally accurate guess under a designated difficult condition.",
+     "rarity": "Legendary",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/B-13-impossible-shot.svg",
+       "locked": "/badges/full/locked/B-13-impossible-shot.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/B-13-impossible-shot.svg",
+       "locked": "/badges/compact/locked/B-13-impossible-shot.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "B-14",
+   "name": "Distance Master",
+   "group": "B",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "B-14",
+     "name": "Distance Master",
+     "requirement": "Achieve high distance accuracy across multiple completed games.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/B-14-distance-master.svg",
+       "locked": "/badges/full/locked/B-14-distance-master.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/B-14-distance-master.svg",
+       "locked": "/badges/compact/locked/B-14-distance-master.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "C-score-in-one-game",
+   "name": "Score in One Game",
+   "group": "C",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "C-01",
+     "name": "High Scorer",
+     "requirement": "Reach the designated score threshold in one game.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/C-01-high-scorer.svg",
+       "locked": "/badges/full/locked/C-01-high-scorer.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/C-01-high-scorer.svg",
+       "locked": "/badges/compact/locked/C-01-high-scorer.svg"
+      }
+     }
+    },
+    {
+     "id": "C-08",
+     "name": "Twenty Grand",
+     "requirement": "Score 20,000 points in one game.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "20K",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/C-08-twenty-grand.svg",
+       "locked": "/badges/full/locked/C-08-twenty-grand.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/C-08-twenty-grand.svg",
+       "locked": "/badges/compact/locked/C-08-twenty-grand.svg"
+      }
+     }
+    },
+    {
+     "id": "C-12",
+     "name": "Peak Performance",
+     "requirement": "Achieve a designated high-performance result in one game.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/C-12-peak-performance.svg",
+       "locked": "/badges/full/locked/C-12-peak-performance.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/C-12-peak-performance.svg",
+       "locked": "/badges/compact/locked/C-12-peak-performance.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "C-total-score",
+   "name": "Total Score",
+   "group": "C",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "C-10",
+     "name": "Point Collector",
+     "requirement": "Reach a cumulative lifetime score target.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/C-10-point-collector.svg",
+       "locked": "/badges/full/locked/C-10-point-collector.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/C-10-point-collector.svg",
+       "locked": "/badges/compact/locked/C-10-point-collector.svg"
+      }
+     }
+    },
+    {
+     "id": "C-02",
+     "name": "Score Hunter",
+     "requirement": "Reach a cumulative score target across 10 games.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "10",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/C-02-score-hunter.svg",
+       "locked": "/badges/full/locked/C-02-score-hunter.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/C-02-score-hunter.svg",
+       "locked": "/badges/compact/locked/C-02-score-hunter.svg"
+      }
+     }
+    },
+    {
+     "id": "C-07",
+     "name": "Lifetime Score",
+     "requirement": "Reach a lifetime cumulative score target.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/C-07-lifetime-score.svg",
+       "locked": "/badges/full/locked/C-07-lifetime-score.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/C-07-lifetime-score.svg",
+       "locked": "/badges/compact/locked/C-07-lifetime-score.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "C-03",
+   "name": "Score Master",
+   "group": "C",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "C-03",
+     "name": "Score Master",
+     "requirement": "Achieve a high score in 10 games.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "10",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/C-03-score-master.svg",
+       "locked": "/badges/full/locked/C-03-score-master.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/C-03-score-master.svg",
+       "locked": "/badges/compact/locked/C-03-score-master.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "C-04",
+   "name": "Perfect Round",
+   "group": "C",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "C-04",
+     "name": "Perfect Round",
+     "requirement": "Achieve a perfect score in one round.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/C-04-perfect-round.svg",
+       "locked": "/badges/full/locked/C-04-perfect-round.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/C-04-perfect-round.svg",
+       "locked": "/badges/compact/locked/C-04-perfect-round.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "C-05",
+   "name": "Record Breaker",
+   "group": "C",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "C-05",
+     "name": "Record Breaker",
+     "requirement": "Set a new personal best.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/C-05-record-breaker.svg",
+       "locked": "/badges/full/locked/C-05-record-breaker.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/C-05-record-breaker.svg",
+       "locked": "/badges/compact/locked/C-05-record-breaker.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "C-06",
+   "name": "Atlas Perfectionist",
+   "group": "C",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "C-06",
+     "name": "Atlas Perfectionist",
+     "requirement": "Achieve high scores across multiple game modes.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/C-06-atlas-perfectionist.svg",
+       "locked": "/badges/full/locked/C-06-atlas-perfectionist.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/C-06-atlas-perfectionist.svg",
+       "locked": "/badges/compact/locked/C-06-atlas-perfectionist.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "C-09",
+   "name": "Bullseye",
+   "group": "C",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "C-09",
+     "name": "Bullseye",
+     "requirement": "Score 5,000 points in one round.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "5000",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/C-09-bullseye.svg",
+       "locked": "/badges/full/locked/C-09-bullseye.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/C-09-bullseye.svg",
+       "locked": "/badges/compact/locked/C-09-bullseye.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "C-11",
+   "name": "Elite Performance",
+   "group": "C",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "C-11",
+     "name": "Elite Performance",
+     "requirement": "Achieve high-level performance across multiple games.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/C-11-elite-performance.svg",
+       "locked": "/badges/full/locked/C-11-elite-performance.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/C-11-elite-performance.svg",
+       "locked": "/badges/compact/locked/C-11-elite-performance.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "D-round-streak",
+   "name": "Round Streak",
+   "group": "D",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "D-01",
+     "name": "Warm Streak",
+     "requirement": "Meet the performance target for 3 consecutive rounds.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "3",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/D-01-warm-streak.svg",
+       "locked": "/badges/full/locked/D-01-warm-streak.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/D-01-warm-streak.svg",
+       "locked": "/badges/compact/locked/D-01-warm-streak.svg"
+      }
+     }
+    },
+    {
+     "id": "D-02",
+     "name": "Hot Streak",
+     "requirement": "Meet the performance target for 10 consecutive rounds.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "10",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/D-02-hot-streak.svg",
+       "locked": "/badges/full/locked/D-02-hot-streak.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/D-02-hot-streak.svg",
+       "locked": "/badges/compact/locked/D-02-hot-streak.svg"
+      }
+     }
+    },
+    {
+     "id": "D-12",
+     "name": "Relentless",
+     "requirement": "Meet the performance target for 50 consecutive rounds.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "50",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/D-12-relentless.svg",
+       "locked": "/badges/full/locked/D-12-relentless.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/D-12-relentless.svg",
+       "locked": "/badges/compact/locked/D-12-relentless.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "D-03",
+   "name": "Laser Focus",
+   "group": "D",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "D-03",
+     "name": "Laser Focus",
+     "requirement": "Meet the target in every round of one game.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/D-03-laser-focus.svg",
+       "locked": "/badges/full/locked/D-03-laser-focus.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/D-03-laser-focus.svg",
+       "locked": "/badges/compact/locked/D-03-laser-focus.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "D-04",
+   "name": "Unbroken",
+   "group": "D",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "D-04",
+     "name": "Unbroken",
+     "requirement": "Complete the required number of games without abandoning them.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/D-04-unbroken.svg",
+       "locked": "/badges/full/locked/D-04-unbroken.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/D-04-unbroken.svg",
+       "locked": "/badges/compact/locked/D-04-unbroken.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "D-05",
+   "name": "Never Miss Twice",
+   "group": "D",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "D-05",
+     "name": "Never Miss Twice",
+     "requirement": "After failing a round, meet the target in the next round.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/D-05-never-miss-twice.svg",
+       "locked": "/badges/full/locked/D-05-never-miss-twice.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/D-05-never-miss-twice.svg",
+       "locked": "/badges/compact/locked/D-05-never-miss-twice.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "D-06",
+   "name": "Consistency King",
+   "group": "D",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "D-06",
+     "name": "Consistency King",
+     "requirement": "Maintain the required average score across 10 games.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/D-06-consistency-king.svg",
+       "locked": "/badges/full/locked/D-06-consistency-king.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/D-06-consistency-king.svg",
+       "locked": "/badges/compact/locked/D-06-consistency-king.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "D-07",
+   "name": "Perfect Momentum",
+   "group": "D",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "D-07",
+     "name": "Perfect Momentum",
+     "requirement": "Maintain the required performance throughout one game.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/D-07-perfect-momentum.svg",
+       "locked": "/badges/full/locked/D-07-perfect-momentum.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/D-07-perfect-momentum.svg",
+       "locked": "/badges/compact/locked/D-07-perfect-momentum.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "D-08",
+   "name": "No Bad Days",
+   "group": "D",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "D-08",
+     "name": "No Bad Days",
+     "requirement": "Meet the target on 7 different days.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "7",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/D-08-no-bad-days.svg",
+       "locked": "/badges/full/locked/D-08-no-bad-days.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/D-08-no-bad-days.svg",
+       "locked": "/badges/compact/locked/D-08-no-bad-days.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "D-09",
+   "name": "On a Run",
+   "group": "D",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "D-09",
+     "name": "On a Run",
+     "requirement": "Guess within 500 km for 5 consecutive rounds.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "5",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/D-09-on-a-run.svg",
+       "locked": "/badges/full/locked/D-09-on-a-run.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/D-09-on-a-run.svg",
+       "locked": "/badges/compact/locked/D-09-on-a-run.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "D-10",
+   "name": "Unbeaten Streak",
+   "group": "D",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "D-10",
+     "name": "Unbeaten Streak",
+     "requirement": "Win 5 consecutive games.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "5",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/D-10-unbeaten-streak.svg",
+       "locked": "/badges/full/locked/D-10-unbeaten-streak.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/D-10-unbeaten-streak.svg",
+       "locked": "/badges/compact/locked/D-10-unbeaten-streak.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "D-11",
+   "name": "Steady Climber",
+   "group": "D",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "D-11",
+     "name": "Steady Climber",
+     "requirement": "Maintain the required performance across 25 games.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "25",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/D-11-steady-climber.svg",
+       "locked": "/badges/full/locked/D-11-steady-climber.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/D-11-steady-climber.svg",
+       "locked": "/badges/compact/locked/D-11-steady-climber.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "E-daily-challenges",
+   "name": "Daily Challenges",
+   "group": "E",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "E-01",
+     "name": "Daily Explorer",
+     "requirement": "Complete your first Daily Challenge.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "1",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/E-01-daily-explorer.svg",
+       "locked": "/badges/full/locked/E-01-daily-explorer.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/E-01-daily-explorer.svg",
+       "locked": "/badges/compact/locked/E-01-daily-explorer.svg"
+      }
+     }
+    },
+    {
+     "id": "E-11",
+     "name": "Daily Veteran",
+     "requirement": "Complete 50 Daily Challenges.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "50",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/E-11-daily-veteran.svg",
+       "locked": "/badges/full/locked/E-11-daily-veteran.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/E-11-daily-veteran.svg",
+       "locked": "/badges/compact/locked/E-11-daily-veteran.svg"
+      }
+     }
+    },
+    {
+     "id": "E-05",
+     "name": "Century Challenge",
+     "requirement": "Complete 100 Daily Challenges.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "100",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/E-05-century-challenge.svg",
+       "locked": "/badges/full/locked/E-05-century-challenge.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/E-05-century-challenge.svg",
+       "locked": "/badges/compact/locked/E-05-century-challenge.svg"
+      }
+     }
+    },
+    {
+     "id": "E-12",
+     "name": "Daily Legend",
+     "requirement": "Complete 200 Daily Challenges.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "200",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/E-12-daily-legend.svg",
+       "locked": "/badges/full/locked/E-12-daily-legend.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/E-12-daily-legend.svg",
+       "locked": "/badges/compact/locked/E-12-daily-legend.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "E-daily-days",
+   "name": "Daily Days",
+   "group": "E",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "E-02",
+     "name": "Daily Habit",
+     "requirement": "Complete Daily Challenges on 7 different days.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "7",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/E-02-daily-habit.svg",
+       "locked": "/badges/full/locked/E-02-daily-habit.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/E-02-daily-habit.svg",
+       "locked": "/badges/compact/locked/E-02-daily-habit.svg"
+      }
+     }
+    },
+    {
+     "id": "E-03",
+     "name": "Daily Dedication",
+     "requirement": "Complete Daily Challenges on 30 different days.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "30",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/E-03-daily-dedication.svg",
+       "locked": "/badges/full/locked/E-03-daily-dedication.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/E-03-daily-dedication.svg",
+       "locked": "/badges/compact/locked/E-03-daily-dedication.svg"
+      }
+     }
+    },
+    {
+     "id": "E-09",
+     "name": "Year of Discovery",
+     "requirement": "Complete Daily Challenges according to the 365-day requirement.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "365",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/E-09-year-of-discovery.svg",
+       "locked": "/badges/full/locked/E-09-year-of-discovery.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/E-09-year-of-discovery.svg",
+       "locked": "/badges/compact/locked/E-09-year-of-discovery.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "E-daily-streak",
+   "name": "Daily Streak",
+   "group": "E",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "E-06",
+     "name": "Perfect Week",
+     "requirement": "Complete Daily Challenges on 7 consecutive calendar days.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "7",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/E-06-perfect-week.svg",
+       "locked": "/badges/full/locked/E-06-perfect-week.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/E-06-perfect-week.svg",
+       "locked": "/badges/compact/locked/E-06-perfect-week.svg"
+      }
+     }
+    },
+    {
+     "id": "E-08",
+     "name": "Never Miss a Day",
+     "requirement": "Complete Daily Challenges for 30 consecutive days.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "30",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/E-08-never-miss-a-day.svg",
+       "locked": "/badges/full/locked/E-08-never-miss-a-day.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/E-08-never-miss-a-day.svg",
+       "locked": "/badges/compact/locked/E-08-never-miss-a-day.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "E-04",
+   "name": "Daily Master",
+   "group": "E",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "E-04",
+     "name": "Daily Master",
+     "requirement": "Reach the target score in 10 Daily Challenges.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "10",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/E-04-daily-master.svg",
+       "locked": "/badges/full/locked/E-04-daily-master.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/E-04-daily-master.svg",
+       "locked": "/badges/compact/locked/E-04-daily-master.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "E-07",
+   "name": "Daily Champion",
+   "group": "E",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "E-07",
+     "name": "Daily Champion",
+     "requirement": "Reach the designated high score in a Daily Challenge.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/E-07-daily-champion.svg",
+       "locked": "/badges/full/locked/E-07-daily-champion.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/E-07-daily-champion.svg",
+       "locked": "/badges/compact/locked/E-07-daily-champion.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "E-10",
+   "name": "Daily Perfection",
+   "group": "E",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "E-10",
+     "name": "Daily Perfection",
+     "requirement": "Achieve a perfect Daily Challenge score.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/E-10-daily-perfection.svg",
+       "locked": "/badges/full/locked/E-10-daily-perfection.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/E-10-daily-perfection.svg",
+       "locked": "/badges/compact/locked/E-10-daily-perfection.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "F-classic-games",
+   "name": "Classic Games",
+   "group": "F",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "F-01",
+     "name": "Classic Rookie",
+     "requirement": "Complete your first Classic game.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "1",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/F-01-classic-rookie.svg",
+       "locked": "/badges/full/locked/F-01-classic-rookie.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/F-01-classic-rookie.svg",
+       "locked": "/badges/compact/locked/F-01-classic-rookie.svg"
+      }
+     }
+    },
+    {
+     "id": "F-02",
+     "name": "Classic Player",
+     "requirement": "Complete 25 Classic games.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "25",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/F-02-classic-player.svg",
+       "locked": "/badges/full/locked/F-02-classic-player.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/F-02-classic-player.svg",
+       "locked": "/badges/compact/locked/F-02-classic-player.svg"
+      }
+     }
+    },
+    {
+     "id": "F-11",
+     "name": "Classic Veteran",
+     "requirement": "Complete 100 Classic games.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "100",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/F-11-classic-veteran.svg",
+       "locked": "/badges/full/locked/F-11-classic-veteran.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/F-11-classic-veteran.svg",
+       "locked": "/badges/compact/locked/F-11-classic-veteran.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "F-continents",
+   "name": "Continents",
+   "group": "F",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "F-07",
+     "name": "World Explorer",
+     "requirement": "Play locations from 5 different continents.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "5",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/F-07-world-explorer.svg",
+       "locked": "/badges/full/locked/F-07-world-explorer.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/F-07-world-explorer.svg",
+       "locked": "/badges/compact/locked/F-07-world-explorer.svg"
+      }
+     }
+    },
+    {
+     "id": "F-08",
+     "name": "Continental Master",
+     "requirement": "Reach the target score across every continent.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/F-08-continental-master.svg",
+       "locked": "/badges/full/locked/F-08-continental-master.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/F-08-continental-master.svg",
+       "locked": "/badges/compact/locked/F-08-continental-master.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "F-03",
+   "name": "Classic Expert",
+   "group": "F",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "F-03",
+     "name": "Classic Expert",
+     "requirement": "Reach the target score in 10 Classic games.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "10",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/F-03-classic-expert.svg",
+       "locked": "/badges/full/locked/F-03-classic-expert.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/F-03-classic-expert.svg",
+       "locked": "/badges/compact/locked/F-03-classic-expert.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "F-04",
+   "name": "Classic Master",
+   "group": "F",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "F-04",
+     "name": "Classic Master",
+     "requirement": "Meet the accuracy target across 25 Classic games.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "25",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/F-04-classic-master.svg",
+       "locked": "/badges/full/locked/F-04-classic-master.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/F-04-classic-master.svg",
+       "locked": "/badges/compact/locked/F-04-classic-master.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "F-05",
+   "name": "One Pin Wonder",
+   "group": "F",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "F-05",
+     "name": "One Pin Wonder",
+     "requirement": "Finish a Classic game with the required pin condition.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/F-05-one-pin-wonder.svg",
+       "locked": "/badges/full/locked/F-05-one-pin-wonder.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/F-05-one-pin-wonder.svg",
+       "locked": "/badges/compact/locked/F-05-one-pin-wonder.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "F-06",
+   "name": "No Hesitation",
+   "group": "F",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "F-06",
+     "name": "No Hesitation",
+     "requirement": "Answer within the required time in every round.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/F-06-no-hesitation.svg",
+       "locked": "/badges/full/locked/F-06-no-hesitation.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/F-06-no-hesitation.svg",
+       "locked": "/badges/compact/locked/F-06-no-hesitation.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "F-09",
+   "name": "Classic Perfection",
+   "group": "F",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "F-09",
+     "name": "Classic Perfection",
+     "requirement": "Achieve a perfect Classic game.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/F-09-classic-perfection.svg",
+       "locked": "/badges/full/locked/F-09-classic-perfection.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/F-09-classic-perfection.svg",
+       "locked": "/badges/compact/locked/F-09-classic-perfection.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "F-10",
+   "name": "Classic Legend",
+   "group": "F",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "F-10",
+     "name": "Classic Legend",
+     "requirement": "Complete advanced Classic mastery requirements.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/F-10-classic-legend.svg",
+       "locked": "/badges/full/locked/F-10-classic-legend.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/F-10-classic-legend.svg",
+       "locked": "/badges/compact/locked/F-10-classic-legend.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "F-12",
+   "name": "Classic Streak",
+   "group": "F",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "F-12",
+     "name": "Classic Streak",
+     "requirement": "Meet the performance target in 10 consecutive Classic games.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "10",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/F-12-classic-streak.svg",
+       "locked": "/badges/full/locked/F-12-classic-streak.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/F-12-classic-streak.svg",
+       "locked": "/badges/compact/locked/F-12-classic-streak.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "F-13",
+   "name": "Classic Champion",
+   "group": "F",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "F-13",
+     "name": "Classic Champion",
+     "requirement": "Win the required number of Classic games.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/F-13-classic-champion.svg",
+       "locked": "/badges/full/locked/F-13-classic-champion.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/F-13-classic-champion.svg",
+       "locked": "/badges/compact/locked/F-13-classic-champion.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "F-14",
+   "name": "Classic Lifetime Mastery",
+   "group": "F",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "F-14",
+     "name": "Classic Lifetime Mastery",
+     "requirement": "Complete long-term Classic mastery requirements.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/F-14-classic-lifetime-mastery.svg",
+       "locked": "/badges/full/locked/F-14-classic-lifetime-mastery.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/F-14-classic-lifetime-mastery.svg",
+       "locked": "/badges/compact/locked/F-14-classic-lifetime-mastery.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "G-map-shrink",
+   "name": "Map Shrink",
+   "group": "G",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "G-06",
+     "name": "Shrinking World",
+     "requirement": "Complete the required number of Map Shrink stages.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/G-06-shrinking-world.svg",
+       "locked": "/badges/full/locked/G-06-shrinking-world.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/G-06-shrinking-world.svg",
+       "locked": "/badges/compact/locked/G-06-shrinking-world.svg"
+      }
+     }
+    },
+    {
+     "id": "G-11",
+     "name": "Shrink Survivor",
+     "requirement": "Complete consecutive Map Shrink stages.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/G-11-shrink-survivor.svg",
+       "locked": "/badges/full/locked/G-11-shrink-survivor.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/G-11-shrink-survivor.svg",
+       "locked": "/badges/compact/locked/G-11-shrink-survivor.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "G-timed-mode",
+   "name": "Timed Mode",
+   "group": "G",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "G-03",
+     "name": "Time Master",
+     "requirement": "Reach the target score in Timed mode.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/G-03-time-master.svg",
+       "locked": "/badges/full/locked/G-03-time-master.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/G-03-time-master.svg",
+       "locked": "/badges/compact/locked/G-03-time-master.svg"
+      }
+     }
+    },
+    {
+     "id": "G-07",
+     "name": "Pressure Proof",
+     "requirement": "Reach the target score under time pressure.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/G-07-pressure-proof.svg",
+       "locked": "/badges/full/locked/G-07-pressure-proof.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/G-07-pressure-proof.svg",
+       "locked": "/badges/compact/locked/G-07-pressure-proof.svg"
+      }
+     }
+    },
+    {
+     "id": "G-08",
+     "name": "Time Lord",
+     "requirement": "Achieve high performance across multiple Timed games.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/G-08-time-lord.svg",
+       "locked": "/badges/full/locked/G-08-time-lord.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/G-08-time-lord.svg",
+       "locked": "/badges/compact/locked/G-08-time-lord.svg"
+      }
+     }
+    },
+    {
+     "id": "G-12",
+     "name": "Timed Legend",
+     "requirement": "Complete advanced Timed mode mastery.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/G-12-timed-legend.svg",
+       "locked": "/badges/full/locked/G-12-timed-legend.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/G-12-timed-legend.svg",
+       "locked": "/badges/compact/locked/G-12-timed-legend.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "G-01",
+   "name": "Against the Clock",
+   "group": "G",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "G-01",
+     "name": "Against the Clock",
+     "requirement": "Complete a game within the required time.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/G-01-against-the-clock.svg",
+       "locked": "/badges/full/locked/G-01-against-the-clock.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/G-01-against-the-clock.svg",
+       "locked": "/badges/compact/locked/G-01-against-the-clock.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "G-02",
+   "name": "Quick Thinker",
+   "group": "G",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "G-02",
+     "name": "Quick Thinker",
+     "requirement": "Answer quickly for the required number of rounds.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/G-02-quick-thinker.svg",
+       "locked": "/badges/full/locked/G-02-quick-thinker.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/G-02-quick-thinker.svg",
+       "locked": "/badges/compact/locked/G-02-quick-thinker.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "G-04",
+   "name": "Last Second",
+   "group": "G",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "G-04",
+     "name": "Last Second",
+     "requirement": "Submit an answer during the final seconds before time expires.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/G-04-last-second.svg",
+       "locked": "/badges/full/locked/G-04-last-second.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/G-04-last-second.svg",
+       "locked": "/badges/compact/locked/G-04-last-second.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "G-05",
+   "name": "Fast & Accurate",
+   "group": "G",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "G-05",
+     "name": "Fast & Accurate",
+     "requirement": "Meet both speed and accuracy requirements.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/G-05-fast-accurate.svg",
+       "locked": "/badges/full/locked/G-05-fast-accurate.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/G-05-fast-accurate.svg",
+       "locked": "/badges/compact/locked/G-05-fast-accurate.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "G-09",
+   "name": "Speed Specialist",
+   "group": "G",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "G-09",
+     "name": "Speed Specialist",
+     "requirement": "Meet the time target across multiple games.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/G-09-speed-specialist.svg",
+       "locked": "/badges/full/locked/G-09-speed-specialist.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/G-09-speed-specialist.svg",
+       "locked": "/badges/compact/locked/G-09-speed-specialist.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "G-10",
+   "name": "Final Second Hero",
+   "group": "G",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "G-10",
+     "name": "Final Second Hero",
+     "requirement": "Pass a round under the designated time constraint.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/G-10-final-second-hero.svg",
+       "locked": "/badges/full/locked/G-10-final-second-hero.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/G-10-final-second-hero.svg",
+       "locked": "/badges/compact/locked/G-10-final-second-hero.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "H-bot-wins",
+   "name": "Bot Wins",
+   "group": "H",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "H-02",
+     "name": "Bot Hunter",
+     "requirement": "Win 5 games against bots.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "5",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/H-02-bot-hunter.svg",
+       "locked": "/badges/full/locked/H-02-bot-hunter.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/H-02-bot-hunter.svg",
+       "locked": "/badges/compact/locked/H-02-bot-hunter.svg"
+      }
+     }
+    },
+    {
+     "id": "H-03",
+     "name": "Bot Destroyer",
+     "requirement": "Win 10 games against high-difficulty bots.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "10",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/H-03-bot-destroyer.svg",
+       "locked": "/badges/full/locked/H-03-bot-destroyer.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/H-03-bot-destroyer.svg",
+       "locked": "/badges/compact/locked/H-03-bot-destroyer.svg"
+      }
+     }
+    },
+    {
+     "id": "H-09",
+     "name": "Bot Legend",
+     "requirement": "Defeat high-level bots the required number of times.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/H-09-bot-legend.svg",
+       "locked": "/badges/full/locked/H-09-bot-legend.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/H-09-bot-legend.svg",
+       "locked": "/badges/compact/locked/H-09-bot-legend.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "H-ranked-games",
+   "name": "Ranked Games",
+   "group": "H",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "H-11",
+     "name": "Ranked Rookie",
+     "requirement": "Complete your first Ranked game.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "1",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/H-11-ranked-rookie.svg",
+       "locked": "/badges/full/locked/H-11-ranked-rookie.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/H-11-ranked-rookie.svg",
+       "locked": "/badges/compact/locked/H-11-ranked-rookie.svg"
+      }
+     }
+    },
+    {
+     "id": "H-12",
+     "name": "Ranked Climber",
+     "requirement": "Reach the required Ranked progression milestone.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/H-12-ranked-climber.svg",
+       "locked": "/badges/full/locked/H-12-ranked-climber.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/H-12-ranked-climber.svg",
+       "locked": "/badges/compact/locked/H-12-ranked-climber.svg"
+      }
+     }
+    },
+    {
+     "id": "H-13",
+     "name": "Ranked Veteran",
+     "requirement": "Complete 100 Ranked games.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "100",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/H-13-ranked-veteran.svg",
+       "locked": "/badges/full/locked/H-13-ranked-veteran.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/H-13-ranked-veteran.svg",
+       "locked": "/badges/compact/locked/H-13-ranked-veteran.svg"
+      }
+     }
+    },
+    {
+     "id": "H-14",
+     "name": "Ranked Champion",
+     "requirement": "Win the required number of Ranked games.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/H-14-ranked-champion.svg",
+       "locked": "/badges/full/locked/H-14-ranked-champion.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/H-14-ranked-champion.svg",
+       "locked": "/badges/compact/locked/H-14-ranked-champion.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "H-01",
+   "name": "First Victory",
+   "group": "H",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "H-01",
+     "name": "First Victory",
+     "requirement": "Win your first game.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "1",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/H-01-first-victory.svg",
+       "locked": "/badges/full/locked/H-01-first-victory.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/H-01-first-victory.svg",
+       "locked": "/badges/compact/locked/H-01-first-victory.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "H-04",
+   "name": "Perfect Rival",
+   "group": "H",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "H-04",
+     "name": "Perfect Rival",
+     "requirement": "Win while meeting the designated score requirement.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/H-04-perfect-rival.svg",
+       "locked": "/badges/full/locked/H-04-perfect-rival.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/H-04-perfect-rival.svg",
+       "locked": "/badges/compact/locked/H-04-perfect-rival.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "H-05",
+   "name": "Close Call",
+   "group": "H",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "H-05",
+     "name": "Close Call",
+     "requirement": "Win a game by a narrow score margin.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/H-05-close-call.svg",
+       "locked": "/badges/full/locked/H-05-close-call.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/H-05-close-call.svg",
+       "locked": "/badges/compact/locked/H-05-close-call.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "H-06",
+   "name": "Dominator",
+   "group": "H",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "H-06",
+     "name": "Dominator",
+     "requirement": "Win by a significant score margin.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/H-06-dominator.svg",
+       "locked": "/badges/full/locked/H-06-dominator.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/H-06-dominator.svg",
+       "locked": "/badges/compact/locked/H-06-dominator.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "H-07",
+   "name": "Underdog",
+   "group": "H",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "H-07",
+     "name": "Underdog",
+     "requirement": "Defeat a higher-ranked opponent.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/H-07-underdog.svg",
+       "locked": "/badges/full/locked/H-07-underdog.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/H-07-underdog.svg",
+       "locked": "/badges/compact/locked/H-07-underdog.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "H-08",
+   "name": "Unbeaten",
+   "group": "H",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "H-08",
+     "name": "Unbeaten",
+     "requirement": "Win 5 consecutive games.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "5",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/H-08-unbeaten.svg",
+       "locked": "/badges/full/locked/H-08-unbeaten.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/H-08-unbeaten.svg",
+       "locked": "/badges/compact/locked/H-08-unbeaten.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "H-10",
+   "name": "Comeback Victory",
+   "group": "H",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "H-10",
+     "name": "Comeback Victory",
+     "requirement": "Win after being behind in score.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/H-10-comeback-victory.svg",
+       "locked": "/badges/full/locked/H-10-comeback-victory.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/H-10-comeback-victory.svg",
+       "locked": "/badges/compact/locked/H-10-comeback-victory.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "I-blind-map-games",
+   "name": "Blind Map Games",
+   "group": "I",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "I-01",
+     "name": "Blind Explorer",
+     "requirement": "Complete your first Blind Map game.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "1",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/I-01-blind-explorer.svg",
+       "locked": "/badges/full/locked/I-01-blind-explorer.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/I-01-blind-explorer.svg",
+       "locked": "/badges/compact/locked/I-01-blind-explorer.svg"
+      }
+     }
+    },
+    {
+     "id": "I-10",
+     "name": "Blind Veteran",
+     "requirement": "Complete 100 Blind Map games.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "100",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/I-10-blind-veteran.svg",
+       "locked": "/badges/full/locked/I-10-blind-veteran.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/I-10-blind-veteran.svg",
+       "locked": "/badges/compact/locked/I-10-blind-veteran.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "I-blind-score",
+   "name": "Blind Score",
+   "group": "I",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "I-02",
+     "name": "Trust Your Instinct",
+     "requirement": "Reach the required score in Blind Map.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/I-02-trust-your-instinct.svg",
+       "locked": "/badges/full/locked/I-02-trust-your-instinct.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/I-02-trust-your-instinct.svg",
+       "locked": "/badges/compact/locked/I-02-trust-your-instinct.svg"
+      }
+     }
+    },
+    {
+     "id": "I-07",
+     "name": "Map Memory",
+     "requirement": "Reach the target score across 10 games.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "10",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/I-07-map-memory.svg",
+       "locked": "/badges/full/locked/I-07-map-memory.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/I-07-map-memory.svg",
+       "locked": "/badges/compact/locked/I-07-map-memory.svg"
+      }
+     }
+    },
+    {
+     "id": "I-11",
+     "name": "Instinct Master",
+     "requirement": "Reach the target score across multiple games.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/I-11-instinct-master.svg",
+       "locked": "/badges/full/locked/I-11-instinct-master.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/I-11-instinct-master.svg",
+       "locked": "/badges/compact/locked/I-11-instinct-master.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "I-03",
+   "name": "Hidden Knowledge",
+   "group": "I",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "I-03",
+     "name": "Hidden Knowledge",
+     "requirement": "Reach the score target across multiple regions.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/I-03-hidden-knowledge.svg",
+       "locked": "/badges/full/locked/I-03-hidden-knowledge.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/I-03-hidden-knowledge.svg",
+       "locked": "/badges/compact/locked/I-03-hidden-knowledge.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "I-04",
+   "name": "Blind Precision",
+   "group": "I",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "I-04",
+     "name": "Blind Precision",
+     "requirement": "Meet the required distance target.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/I-04-blind-precision.svg",
+       "locked": "/badges/full/locked/I-04-blind-precision.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/I-04-blind-precision.svg",
+       "locked": "/badges/compact/locked/I-04-blind-precision.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "I-05",
+   "name": "Sixth Sense",
+   "group": "I",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "I-05",
+     "name": "Sixth Sense",
+     "requirement": "Achieve high performance for 5 consecutive rounds.",
+     "rarity": "Epic",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/I-05-sixth-sense.svg",
+       "locked": "/badges/full/locked/I-05-sixth-sense.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/I-05-sixth-sense.svg",
+       "locked": "/badges/compact/locked/I-05-sixth-sense.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "I-06",
+   "name": "Blind Streak",
+   "group": "I",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "I-06",
+     "name": "Blind Streak",
+     "requirement": "Meet the precision target for 5 consecutive rounds.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "5",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/I-06-blind-streak.svg",
+       "locked": "/badges/full/locked/I-06-blind-streak.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/I-06-blind-streak.svg",
+       "locked": "/badges/compact/locked/I-06-blind-streak.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "I-08",
+   "name": "Blind Map Legend",
+   "group": "I",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "I-08",
+     "name": "Blind Map Legend",
+     "requirement": "Complete advanced Blind Map mastery.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/I-08-blind-map-legend.svg",
+       "locked": "/badges/full/locked/I-08-blind-map-legend.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/I-08-blind-map-legend.svg",
+       "locked": "/badges/compact/locked/I-08-blind-map-legend.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "I-09",
+   "name": "No Visual Clues",
+   "group": "I",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "I-09",
+     "name": "No Visual Clues",
+     "requirement": "Meet the required accuracy without visual assistance.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/I-09-no-visual-clues.svg",
+       "locked": "/badges/full/locked/I-09-no-visual-clues.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/I-09-no-visual-clues.svg",
+       "locked": "/badges/compact/locked/I-09-no-visual-clues.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "I-12",
+   "name": "Perfect Blind Run",
+   "group": "I",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "I-12",
+     "name": "Perfect Blind Run",
+     "requirement": "Achieve a perfect Blind Map game.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/I-12-perfect-blind-run.svg",
+       "locked": "/badges/full/locked/I-12-perfect-blind-run.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/I-12-perfect-blind-run.svg",
+       "locked": "/badges/compact/locked/I-12-perfect-blind-run.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "J-countries",
+   "name": "Countries",
+   "group": "J",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "J-02",
+     "name": "Country Collector",
+     "requirement": "Discover 25 different countries.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "25",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/J-02-country-collector.svg",
+       "locked": "/badges/full/locked/J-02-country-collector.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/J-02-country-collector.svg",
+       "locked": "/badges/compact/locked/J-02-country-collector.svg"
+      }
+     }
+    },
+    {
+     "id": "J-03",
+     "name": "World Traveler",
+     "requirement": "Discover 50 different countries.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "50",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/J-03-world-traveler.svg",
+       "locked": "/badges/full/locked/J-03-world-traveler.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/J-03-world-traveler.svg",
+       "locked": "/badges/compact/locked/J-03-world-traveler.svg"
+      }
+     }
+    },
+    {
+     "id": "J-04",
+     "name": "Country Master",
+     "requirement": "Discover 100 different countries.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "100",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/J-04-country-master.svg",
+       "locked": "/badges/full/locked/J-04-country-master.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/J-04-country-master.svg",
+       "locked": "/badges/compact/locked/J-04-country-master.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "J-01",
+   "name": "Around the World",
+   "group": "J",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "J-01",
+     "name": "Around the World",
+     "requirement": "Discover locations across every continent.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/J-01-around-the-world.svg",
+       "locked": "/badges/full/locked/J-01-around-the-world.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/J-01-around-the-world.svg",
+       "locked": "/badges/compact/locked/J-01-around-the-world.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "J-05",
+   "name": "Capital Hunter",
+   "group": "J",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "J-05",
+     "name": "Capital Hunter",
+     "requirement": "Discover the required number of capital cities.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/J-05-capital-hunter.svg",
+       "locked": "/badges/full/locked/J-05-capital-hunter.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/J-05-capital-hunter.svg",
+       "locked": "/badges/compact/locked/J-05-capital-hunter.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "J-06",
+   "name": "Island Hopper",
+   "group": "J",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "J-06",
+     "name": "Island Hopper",
+     "requirement": "Discover the required number of islands.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/J-06-island-hopper.svg",
+       "locked": "/badges/full/locked/J-06-island-hopper.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/J-06-island-hopper.svg",
+       "locked": "/badges/compact/locked/J-06-island-hopper.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "J-07",
+   "name": "Mountain Climber",
+   "group": "J",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "J-07",
+     "name": "Mountain Climber",
+     "requirement": "Discover the required number of mountain locations.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/J-07-mountain-climber.svg",
+       "locked": "/badges/full/locked/J-07-mountain-climber.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/J-07-mountain-climber.svg",
+       "locked": "/badges/compact/locked/J-07-mountain-climber.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "J-08",
+   "name": "Ocean Explorer",
+   "group": "J",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "J-08",
+     "name": "Ocean Explorer",
+     "requirement": "Discover coastal and island locations.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/J-08-ocean-explorer.svg",
+       "locked": "/badges/full/locked/J-08-ocean-explorer.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/J-08-ocean-explorer.svg",
+       "locked": "/badges/compact/locked/J-08-ocean-explorer.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "J-09",
+   "name": "World Atlas",
+   "group": "J",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "J-09",
+     "name": "World Atlas",
+     "requirement": "Discover all required geographic categories.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/J-09-world-atlas.svg",
+       "locked": "/badges/full/locked/J-09-world-atlas.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/J-09-world-atlas.svg",
+       "locked": "/badges/compact/locked/J-09-world-atlas.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "J-10",
+   "name": "Regional Explorer",
+   "group": "J",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "J-10",
+     "name": "Regional Explorer",
+     "requirement": "Discover locations across multiple regions.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/J-10-regional-explorer.svg",
+       "locked": "/badges/full/locked/J-10-regional-explorer.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/J-10-regional-explorer.svg",
+       "locked": "/badges/compact/locked/J-10-regional-explorer.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "J-11",
+   "name": "Border Hopper",
+   "group": "J",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "J-11",
+     "name": "Border Hopper",
+     "requirement": "Discover the required number of neighboring countries.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/J-11-border-hopper.svg",
+       "locked": "/badges/full/locked/J-11-border-hopper.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/J-11-border-hopper.svg",
+       "locked": "/badges/compact/locked/J-11-border-hopper.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "J-12",
+   "name": "Geographic Legend",
+   "group": "J",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "J-12",
+     "name": "Geographic Legend",
+     "requirement": "Complete advanced geographic mastery.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/J-12-geographic-legend.svg",
+       "locked": "/badges/full/locked/J-12-geographic-legend.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/J-12-geographic-legend.svg",
+       "locked": "/badges/compact/locked/J-12-geographic-legend.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "K-01",
+   "name": "First Drop Specialist",
+   "group": "K",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "K-01",
+     "name": "First Drop Specialist",
+     "requirement": "Complete a special first-game performance condition.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/K-01-first-drop-specialist.svg",
+       "locked": "/badges/full/locked/K-01-first-drop-specialist.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/K-01-first-drop-specialist.svg",
+       "locked": "/badges/compact/locked/K-01-first-drop-specialist.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "K-02",
+   "name": "The Long Way Home",
+   "group": "K",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "K-02",
+     "name": "The Long Way Home",
+     "requirement": "Make a very distant guess and achieve a strong result in the next game.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/K-02-the-long-way-home.svg",
+       "locked": "/badges/full/locked/K-02-the-long-way-home.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/K-02-the-long-way-home.svg",
+       "locked": "/badges/compact/locked/K-02-the-long-way-home.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "K-03",
+   "name": "The Uninstall Button",
+   "group": "K",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "K-03",
+     "name": "The Uninstall Button",
+     "requirement": "Trigger a designated humorous failure condition.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/K-03-the-uninstall-button.svg",
+       "locked": "/badges/full/locked/K-03-the-uninstall-button.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/K-03-the-uninstall-button.svg",
+       "locked": "/badges/compact/locked/K-03-the-uninstall-button.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "K-04",
+   "name": "Legendary Journey",
+   "group": "K",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "K-04",
+     "name": "Legendary Journey",
+     "requirement": "Complete multiple high-level mastery requirements.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/K-04-legendary-journey.svg",
+       "locked": "/badges/full/locked/K-04-legendary-journey.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/K-04-legendary-journey.svg",
+       "locked": "/badges/compact/locked/K-04-legendary-journey.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "L-special-challenges",
+   "name": "Special Challenges",
+   "group": "L",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "L-01",
+     "name": "Challenge Accepted",
+     "requirement": "Complete your first Special Challenge.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "1",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/L-01-challenge-accepted.svg",
+       "locked": "/badges/full/locked/L-01-challenge-accepted.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/L-01-challenge-accepted.svg",
+       "locked": "/badges/compact/locked/L-01-challenge-accepted.svg"
+      }
+     }
+    },
+    {
+     "id": "L-02",
+     "name": "Challenge Veteran",
+     "requirement": "Complete 10 Special Challenges.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "10",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/L-02-challenge-veteran.svg",
+       "locked": "/badges/full/locked/L-02-challenge-veteran.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/L-02-challenge-veteran.svg",
+       "locked": "/badges/compact/locked/L-02-challenge-veteran.svg"
+      }
+     }
+    },
+    {
+     "id": "L-10",
+     "name": "Challenge Legend",
+     "requirement": "Complete advanced Special Challenge mastery.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/L-10-challenge-legend.svg",
+       "locked": "/badges/full/locked/L-10-challenge-legend.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/L-10-challenge-legend.svg",
+       "locked": "/badges/compact/locked/L-10-challenge-legend.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "L-03",
+   "name": "Challenge Master",
+   "group": "L",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "L-03",
+     "name": "Challenge Master",
+     "requirement": "Reach the target score in Special Challenges.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/L-03-challenge-master.svg",
+       "locked": "/badges/full/locked/L-03-challenge-master.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/L-03-challenge-master.svg",
+       "locked": "/badges/compact/locked/L-03-challenge-master.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "L-04",
+   "name": "No Mistakes",
+   "group": "L",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "L-04",
+     "name": "No Mistakes",
+     "requirement": "Complete a challenge without mistakes.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/L-04-no-mistakes.svg",
+       "locked": "/badges/full/locked/L-04-no-mistakes.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/L-04-no-mistakes.svg",
+       "locked": "/badges/compact/locked/L-04-no-mistakes.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "L-05",
+   "name": "Limited Attempts",
+   "group": "L",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "L-05",
+     "name": "Limited Attempts",
+     "requirement": "Complete a challenge with limited attempts.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/L-05-limited-attempts.svg",
+       "locked": "/badges/full/locked/L-05-limited-attempts.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/L-05-limited-attempts.svg",
+       "locked": "/badges/compact/locked/L-05-limited-attempts.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "L-06",
+   "name": "Perfect Challenge",
+   "group": "L",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "L-06",
+     "name": "Perfect Challenge",
+     "requirement": "Achieve a perfect challenge score.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/L-06-perfect-challenge.svg",
+       "locked": "/badges/full/locked/L-06-perfect-challenge.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/L-06-perfect-challenge.svg",
+       "locked": "/badges/compact/locked/L-06-perfect-challenge.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "L-07",
+   "name": "Challenge Streak",
+   "group": "L",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "L-07",
+     "name": "Challenge Streak",
+     "requirement": "Complete 5 consecutive challenges.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "5",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/L-07-challenge-streak.svg",
+       "locked": "/badges/full/locked/L-07-challenge-streak.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/L-07-challenge-streak.svg",
+       "locked": "/badges/compact/locked/L-07-challenge-streak.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "L-08",
+   "name": "Challenge Collector",
+   "group": "L",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "L-08",
+     "name": "Challenge Collector",
+     "requirement": "Complete multiple challenge types.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/L-08-challenge-collector.svg",
+       "locked": "/badges/full/locked/L-08-challenge-collector.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/L-08-challenge-collector.svg",
+       "locked": "/badges/compact/locked/L-08-challenge-collector.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "L-09",
+   "name": "Elite Challenger",
+   "group": "L",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "L-09",
+     "name": "Elite Challenger",
+     "requirement": "Complete high-difficulty challenges.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/L-09-elite-challenger.svg",
+       "locked": "/badges/full/locked/L-09-elite-challenger.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/L-09-elite-challenger.svg",
+       "locked": "/badges/compact/locked/L-09-elite-challenger.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-01",
+   "name": "Wrong Continent",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-01",
+     "name": "Wrong Continent",
+     "requirement": "Guess a location on the wrong continent.",
+     "rarity": "Common",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-01-wrong-continent.svg",
+       "locked": "/badges/full/locked/X-01-wrong-continent.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-01-wrong-continent.svg",
+       "locked": "/badges/compact/locked/X-01-wrong-continent.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-02",
+   "name": "Touching Distance",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-02",
+     "name": "Touching Distance",
+     "requirement": "Make a near miss that fails a designated precision condition.",
+     "rarity": "Common",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-02-touching-distance.svg",
+       "locked": "/badges/full/locked/X-02-touching-distance.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-02-touching-distance.svg",
+       "locked": "/badges/compact/locked/X-02-touching-distance.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-03",
+   "name": "Professional Miss",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-03",
+     "name": "Professional Miss",
+     "requirement": "Make an exceptionally distant guess.",
+     "rarity": "Common",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-03-professional-miss.svg",
+       "locked": "/badges/full/locked/X-03-professional-miss.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-03-professional-miss.svg",
+       "locked": "/badges/compact/locked/X-03-professional-miss.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-04",
+   "name": "Lost in Space",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-04",
+     "name": "Lost in Space",
+     "requirement": "Make a very distant guess.",
+     "rarity": "Common",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-04-lost-in-space.svg",
+       "locked": "/badges/full/locked/X-04-lost-in-space.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-04-lost-in-space.svg",
+       "locked": "/badges/compact/locked/X-04-lost-in-space.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-05",
+   "name": "Ocean Main",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-05",
+     "name": "Ocean Main",
+     "requirement": "Guess in the ocean under the required condition.",
+     "rarity": "Uncommon",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-05-ocean-main.svg",
+       "locked": "/badges/full/locked/X-05-ocean-main.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-05-ocean-main.svg",
+       "locked": "/badges/compact/locked/X-05-ocean-main.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-06",
+   "name": "Geographyn't",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-06",
+     "name": "Geographyn't",
+     "requirement": "Trigger a designated geographic mistake.",
+     "rarity": "Rare",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-06-geographyn-t.svg",
+       "locked": "/badges/full/locked/X-06-geographyn-t.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-06-geographyn-t.svg",
+       "locked": "/badges/compact/locked/X-06-geographyn-t.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-07",
+   "name": "Task Failed Successfully",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-07",
+     "name": "Task Failed Successfully",
+     "requirement": "Trigger an unexpected failure with a special result.",
+     "rarity": "Rare",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-07-task-failed-successfully.svg",
+       "locked": "/badges/full/locked/X-07-task-failed-successfully.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-07-task-failed-successfully.svg",
+       "locked": "/badges/compact/locked/X-07-task-failed-successfully.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-08",
+   "name": "Professional Overthinker",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-08",
+     "name": "Professional Overthinker",
+     "requirement": "Spend an unusually long time deciding.",
+     "rarity": "Uncommon",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-08-professional-overthinker.svg",
+       "locked": "/badges/full/locked/X-08-professional-overthinker.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-08-professional-overthinker.svg",
+       "locked": "/badges/compact/locked/X-08-professional-overthinker.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-09",
+   "name": "Commitment Issues",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-09",
+     "name": "Commitment Issues",
+     "requirement": "Change an answer the required number of times.",
+     "rarity": "Uncommon",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-09-commitment-issues.svg",
+       "locked": "/badges/full/locked/X-09-commitment-issues.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-09-commitment-issues.svg",
+       "locked": "/badges/compact/locked/X-09-commitment-issues.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-10",
+   "name": "Speedrun to Failure",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-10",
+     "name": "Speedrun to Failure",
+     "requirement": "Submit a fast incorrect answer.",
+     "rarity": "Rare",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-10-speedrun-to-failure.svg",
+       "locked": "/badges/full/locked/X-10-speedrun-to-failure.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-10-speedrun-to-failure.svg",
+       "locked": "/badges/compact/locked/X-10-speedrun-to-failure.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-11",
+   "name": "Trust Issues",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-11",
+     "name": "Trust Issues",
+     "requirement": "Change an answer immediately before the deadline.",
+     "rarity": "Rare",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-11-trust-issues.svg",
+       "locked": "/badges/full/locked/X-11-trust-issues.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-11-trust-issues.svg",
+       "locked": "/badges/compact/locked/X-11-trust-issues.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-12",
+   "name": "The Earth Is Flat",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-12",
+     "name": "The Earth Is Flat",
+     "requirement": "Discover a secret Easter egg.",
+     "rarity": "Epic",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-12-the-earth-is-flat.svg",
+       "locked": "/badges/full/locked/X-12-the-earth-is-flat.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-12-the-earth-is-flat.svg",
+       "locked": "/badges/compact/locked/X-12-the-earth-is-flat.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-13",
+   "name": "Disasterclass",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-13",
+     "name": "Disasterclass",
+     "requirement": "Trigger a sequence of mistakes.",
+     "rarity": "Rare",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-13-disasterclass.svg",
+       "locked": "/badges/full/locked/X-13-disasterclass.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-13-disasterclass.svg",
+       "locked": "/badges/compact/locked/X-13-disasterclass.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-14",
+   "name": "Konami Cartographer",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-14",
+     "name": "Konami Cartographer",
+     "requirement": "Enter the designated secret input sequence.",
+     "rarity": "Epic",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-14-konami-cartographer.svg",
+       "locked": "/badges/full/locked/X-14-konami-cartographer.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-14-konami-cartographer.svg",
+       "locked": "/badges/compact/locked/X-14-konami-cartographer.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-15",
+   "name": "Atlas Secret",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-15",
+     "name": "Atlas Secret",
+     "requirement": "Discover a hidden map Easter egg.",
+     "rarity": "Epic",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-15-atlas-secret.svg",
+       "locked": "/badges/full/locked/X-15-atlas-secret.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-15-atlas-secret.svg",
+       "locked": "/badges/compact/locked/X-15-atlas-secret.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-16",
+   "name": "Secret Cartographer",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-16",
+     "name": "Secret Cartographer",
+     "requirement": "Discover a secret location.",
+     "rarity": "Legendary",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-16-secret-cartographer.svg",
+       "locked": "/badges/full/locked/X-16-secret-cartographer.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-16-secret-cartographer.svg",
+       "locked": "/badges/compact/locked/X-16-secret-cartographer.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-17",
+   "name": "Night Owl",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-17",
+     "name": "Night Owl",
+     "requirement": "Complete a special nighttime performance.",
+     "rarity": "Uncommon",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-17-night-owl.svg",
+       "locked": "/badges/full/locked/X-17-night-owl.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-17-night-owl.svg",
+       "locked": "/badges/compact/locked/X-17-night-owl.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-18",
+   "name": "Lucky Seven",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-18",
+     "name": "Lucky Seven",
+     "requirement": "Trigger the special number-seven condition.",
+     "rarity": "Rare",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-18-lucky-seven.svg",
+       "locked": "/badges/full/locked/X-18-lucky-seven.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-18-lucky-seven.svg",
+       "locked": "/badges/compact/locked/X-18-lucky-seven.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-19",
+   "name": "Perfect Blind Guess",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-19",
+     "name": "Perfect Blind Guess",
+     "requirement": "Make a perfect Blind Map guess.",
+     "rarity": "Legendary",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-19-perfect-blind-guess.svg",
+       "locked": "/badges/full/locked/X-19-perfect-blind-guess.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-19-perfect-blind-guess.svg",
+       "locked": "/badges/compact/locked/X-19-perfect-blind-guess.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-20",
+   "name": "Skill Issue",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-20",
+     "name": "Skill Issue",
+     "requirement": "Trigger a special multiplayer mistake.",
+     "rarity": "Uncommon",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-20-skill-issue.svg",
+       "locked": "/badges/full/locked/X-20-skill-issue.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-20-skill-issue.svg",
+       "locked": "/badges/compact/locked/X-20-skill-issue.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-21",
+   "name": "Humbled",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-21",
+     "name": "Humbled",
+     "requirement": "Experience a designated multiplayer condition.",
+     "rarity": "Uncommon",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-21-humbled.svg",
+       "locked": "/badges/full/locked/X-21-humbled.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-21-humbled.svg",
+       "locked": "/badges/compact/locked/X-21-humbled.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-22",
+   "name": "Revenge Arc",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-22",
+     "name": "Revenge Arc",
+     "requirement": "Defeat the same opponent under a special condition.",
+     "rarity": "Rare",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-22-revenge-arc.svg",
+       "locked": "/badges/full/locked/X-22-revenge-arc.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-22-revenge-arc.svg",
+       "locked": "/badges/compact/locked/X-22-revenge-arc.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "X-23",
+   "name": "Secret Rival",
+   "group": "X",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "X-23",
+     "name": "Secret Rival",
+     "requirement": "Play against the same opponent under a special condition.",
+     "rarity": "Rare",
+     "secret": true,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/X-23-secret-rival.svg",
+       "locked": "/badges/full/locked/X-23-secret-rival.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/X-23-secret-rival.svg",
+       "locked": "/badges/compact/locked/X-23-secret-rival.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "S-private-rooms",
+   "name": "Private Rooms",
+   "group": "S",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "S-06",
+     "name": "Room Champion",
+     "requirement": "Win 5 private-room games.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "5",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-06-room-champion.svg",
+       "locked": "/badges/full/locked/S-06-room-champion.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-06-room-champion.svg",
+       "locked": "/badges/compact/locked/S-06-room-champion.svg"
+      }
+     }
+    },
+    {
+     "id": "S-07",
+     "name": "Party Legend",
+     "requirement": "Complete 50 private-room games.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "50",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-07-party-legend.svg",
+       "locked": "/badges/full/locked/S-07-party-legend.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-07-party-legend.svg",
+       "locked": "/badges/compact/locked/S-07-party-legend.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "S-team-games",
+   "name": "Team Games",
+   "group": "S",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "S-08",
+     "name": "Team Player",
+     "requirement": "Complete 10 Team Mode games.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "TEAM",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-08-team-player.svg",
+       "locked": "/badges/full/locked/S-08-team-player.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-08-team-player.svg",
+       "locked": "/badges/compact/locked/S-08-team-player.svg"
+      }
+     }
+    },
+    {
+     "id": "S-16",
+     "name": "Team Veteran",
+     "requirement": "Complete 50 Team Mode games.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "50",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-16-team-veteran.svg",
+       "locked": "/badges/full/locked/S-16-team-veteran.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-16-team-veteran.svg",
+       "locked": "/badges/compact/locked/S-16-team-veteran.svg"
+      }
+     }
+    },
+    {
+     "id": "S-17",
+     "name": "Team Champion",
+     "requirement": "Win the required number of Team Mode games.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-17-team-champion.svg",
+       "locked": "/badges/full/locked/S-17-team-champion.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-17-team-champion.svg",
+       "locked": "/badges/compact/locked/S-17-team-champion.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "S-friends",
+   "name": "Friends",
+   "group": "S",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "S-04",
+     "name": "Friendly Rival",
+     "requirement": "Play 10 games with a friend.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "10",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-04-friendly-rival.svg",
+       "locked": "/badges/full/locked/S-04-friendly-rival.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-04-friendly-rival.svg",
+       "locked": "/badges/compact/locked/S-04-friendly-rival.svg"
+      }
+     }
+    },
+    {
+     "id": "S-15",
+     "name": "Social Veteran",
+     "requirement": "Complete 100 games with friends.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "100",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-15-social-veteran.svg",
+       "locked": "/badges/full/locked/S-15-social-veteran.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-15-social-veteran.svg",
+       "locked": "/badges/compact/locked/S-15-social-veteran.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "S-hosting",
+   "name": "Hosting",
+   "group": "S",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "S-11",
+     "name": "First Host",
+     "requirement": "Host your first game.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "1",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-11-first-host.svg",
+       "locked": "/badges/full/locked/S-11-first-host.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-11-first-host.svg",
+       "locked": "/badges/compact/locked/S-11-first-host.svg"
+      }
+     }
+    },
+    {
+     "id": "S-12",
+     "name": "Great Host",
+     "requirement": "Successfully host the required number of completed games.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-12-great-host.svg",
+       "locked": "/badges/full/locked/S-12-great-host.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-12-great-host.svg",
+       "locked": "/badges/compact/locked/S-12-great-host.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "S-tournaments",
+   "name": "Tournaments",
+   "group": "S",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "S-18",
+     "name": "Tournament Veteran",
+     "requirement": "Participate in multiple tournaments.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-18-tournament-veteran.svg",
+       "locked": "/badges/full/locked/S-18-tournament-veteran.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-18-tournament-veteran.svg",
+       "locked": "/badges/compact/locked/S-18-tournament-veteran.svg"
+      }
+     }
+    },
+    {
+     "id": "S-19",
+     "name": "Tournament Master",
+     "requirement": "Meet the tournament mastery requirement.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-19-tournament-master.svg",
+       "locked": "/badges/full/locked/S-19-tournament-master.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-19-tournament-master.svg",
+       "locked": "/badges/compact/locked/S-19-tournament-master.svg"
+      }
+     }
+    },
+    {
+     "id": "S-09",
+     "name": "Tournament Winner",
+     "requirement": "Win a verified tournament.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-09-tournament-winner.svg",
+       "locked": "/badges/full/locked/S-09-tournament-winner.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-09-tournament-winner.svg",
+       "locked": "/badges/compact/locked/S-09-tournament-winner.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "S-different-players",
+   "name": "Different Players",
+   "group": "S",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "S-05",
+     "name": "Social Explorer",
+     "requirement": "Play with 10 different players.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "10",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-05-social-explorer.svg",
+       "locked": "/badges/full/locked/S-05-social-explorer.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-05-social-explorer.svg",
+       "locked": "/badges/compact/locked/S-05-social-explorer.svg"
+      }
+     }
+    },
+    {
+     "id": "S-13",
+     "name": "Rival Collector",
+     "requirement": "Compete against multiple different opponents.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-13-rival-collector.svg",
+       "locked": "/badges/full/locked/S-13-rival-collector.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-13-rival-collector.svg",
+       "locked": "/badges/compact/locked/S-13-rival-collector.svg"
+      }
+     }
+    },
+    {
+     "id": "S-20",
+     "name": "Crowd Favorite",
+     "requirement": "Play with a wide variety of players.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-20-crowd-favorite.svg",
+       "locked": "/badges/full/locked/S-20-crowd-favorite.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-20-crowd-favorite.svg",
+       "locked": "/badges/compact/locked/S-20-crowd-favorite.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "S-01",
+   "name": "Bring a Friend",
+   "group": "S",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "S-01",
+     "name": "Bring a Friend",
+     "requirement": "Complete a game with one friend.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "2",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-01-bring-a-friend.svg",
+       "locked": "/badges/full/locked/S-01-bring-a-friend.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-01-bring-a-friend.svg",
+       "locked": "/badges/compact/locked/S-01-bring-a-friend.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "S-02",
+   "name": "Party Starter",
+   "group": "S",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "S-02",
+     "name": "Party Starter",
+     "requirement": "Create a room and complete your first game.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-02-party-starter.svg",
+       "locked": "/badges/full/locked/S-02-party-starter.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-02-party-starter.svg",
+       "locked": "/badges/compact/locked/S-02-party-starter.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "S-03",
+   "name": "Full House",
+   "group": "S",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "S-03",
+     "name": "Full House",
+     "requirement": "Complete a game in a room at full capacity.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "FULL",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-03-full-house.svg",
+       "locked": "/badges/full/locked/S-03-full-house.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-03-full-house.svg",
+       "locked": "/badges/compact/locked/S-03-full-house.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "S-10",
+   "name": "Community Legend",
+   "group": "S",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "S-10",
+     "name": "Community Legend",
+     "requirement": "Participate in the required number of community events.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-10-community-legend.svg",
+       "locked": "/badges/full/locked/S-10-community-legend.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-10-community-legend.svg",
+       "locked": "/badges/compact/locked/S-10-community-legend.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "S-14",
+   "name": "Squad Goals",
+   "group": "S",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "S-14",
+     "name": "Squad Goals",
+     "requirement": "Play the required number of games with the same group.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-14-squad-goals.svg",
+       "locked": "/badges/full/locked/S-14-squad-goals.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-14-squad-goals.svg",
+       "locked": "/badges/compact/locked/S-14-squad-goals.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "S-21",
+   "name": "Private League",
+   "group": "S",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "S-21",
+     "name": "Private League",
+     "requirement": "Create a private league.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-21-private-league.svg",
+       "locked": "/badges/full/locked/S-21-private-league.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-21-private-league.svg",
+       "locked": "/badges/compact/locked/S-21-private-league.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "S-22",
+   "name": "League Champion",
+   "group": "S",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "S-22",
+     "name": "League Champion",
+     "requirement": "Win a private league.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-22-league-champion.svg",
+       "locked": "/badges/full/locked/S-22-league-champion.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-22-league-champion.svg",
+       "locked": "/badges/compact/locked/S-22-league-champion.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "S-23",
+   "name": "Community Regular",
+   "group": "S",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "S-23",
+     "name": "Community Regular",
+     "requirement": "Participate in community events across multiple seasons.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-23-community-regular.svg",
+       "locked": "/badges/full/locked/S-23-community-regular.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-23-community-regular.svg",
+       "locked": "/badges/compact/locked/S-23-community-regular.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "S-24",
+   "name": "Friendship Streak",
+   "group": "S",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "S-24",
+     "name": "Friendship Streak",
+     "requirement": "Play consecutive games with friends.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-24-friendship-streak.svg",
+       "locked": "/badges/full/locked/S-24-friendship-streak.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-24-friendship-streak.svg",
+       "locked": "/badges/compact/locked/S-24-friendship-streak.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "S-25",
+   "name": "Social Master",
+   "group": "S",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "S-25",
+     "name": "Social Master",
+     "requirement": "Complete the required Social Achievement milestones.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/S-25-social-master.svg",
+       "locked": "/badges/full/locked/S-25-social-master.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/S-25-social-master.svg",
+       "locked": "/badges/compact/locked/S-25-social-master.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "N-reach-rank",
+   "name": "Reach Rank",
+   "group": "N",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "N-01",
+     "name": "Reach Gold",
+     "requirement": "Reach Gold rank in Ranked mode.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "GOLD",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-01-reach-gold.svg",
+       "locked": "/badges/full/locked/N-01-reach-gold.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-01-reach-gold.svg",
+       "locked": "/badges/compact/locked/N-01-reach-gold.svg"
+      }
+     }
+    },
+    {
+     "id": "N-02",
+     "name": "Reach Platinum",
+     "requirement": "Reach Platinum rank in Ranked mode.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "PLAT",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-02-reach-platinum.svg",
+       "locked": "/badges/full/locked/N-02-reach-platinum.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-02-reach-platinum.svg",
+       "locked": "/badges/compact/locked/N-02-reach-platinum.svg"
+      }
+     }
+    },
+    {
+     "id": "N-03",
+     "name": "Reach Diamond",
+     "requirement": "Reach Diamond rank in Ranked mode.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "DIAM",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-03-reach-diamond.svg",
+       "locked": "/badges/full/locked/N-03-reach-diamond.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-03-reach-diamond.svg",
+       "locked": "/badges/compact/locked/N-03-reach-diamond.svg"
+      }
+     }
+    },
+    {
+     "id": "N-04",
+     "name": "Reach Master",
+     "requirement": "Reach Master rank in Ranked mode.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "MSTR",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-04-reach-master.svg",
+       "locked": "/badges/full/locked/N-04-reach-master.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-04-reach-master.svg",
+       "locked": "/badges/compact/locked/N-04-reach-master.svg"
+      }
+     }
+    },
+    {
+     "id": "N-05",
+     "name": "Reach Champion",
+     "requirement": "Reach Champion rank in Ranked mode.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "CHMP",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-05-reach-champion.svg",
+       "locked": "/badges/full/locked/N-05-reach-champion.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-05-reach-champion.svg",
+       "locked": "/badges/compact/locked/N-05-reach-champion.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "N-06",
+   "name": "Career Complete",
+   "group": "N",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "N-06",
+     "name": "Career Complete",
+     "requirement": "Unlock every achievement in the Career group.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-06-career-complete.svg",
+       "locked": "/badges/full/locked/N-06-career-complete.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-06-career-complete.svg",
+       "locked": "/badges/compact/locked/N-06-career-complete.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "N-07",
+   "name": "Precision Complete",
+   "group": "N",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "N-07",
+     "name": "Precision Complete",
+     "requirement": "Unlock every achievement in the Precision group.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-07-precision-complete.svg",
+       "locked": "/badges/full/locked/N-07-precision-complete.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-07-precision-complete.svg",
+       "locked": "/badges/compact/locked/N-07-precision-complete.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "N-08",
+   "name": "Score Complete",
+   "group": "N",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "N-08",
+     "name": "Score Complete",
+     "requirement": "Unlock every achievement in the Score group.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-08-score-complete.svg",
+       "locked": "/badges/full/locked/N-08-score-complete.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-08-score-complete.svg",
+       "locked": "/badges/compact/locked/N-08-score-complete.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "N-09",
+   "name": "Streak Complete",
+   "group": "N",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "N-09",
+     "name": "Streak Complete",
+     "requirement": "Unlock every achievement in the Streak group.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-09-streak-complete.svg",
+       "locked": "/badges/full/locked/N-09-streak-complete.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-09-streak-complete.svg",
+       "locked": "/badges/compact/locked/N-09-streak-complete.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "N-10",
+   "name": "Daily Complete",
+   "group": "N",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "N-10",
+     "name": "Daily Complete",
+     "requirement": "Unlock every achievement in the Daily group.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-10-daily-complete.svg",
+       "locked": "/badges/full/locked/N-10-daily-complete.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-10-daily-complete.svg",
+       "locked": "/badges/compact/locked/N-10-daily-complete.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "N-11",
+   "name": "Classic Complete",
+   "group": "N",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "N-11",
+     "name": "Classic Complete",
+     "requirement": "Unlock every achievement in the Classic group.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-11-classic-complete.svg",
+       "locked": "/badges/full/locked/N-11-classic-complete.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-11-classic-complete.svg",
+       "locked": "/badges/compact/locked/N-11-classic-complete.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "N-12",
+   "name": "Timed Complete",
+   "group": "N",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "N-12",
+     "name": "Timed Complete",
+     "requirement": "Unlock every achievement in the Timed group.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-12-timed-complete.svg",
+       "locked": "/badges/full/locked/N-12-timed-complete.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-12-timed-complete.svg",
+       "locked": "/badges/compact/locked/N-12-timed-complete.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "N-13",
+   "name": "Competitive Complete",
+   "group": "N",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "N-13",
+     "name": "Competitive Complete",
+     "requirement": "Unlock every achievement in the Competitive group.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-13-competitive-complete.svg",
+       "locked": "/badges/full/locked/N-13-competitive-complete.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-13-competitive-complete.svg",
+       "locked": "/badges/compact/locked/N-13-competitive-complete.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "N-14",
+   "name": "Blind Map Complete",
+   "group": "N",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "N-14",
+     "name": "Blind Map Complete",
+     "requirement": "Unlock every achievement in the Blind Map group.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-14-blind-map-complete.svg",
+       "locked": "/badges/full/locked/N-14-blind-map-complete.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-14-blind-map-complete.svg",
+       "locked": "/badges/compact/locked/N-14-blind-map-complete.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "N-15",
+   "name": "Geographic Complete",
+   "group": "N",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "N-15",
+     "name": "Geographic Complete",
+     "requirement": "Unlock every achievement in the Geographic group.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-15-geographic-complete.svg",
+       "locked": "/badges/full/locked/N-15-geographic-complete.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-15-geographic-complete.svg",
+       "locked": "/badges/compact/locked/N-15-geographic-complete.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "N-16",
+   "name": "Legendary Complete",
+   "group": "N",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "N-16",
+     "name": "Legendary Complete",
+     "requirement": "Unlock every achievement in the Legendary group.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-16-legendary-complete.svg",
+       "locked": "/badges/full/locked/N-16-legendary-complete.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-16-legendary-complete.svg",
+       "locked": "/badges/compact/locked/N-16-legendary-complete.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "N-17",
+   "name": "Special Complete",
+   "group": "N",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "N-17",
+     "name": "Special Complete",
+     "requirement": "Unlock every achievement in the Special group.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-17-special-complete.svg",
+       "locked": "/badges/full/locked/N-17-special-complete.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-17-special-complete.svg",
+       "locked": "/badges/compact/locked/N-17-special-complete.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "N-18",
+   "name": "Hidden Complete",
+   "group": "N",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "N-18",
+     "name": "Hidden Complete",
+     "requirement": "Unlock every achievement in the Hidden group.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-18-hidden-complete.svg",
+       "locked": "/badges/full/locked/N-18-hidden-complete.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-18-hidden-complete.svg",
+       "locked": "/badges/compact/locked/N-18-hidden-complete.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "N-19",
+   "name": "Social Complete",
+   "group": "N",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "N-19",
+     "name": "Social Complete",
+     "requirement": "Unlock every achievement in the Social group.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-19-social-complete.svg",
+       "locked": "/badges/full/locked/N-19-social-complete.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-19-social-complete.svg",
+       "locked": "/badges/compact/locked/N-19-social-complete.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "N-20",
+   "name": "Completionist",
+   "group": "N",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "N-20",
+     "name": "Completionist",
+     "requirement": "Unlock every achievement.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-20-completionist.svg",
+       "locked": "/badges/full/locked/N-20-completionist.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-20-completionist.svg",
+       "locked": "/badges/compact/locked/N-20-completionist.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "N-21",
+   "name": "Season Elite",
+   "group": "N",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "N-21",
+     "name": "Season Elite",
+     "requirement": "Finish a season in the Top 50.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-21-season-elite.svg",
+       "locked": "/badges/full/locked/N-21-season-elite.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-21-season-elite.svg",
+       "locked": "/badges/compact/locked/N-21-season-elite.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "N-22",
+   "name": "Halloween Hunt",
+   "group": "N",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "N-22",
+     "name": "Halloween Hunt",
+     "requirement": "Limited-time event badge.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-22-halloween-hunt.svg",
+       "locked": "/badges/full/locked/N-22-halloween-hunt.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-22-halloween-hunt.svg",
+       "locked": "/badges/compact/locked/N-22-halloween-hunt.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "N-23",
+   "name": "New Year Drop",
+   "group": "N",
+   "type": "single",
+   "tiers": [
+    {
+     "id": "N-23",
+     "name": "New Year Drop",
+     "requirement": "Limited-time event badge.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/N-23-new-year-drop.svg",
+       "locked": "/badges/full/locked/N-23-new-year-drop.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/N-23-new-year-drop.svg",
+       "locked": "/badges/compact/locked/N-23-new-year-drop.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "T-ranked-wins",
+   "name": "Ranked Wins",
+   "group": "T",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "T-01",
+     "name": "First Ten",
+     "requirement": "First 10 wins in Ranked mode.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "10",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-01-first-ten.svg",
+       "locked": "/badges/full/locked/T-01-first-ten.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-01-first-ten.svg",
+       "locked": "/badges/compact/locked/T-01-first-ten.svg"
+      }
+     }
+    },
+    {
+     "id": "T-02",
+     "name": "Winning Habit",
+     "requirement": "First 10 wins in Ranked mode.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "25",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-02-winning-habit.svg",
+       "locked": "/badges/full/locked/T-02-winning-habit.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-02-winning-habit.svg",
+       "locked": "/badges/compact/locked/T-02-winning-habit.svg"
+      }
+     }
+    },
+    {
+     "id": "T-03",
+     "name": "Half Century",
+     "requirement": "First 10 wins in Ranked mode.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "50",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-03-half-century.svg",
+       "locked": "/badges/full/locked/T-03-half-century.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-03-half-century.svg",
+       "locked": "/badges/compact/locked/T-03-half-century.svg"
+      }
+     }
+    },
+    {
+     "id": "T-04",
+     "name": "Centurion",
+     "requirement": "First 10 wins in Ranked mode.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "100",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-04-centurion.svg",
+       "locked": "/badges/full/locked/T-04-centurion.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-04-centurion.svg",
+       "locked": "/badges/compact/locked/T-04-centurion.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "T-win-streak",
+   "name": "Win Streak",
+   "group": "T",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "T-05",
+     "name": "Heating Up",
+     "requirement": "Win games in a row in Ranked mode.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "3",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-05-heating-up.svg",
+       "locked": "/badges/full/locked/T-05-heating-up.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-05-heating-up.svg",
+       "locked": "/badges/compact/locked/T-05-heating-up.svg"
+      }
+     }
+    },
+    {
+     "id": "T-06",
+     "name": "On Fire",
+     "requirement": "Win games in a row in Ranked mode.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "5",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-06-on-fire.svg",
+       "locked": "/badges/full/locked/T-06-on-fire.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-06-on-fire.svg",
+       "locked": "/badges/compact/locked/T-06-on-fire.svg"
+      }
+     }
+    },
+    {
+     "id": "T-07",
+     "name": "Unstoppable",
+     "requirement": "Win games in a row in Ranked mode.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "10",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-07-unstoppable.svg",
+       "locked": "/badges/full/locked/T-07-unstoppable.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-07-unstoppable.svg",
+       "locked": "/badges/compact/locked/T-07-unstoppable.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "T-rounds-played",
+   "name": "Rounds Played",
+   "group": "T",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "T-08",
+     "name": "Getting Started",
+     "requirement": "Total rounds played.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "100",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-08-getting-started.svg",
+       "locked": "/badges/full/locked/T-08-getting-started.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-08-getting-started.svg",
+       "locked": "/badges/compact/locked/T-08-getting-started.svg"
+      }
+     }
+    },
+    {
+     "id": "T-09",
+     "name": "Round Collector",
+     "requirement": "Total rounds played.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "500",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-09-round-collector.svg",
+       "locked": "/badges/full/locked/T-09-round-collector.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-09-round-collector.svg",
+       "locked": "/badges/compact/locked/T-09-round-collector.svg"
+      }
+     }
+    },
+    {
+     "id": "T-10",
+     "name": "Thousand Rounds",
+     "requirement": "Total rounds played.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "1K",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-10-thousand-rounds.svg",
+       "locked": "/badges/full/locked/T-10-thousand-rounds.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-10-thousand-rounds.svg",
+       "locked": "/badges/compact/locked/T-10-thousand-rounds.svg"
+      }
+     }
+    },
+    {
+     "id": "T-11",
+     "name": "Round Machine",
+     "requirement": "Total rounds played.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "5K",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-11-round-machine.svg",
+       "locked": "/badges/full/locked/T-11-round-machine.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-11-round-machine.svg",
+       "locked": "/badges/compact/locked/T-11-round-machine.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "T-perfect-rounds",
+   "name": "Perfect Rounds",
+   "group": "T",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "T-12",
+     "name": "Flawless Five",
+     "requirement": "Total perfect 5000-point rounds.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "5",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-12-flawless-five.svg",
+       "locked": "/badges/full/locked/T-12-flawless-five.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-12-flawless-five.svg",
+       "locked": "/badges/compact/locked/T-12-flawless-five.svg"
+      }
+     }
+    },
+    {
+     "id": "T-13",
+     "name": "Flawless Twenty-Five",
+     "requirement": "Total perfect 5000-point rounds.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "25",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-13-flawless-twenty-five.svg",
+       "locked": "/badges/full/locked/T-13-flawless-twenty-five.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-13-flawless-twenty-five.svg",
+       "locked": "/badges/compact/locked/T-13-flawless-twenty-five.svg"
+      }
+     }
+    },
+    {
+     "id": "T-14",
+     "name": "Flawless Hundred",
+     "requirement": "Total perfect 5000-point rounds.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "100",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-14-flawless-hundred.svg",
+       "locked": "/badges/full/locked/T-14-flawless-hundred.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-14-flawless-hundred.svg",
+       "locked": "/badges/compact/locked/T-14-flawless-hundred.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "T-seasons-played",
+   "name": "Seasons Played",
+   "group": "T",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "T-15",
+     "name": "Season Debut",
+     "requirement": "Take part in seasons.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "1",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-15-season-debut.svg",
+       "locked": "/badges/full/locked/T-15-season-debut.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-15-season-debut.svg",
+       "locked": "/badges/compact/locked/T-15-season-debut.svg"
+      }
+     }
+    },
+    {
+     "id": "T-16",
+     "name": "Season Loyalist",
+     "requirement": "Take part in seasons.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "3",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-16-season-loyalist.svg",
+       "locked": "/badges/full/locked/T-16-season-loyalist.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-16-season-loyalist.svg",
+       "locked": "/badges/compact/locked/T-16-season-loyalist.svg"
+      }
+     }
+    },
+    {
+     "id": "T-17",
+     "name": "Season Stalwart",
+     "requirement": "Take part in seasons.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "5",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-17-season-stalwart.svg",
+       "locked": "/badges/full/locked/T-17-season-stalwart.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-17-season-stalwart.svg",
+       "locked": "/badges/compact/locked/T-17-season-stalwart.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "T-close-calls",
+   "name": "Close Calls",
+   "group": "T",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "T-18",
+     "name": "Close Range",
+     "requirement": "Guesses within 1 km.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "10",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-18-close-range.svg",
+       "locked": "/badges/full/locked/T-18-close-range.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-18-close-range.svg",
+       "locked": "/badges/compact/locked/T-18-close-range.svg"
+      }
+     }
+    },
+    {
+     "id": "T-19",
+     "name": "Tight Grouping",
+     "requirement": "Guesses within 1 km.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "50",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-19-tight-grouping.svg",
+       "locked": "/badges/full/locked/T-19-tight-grouping.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-19-tight-grouping.svg",
+       "locked": "/badges/compact/locked/T-19-tight-grouping.svg"
+      }
+     }
+    },
+    {
+     "id": "T-20",
+     "name": "Needle Point",
+     "requirement": "Guesses within 1 km.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "100",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-20-needle-point.svg",
+       "locked": "/badges/full/locked/T-20-needle-point.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-20-needle-point.svg",
+       "locked": "/badges/compact/locked/T-20-needle-point.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "T-monthly-challenge",
+   "name": "Monthly Challenge",
+   "group": "T",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "T-21",
+     "name": "Month Starter",
+     "requirement": "Rounds played in a single month.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "25",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-21-month-starter.svg",
+       "locked": "/badges/full/locked/T-21-month-starter.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-21-month-starter.svg",
+       "locked": "/badges/compact/locked/T-21-month-starter.svg"
+      }
+     }
+    },
+    {
+     "id": "T-22",
+     "name": "Month Regular",
+     "requirement": "Rounds played in a single month.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "50",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-22-month-regular.svg",
+       "locked": "/badges/full/locked/T-22-month-regular.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-22-month-regular.svg",
+       "locked": "/badges/compact/locked/T-22-month-regular.svg"
+      }
+     }
+    },
+    {
+     "id": "T-23",
+     "name": "Month Grinder",
+     "requirement": "Rounds played in a single month.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "100",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-23-month-grinder.svg",
+       "locked": "/badges/full/locked/T-23-month-grinder.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-23-month-grinder.svg",
+       "locked": "/badges/compact/locked/T-23-month-grinder.svg"
+      }
+     }
+    },
+    {
+     "id": "T-24",
+     "name": "Month Legend",
+     "requirement": "Rounds played in a single month.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "200",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-24-month-legend.svg",
+       "locked": "/badges/full/locked/T-24-month-legend.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-24-month-legend.svg",
+       "locked": "/badges/compact/locked/T-24-month-legend.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "T-season-finish",
+   "name": "Season Finish",
+   "group": "T",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "T-25",
+     "name": "Bronze Season",
+     "requirement": "Finish a season in this rank.",
+     "rarity": "Common",
+     "secret": false,
+     "label": "BRONZE",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-25-bronze-season.svg",
+       "locked": "/badges/full/locked/T-25-bronze-season.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-25-bronze-season.svg",
+       "locked": "/badges/compact/locked/T-25-bronze-season.svg"
+      }
+     }
+    },
+    {
+     "id": "T-26",
+     "name": "Silver Season",
+     "requirement": "Finish a season in this rank.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "SILVER",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-26-silver-season.svg",
+       "locked": "/badges/full/locked/T-26-silver-season.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-26-silver-season.svg",
+       "locked": "/badges/compact/locked/T-26-silver-season.svg"
+      }
+     }
+    },
+    {
+     "id": "T-27",
+     "name": "Gold Season",
+     "requirement": "Finish a season in this rank.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "GOLD",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-27-gold-season.svg",
+       "locked": "/badges/full/locked/T-27-gold-season.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-27-gold-season.svg",
+       "locked": "/badges/compact/locked/T-27-gold-season.svg"
+      }
+     }
+    },
+    {
+     "id": "T-28",
+     "name": "Platinum Season",
+     "requirement": "Finish a season in this rank.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "PLAT",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-28-platinum-season.svg",
+       "locked": "/badges/full/locked/T-28-platinum-season.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-28-platinum-season.svg",
+       "locked": "/badges/compact/locked/T-28-platinum-season.svg"
+      }
+     }
+    },
+    {
+     "id": "T-29",
+     "name": "Diamond Season",
+     "requirement": "Finish a season in this rank.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "DIAMOND",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-29-diamond-season.svg",
+       "locked": "/badges/full/locked/T-29-diamond-season.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-29-diamond-season.svg",
+       "locked": "/badges/compact/locked/T-29-diamond-season.svg"
+      }
+     }
+    },
+    {
+     "id": "T-30",
+     "name": "Master Season",
+     "requirement": "Finish a season in this rank.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "MASTER",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-30-master-season.svg",
+       "locked": "/badges/full/locked/T-30-master-season.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-30-master-season.svg",
+       "locked": "/badges/compact/locked/T-30-master-season.svg"
+      }
+     }
+    },
+    {
+     "id": "T-31",
+     "name": "Champion Season",
+     "requirement": "Finish a season in this rank.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "CHAMP",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-31-champion-season.svg",
+       "locked": "/badges/full/locked/T-31-champion-season.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-31-champion-season.svg",
+       "locked": "/badges/compact/locked/T-31-champion-season.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "T-tournament-podium",
+   "name": "Tournament Podium",
+   "group": "T",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "T-32",
+     "name": "Tournament Bronze",
+     "requirement": "Place on the podium of a tournament.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "3RD",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-32-tournament-bronze.svg",
+       "locked": "/badges/full/locked/T-32-tournament-bronze.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-32-tournament-bronze.svg",
+       "locked": "/badges/compact/locked/T-32-tournament-bronze.svg"
+      }
+     }
+    },
+    {
+     "id": "T-33",
+     "name": "Tournament Silver",
+     "requirement": "Place on the podium of a tournament.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "2ND",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-33-tournament-silver.svg",
+       "locked": "/badges/full/locked/T-33-tournament-silver.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-33-tournament-silver.svg",
+       "locked": "/badges/compact/locked/T-33-tournament-silver.svg"
+      }
+     }
+    },
+    {
+     "id": "T-34",
+     "name": "Tournament Gold",
+     "requirement": "Place on the podium of a tournament.",
+     "rarity": "Legendary",
+     "secret": false,
+     "label": "1ST",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-34-tournament-gold.svg",
+       "locked": "/badges/full/locked/T-34-tournament-gold.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-34-tournament-gold.svg",
+       "locked": "/badges/compact/locked/T-34-tournament-gold.svg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "T-daily-podium",
+   "name": "Daily Podium",
+   "group": "T",
+   "type": "series",
+   "tiers": [
+    {
+     "id": "T-35",
+     "name": "Daily Third",
+     "requirement": "Place on the podium of the daily leaderboard.",
+     "rarity": "Uncommon",
+     "secret": false,
+     "label": "3RD",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-35-daily-third.svg",
+       "locked": "/badges/full/locked/T-35-daily-third.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-35-daily-third.svg",
+       "locked": "/badges/compact/locked/T-35-daily-third.svg"
+      }
+     }
+    },
+    {
+     "id": "T-36",
+     "name": "Daily Second",
+     "requirement": "Place on the podium of the daily leaderboard.",
+     "rarity": "Rare",
+     "secret": false,
+     "label": "2ND",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-36-daily-second.svg",
+       "locked": "/badges/full/locked/T-36-daily-second.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-36-daily-second.svg",
+       "locked": "/badges/compact/locked/T-36-daily-second.svg"
+      }
+     }
+    },
+    {
+     "id": "T-37",
+     "name": "Daily First",
+     "requirement": "Place on the podium of the daily leaderboard.",
+     "rarity": "Epic",
+     "secret": false,
+     "label": "1ST",
+     "files": {
+      "full": {
+       "unlocked": "/badges/full/unlocked/T-37-daily-first.svg",
+       "locked": "/badges/full/locked/T-37-daily-first.svg"
+      },
+      "compact": {
+       "unlocked": "/badges/compact/unlocked/T-37-daily-first.svg",
+       "locked": "/badges/compact/locked/T-37-daily-first.svg"
+      }
+     }
+    }
+   ]
+  }
+ ]
+}

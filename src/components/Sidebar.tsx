@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { BarChart3, Gamepad2, Home, ListOrdered, Medal, PanelLeftClose, PanelLeftOpen, Settings, Users, type LucideIcon } from "lucide-react";
+import { Award, BarChart3, Gamepad2, Home, ListOrdered, Medal, PanelLeftClose, PanelLeftOpen, Settings, Users, type LucideIcon } from "lucide-react";
 import { useSettings } from "@/lib/game/storage";
 import { t, type Lang } from "@/lib/i18n";
 
@@ -9,10 +9,14 @@ const items: { to: string; key: string; icon: LucideIcon }[] = [
   { to: "/play", key: "modes", icon: Gamepad2 },
   { to: "/rank", key: "rank", icon: Medal },
   { to: "/party", key: "party", icon: Users },
+  { to: "/achievements", key: "achievements", icon: Award },
   { to: "/leaderboard", key: "leaderboard", icon: ListOrdered },
   { to: "/stats", key: "stats", icon: BarChart3 },
   { to: "/settings", key: "settings", icon: Settings },
 ];
+
+/** Mobile bottom bar keeps exactly five destinations. */
+const mobileItems = ["home", "modes", "rank", "party", "settings"].map((k) => items.find((i) => i.key === k)!);
 
 const KEY = "strafe-rail-open";
 
@@ -57,9 +61,9 @@ export function Sidebar() {
       {/* Mobile: bottom navigation bar */}
       <nav className="glass-plate fixed inset-x-2 z-50 flex justify-between rounded-[22px] px-1.5 py-1.5 md:hidden"
         style={{ bottom: "calc(8px + env(safe-area-inset-bottom))" }}>
-        {items.map(({ to, key, icon: Icon }) => (
+        {mobileItems.map(({ to, key, icon: Icon }) => (
           <Link key={key} to={to} aria-label={t(lang, key)}
-            className="flex min-w-0 flex-1 flex-col items-center gap-0.5 rounded-2xl py-1.5 text-[9px] font-medium text-muted-foreground"
+            className="flex min-w-0 flex-1 flex-col items-center gap-0.5 rounded-2xl py-1.5 text-[10px] font-medium text-muted-foreground"
             activeOptions={{ exact: to === "/" }}
             activeProps={{ className: "!bg-primary !text-primary-foreground" }}>
             <Icon className="h-5 w-5" strokeWidth={1.75} />

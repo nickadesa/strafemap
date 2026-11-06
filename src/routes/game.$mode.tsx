@@ -7,17 +7,18 @@ import {
   scoreFor, shrinkCenter, shrinkRadius, timeMultiplier, TIME_OPTIONS, type TimeLimit, type Difficulty, type LatLng, type Mode, type Pool,
 } from "@/lib/game/engine";
 import type { Location } from "@/lib/game/locations";
-import { saveRecord, useSettings } from "@/lib/game/storage";
+import { saveRecord, useSettings, loadRecords } from "@/lib/game/storage";
 import { SmartClue } from "@/components/SmartClue";
 import { blip, buzz } from "@/lib/game/sound";
 import { renderCard, shareCard, type CardData } from "@/lib/game/shareCard";
 import { Button } from "@/components/ui/button";
 import { t, type Lang } from "@/lib/i18n";
-import { applyMatchResult } from "@/lib/rank";
+import { applyMatchResult, loadRank, type RankStep } from "@/lib/rank";
+import { REACTION_SETS } from "@/lib/reactions";
+import { ACH_ALL, syncAchievements } from "@/lib/achievements";
 import { GameChat } from "@/components/GameChat";
 
 const AUTO_NEXT_SECONDS = 5;
-const REACTIONS = ["🔥", "😮", "😂", "👏", "😭"];
 
 interface Search { pool?: Pool | undefined; difficulty?: Difficulty | undefined; daily?: 1 | undefined; practice?: 1 | undefined; time?: TimeLimit | undefined; ranked?: 1 | undefined }
 const MODE_IDS = Object.keys(MODES) as Mode[];
@@ -78,6 +79,8 @@ function GamePage() {
   const [copied, setCopied] = useState(false);
   const [promptCollapsed, setPromptCollapsed] = useState(false);
   const [eloChange, setEloChange] = useState<number | null>(null);
+  const [rankAfter, setRankAfter] = useState<RankStep | null>(null);
+  const [newAch, setNewAch] = useState<string[]>([]);
   const saved = useRef(false);
 
   useEffect(() => {
@@ -210,9 +213,12 @@ function GamePage() {
       // Simple win/loss based on score threshold
       const avg = total / results.length;
       const result = avg >= 3000 ? "win" : avg >= 1500 ? "draw" : "loss";
-      const { change } = applyMatchResult(result, 1000);
+      const { change, after } = applyMatchResult(result, avg);
       setEloChange(change);
+      setRankAfter(after);
     }
+    // saveRecord writes local history synchronously before its network sync
+    setNewAch(syncAchievements(loadRecords(), loadRank()));
   }, [phase]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const standings = useMemo(() => {
@@ -250,8 +256,20 @@ function GamePage() {
           <p className="mt-2 font-semibold text-muted-foreground">{tr("outOf", { max: (MAX_POINTS * ROUNDS).toLocaleString() })}</p>
           {ranked && eloChange !== null && (
             <p className={`mt-2 text-lg font-semibold ${eloChange >= 0 ? "text-positive" : "text-destructive"}`}>
-              ELO {eloChange >= 0 ? "+" : ""}{eloChange}
+              {rankAfter && <img src={rankAfter.icon} alt="" className="mr-1 inline h-8 w-8 align-middle" />}
+              {rankAfter?.name} · <span className="readout">{eloChange >= 0 ? "+" : ""}{eloChange} RP</span>
             </p>
+          )}
+          {newAch.length > 0 && (
+            <Link to="/achievements" className="plate mt-4 flex items-center gap-3 p-3 pr-5 transition-colors hover:bg-muted/50">
+              <div className="flex -space-x-3">
+                {newAch.slice(0, 3).map((id) => { const a = ACH_ALL.find((x) => x.id === id); return a && <img key={id} src={a.files.compact.unlocked} alt="" className="h-12 w-12" />; })}
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs font-semibold text-muted-foreground">{tr("newUnlock")}</p>
+                <p className="truncate font-semibold">{newAch.map((id) => ACH_ALL.find((x) => x.id === id)?.name).join(", ")}</p>
+              </div>
+            </Link>
           )}
           <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
             <Box k={tr("accuracy")} v={`${Math.round((total / (MAX_POINTS * ROUNDS)) * 100)}%`} />
@@ -369,11 +387,11 @@ function GamePage() {
                   ))}
                 </ol>
               )}
-              <div className="mt-4 flex items-center gap-1.5" role="group" aria-label={tr("react")}>
-                {REACTIONS.map((e) => (
+              {settings.reactions !== false && <div className="mt-4 flex items-center gap-1.5" role="group" aria-label={tr("react")}>
+                {(REACTION_SETS[settings.reactionSet] ?? REACTION_SETS.classic).map((e) => (
                   <button key={e} type="button" onClick={() => react(e)} className="reaction-btn" aria-label={`${tr("react")} ${e}`}>{e}</button>
                 ))}
-              </div>
+              </div>}
               <button onClick={next} className="btn btn-ink relative mt-3 w-full overflow-hidden">
                 <span className="absolute inset-y-0 left-0 bg-primary/25" style={{ width: `${(1 - revealLeft / AUTO_NEXT_SECONDS) * 100}%` }} aria-hidden="true" />
                 <span className="relative">{!practice && idx + 1 >= ROUNDS ? tr("seeResults") : tr("nextRound")}</span>
