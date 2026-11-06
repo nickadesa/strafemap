@@ -37,13 +37,13 @@ export interface RankStep {
 const ROMAN = { 4: "IV", 3: "III", 2: "II", 1: "I" } as const;
 
 /** Every step of the ladder from Bronze IV up to Champion I. */
-export const RANK_STEPS: RankStep[] = RANK_TIERS.flatMap((tier) => {
+export const RANK_STEPS: RankStep[] = RANK_TIERS.flatMap((tier): RankStep[] => {
   if (tier.step === null) return [{ tier, division: null, name: tier.name, icon: `/ranks/r6/${tier.id}.svg`, min: tier.minRp, next: 0 }];
   return ([4, 3, 2, 1] as const).map((d, i) => ({
     tier, division: d, name: `${tier.name} ${ROMAN[d]}`,
     icon: `/ranks/r6/${tier.id}-${d}.svg`, min: tier.minRp + i * tier.step!, next: 0,
   }));
-}).map((s, i, all) => ({ ...s, next: all[i + 1]?.min ?? null }));
+}).map((s, i, all): RankStep => ({ ...s, next: all[i + 1]?.min ?? null }));
 
 export function getRank(rp: number): RankStep {
   for (let i = RANK_STEPS.length - 1; i >= 0; i--) if (rp >= RANK_STEPS[i]!.min) return RANK_STEPS[i]!;
