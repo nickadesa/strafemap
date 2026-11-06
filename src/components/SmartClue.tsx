@@ -64,11 +64,14 @@ export function SmartClue({ lang = "en", collapsed, onToggle, country, name, lab
       { transform: `translate(${dx}px, ${dy}px) scale(${oldFlag.width / newFlag.width})` },
       { transform: "none" },
     ], { duration: DURATION, easing: EASE });
-    const textAnimation = content.animate([
+    // Fade only the name, not the whole grid: moving the grid also moved and
+    // faded the flag on top of its own FLIP animation, making it look dropped.
+    const text = content.querySelector<HTMLElement>(".clue-name, .clue-heading");
+    const textAnimation = text?.animate([
       { opacity: 0, transform: collapsed ? "translateX(6px)" : "translateY(4px)" },
       { opacity: 1, transform: "none" },
     ], { duration: 260, delay: DURATION * 0.55, fill: "backwards", easing: "ease-out" });
-    animations.current = [cardAnimation, flagAnimation, textAnimation];
+    animations.current = [cardAnimation, flagAnimation, ...(textAnimation ? [textAnimation] : [])];
   }, [collapsed, name, viewport]);
 
   useLayoutEffect(() => () => animations.current.forEach((a) => a.cancel()), []);
