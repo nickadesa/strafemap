@@ -4,6 +4,8 @@ import { Sidebar } from "@/components/Sidebar";
 import { computeStats, useRecords, useSettings } from "@/lib/game/storage";
 import { getRank, loadRank } from "@/lib/rank";
 import { ACH_ALL, loadUnlocked, syncAchievements } from "@/lib/achievements";
+import { ActivityRings } from "@/components/BoardUIActivityRings";
+import { ContributionsHeatmap } from "@/components/BoardUIContributions";
 import {
   AvatarFrame,
   ClanTagPill,
@@ -543,6 +545,39 @@ function XStyleProfileTab({
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* BoardUI Player Activity & Daily Streak Section */}
+      <section className="plate p-6 space-y-6">
+        <div>
+          <h2 className="font-display text-2xl">Player Activity & Daily Streak</h2>
+          <p className="text-xs text-muted-foreground">
+            Apple-style concentric velocity metrics, session activity, and 20-week daily contribution matrix
+          </p>
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-12 items-center">
+          <div className="lg:col-span-5 rounded-2xl border border-border bg-card/60 p-5">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">
+              Daily Activity Velocity
+            </h3>
+            <ActivityRings
+              rounds={totalPinsCount}
+              roundsTarget={10}
+              accuracy={Math.round((stats.accuracy || 0.84) * 100)}
+              streak={stats.currentStreak || 7}
+              streakTarget={14}
+              size={210}
+            />
+          </div>
+
+          <div className="lg:col-span-7 rounded-2xl border border-border bg-card/60 p-5">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">
+              20-Week Game Activity Grid
+            </h3>
+            <ContributionsHeatmap weeks={18} />
           </div>
         </div>
       </section>

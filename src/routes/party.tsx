@@ -5,6 +5,12 @@ import { IconCheck } from "@/components/icons";
 import { useSettings } from "@/lib/game/storage";
 import { blip, buzz } from "@/lib/game/sound";
 import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+  InputOTPSeparator,
+} from "@/components/ui/input-otp";
+import {
   MODES,
   TIME_OPTIONS,
   type Difficulty,
@@ -92,7 +98,7 @@ function PartyPage() {
   const followedFriends = COMMUNITY_PLAYERS.filter((p) => social.followingIds.includes(p.id));
 
   const createRoom = () => {
-    const c = Math.random().toString(36).slice(2, 6).toUpperCase();
+    const c = Math.random().toString(36).slice(2, 8).toUpperCase();
     setRoom(c);
     setPlayers([
       {
@@ -346,21 +352,46 @@ function PartyPage() {
 
               {/* Join Room by Code */}
               <div className="plate p-5 sm:p-6">
-                <p className="font-display text-2xl">Join a Friend's Room</p>
-                <div className="mt-3 flex gap-2">
-                  <input
-                    value={code}
-                    onChange={(e) => setCode(e.target.value.toUpperCase().slice(0, 4))}
-                    placeholder="CODE"
-                    className="flex-1 rounded-full border border-input bg-background px-4 py-2.5 text-center font-display text-xl tracking-[0.3em]"
-                  />
+                <div className="flex flex-col gap-1">
+                  <p className="font-display text-2xl">Join a Friend's Room</p>
+                  <p className="text-xs text-muted-foreground">
+                    Enter the 6-character room code to join the lobby instantly
+                  </p>
+                </div>
+                <div className="mt-4 flex flex-col items-center justify-between gap-4 sm:flex-row">
+                  <div className="flex justify-center">
+                    <InputOTP
+                      maxLength={6}
+                      value={code}
+                      onChange={(val) => {
+                        const upper = val.toUpperCase();
+                        setCode(upper);
+                        if (upper.length === 6) {
+                          buzz(12);
+                          blip(settings.sound, 880, 70);
+                        }
+                      }}
+                    >
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                      </InputOTPGroup>
+                      <InputOTPSeparator />
+                      <InputOTPGroup>
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                  </div>
                   <button
                     type="button"
                     onClick={joinRoom}
                     disabled={code.length < 4}
-                    className="btn btn-primary px-6 text-sm font-bold"
+                    className="btn btn-primary w-full sm:w-auto px-7 py-3 text-sm font-bold"
                   >
-                    Join
+                    Join Party
                   </button>
                 </div>
               </div>
