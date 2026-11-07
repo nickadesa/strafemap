@@ -81,7 +81,7 @@ export const SIN_CARDS: SinCardInfo[] = [
     id: "sloth",
     sinName: "7. Sloth",
     skillName: "Safety Cushion",
-    accent: "#0367FC",
+    accent: "#06B6D4",
     boon: "Reduces long-distance penalty by 15% and auto-submits unconfirmed pins on timeout.",
     tradeoff: "Map zoom is locked to high-altitude regional view (maxZoom 5).",
   },

@@ -162,7 +162,7 @@ function PartyPage() {
         name: f.nickname,
         username: f.username,
         clanTag: f.clanTag,
-        clanTagColor: f.clanTagColor ?? "#0367FC",
+        clanTagColor: f.clanTagColor ?? "#D2F801",
         verified: f.verifiedBadge,
         rp: f.rp,
         championPosition: f.championPosition,
@@ -632,8 +632,8 @@ function PartyPage() {
                       type="button"
                       disabled={alreadyIn}
                       onClick={() => inviteFriendToRoom(f.id)}
-                      className={`btn !px-3.5 !py-1.5 text-xs font-bold ${
-                        alreadyIn ? "btn-outline opacity-50" : "btn-blue"
+                      className={`btn !px-3.5 !py-1.5 text-xs font-semibold ${
+                        alreadyIn ? "btn-outline opacity-50" : "btn-primary"
                       }`}
                     >
                       {alreadyIn ? "In Lobby" : "+ Invite"}

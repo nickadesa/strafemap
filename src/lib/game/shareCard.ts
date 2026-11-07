@@ -30,7 +30,6 @@ export interface CardData {
 }
 
 const LIME = "#D2F801";
-const BLUE = "#0367FC";
 const BG = "#161616";
 const PLATE = "#1E1E20";
 const LINE = "#2C2E33";
@@ -76,20 +75,14 @@ export async function renderCard(d: CardData): Promise<Blob> {
   c.fillStyle = BG;
   c.fillRect(0, 0, logicalW, logicalH);
 
-  // Template-specific dual-core glow
-  const accentPrimary = template === "daily" || template === "party" ? BLUE : LIME;
-  const accentSecondary = template === "daily" || template === "party" ? LIME : BLUE;
+  // Single brand lime ambient highlight
+  const accentPrimary = LIME;
+  const accentSecondary = LIME;
 
-  const g1 = c.createRadialGradient(logicalW * 0.25, logicalH * 0.2, 40, logicalW * 0.25, logicalH * 0.2, logicalW * 0.65);
-  g1.addColorStop(0, template === "ranked" ? "rgba(220,31,48,0.22)" : "rgba(3,103,252,0.22)");
-  g1.addColorStop(1, "rgba(3,103,252,0)");
+  const g1 = c.createRadialGradient(logicalW * 0.5, logicalH * 0.08, 40, logicalW * 0.5, logicalH * 0.08, logicalW * 0.6);
+  g1.addColorStop(0, "rgba(210,248,1,0.06)");
+  g1.addColorStop(1, "rgba(210,248,1,0)");
   c.fillStyle = g1;
-  c.fillRect(0, 0, logicalW, logicalH);
-
-  const g2 = c.createRadialGradient(logicalW * 0.78, logicalH * 0.72, 40, logicalW * 0.78, logicalH * 0.72, logicalW * 0.6);
-  g2.addColorStop(0, "rgba(210,248,1,0.16)");
-  g2.addColorStop(1, "rgba(210,248,1,0)");
-  c.fillStyle = g2;
   c.fillRect(0, 0, logicalW, logicalH);
 
   const disp = (px: number) => `900 ${px}px "Inter Tight", Inter, sans-serif`;
@@ -268,16 +261,16 @@ function drawMapPlate(
       const gx = px(r.guess.lng),
         gy = py(r.guess.lat);
       c.setLineDash([12, 10]);
-      c.strokeStyle = BLUE;
-      c.lineWidth = 4.5;
+      c.strokeStyle = "rgba(210,248,1,0.85)";
+      c.lineWidth = 4;
       c.beginPath();
       c.moveTo(gx, gy);
       c.lineTo(tx, ty);
       c.stroke();
       c.setLineDash([]);
       c.beginPath();
-      c.arc(gx, gy, 11, 0, Math.PI * 2);
-      c.fillStyle = BLUE;
+      c.arc(gx, gy, 10, 0, Math.PI * 2);
+      c.fillStyle = "#FFFFFF";
       c.fill();
     }
     c.beginPath();
@@ -311,9 +304,9 @@ function drawRoundSquares(
       r.points >= 4000
         ? LIME
         : r.points >= 2000
-          ? BLUE
+          ? "#2D3035"
           : r.points > 0
-            ? "rgba(3,103,252,0.35)"
+            ? "#222428"
             : LINE;
     c.fill();
     c.fillStyle = r.points >= 4000 ? "#161616" : INK;

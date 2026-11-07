@@ -804,9 +804,9 @@ function GamePage() {
               </span>
               <span
                 className={`h-2 w-2 rounded-full ${
-                  elapsed > 4 ? "bg-[#D2F801]" : "animate-pulse bg-[#0367FC]"
+                  elapsed > 4 ? "bg-[#D2F801]" : "bg-muted-foreground/60"
                 }`}
-                title={elapsed > 4 ? "Opponent pinned!" : "Opponent thinking…"}
+                title={elapsed > 4 ? "Opponent pinned" : "Opponent thinking"}
               />
             </div>
           )}
@@ -1002,7 +1002,7 @@ function GamePage() {
                       +{last.points.toLocaleString()}
                     </p>
                     {last.sinNote && (
-                      <p className="mt-1 text-xs font-bold text-[#0367FC]">{last.sinNote}</p>
+                      <p className="mt-1 text-xs font-semibold text-[#D2F801]">{last.sinNote}</p>
                     )}
                   </div>
                   <div className="text-right text-sm font-semibold">
@@ -1290,7 +1290,7 @@ function ShareCardStudio({
             type="button"
             disabled={postedToFeed}
             onClick={handlePostToFeed}
-            className="btn btn-blue !px-4 !py-2 text-xs font-bold"
+            className="btn btn-outline !px-4 !py-2 text-xs font-semibold"
           >
             {postedToFeed ? <Check className="h-4 w-4" /> : <Send className="h-4 w-4" />}
             {postedToFeed ? "Posted to Feed!" : "Post to Social Feed"}

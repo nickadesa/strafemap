@@ -79,7 +79,7 @@ function AchievementsPage() {
                 <button key={a.id} onClick={() => setOpen(a)}
                   className="group flex flex-col items-center gap-1 rounded-2xl p-2 text-center transition-colors hover:bg-muted">
                   <img src={hidden ? SECRET_BADGE : on ? a.files.compact.unlocked : a.files.compact.locked} alt="" loading="lazy"
-                    className={`aspect-[288/280] w-full transition-transform duration-300 group-hover:scale-105 ${on ? "" : "opacity-70"}`} />
+                    className={`aspect-[288/280] w-full transition-opacity duration-200 ${on ? "group-hover:opacity-90" : "opacity-70"}`} />
                   <span className="line-clamp-1 text-xs font-medium">{hidden ? "???" : a.name}</span>
                 </button>
               );

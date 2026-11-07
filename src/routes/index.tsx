@@ -245,7 +245,7 @@ function Home() {
                     gradient: "linear-gradient(160deg, #161616 0%, #262626 100%)",
                   })
                 }
-                className="story-ring group relative aspect-[4/5] w-36 shrink-0 rounded-[18px] text-left transition-transform hover:scale-[1.02] sm:w-40"
+                className="story-ring group relative aspect-[4/5] w-36 shrink-0 rounded-[18px] text-left transition-opacity hover:opacity-90 sm:w-40"
               >
                 <div className="flex h-full w-full flex-col justify-between rounded-[15.5px] bg-[#161616] p-3">
                   <div className="grid h-9 w-9 place-items-center rounded-full bg-[#D2F801] text-[#161616]">
@@ -263,7 +263,7 @@ function Home() {
                   key={st.id}
                   type="button"
                   onClick={() => setActiveStory(st)}
-                  className="story-ring group relative aspect-[4/5] w-36 shrink-0 overflow-hidden rounded-[18px] text-left transition-transform hover:scale-[1.02] sm:w-40"
+                  className="story-ring group relative aspect-[4/5] w-36 shrink-0 overflow-hidden rounded-[18px] text-left transition-opacity hover:opacity-90 sm:w-40"
                 >
                   {st.imageUrl ? (
                     <div className="relative h-full w-full rounded-[15.5px] overflow-hidden">

@@ -209,12 +209,6 @@
   color: #161616;
   &:hover { background: #dcff1a; }
 }
-@utility btn-blue {
-  background: var(--color-secondary);
-  color: var(--color-secondary-foreground);
-  border: 1px solid var(--color-border);
-  &:hover { opacity: 0.9; }
-}
 @utility btn-ink {
   background: var(--color-secondary);
   color: var(--color-secondary-foreground);

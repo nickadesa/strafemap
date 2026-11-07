@@ -311,10 +311,10 @@ function SettingsPage() {
                           key={emo}
                           type="button"
                           onClick={() => toggleQuickEmoji(emo)}
-                          className={`grid h-11 w-11 place-items-center rounded-2xl border text-xl transition-all ${
+                          className={`grid h-11 w-11 place-items-center rounded-2xl border text-xl transition-colors ${
                             active
-                              ? "border-[#D2F801] bg-[#D2F801]/20 ring-2 ring-[#D2F801] scale-105"
-                              : "border-border bg-card/70 hover:scale-105 hover:bg-muted"
+                              ? "border-[#D2F801] bg-[#D2F801]/15"
+                              : "border-border bg-card/70 hover:bg-muted"
                           }`}
                         >
                           {emo}

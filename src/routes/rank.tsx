@@ -19,7 +19,7 @@ import {
   type ContinentZone,
 } from "@/lib/social";
 import { t, type Lang } from "@/lib/i18n";
-import { Gift, Shield, Sparkles, SlidersHorizontal, Trophy } from "lucide-react";
+import { Compass, Flag as FlagIcon, Gift, Globe, Shield, Sparkles, SlidersHorizontal, Trophy } from "lucide-react";
 
 type RankTab = "play" | "leaderboard" | "guide";
 
@@ -205,10 +205,10 @@ function PlayTab({
           </div>
           <div className="h-2.5 overflow-hidden rounded-full bg-muted p-0.5">
             <div
-              className="h-full rounded-full transition-[width] duration-700"
+              className="h-full rounded-full transition-[width] duration-500"
               style={{
                 width: `${progress}%`,
-                background: "linear-gradient(90deg, #0367FC 0%, #D2F801 100%)",
+                backgroundColor: "#D2F801",
               }}
             />
           </div>
@@ -251,7 +251,7 @@ function PlayTab({
           <button
             type="button"
             onClick={() => setShowRewards((v) => !v)}
-            className="btn btn-blue px-5 py-3 text-sm"
+            className="btn btn-outline px-5 py-3 text-sm font-semibold"
           >
             <Gift className="h-4 w-4" />
             {t(lang, "seasonRewards")}
@@ -335,7 +335,7 @@ function PlayTab({
                 Unlock exclusive Avatar Frames, Titles, Gacha Packs & Super Chat Auras at your peak season tier
               </p>
             </div>
-            <span className="rounded-full bg-[#0367FC] px-3 py-1 text-xs font-bold text-white">
+            <span className="rounded-full bg-[#D2F801] px-3 py-1 text-xs font-extrabold text-[#161616]">
               Season 1
             </span>
           </div>
@@ -348,7 +348,7 @@ function PlayTab({
               return (
                 <div
                   key={rw.tier}
-                  className={`flex flex-col justify-between rounded-2xl border p-4 transition-all ${
+                  className={`flex flex-col justify-between rounded-2xl border p-4 transition-colors ${
                     unlocked
                       ? "border-[#D2F801]/60 bg-[#D2F801]/5"
                       : "border-border bg-background/40 opacity-80"
@@ -378,12 +378,12 @@ function PlayTab({
                       <span className="font-semibold text-foreground">{rw.titleReward}</span>
                     </p>
                     <p className="flex justify-between">
-                      <span className="text-muted-foreground">Gacha:</span>
+                      <span className="text-muted-foreground">Packs:</span>
                       <span className="font-semibold text-[#D2F801]">{rw.packsReward}</span>
                     </p>
                     <p className="flex justify-between">
                       <span className="text-muted-foreground">Chat Aura:</span>
-                      <span className="font-semibold text-[#0367FC]">{rw.auraReward}</span>
+                      <span className="font-semibold text-foreground">{rw.auraReward}</span>
                     </p>
                   </div>
                 </div>
@@ -549,7 +549,7 @@ function GuideTab({
             <span className="text-destructive font-semibold">−20 RP</span> · Margin bonus ±1.5/round · First 5 placement matches ×1.5 RP gain!
           </p>
         </div>
-        <span className="readout shrink-0 rounded-full bg-[#0367FC]/15 px-3 py-1 font-bold text-[#0367FC]">
+        <span className="readout shrink-0 rounded-full bg-[#D2F801]/10 px-3 py-1 font-bold text-[#D2F801]">
           Champion = 7,000+ RP & Top 50
         </span>
       </div>
@@ -596,7 +596,7 @@ export function UnifiedLeaderboardView({
       rp: p.rp,
       championPosition: p.championPosition ?? null,
       clanTag: p.clanTag,
-      clanTagColor: p.clanTagColor ?? "#0367FC",
+      clanTagColor: p.clanTagColor ?? "#D2F801",
       verifiedBadge: p.verifiedBadge,
       avatarUrl: p.avatarUrl ?? null,
       me: false,
@@ -618,13 +618,16 @@ export function UnifiedLeaderboardView({
       <div className="plate flex flex-wrap items-center justify-between gap-3 p-4">
         <div className="seg">
           <button onClick={() => setScope("global")} data-on={scope === "global"} className="seg-item">
-            🌍 {t(lang, "globalFilter")}
+            <Globe className="mr-1.5 inline h-3.5 w-3.5" />
+            {t(lang, "globalFilter")}
           </button>
           <button onClick={() => setScope("zone")} data-on={scope === "zone"} className="seg-item">
-            🧭 {t(lang, "zoneFilter")}
+            <Compass className="mr-1.5 inline h-3.5 w-3.5" />
+            {t(lang, "zoneFilter")}
           </button>
           <button onClick={() => setScope("country")} data-on={scope === "country"} className="seg-item">
-            🏳️ {t(lang, "countryFilter")}
+            <FlagIcon className="mr-1.5 inline h-3.5 w-3.5" />
+            {t(lang, "countryFilter")}
           </button>
         </div>
 
@@ -635,7 +638,7 @@ export function UnifiedLeaderboardView({
                 key={z}
                 onClick={() => setSelectedZone(z)}
                 className={`rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
-                  selectedZone === z ? "bg-[#0367FC] text-white" : "bg-muted text-muted-foreground hover:text-foreground"
+                  selectedZone === z ? "bg-[#D2F801] text-[#161616]" : "bg-muted text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {z}
@@ -651,7 +654,7 @@ export function UnifiedLeaderboardView({
                 key={c}
                 onClick={() => setSelectedCountry(c)}
                 className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
-                  selectedCountry === c ? "bg-[#0367FC] text-white" : "bg-muted text-muted-foreground hover:text-foreground"
+                  selectedCountry === c ? "bg-[#D2F801] text-[#161616]" : "bg-muted text-muted-foreground hover:text-foreground"
                 }`}
               >
                 <Flag country={c} size={16} />

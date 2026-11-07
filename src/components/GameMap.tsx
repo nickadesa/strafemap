@@ -181,7 +181,7 @@ export function GameMap({
     }
   }, [resetKey, status, countryFocusCenter?.lat, countryFocusCenter?.lng]);
 
-  // Primary guess marker (#0367FC Electric Blue)
+  // Primary guess marker (#D2F801 Lime)
   useEffect(() => {
     const Lf = L.current,
       m = map.current;
@@ -272,7 +272,7 @@ export function GameMap({
     }
   }, [circle?.center.lat, circle?.center.lng, circle?.radiusKm, status]);
 
-  // reveal: show opponent/bot pins + animated dashed trajectory from player's pin (#0367FC) to target (#D2F801)
+  // reveal: show opponent/bot pins + animated dashed trajectory from player's pin to target (#D2F801)
   useEffect(() => {
     const Lf = L.current,
       m = map.current,
@@ -298,9 +298,9 @@ export function GameMap({
     }
     if (guess) {
       Lf.polyline([[guess.lat, guess.lng], [target.lat, target.lng]], {
-        color: "#0367FC",
-        weight: 3,
-        dashArray: "8 6",
+        color: "#D2F801",
+        weight: 2.5,
+        dashArray: "6 6",
         className: "trajectory-line",
       }).addTo(g);
       pts.push([guess.lat, guess.lng]);

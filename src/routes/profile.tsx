@@ -504,7 +504,7 @@ function XStyleProfileTab({
               <p className="text-xs text-muted-foreground">Total Pins Dropped</p>
             </div>
             <div className="rounded-2xl border border-border bg-background/40 p-3.5 text-center">
-              <p className="font-display text-2xl text-[#0367FC]">{totalGamesCount.toLocaleString()}</p>
+              <p className="font-display text-2xl text-foreground">{totalGamesCount.toLocaleString()}</p>
               <p className="text-xs text-muted-foreground">Total Games Played</p>
             </div>
           </div>
@@ -593,8 +593,8 @@ function XStyleProfileTab({
                 <button
                   type="button"
                   onClick={() => toggleFollow(p.id)}
-                  className={`btn !px-3.5 !py-1.5 text-xs font-bold ${
-                    isFollowing ? "btn-outline" : "btn-blue"
+                  className={`btn !px-3.5 !py-1.5 text-xs font-semibold ${
+                    isFollowing ? "btn-outline" : "btn-primary"
                   }`}
                 >
                   {isFollowing ? "Following" : "+ Follow"}
@@ -644,20 +644,17 @@ function XStyleProfileTab({
       {inspectedPlayer && (
         <div className="fixed inset-0 z-50 grid place-items-center bg-black/80 p-4 backdrop-blur-sm">
           <div className="plate w-full max-w-lg overflow-hidden">
-            <div
-              className="flex h-28 items-end justify-between p-4"
-              style={{ background: "linear-gradient(135deg, #0367FC 0%, #161616 65%, #D2F801 100%)" }}
-            >
+            <div className="flex h-24 items-end justify-between border-b border-border bg-[#19191b] p-4">
               <AvatarFrame
                 name={inspectedPlayer.nickname}
                 rp={inspectedPlayer.rp}
                 championPosition={inspectedPlayer.championPosition}
-                size={72}
+                size={64}
               />
               <button
                 type="button"
                 onClick={() => setInspectedPlayer(null)}
-                className="grid h-8 w-8 place-items-center rounded-full bg-black/50 text-white"
+                className="grid h-8 w-8 place-items-center rounded-full bg-black/50 text-white hover:bg-black/80"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -678,8 +675,8 @@ function XStyleProfileTab({
                 <button
                   type="button"
                   onClick={() => toggleFollow(inspectedPlayer.id)}
-                  className={`btn !px-4 !py-1.5 text-xs font-bold ${
-                    social.followingIds.includes(inspectedPlayer.id) ? "btn-outline" : "btn-blue"
+                  className={`btn !px-4 !py-1.5 text-xs font-semibold ${
+                    social.followingIds.includes(inspectedPlayer.id) ? "btn-outline" : "btn-primary"
                   }`}
                 >
                   {social.followingIds.includes(inspectedPlayer.id) ? "Following" : "+ Follow"}
@@ -1084,7 +1081,7 @@ function ClanSystemTab({
                       <button
                         type="button"
                         onClick={() => handleJoinClan(c.id)}
-                        className="btn btn-blue !px-3.5 !py-1.5 text-xs font-bold"
+                        className="btn btn-primary !px-4 !py-1.5 text-xs font-semibold"
                       >
                         Join
                       </button>
@@ -1412,7 +1409,7 @@ function SocialFeedTab({
         </h2>
         <div className="no-scrollbar flex gap-3 overflow-x-auto pb-1">
           {/* + Add Story Button */}
-          <label className="story-ring relative aspect-[4/5] w-28 shrink-0 cursor-pointer rounded-[18px] text-center transition-transform hover:scale-[1.02]">
+          <label className="story-ring relative aspect-[4/5] w-28 shrink-0 cursor-pointer rounded-[18px] text-center transition-opacity hover:opacity-90">
             <input
               type="file"
               accept="image/*"
@@ -1423,7 +1420,7 @@ function SocialFeedTab({
               <div className="grid h-10 w-10 place-items-center rounded-full bg-[#D2F801] text-[#161616]">
                 <Plus className="h-5 w-5" />
               </div>
-              <span className="mt-2 text-xs font-extrabold text-[#D2F801]">+ Add Story</span>
+              <span className="mt-2 text-xs font-bold text-[#D2F801]">+ Add Story</span>
               <span className="text-[10px] text-muted-foreground">Upload photo</span>
             </div>
           </label>
@@ -1433,7 +1430,7 @@ function SocialFeedTab({
               key={st.id}
               type="button"
               onClick={() => setActiveStory(st)}
-              className="story-ring relative aspect-[4/5] w-28 shrink-0 overflow-hidden rounded-[18px] text-left transition-transform hover:scale-[1.02]"
+              className="story-ring relative aspect-[4/5] w-28 shrink-0 overflow-hidden rounded-[18px] text-left transition-opacity hover:opacity-90"
             >
               {st.imageUrl ? (
                 <div className="relative h-full w-full rounded-[15.5px] overflow-hidden">
@@ -1488,7 +1485,7 @@ function SocialFeedTab({
               value={postText}
               onChange={(e) => setPostText(e.target.value)}
               placeholder="Share a geography tip, invite players to a Party lobby, or post your Results Card…"
-              className="w-full rounded-2xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-[#0367FC]"
+              className="w-full rounded-2xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-[#D2F801]"
             />
             <div className="mt-2.5 flex flex-wrap items-center justify-between gap-2">
               <label className="flex items-center gap-2 text-xs font-semibold text-muted-foreground">
