@@ -181,40 +181,58 @@ export function Flag({
 
   const file = flagFile(country);
   const code = countryCode(country);
-  const h = rectangular ? Math.round(size * 0.67) : file || inlineRenderer ? size : Math.round(size * 0.75);
-  const base = `inline-grid shrink-0 place-items-center overflow-hidden ${
-    rectangular ? "border border-border/60 rounded-[3px]" : file || inlineRenderer ? "rounded-full" : "rounded-[6px] bg-muted ring-1 ring-border"
-  } ${className}`;
+  const h = Math.round(size * 0.67);
+  const base = `inline-grid shrink-0 place-items-center overflow-hidden border border-border/50 shadow-xs select-none ${className}`;
 
   if (inlineRenderer) {
     return (
-      <span className={base} style={{ width: size, height: h }} aria-label={country}>
+      <span
+        className={base}
+        style={{ width: size, height: h }}
+        aria-label={country}
+        onContextMenu={(e) => e.preventDefault()}
+      >
         {inlineRenderer()}
       </span>
     );
   }
 
   const src =
-    rectangular && code
+    code
       ? `https://flagcdn.com/${code.toLowerCase()}.svg`
       : file
         ? `/flags/${file}.svg`
-        : code
-          ? `https://flagcdn.com/${code.toLowerCase()}.svg`
-          : null;
+        : null;
 
   if (!src || failed) {
     return (
-      <span className={base} style={{ width: size, height: h }} aria-label={country}>
-        <svg width={h * 0.7} height={h * 0.7} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="opacity-60">
+      <span
+        className={base}
+        style={{ width: size, height: h }}
+        aria-label={country}
+        onContextMenu={(e) => e.preventDefault()}
+      >
+        <svg width={h * 0.7} height={h * 0.7} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="opacity-60 pointer-events-none">
           <circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18" />
         </svg>
       </span>
     );
   }
   return (
-    <span className={base} style={{ width: size, height: h }}>
-      <img src={src} alt={`${country} flag`} width={size} height={h} onError={() => setFailed(true)} className="block h-full w-full object-cover" draggable={false} />
+    <span
+      className={base}
+      style={{ width: size, height: h }}
+      onContextMenu={(e) => e.preventDefault()}
+    >
+      <img
+        src={src}
+        alt={`${country} flag`}
+        width={size}
+        height={h}
+        onError={() => setFailed(true)}
+        className="block h-full w-full object-cover pointer-events-none select-none"
+        draggable={false}
+      />
     </span>
   );
 }

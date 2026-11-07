@@ -3,7 +3,7 @@ import { AvatarFrame, ClanTagPill, VerifiedBadge, type VerifiedBadgeType } from 
 import { useSocialProfile } from "@/lib/social";
 import { useSettings } from "@/lib/game/storage";
 import { t, type Lang } from "@/lib/i18n";
-import { Send, Sparkles, LogOut } from "lucide-react";
+import { Send, Sparkles } from "lucide-react";
 
 export interface MatchChatOpponent {
   name: string;
@@ -21,19 +21,70 @@ interface ChatMessage {
   senderRp?: number | undefined;
   senderVerified?: VerifiedBadgeType | undefined;
   text: string;
+  time: string;
   me?: boolean | undefined;
   system?: boolean | undefined;
-  aura?: "none" | "fire" | "water" | "rainbow" | "vines" | undefined;
 }
 
-const QUICK_CHAT_PRESET_KEYS = ["chatPreset1", "chatPreset2", "chatPreset3", "chatPreset4", "chatPreset5"];
-const AURA_KEYS = {
-  none: "auraNone",
-  fire: "auraFire",
-  water: "auraWater",
-  rainbow: "auraRainbow",
-  vines: "auraVines",
-} as const;
+const QUICK_CHAT_PILLS = [
+  "GG! 🤝",
+  "Well played! 🔥",
+  "Close match! 🎯",
+  "Insane pin! 📍",
+  "Rematch? ⚔️",
+];
+
+const SMART_REPLIES: Record<string, string[]> = {
+  gg: [
+    "GG! That was super intense!",
+    "GGs! Really well played mate 🤝",
+    "Gg wp! You definitely know your geography!",
+  ],
+  rematch: [
+    "I'm totally down for a rematch! Ready when you are 🔥",
+    "Let's do it! Queue up another one!",
+  ],
+  close: [
+    "I thought I had you in round 3! Super close! 😅",
+    "Yeah, down to the wire! Respect!",
+  ],
+  insane: [
+    "Thanks! Got lucky with the coastline clue haha 🌊",
+    "Haha hours of practice paying off!",
+  ],
+  default: [
+    "Well played! Catch you on the global leaderboard 🏆",
+    "Nice match! Thanks for the game!",
+    "Great guesses throughout!",
+  ],
+};
+
+function getSmartReply(userText: string): string {
+  const lower = userText.toLowerCase();
+  if (lower.includes("gg")) {
+    const arr = SMART_REPLIES["gg"]!;
+    return arr[Math.floor(Math.random() * arr.length)]!;
+  }
+  if (lower.includes("rematch")) {
+    const arr = SMART_REPLIES["rematch"]!;
+    return arr[Math.floor(Math.random() * arr.length)]!;
+  }
+  if (lower.includes("close")) {
+    const arr = SMART_REPLIES["close"]!;
+    return arr[Math.floor(Math.random() * arr.length)]!;
+  }
+  if (lower.includes("insane") || lower.includes("pin")) {
+    const arr = SMART_REPLIES["insane"]!;
+    return arr[Math.floor(Math.random() * arr.length)]!;
+  }
+  const arr = SMART_REPLIES["default"]!;
+  return arr[Math.floor(Math.random() * arr.length)]!;
+}
+
+function formatChatTime(): string {
+  const now = new Date();
+  return `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
+}
 
 export function GameChat({
   opponent,
@@ -54,19 +105,17 @@ export function GameChat({
   };
 
   const [text, setText] = useState("");
-  const [selectedAura, setSelectedAura] = useState<"none" | "fire" | "water" | "rainbow" | "vines">(
-    social.chatAura ?? "none",
-  );
-  const [opponentLeft, setOpponentLeft] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([
+  const [opponentTyping, setOpponentTyping] = useState(false);
+  const [messages, setMessages] = useState<ChatMessage[]>(() => [
     {
-      id: "m-1",
+      id: "m-initial",
       senderName: opp.name,
       senderTag: opp.clanTag,
       senderTagColor: opp.clanTagColor ?? "#D2F801",
       senderRp: opp.rp,
       senderVerified: opp.verified ?? "gold",
-      text: t(lang, "chatDemoMsg"),
+      text: "Good game! Those rounds were seriously fast.",
+      time: formatChatTime(),
       me: false,
     },
   ]);
@@ -76,48 +125,47 @@ export function GameChat({
   useEffect(() => {
     const el = listRef.current;
     if (el) el.scrollTop = el.scrollHeight;
-  }, [messages]);
+  }, [messages, opponentTyping]);
 
   const sendMessage = (msgText: string) => {
     const trimmed = msgText.trim();
     if (!trimmed) return;
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: `m-${Date.now()}-${Math.random()}`,
-        senderName: social.nickname || settings.name || t(lang, "you"),
-        senderTag: social.clanTag,
-        senderTagColor: social.clanTagColor,
-        senderRp: 1120,
-        senderVerified: social.verifiedBadge,
-        text: trimmed,
-        me: true,
-        aura: selectedAura,
-      },
-    ]);
+
+    const newMsg: ChatMessage = {
+      id: `m-${Date.now()}-${Math.random()}`,
+      senderName: social.nickname || settings.name || t(lang, "you"),
+      senderTag: social.clanTag,
+      senderTagColor: social.clanTagColor,
+      senderRp: 1120,
+      senderVerified: social.verifiedBadge,
+      text: trimmed,
+      time: formatChatTime(),
+      me: true,
+    };
+
+    setMessages((prev) => [...prev, newMsg]);
     setText("");
-  };
 
-  const triggerOpponentLeave = () => {
-    if (opponentLeft) return;
-    setOpponentLeft(true);
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: `sys-${Date.now()}`,
-        senderName: "System",
-        text: t(lang, "leftMatch", { name: opp.name }),
-        system: true,
-      },
-    ]);
-  };
-
-  const auraClass = (aura?: ChatMessage["aura"]) => {
-    if (aura === "fire") return "chat-aura-fire";
-    if (aura === "water") return "chat-aura-water";
-    if (aura === "rainbow") return "chat-aura-rainbow";
-    if (aura === "vines") return "chat-aura-vines";
-    return "";
+    // Simulate realistic opponent typing and intelligent reply
+    setOpponentTyping(true);
+    const typingDelay = 1100 + Math.random() * 900;
+    setTimeout(() => {
+      setOpponentTyping(false);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `opp-${Date.now()}`,
+          senderName: opp.name,
+          senderTag: opp.clanTag,
+          senderTagColor: opp.clanTagColor ?? "#D2F801",
+          senderRp: opp.rp,
+          senderVerified: opp.verified ?? "gold",
+          text: getSmartReply(trimmed),
+          time: formatChatTime(),
+          me: false,
+        },
+      ]);
+    }, typingDelay);
   };
 
   return (
@@ -127,47 +175,27 @@ export function GameChat({
       }`}
     >
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-background/50 px-4 py-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-card/60 px-4 py-3">
         <div className="flex items-center gap-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-[#D2F801]" />
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#D2F801] opacity-75" />
+            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#D2F801]" />
+          </span>
           <span className="text-sm font-bold">{t(lang, "matchChat")}</span>
           <span className="rounded-full bg-muted px-2.5 py-0.5 text-[11px] text-muted-foreground font-medium">
             {t(lang, "vsName", { name: `${opp.clanTag ? `${opp.clanTag} ` : ""}${opp.name}` })}
           </span>
         </div>
 
-        <div className="flex items-center gap-1.5">
-          <Sparkles className="h-3.5 w-3.5 text-[#D2F801]" />
-          {(["none", "fire", "water", "rainbow", "vines"] as const).map((a) => (
-            <button
-              key={a}
-              type="button"
-              onClick={() => setSelectedAura(a)}
-              className={`rounded-full px-2 py-0.5 text-[10px] font-bold capitalize transition-colors ${
-                selectedAura === a
-                  ? "bg-[#D2F801] text-[#161616]"
-                  : "bg-muted text-muted-foreground hover:text-foreground"
-              }`}
-              title={t(lang, "auraTitle", { aura: t(lang, AURA_KEYS[a]) })}
-            >
-              {t(lang, AURA_KEYS[a])}
-            </button>
-          ))}
-          {!opponentLeft && (
-            <button
-              type="button"
-              onClick={triggerOpponentLeave}
-              className="ml-1 inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground"
-              title={t(lang, "simLeaveTitle")}
-            >
-              <LogOut className="h-3 w-3" /> {t(lang, "simLeave")}
-            </button>
-          )}
+        <div className="flex items-center gap-2">
+          <span className="rounded-full border border-border/80 bg-background/50 px-2.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
+            🟢 Post-Match Room
+          </span>
         </div>
       </div>
 
       {/* Messages Feed */}
-      <div ref={listRef} className="max-h-64 space-y-3 overflow-y-auto p-4">
+      <div ref={listRef} className="max-h-64 space-y-3 overflow-y-auto p-4 scroll-smooth">
         {messages.map((m) => {
           if (m.system) {
             return (
@@ -191,20 +219,21 @@ export function GameChat({
               />
               <div className={`max-w-[78%] ${m.me ? "items-end text-right" : "items-start text-left"}`}>
                 <div
-                  className={`mb-1 flex flex-wrap items-center gap-1 text-xs ${
+                  className={`mb-1 flex flex-wrap items-center gap-1 text-[11px] text-muted-foreground ${
                     m.me ? "justify-end" : "justify-start"
                   }`}
                 >
                   <ClanTagPill tag={m.senderTag} color={m.senderTagColor} />
                   <span className="font-bold text-foreground">{m.senderName}</span>
                   <VerifiedBadge type={m.senderVerified ?? "none"} size={13} />
+                  <span className="text-[10px] opacity-60 ml-1">{m.time}</span>
                 </div>
                 <div
-                  className={`inline-block px-4 py-2 text-sm font-medium ${
+                  className={`inline-block px-4 py-2 text-sm leading-relaxed ${
                     m.me
-                      ? "rounded-[22px] rounded-br-sm bg-[#D2F801] text-[#161616] font-semibold"
-                      : "rounded-[22px] rounded-bl-sm bg-muted text-foreground"
-                  } ${auraClass(m.aura)}`}
+                      ? "rounded-[20px] rounded-br-sm bg-[#D2F801] text-[#161616] font-semibold"
+                      : "rounded-[20px] rounded-bl-sm bg-muted text-foreground font-medium"
+                  }`}
                 >
                   {m.text}
                 </div>
@@ -212,21 +241,47 @@ export function GameChat({
             </div>
           );
         })}
+
+        {opponentTyping && (
+          <div className="flex items-center gap-2 text-xs text-muted-foreground italic pl-11">
+            <span className="inline-flex gap-1 items-center">
+              <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: "0ms" }} />
+              <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: "150ms" }} />
+              <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: "300ms" }} />
+            </span>
+            <span>{opp.name} is typing...</span>
+          </div>
+        )}
+      </div>
+
+      {/* Quick Chat Preset Pills */}
+      <div className="flex flex-wrap items-center gap-1.5 border-t border-border bg-card/40 px-3 py-2">
+        {QUICK_CHAT_PILLS.map((pill) => (
+          <button
+            key={pill}
+            type="button"
+            onClick={() => sendMessage(pill)}
+            className="rounded-full border border-border bg-background/60 px-2.5 py-1 text-xs font-semibold hover:border-[#D2F801] hover:text-[#D2F801] transition-colors"
+          >
+            {pill}
+          </button>
+        ))}
       </div>
 
       {/* Input Row */}
-      <div className="flex items-center gap-2 border-t border-border p-3">
+      <div className="flex items-center gap-2 border-t border-border p-3 bg-background/60">
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && sendMessage(text)}
           placeholder={t(lang, "chatPlaceholder")}
-          className="flex-1 rounded-full border border-border bg-background px-4 py-2 text-sm outline-none focus:border-[#D2F801]"
+          className="flex-1 rounded-full border border-border bg-background px-4 py-2 text-sm outline-none focus:border-[#D2F801] transition-colors"
         />
         <button
           type="button"
           onClick={() => sendMessage(text)}
-          className="btn btn-primary !px-4 !py-2 text-sm"
+          disabled={!text.trim()}
+          className="btn btn-primary !px-4 !py-2 text-sm disabled:opacity-40"
         >
           <Send className="h-4 w-4" />
           {t(lang, "send")}

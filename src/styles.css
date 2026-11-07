@@ -489,3 +489,14 @@ html[data-glass="rim"] .glass-plate {
   }
 }
 .reveal-on .leaflet-control-zoom { opacity: 0; pointer-events: none; }
+
+/* Prevent right-click save, dragging, and long-press callout on icons, svgs, and flags */
+img, svg, .select-none {
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none;
+  user-select: none;
+}
+img[draggable="false"] {
+  -webkit-user-drag: none;
+  user-drag: none;
+}

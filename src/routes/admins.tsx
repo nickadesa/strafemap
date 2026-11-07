@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Sidebar } from "@/components/Sidebar";
 import { getRank, loadRank, saveRank, type RankedProfile } from "@/lib/rank";
 import { RankBanner, VerifiedBadge, type VerifiedBadgeType } from "@/components/RankVisuals";
-import { useSocialProfile } from "@/lib/social";
+import { useSocialProfile, computeLevelFromExp, LEVEL_MAX, EXP_PER_LEVEL } from "@/lib/social";
 import { ShieldCheck, Sliders, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/admins")({
@@ -69,9 +69,19 @@ function AdminsPage() {
               {(
                 [
                   ["gold", "Gold (Premium)"],
-                  ["rainbow", "Rainbow (Exclusive You)"],
+                  ["rainbow", "Rainbow (Exclusive)"],
                   ["green", "Green (Creator)"],
                   ["red", "Red (Admin)"],
+                  ["blue", "Blue (Partner/Pro)"],
+                  ["purple", "Purple (Staff/Dev)"],
+                  ["diamond", "Diamond (Top 50)"],
+                  ["vip", "VIP (Ruby Patron)"],
+                  ["bot", "Bot (AI Cartographer)"],
+                  ["fire", "Fire (Streak Master)"],
+                  ["og", "OG (Alpha Veteran)"],
+                  ["moderator", "Moderator (Guardian)"],
+                  ["champion", "Champion (Crown)"],
+                  ["lightning", "Lightning (Speedrun)"],
                   ["none", "None (Standard)"],
                 ] as [VerifiedBadgeType, string][]
               ).map(([bType, bLabel]) => (
@@ -79,7 +89,7 @@ function AdminsPage() {
                   key={bType}
                   type="button"
                   onClick={() => updateSocial({ verifiedBadge: bType })}
-                  className={`inline-flex items-center gap-2 rounded-xl border px-3.5 py-2 text-xs font-bold transition-colors ${
+                  className={`inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-xs font-bold transition-colors ${
                     social.verifiedBadge === bType
                       ? "border-[#D2F801] bg-[#D2F801]/15 text-foreground ring-1 ring-[#D2F801]"
                       : "border-border bg-card text-muted-foreground hover:text-foreground"
@@ -89,6 +99,68 @@ function AdminsPage() {
                   {bLabel}
                 </button>
               ))}
+            </div>
+          </section>
+
+          {/* 2. Level 1–1,000 & EXP Simulation */}
+          <section className="plate p-6 space-y-4">
+            <div className="flex flex-wrap items-center justify-between border-b border-border pb-3 gap-2">
+              <div>
+                <h2 className="font-display text-xl flex items-center gap-2">
+                  <Sliders className="h-4 w-4 text-[#D2F801]" />
+                  Level 1–1,000 & EXP Tester
+                </h2>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Adjust player profile level and experience points in real-time.
+                </p>
+              </div>
+              <div className="rounded-full border border-[#D2F801]/40 bg-[#D2F801]/10 px-3.5 py-1 text-xs font-black text-[#D2F801]">
+                LVL {computeLevelFromExp(social.exp).level} ({social.exp.toLocaleString()} EXP)
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between text-xs font-semibold">
+                <span className="text-muted-foreground">Adjust Level Slider:</span>
+                <span className="font-mono font-bold text-[#D2F801]">
+                  Level {computeLevelFromExp(social.exp).level} / {LEVEL_MAX}
+                </span>
+              </div>
+              <input
+                type="range"
+                min={1}
+                max={LEVEL_MAX}
+                value={computeLevelFromExp(social.exp).level}
+                onChange={(e) => {
+                  const targetLvl = Number(e.target.value);
+                  updateSocial({ exp: (targetLvl - 1) * EXP_PER_LEVEL });
+                }}
+                className="mt-2 w-full accent-[#D2F801]"
+              />
+            </div>
+
+            <div>
+              <p className="mb-2 text-xs font-semibold text-muted-foreground">Quick Level Presets:</p>
+              <div className="flex flex-wrap gap-1.5">
+                {[
+                  { label: "Level 1 (Starter)", lvl: 1 },
+                  { label: "Level 10 (Bronze)", lvl: 10 },
+                  { label: "Level 50 (Master)", lvl: 50 },
+                  { label: "Level 100 (Centurion)", lvl: 100 },
+                  { label: "Level 250 (Veteran)", lvl: 250 },
+                  { label: "Level 500 (Grand Meridian)", lvl: 500 },
+                  { label: "Level 1,000 (Max Cap)", lvl: 1000 },
+                ].map((preset) => (
+                  <button
+                    key={preset.label}
+                    type="button"
+                    onClick={() => updateSocial({ exp: (preset.lvl - 1) * EXP_PER_LEVEL })}
+                    className="rounded-full border border-border bg-background/50 px-3 py-1 text-xs font-semibold hover:border-[#D2F801]"
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </section>
 

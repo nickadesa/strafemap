@@ -271,6 +271,27 @@ function PlayHub() {
             </div>
           </section>
 
+          {/* Standalone Country Guess Trivia Banner */}
+          <section className="plate relative overflow-hidden border border-[#D2F801]/30 p-6">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="max-w-xl">
+                <span className="rounded-full bg-[#D2F801] px-3 py-0.5 text-xs font-black text-[#161616]">
+                  ⚡ No-Map Standalone Trivia
+                </span>
+                <h2 className="font-display mt-2 text-2xl sm:text-3xl">Country Guess Trivia</h2>
+                <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
+                  Rapid-fire quiz without map pinning! Test your flag, capital, population and geography knowledge across all continents.
+                </p>
+              </div>
+              <Link
+                to="/country-guess"
+                className="btn btn-primary !px-6 !py-3 text-xs font-extrabold flex items-center gap-2"
+              >
+                Play Country Guess →
+              </Link>
+            </div>
+          </section>
+
           {/* More Modes Card */}
           <section className="plate p-6">
             <div className="flex flex-wrap items-center justify-between gap-4">
