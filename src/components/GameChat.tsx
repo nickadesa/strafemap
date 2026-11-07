@@ -11,6 +11,7 @@ export interface MatchChatOpponent {
   clanTagColor?: string | undefined;
   rp: number;
   verified?: VerifiedBadgeType | undefined;
+  avatarUrl?: string | null | undefined;
 }
 
 interface ChatMessage {
@@ -20,6 +21,7 @@ interface ChatMessage {
   senderTagColor?: string | undefined;
   senderRp?: number | undefined;
   senderVerified?: VerifiedBadgeType | undefined;
+  senderAvatarUrl?: string | null | undefined;
   text: string;
   time: string;
   me?: boolean | undefined;
@@ -34,7 +36,7 @@ const QUICK_CHAT_PILLS = [
   "Rematch?",
 ];
 
-const SMART_REPLIES: Record<string, string[]> = {
+const POLITE_REPLIES: Record<string, string[]> = {
   gg: [
     "GG, that was intense",
     "GGs, really well played",
@@ -59,25 +61,68 @@ const SMART_REPLIES: Record<string, string[]> = {
   ],
 };
 
-function getSmartReply(userText: string): string {
+const TOXIC_PATTERNS = [
+  /กาก/i, /ควาย/i, /เหี้ย/i, /เชี่ย/i, /สัส/i, /สัตว์/i, /มึง/i, /ควย/i, /ด๋อย/i, /อ่อน/i,
+  /โง่/i, /กระจอก/i, /ไก่/i, /สถุย/i, /ขยะ/i, /อีห่า/i, /ไอ้/i,
+  /\bnoob\b/i, /\bez\b/i, /\btrash\b/i, /\bbot\b/i, /\bfuck\b/i, /\bfk\b/i, /\bbitch\b/i,
+  /\bloser\b/i, /\bidiot\b/i, /\bstupid\b/i, /\bgit gud\b/i, /\bl2p\b/i, /\bdumb\b/i
+];
+
+const TOXIC_THAI_REPLIES = [
+  "เล่นแบบนี้เอาตีนเขี่ยเอายังแม่นกว่าเลยน้อง 55555",
+  "ปักไปกลางมหาสมุทรขนาดนั้น ยังกล้าพิมพ์ปากดีอีกเหรอวะ",
+  "คะแนนหลักร้อย แต่ความมั่นใจหลักล้าน ไปหัดดูเสาไฟข้างทางใหม่ไป๊",
+  "กากขนาดนี้กดยอมแพ้ตั้งแต่รอบแรกเถอะ อย่าฝืนเลย อายเขา",
+  "ทรงนี้ไม่ต้องดูธงหรอก ดูความกากของตัวเองก่อนเถอะ",
+  "ถามจริง ตาบอดหรือเน็ตหลุด ปักเปรูไปโผล่ญี่ปุ่นได้ไงวะ 555",
+  "เล่นเหมือนเพิ่งโหลดเกมมา 5 นาทีแล้วกดลงแรงก์ ขำว่ะ",
+  "Ez clap จัดๆ แจกแต้มฟรีขอบใจนะไก่กา",
+  "อย่าพิมพ์เยอะ ไปฝึกซ้อมกับบอท Easy ให้รอดก่อนนะน้อง",
+  "สกอร์แค่นี้เงียบปากไปเหอะ พิมพ์มาไม่อายหรอวะ",
+  "ปักมั่วขนาดนี้ หมาที่บ้านเหยียบคีย์บอร์ดยังได้แต้มเยอะกว่า",
+  "โทษเน็ต โทษแผนที่ แต่ไม่เคยโทษความกากของตัวเอง 555"
+];
+
+const TOXIC_ENG_REPLIES = [
+  "Bro pinned in the Pacific Ocean and thinks he has rights to speak.",
+  "0 pts energy right here, pipe down noob.",
+  "My grandmother plays better with her monitor turned off.",
+  "Thanks for the free RP, easiest win of my entire life.",
+  "Did you guess with your eyes closed or are you naturally this lost?",
+  "Uninstall and stick to Google Maps walking directions.",
+  "Imagine talking trash with that disaster of a score.",
+  "You missed by 14,000 km, sit down and take notes.",
+  "Is your monitor even plugged in or are you playing by scent?",
+  "Pure comedy. Thanks for the free elo, appreciate the donation."
+];
+
+function getBotReply(userText: string, isToxic: boolean, isLowScore: boolean, lang: Lang): string {
+  const isThaiText = /[ก-๙]/.test(userText) || lang === "th";
+  const containsInsult = TOXIC_PATTERNS.some((pat) => pat.test(userText));
+
+  if (isToxic || isLowScore || containsInsult) {
+    const list = isThaiText ? TOXIC_THAI_REPLIES : TOXIC_ENG_REPLIES;
+    return list[Math.floor(Math.random() * list.length)]!;
+  }
+
   const lower = userText.toLowerCase();
   if (lower.includes("gg")) {
-    const arr = SMART_REPLIES["gg"]!;
+    const arr = POLITE_REPLIES["gg"]!;
     return arr[Math.floor(Math.random() * arr.length)]!;
   }
   if (lower.includes("rematch")) {
-    const arr = SMART_REPLIES["rematch"]!;
+    const arr = POLITE_REPLIES["rematch"]!;
     return arr[Math.floor(Math.random() * arr.length)]!;
   }
   if (lower.includes("close")) {
-    const arr = SMART_REPLIES["close"]!;
+    const arr = POLITE_REPLIES["close"]!;
     return arr[Math.floor(Math.random() * arr.length)]!;
   }
   if (lower.includes("insane") || lower.includes("pin")) {
-    const arr = SMART_REPLIES["insane"]!;
+    const arr = POLITE_REPLIES["insane"]!;
     return arr[Math.floor(Math.random() * arr.length)]!;
   }
-  const arr = SMART_REPLIES["default"]!;
+  const arr = POLITE_REPLIES["default"]!;
   return arr[Math.floor(Math.random() * arr.length)]!;
 }
 
@@ -89,9 +134,11 @@ function formatChatTime(): string {
 export function GameChat({
   opponent,
   inline = true,
+  playerScore,
 }: {
   opponent?: MatchChatOpponent;
   inline?: boolean;
+  playerScore?: number;
 }) {
   const [settings] = useSettings();
   const [social] = useSocialProfile();
@@ -102,10 +149,21 @@ export function GameChat({
     clanTagColor: "#D2F801",
     rp: 7280,
     verified: "gold",
+    avatarUrl: null,
   };
 
+  const isLowScore = typeof playerScore === "number" && playerScore < 3000;
+  const [isToxic, setIsToxic] = useState(isLowScore);
+  const [showPresets, setShowPresets] = useState(false);
   const [text, setText] = useState("");
   const [opponentTyping, setOpponentTyping] = useState(false);
+
+  const initialBotMsg = isLowScore
+    ? lang === "th"
+      ? "คะแนนแค่นี้กล้ามากดจบเกมเนอะ 5555 ไปฝึกใหม่เหอะน้อง"
+      : "That score was tragic. Free RP for me, thanks!"
+    : "Good game. Those rounds were fast.";
+
   const [messages, setMessages] = useState<ChatMessage[]>(() => [
     {
       id: "m-initial",
@@ -114,7 +172,8 @@ export function GameChat({
       senderTagColor: opp.clanTagColor ?? "#D2F801",
       senderRp: opp.rp,
       senderVerified: opp.verified ?? "gold",
-      text: "Good game! Those rounds were seriously fast.",
+      senderAvatarUrl: opp.avatarUrl ?? null,
+      text: initialBotMsg,
       time: formatChatTime(),
       me: false,
     },
@@ -138,6 +197,7 @@ export function GameChat({
       senderTagColor: social.clanTagColor,
       senderRp: 1120,
       senderVerified: social.verifiedBadge,
+      senderAvatarUrl: social.avatarUrl,
       text: trimmed,
       time: formatChatTime(),
       me: true,
@@ -146,9 +206,9 @@ export function GameChat({
     setMessages((prev) => [...prev, newMsg]);
     setText("");
 
-    // Simulate realistic opponent typing and intelligent reply
+    // Opponent typing and reply
     setOpponentTyping(true);
-    const typingDelay = 1100 + Math.random() * 900;
+    const typingDelay = 900 + Math.random() * 800;
     setTimeout(() => {
       setOpponentTyping(false);
       setMessages((prev) => [
@@ -160,7 +220,8 @@ export function GameChat({
           senderTagColor: opp.clanTagColor ?? "#D2F801",
           senderRp: opp.rp,
           senderVerified: opp.verified ?? "gold",
-          text: getSmartReply(trimmed),
+          senderAvatarUrl: opp.avatarUrl ?? null,
+          text: getBotReply(trimmed, isToxic, isLowScore, lang),
           time: formatChatTime(),
           me: false,
         },
@@ -174,19 +235,29 @@ export function GameChat({
         inline ? "mt-6 w-full" : "fixed bottom-4 left-4 z-[999] w-80"
       }`}
     >
-      {/* Header */}
+      {/* Header: Chat title only, no vsName */}
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-card/60 px-4 py-3">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-semibold">{t(lang, "matchChat")}</span>
-          <span className="rounded-full bg-muted px-2.5 py-0.5 text-[11px] text-muted-foreground font-medium">
-            {t(lang, "vsName", { name: `${opp.clanTag ? `${opp.clanTag} ` : ""}${opp.name}` })}
+          <span className="text-sm font-semibold">{t(lang, "chat")}</span>
+          <span className="rounded-full border border-border/80 bg-background/50 px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+            Post-match
           </span>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="rounded-full border border-border/80 bg-background/50 px-2.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
-            Post-match room
-          </span>
+          {/* Toxic Bot Persona Toggle for quick testing */}
+          <button
+            type="button"
+            onClick={() => setIsToxic((v) => !v)}
+            className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold transition-colors ${
+              isToxic
+                ? "border-red-500/40 bg-red-500/15 text-red-400"
+                : "border-border bg-muted/60 text-muted-foreground hover:text-foreground"
+            }`}
+            title="Toggle Toxic AI Bot persona"
+          >
+            <span>{isToxic ? "Toxic Bot ON" : "Polite Bot"}</span>
+          </button>
         </div>
       </div>
 
@@ -209,6 +280,7 @@ export function GameChat({
               className={`flex items-end gap-2.5 ${m.me ? "flex-row-reverse" : "flex-row"}`}
             >
               <AvatarFrame
+                src={m.senderAvatarUrl}
                 name={m.senderName}
                 rp={m.senderRp ?? 1200}
                 size={34}
@@ -250,22 +322,38 @@ export function GameChat({
         )}
       </div>
 
-      {/* Quick Chat Preset Pills */}
-      <div className="flex flex-wrap items-center gap-1.5 border-t border-border bg-card/40 px-3 py-2">
-        {QUICK_CHAT_PILLS.map((pill) => (
-          <button
-            key={pill}
-            type="button"
-            onClick={() => sendMessage(pill)}
-            className="rounded-full border border-border bg-background/60 px-2.5 py-1 text-xs font-semibold hover:border-foreground/60 hover:text-[#D2F801] transition-colors"
-          >
-            {pill}
-          </button>
-        ))}
-      </div>
+      {/* Quick Chat Preset Pills (collapsible) */}
+      {showPresets && (
+        <div className="flex flex-wrap items-center gap-1.5 border-t border-border bg-card/40 px-3 py-2 animate-in fade-in duration-150">
+          {QUICK_CHAT_PILLS.map((pill) => (
+            <button
+              key={pill}
+              type="button"
+              onClick={() => sendMessage(pill)}
+              className="rounded-full border border-border bg-background/60 px-2.5 py-1 text-xs font-semibold hover:border-foreground/60 hover:text-foreground transition-colors"
+            >
+              {pill}
+            </button>
+          ))}
+        </div>
+      )}
 
-      {/* Input Row */}
+      {/* Input Row with Preset Toggle button on the left */}
       <div className="flex items-center gap-2 border-t border-border p-3 bg-background/60">
+        <button
+          type="button"
+          onClick={() => setShowPresets((v) => !v)}
+          title={showPresets ? "Hide presets" : "Show presets"}
+          aria-label="Toggle chat presets"
+          className={`grid h-9 w-9 shrink-0 place-items-center rounded-full border transition-colors ${
+            showPresets
+              ? "border-foreground/60 bg-muted text-foreground"
+              : "border-border bg-background text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <Sparkles className="h-4 w-4" />
+        </button>
+
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -273,6 +361,7 @@ export function GameChat({
           placeholder={t(lang, "chatPlaceholder")}
           className="flex-1 rounded-full border border-border bg-background px-4 py-2 text-sm outline-none focus:border-foreground/60 transition-colors"
         />
+
         <button
           type="button"
           onClick={() => sendMessage(text)}
