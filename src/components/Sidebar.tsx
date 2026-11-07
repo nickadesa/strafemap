@@ -9,11 +9,13 @@ import {
   Home,
   LogOut,
   Medal,
+  Menu,
   Settings,
   Shield,
   ShoppingBag,
   User,
   Users,
+  X,
   type LucideIcon,
 } from "lucide-react";
 import { useSettings } from "@/lib/game/storage";
@@ -33,15 +35,6 @@ const desktopItems: { to: string; key: string; icon: LucideIcon; search?: Record
   { to: "/stats", key: "stats", icon: BarChart3 },
 ];
 
-/** 5-destination Mobile Bottom Bar: Home, Modes, Rank, Feed / Clan, Settings */
-const mobileItems: { to: string; key: string; icon: LucideIcon; search?: Record<string, string> }[] = [
-  { to: "/", key: "home", icon: Home },
-  { to: "/play", key: "modes", icon: Gamepad2 },
-  { to: "/rank", key: "rank", icon: Medal },
-  { to: "/profile", key: "feedAndClan", icon: Compass, search: { tab: "feed" } },
-  { to: "/settings", key: "settings", icon: Settings },
-];
-
 export function Sidebar() {
   const [s] = useSettings();
   const [social] = useSocialProfile();
@@ -51,6 +44,7 @@ export function Sidebar() {
   const isHome = location.pathname === "/";
   const [userPopoverOpen, setUserPopoverOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const rank = loadRank();
   const lvlInfo = computeLevelFromExp(social.exp);
@@ -58,6 +52,32 @@ export function Sidebar() {
   useEffect(() => {
     document.documentElement.style.setProperty("--rail-w", "240px");
   }, []);
+
+  // Lock body scroll when mobile drawer is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  // Close drawer on escape key
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  // Close drawer on route change
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
 
   return (
     <>
@@ -207,6 +227,175 @@ export function Sidebar() {
         </div>
       </aside>
 
+      {/* Mobile Top-Left Hamburger Menu Button (Rendered on all mobile screens) */}
+      <button
+        type="button"
+        onClick={() => setMobileOpen(true)}
+        aria-label="Open navigation menu"
+        className="glass-plate fixed left-3 top-3 z-50 grid h-10 w-10 place-items-center rounded-xl text-foreground shadow-md transition-colors hover:bg-muted md:hidden"
+      >
+        <Menu className="h-5 w-5" />
+        {unreadCount > 0 && (
+          <span className="absolute -right-0.5 -top-0.5 grid h-3.5 w-3.5 place-items-center rounded-full bg-[#D2F801] text-[8px] font-black text-[#161616]">
+            {unreadCount}
+          </span>
+        )}
+      </button>
+
+      {/* Mobile Slide-over Drawer Menu */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-[100] md:hidden">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-background/80 backdrop-blur-sm transition-opacity"
+            onClick={() => setMobileOpen(false)}
+            aria-hidden="true"
+          />
+
+          {/* Drawer Sheet */}
+          <aside
+            className="glass-plate fixed inset-y-0 left-0 z-10 flex w-72 max-w-[85vw] flex-col border-y-0 border-l-0 p-4 shadow-2xl pop-in"
+            style={{ paddingBottom: "calc(16px + env(safe-area-inset-bottom))" }}
+          >
+            {/* Header: Brand + Close */}
+            <div className="flex h-11 items-center justify-between border-b border-border pb-3">
+              <Link
+                to="/"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-2.5 font-display text-xl"
+                aria-label="STRAFE"
+              >
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[#D2F801] text-sm font-black text-[#161616]">
+                  S
+                </span>
+                <span className="tracking-tight">STRAFE</span>
+              </Link>
+              <button
+                type="button"
+                onClick={() => setMobileOpen(false)}
+                aria-label="Close navigation menu"
+                className="grid h-8 w-8 place-items-center rounded-full bg-muted text-muted-foreground transition-colors hover:bg-muted/80 hover:text-foreground"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* User Profile Mini Banner */}
+            <div className="border-b border-border py-3">
+              <Link
+                to="/profile"
+                search={{ tab: "overview" } as any}
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-2.5 rounded-xl p-1 transition-colors hover:bg-muted"
+              >
+                <AvatarFrame
+                  src={social.avatarUrl}
+                  name={social.nickname}
+                  rp={rank.rp}
+                  championPosition={rank.championPosition}
+                  size={40}
+                />
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1">
+                    <ClanTagPill tag={social.clanTag} color={social.clanTagColor} />
+                    <span className="truncate text-xs font-bold">{social.nickname}</span>
+                    <VerifiedBadge type={social.verifiedBadge} size={13} />
+                  </div>
+                  <p className="readout text-[11px] text-[#D2F801]">
+                    Lv.{lvlInfo.level} · {rank.rp.toLocaleString()} RP
+                  </p>
+                </div>
+              </Link>
+            </div>
+
+            {/* Navigation Links */}
+            <nav className="flex flex-1 flex-col gap-1 overflow-y-auto py-3">
+              {desktopItems.map(({ to, key, icon: Icon, search }) => (
+                <Link
+                  key={key}
+                  to={to}
+                  search={search as any}
+                  onClick={() => setMobileOpen(false)}
+                  aria-label={t(lang, key)}
+                  className="flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  activeOptions={{ exact: to === "/" }}
+                  activeProps={{ className: "!bg-[#D2F801] !text-[#161616] font-bold" }}
+                >
+                  <Icon className="h-5 w-5 shrink-0" strokeWidth={1.85} />
+                  <span className="truncate">{t(lang, key)}</span>
+                </Link>
+              ))}
+
+              <Link
+                to="/profile"
+                search={{ tab: "clan" } as any}
+                onClick={() => setMobileOpen(false)}
+                className="flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              >
+                <Shield className="h-5 w-5 shrink-0 text-[#D2F801]" strokeWidth={1.85} />
+                <span className="truncate">{t(lang, "clan")}</span>
+              </Link>
+
+              <Link
+                to="/profile"
+                search={{ tab: "shop" } as any}
+                onClick={() => setMobileOpen(false)}
+                className="flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              >
+                <ShoppingBag className="h-5 w-5 shrink-0 text-[#D2F801]" strokeWidth={1.85} />
+                <span className="truncate">Shop</span>
+              </Link>
+
+              <Link
+                to="/settings"
+                onClick={() => setMobileOpen(false)}
+                aria-label={t(lang, "settings")}
+                className="flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                activeOptions={{ exact: true }}
+                activeProps={{ className: "!bg-[#D2F801] !text-[#161616] font-bold" }}
+              >
+                <Settings className="h-5 w-5 shrink-0" strokeWidth={1.85} />
+                <span className="truncate">{t(lang, "settings")}</span>
+              </Link>
+            </nav>
+
+            {/* Drawer Bottom Actions: Notifications & Logout */}
+            <div className="border-t border-border pt-3 space-y-1">
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileOpen(false);
+                  setNotifOpen(true);
+                }}
+                className="flex h-10 w-full items-center justify-between rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              >
+                <div className="flex items-center gap-3">
+                  <Bell className="h-4 w-4" />
+                  <span>Notifications</span>
+                </div>
+                {unreadCount > 0 && (
+                  <span className="grid h-4 min-w-4 place-items-center rounded-full bg-[#D2F801] px-1 text-[9px] font-black text-[#161616]">
+                    {unreadCount}
+                  </span>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileOpen(false);
+                  supabase.auth.signOut();
+                }}
+                className="flex h-10 w-full items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>{t(lang, "signOut")}</span>
+              </button>
+            </div>
+          </aside>
+        </div>
+      )}
+
       {/* Mobile Top-Right Bar: Render ONLY on Home page ("/") */}
       {isHome && (
         <div className="fixed right-3 top-3 z-50 flex items-center gap-2 md:hidden">
@@ -283,27 +472,6 @@ export function Sidebar() {
           </div>
         </>
       )}
-
-      {/* Mobile: Clean 4-item Bottom Navigation Bar (Home, Modes, Rank, Feed / Clan) */}
-      <nav
-        className="glass-plate fixed inset-x-2 z-50 flex justify-between rounded-[22px] px-1.5 py-1.5 md:hidden"
-        style={{ bottom: "calc(8px + env(safe-area-inset-bottom))" }}
-      >
-        {mobileItems.map(({ to, key, icon: Icon, search }) => (
-          <Link
-            key={key}
-            to={to}
-            search={search as any}
-            aria-label={t(lang, key)}
-            className="flex min-w-0 flex-1 flex-col items-center gap-0.5 rounded-2xl py-1.5 text-[10px] font-semibold text-muted-foreground"
-            activeOptions={{ exact: to === "/" }}
-            activeProps={{ className: "!bg-[#D2F801] !text-[#161616] font-extrabold" }}
-          >
-            <Icon className="h-5 w-5" strokeWidth={1.85} />
-            <span className="w-full truncate px-0.5 text-center">{t(lang, key)}</span>
-          </Link>
-        ))}
-      </nav>
     </>
   );
 }

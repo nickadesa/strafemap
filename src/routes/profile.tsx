@@ -95,7 +95,7 @@ function ProfileHubPage() {
       <main className="rail-offset px-4 pb-16 pt-6 md:px-6 md:pt-8">
         <div className="mx-auto max-w-4xl space-y-6">
           {/* Top Navigation Segmented Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pr-20 md:pr-0">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="seg">
               <button
                 type="button"

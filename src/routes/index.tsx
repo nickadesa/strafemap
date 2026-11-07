@@ -83,7 +83,7 @@ function Home() {
       <main className="rail-offset px-4 pb-12 pt-6 md:px-6 md:pt-8">
         <div className="mx-auto max-w-5xl space-y-8">
           {/* Header with Level Progress Pill */}
-          <header className="flex flex-wrap items-center justify-between gap-4 pr-24 md:pr-0">
+          <header className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2.5">
                 <h1 className="font-display text-3xl md:text-4xl">STRAFE</h1>
