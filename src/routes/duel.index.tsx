@@ -1,10 +1,16 @@
 import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { SiteHeader } from "@/components/SiteHeader";
+import { Sidebar } from "@/components/Sidebar";
 import { supabase } from "@/integrations/supabase/client";
 import { useUser } from "@/lib/auth";
 import { pickRounds, poolFor } from "@/lib/game/engine";
 import { useSettings } from "@/lib/game/storage";
+import { buzz, blip } from "@/lib/game/sound";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 
 export const Route = createFileRoute("/duel/")({
   beforeLoad: () => {
@@ -58,11 +64,13 @@ function DuelLobby() {
 
   return (
     <div className="min-h-screen pb-16">
-      <SiteHeader />
-      <main className="mx-auto max-w-4xl px-5">
+      <Sidebar />
+      <main className="rail-offset mx-auto max-w-4xl px-4 pt-6 md:px-6 md:pt-8">
         <p className="text-sm font-semibold text-muted-foreground">Multiplayer · 1v1</p>
-        <h1 className="font-display mt-2 text-[clamp(3.5rem,12vw,7rem)]">Live Duel</h1>
-        <p className="mt-4 max-w-xl text-lg text-muted-foreground">Same place, 15 seconds each round. The further pin loses health equal to the points gap. First to zero loses.</p>
+        <h1 className="font-display mt-2 text-[clamp(3rem,8vw,5rem)]">Live Duel</h1>
+        <p className="mt-3 max-w-xl text-sm md:text-base text-muted-foreground">
+          Same place, 15 seconds each round. The further pin loses health equal to the points gap. First to zero loses.
+        </p>
 
         {user === null ? (
           <div className="plate mt-8 p-6">
@@ -72,15 +80,41 @@ function DuelLobby() {
         ) : (
           <div className="mt-8 grid gap-4 md:grid-cols-2">
             <div className="plate-ink p-6">
-              <p className="font-display text-3xl">Host a room</p>
-              <p className="mt-2 text-sm opacity-80">Get a code and send it to a friend.</p>
+              <p className="font-display text-2xl md:text-3xl">Host a room</p>
+              <p className="mt-1 text-xs opacity-80">Get a 4-letter room code and send it to a friend.</p>
               <button onClick={create} disabled={busy || !user} className="btn btn-primary mt-6">Create room</button>
             </div>
             <div className="plate p-6">
-              <p className="font-display text-3xl">Join a room</p>
-              <input value={code} onChange={(e) => setCode(e.target.value.toUpperCase().slice(0, 4))} placeholder="ABCD"
-                className="mt-4 w-full rounded-full border border-input bg-background px-5 py-3 text-center font-display text-3xl tracking-[0.3em]" />
-              <button onClick={join} disabled={busy || !user} className="btn btn-ink mt-4 w-full">Join</button>
+              <p className="font-display text-2xl md:text-3xl">Join a room</p>
+              <p className="mt-1 text-xs text-muted-foreground">Enter 4-letter code to battle</p>
+              <div className="mt-4 flex justify-center">
+                <InputOTP
+                  maxLength={4}
+                  value={code}
+                  onChange={(val) => {
+                    const upper = val.toUpperCase();
+                    setCode(upper);
+                    if (upper.length === 4) {
+                      buzz(12);
+                      blip(settings.sound, 880, 70);
+                    }
+                  }}
+                >
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                    <InputOTPSlot index={3} />
+                  </InputOTPGroup>
+                </InputOTP>
+              </div>
+              <button
+                onClick={join}
+                disabled={busy || !user || code.length !== 4}
+                className="btn btn-primary mt-5 w-full py-3 font-bold"
+              >
+                Join Duel
+              </button>
             </div>
           </div>
         )}

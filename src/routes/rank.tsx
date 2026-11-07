@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Sidebar } from "@/components/Sidebar";
 import { useSettings } from "@/lib/game/storage";
+import { buzz } from "@/lib/game/sound";
 import {
   loadRank,
   saveRank,
@@ -68,13 +69,34 @@ function RankPage() {
         <div className="w-full max-w-4xl">
           <div className="mb-6 flex justify-center">
             <div className="seg">
-              <button onClick={() => setTab("play")} data-on={tab === "play"} className="seg-item">
+              <button
+                onClick={() => {
+                  buzz(6);
+                  setTab("play");
+                }}
+                data-on={tab === "play"}
+                className="seg-item"
+              >
                 {t(lang, "play")}
               </button>
-              <button onClick={() => setTab("leaderboard")} data-on={tab === "leaderboard"} className="seg-item">
+              <button
+                onClick={() => {
+                  buzz(6);
+                  setTab("leaderboard");
+                }}
+                data-on={tab === "leaderboard"}
+                className="seg-item"
+              >
                 {t(lang, "leaderboard")}
               </button>
-              <button onClick={() => setTab("guide")} data-on={tab === "guide"} className="seg-item">
+              <button
+                onClick={() => {
+                  buzz(6);
+                  setTab("guide");
+                }}
+                data-on={tab === "guide"}
+                className="seg-item"
+              >
                 {t(lang, "guide")}
               </button>
             </div>
@@ -617,15 +639,36 @@ export function UnifiedLeaderboardView({
       {/* Scope Filter Bar: Global / Zone / Country */}
       <div className="plate flex flex-wrap items-center justify-between gap-3 p-4">
         <div className="seg">
-          <button onClick={() => setScope("global")} data-on={scope === "global"} className="seg-item">
+          <button
+            onClick={() => {
+              buzz(6);
+              setScope("global");
+            }}
+            data-on={scope === "global"}
+            className="seg-item"
+          >
             <Globe className="mr-1.5 inline h-3.5 w-3.5" />
             {t(lang, "globalFilter")}
           </button>
-          <button onClick={() => setScope("zone")} data-on={scope === "zone"} className="seg-item">
+          <button
+            onClick={() => {
+              buzz(6);
+              setScope("zone");
+            }}
+            data-on={scope === "zone"}
+            className="seg-item"
+          >
             <Compass className="mr-1.5 inline h-3.5 w-3.5" />
             {t(lang, "zoneFilter")}
           </button>
-          <button onClick={() => setScope("country")} data-on={scope === "country"} className="seg-item">
+          <button
+            onClick={() => {
+              buzz(6);
+              setScope("country");
+            }}
+            data-on={scope === "country"}
+            className="seg-item"
+          >
             <FlagIcon className="mr-1.5 inline h-3.5 w-3.5" />
             {t(lang, "countryFilter")}
           </button>

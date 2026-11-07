@@ -227,11 +227,32 @@
   border: 1px solid var(--color-border);
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
 }
+.dark .plate {
+  background: rgb(24 24 27 / 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgb(255 255 255 / 0.08);
+}
 @utility plate-ink {
   background: var(--color-secondary);
   color: var(--color-secondary-foreground);
   border-radius: var(--radius);
   border: 1px solid var(--color-border);
+}
+.dark .plate-ink {
+  background: rgb(20 20 23 / 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgb(255 255 255 / 0.08);
+}
+@utility plate-glass {
+  background: rgb(24 24 27 / 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: var(--color-card-foreground);
+  border-radius: var(--radius);
+  border: 1px solid rgb(255 255 255 / 0.09);
+  box-shadow: 0 4px 24px -2px rgb(0 0 0 / 0.35);
 }
 @utility clan-pill {
   display: inline-flex;
@@ -326,10 +347,18 @@ button:not(.btn), [role="button"] { transition: transform 380ms var(--ease-sprin
   border-radius: 9999px; background: var(--color-muted);
   border: 1px solid var(--color-border);
 }
+.dark .seg {
+  background: rgb(24 24 27 / 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgb(255 255 255 / 0.08);
+}
 @utility seg-item {
   border-radius: 9999px; padding: 8px 16px; font-size: 0.875rem; font-weight: 600;
   flex-shrink: 0; white-space: nowrap; scroll-snap-align: start; min-height: 38px;
   color: var(--color-muted-foreground);
+  transition: transform 160ms var(--ease-spring), background-color 150ms ease, color 150ms ease;
+  &:active { transform: scale(0.96); }
   &:hover { color: var(--color-foreground); }
   &[data-on="true"] {
     background: var(--color-primary); color: var(--color-primary-foreground);

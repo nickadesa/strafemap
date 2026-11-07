@@ -8,7 +8,7 @@ import { useUser } from "@/lib/auth";
 import { distanceKm, formatDistance, scoreFor, type LatLng } from "@/lib/game/engine";
 import { LOCATIONS } from "@/lib/game/locations";
 import { useSettings } from "@/lib/game/storage";
-import { blip } from "@/lib/game/sound";
+import { blip, buzz } from "@/lib/game/sound";
 
 export const Route = createFileRoute("/duel/$code")({
   ssr: false,
@@ -97,7 +97,12 @@ function DuelRoom() {
     return { me, op, dmg, iWin: me.pts >= op.pts };
   }, [revealed, loc, mine, theirs, round, duel]);
 
-  useEffect(() => { if (result) blip(settings.sound, result.iWin ? 880 : 300, 160); }, [!!result]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (result) {
+      blip(settings.sound, result.iWin ? 880 : 300, 160);
+      buzz(result.iWin ? 12 : 24);
+    }
+  }, [!!result]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const next = useCallback(async () => {
     if (!duel || !result || !isHost) return;
@@ -173,7 +178,7 @@ function DuelRoom() {
       </header>
       <div className="relative mx-2 mb-2 flex-1 overflow-hidden rounded-2xl md:mx-4 md:mb-4">
         <GameMap blind={false} guess={mine && mine.lat != null && mine.lng != null ? { lat: mine.lat, lng: mine.lng } : pin}
-          target={revealed ? loc : null} others={opPin} locked={!!mine} onPick={setPin} resetKey={`${duel.id}-${round}`} />
+          target={revealed ? loc : null} others={opPin} locked={!!mine} onPick={(p) => { buzz(8); setPin(p); }} resetKey={`${duel.id}-${round}`} />
         <div className="pointer-events-none absolute inset-x-3 top-3 z-[500] flex justify-center">
           <div className="plate pointer-events-auto max-w-md px-5 py-4 text-center">
             <p className="text-sm text-muted-foreground">Pin the location</p>
