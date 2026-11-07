@@ -1,103 +1,349 @@
-// Renders a 1080x1920 Instagram Story result card on a canvas.
-export interface CardRound { name: string; points: number; km: number | null; guess: { lat: number; lng: number } | null; target: { lat: number; lng: number } }
-export interface CardData { mode: string; tag: string; total: number; max: number; avgKm: string; perfects: number; rounds: CardRound[]; url: string }
+export type CardAspect = "16:9" | "1:1" | "4:5" | "9:16";
+export type CardResolution = "1080p" | "2K" | "4K";
+export type CardTemplate = "daily" | "ranked" | "party" | "classic";
 
-const LIME = "#b9ff24", BG = "#0f0f10", PLATE = "#1b1c1e", LINE = "#27282b", MUTED = "#8a8f98", INK = "#f4f4f5";
+export interface CardRound {
+  name: string;
+  points: number;
+  km: number | null;
+  guess: { lat: number; lng: number } | null;
+  target: { lat: number; lng: number };
+}
+
+export interface CardData {
+  mode: string;
+  tag: string;
+  template?: CardTemplate | undefined;
+  aspect?: CardAspect | undefined;
+  resolution?: CardResolution | undefined;
+  playerName?: string | undefined;
+  clanTag?: string | null | undefined;
+  rankName?: string | undefined;
+  rpChange?: number | null | undefined;
+  opponentName?: string | null | undefined;
+  total: number;
+  max: number;
+  avgKm: string;
+  perfects: number;
+  rounds: CardRound[];
+  url: string;
+}
+
+const LIME = "#D2F801";
+const BLUE = "#0367FC";
+const BG = "#161616";
+const PLATE = "#1E1E20";
+const LINE = "#2C2E33";
+const MUTED = "#9A9D97";
+const INK = "#FFFFFF";
 
 export function gradeFor(pct: number) {
   return pct >= 0.9 ? "S" : pct >= 0.75 ? "A" : pct >= 0.55 ? "B" : pct >= 0.35 ? "C" : "D";
 }
 
 function rr(c: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
-  c.beginPath(); c.roundRect(x, y, w, h, r);
+  c.beginPath();
+  c.roundRect(x, y, w, h, r);
+}
+
+export function dimensionsFor(aspect: CardAspect = "9:16", res: CardResolution = "1080p"): { w: number; h: number } {
+  const baseShort = res === "4K" ? 2160 : res === "2K" ? 1440 : 1080;
+  if (aspect === "1:1") return { w: baseShort, h: baseShort };
+  if (aspect === "4:5") return { w: baseShort, h: Math.round(baseShort * 1.25) };
+  if (aspect === "16:9") return { w: Math.round((baseShort * 16) / 9), h: baseShort };
+  return { w: baseShort, h: Math.round((baseShort * 16) / 9) };
 }
 
 export async function renderCard(d: CardData): Promise<Blob> {
   await document.fonts?.ready;
-  const W = 1080, H = 1920;
-  const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+  const aspect = d.aspect ?? "9:16";
+  const res = d.resolution ?? "1080p";
+  const template = d.template ?? "classic";
+  const { w: W, h: H } = dimensionsFor(aspect, res);
+
+  // Render at logical coordinate space (1080 base) and scale smoothly to target WxH
+  const logicalW = aspect === "16:9" ? 1920 : 1080;
+  const logicalH =
+    aspect === "1:1" ? 1080 : aspect === "4:5" ? 1350 : aspect === "16:9" ? 1080 : 1920;
+
+  const cv = document.createElement("canvas");
+  cv.width = W;
+  cv.height = H;
   const c = cv.getContext("2d")!;
-  c.fillStyle = BG; c.fillRect(0, 0, W, H);
-  // glow
-  const g = c.createRadialGradient(W / 2, 760, 50, W / 2, 760, 700);
-  g.addColorStop(0, "rgba(185,255,36,0.18)"); g.addColorStop(1, "rgba(185,255,36,0)");
-  c.fillStyle = g; c.fillRect(0, 0, W, H);
+  c.scale(W / logicalW, H / logicalH);
+
+  // Background
+  c.fillStyle = BG;
+  c.fillRect(0, 0, logicalW, logicalH);
+
+  // Template-specific dual-core glow
+  const accentPrimary = template === "daily" || template === "party" ? BLUE : LIME;
+  const accentSecondary = template === "daily" || template === "party" ? LIME : BLUE;
+
+  const g1 = c.createRadialGradient(logicalW * 0.25, logicalH * 0.2, 40, logicalW * 0.25, logicalH * 0.2, logicalW * 0.65);
+  g1.addColorStop(0, template === "ranked" ? "rgba(220,31,48,0.22)" : "rgba(3,103,252,0.22)");
+  g1.addColorStop(1, "rgba(3,103,252,0)");
+  c.fillStyle = g1;
+  c.fillRect(0, 0, logicalW, logicalH);
+
+  const g2 = c.createRadialGradient(logicalW * 0.78, logicalH * 0.72, 40, logicalW * 0.78, logicalH * 0.72, logicalW * 0.6);
+  g2.addColorStop(0, "rgba(210,248,1,0.16)");
+  g2.addColorStop(1, "rgba(210,248,1,0)");
+  c.fillStyle = g2;
+  c.fillRect(0, 0, logicalW, logicalH);
 
   const disp = (px: number) => `900 ${px}px "Inter Tight", Inter, sans-serif`;
   const body = (px: number, w = 600) => `${w} ${px}px Inter, sans-serif`;
 
-  // header
-  c.fillStyle = INK; c.font = disp(84); c.textBaseline = "alphabetic"; c.fillText("STRAFE", 80, 180);
-  c.font = body(30, 700); const tag = d.tag.toUpperCase(); const tw = c.measureText(tag).width + 56;
-  rr(c, W - 80 - tw, 122, tw, 68, 34); c.fillStyle = LIME; c.fill();
-  c.fillStyle = "#000"; c.fillText(tag, W - 80 - tw + 28, 168);
+  const pad = 64;
+  // Header
+  c.fillStyle = INK;
+  c.font = disp(64);
+  c.textBaseline = "alphabetic";
+  c.fillText("STRAFE", pad, pad + 56);
 
-  // map plate
-  const mx = 80, my = 260, mw = W - 160, mh = 560;
-  rr(c, mx, my, mw, mh, 40); c.fillStyle = PLATE; c.fill();
-  c.save(); rr(c, mx, my, mw, mh, 40); c.clip();
-  const px = (lng: number) => mx + ((lng + 180) / 360) * mw;
-  const py = (lat: number) => my + ((90 - Math.max(-60, Math.min(85, lat)) - 5) / 145) * mh;
-  c.strokeStyle = LINE; c.lineWidth = 2;
-  for (let lng = -180; lng <= 180; lng += 30) { c.beginPath(); c.moveTo(px(lng), my); c.lineTo(px(lng), my + mh); c.stroke(); }
-  for (let lat = -60; lat <= 85; lat += 30) { c.beginPath(); c.moveTo(mx, py(lat)); c.lineTo(mx + mw, py(lat)); c.stroke(); }
-  d.rounds.forEach((r, i) => {
-    const tx = px(r.target.lng), ty = py(r.target.lat);
-    if (r.guess) {
-      const gx = px(r.guess.lng), gy = py(r.guess.lat);
-      c.setLineDash([14, 12]); c.strokeStyle = LIME; c.lineWidth = 5; c.shadowColor = LIME; c.shadowBlur = 18;
-      c.beginPath(); c.moveTo(gx, gy); c.lineTo(tx, ty); c.stroke(); c.setLineDash([]); c.shadowBlur = 0;
-      c.beginPath(); c.arc(gx, gy, 12, 0, Math.PI * 2); c.fillStyle = INK; c.fill();
+  if (d.playerName) {
+    c.font = body(26, 700);
+    c.fillStyle = MUTED;
+    const tagStr = d.clanTag ? `[${d.clanTag}] ` : "";
+    c.fillText(`${tagStr}${d.playerName}`, pad, pad + 94);
+  }
+
+  // Mode Badge
+  c.font = body(26, 800);
+  const badgeLabel = d.tag.toUpperCase();
+  const tw = c.measureText(badgeLabel).width + 48;
+  rr(c, logicalW - pad - tw, pad + 8, tw, 56, 28);
+  c.fillStyle = accentPrimary;
+  c.fill();
+  c.fillStyle = accentPrimary === LIME ? "#161616" : "#FFFFFF";
+  c.fillText(badgeLabel, logicalW - pad - tw + 24, pad + 45);
+
+  const pct = d.max > 0 ? d.total / d.max : 0;
+
+  if (aspect === "16:9") {
+    // Landscape Layout (Left Map, Right Score & Stats)
+    const mx = pad,
+      my = pad + 125,
+      mw = 920,
+      mh = logicalH - my - pad - 50;
+    drawMapPlate(c, d, mx, my, mw, mh);
+
+    const rx = mx + mw + 56;
+    const rw = logicalW - rx - pad;
+    c.fillStyle = LIME;
+    c.font = disp(190);
+    c.fillText(gradeFor(pct), rx, my + 165);
+
+    c.textAlign = "right";
+    c.fillStyle = INK;
+    c.font = disp(110);
+    c.fillText(d.total.toLocaleString(), logicalW - pad, my + 120);
+    c.font = body(30, 600);
+    c.fillStyle = MUTED;
+    c.fillText(`/ ${d.max.toLocaleString()} pts`, logicalW - pad, my + 165);
+    c.textAlign = "left";
+
+    const stats: [string, string][] = [
+      ["Accuracy", `${Math.round(pct * 100)}%`],
+      ["Avg error", d.avgKm],
+      ["Perfects", String(d.perfects)],
+    ];
+    const sw = (rw - 32) / 3;
+    stats.forEach(([k, v], i) => {
+      const sx = rx + i * (sw + 16);
+      rr(c, sx, my + 220, sw, 150, 24);
+      c.fillStyle = PLATE;
+      c.fill();
+      c.fillStyle = INK;
+      c.font = disp(46);
+      c.fillText(v, sx + 22, my + 295);
+      c.fillStyle = MUTED;
+      c.font = body(22, 600);
+      c.fillText(k, sx + 22, my + 335);
+    });
+
+    drawRoundSquares(c, d, rx, my + 415, rw);
+
+    c.fillStyle = accentSecondary;
+    c.font = body(28, 800);
+    c.fillText(`Play at ${d.url}`, rx, logicalH - pad);
+  } else {
+    // Vertical / Square Layout (1:1, 4:5, 9:16)
+    const mapH = aspect === "1:1" ? 310 : aspect === "4:5" ? 420 : 560;
+    const mx = pad,
+      my = pad + 125,
+      mw = logicalW - pad * 2;
+    drawMapPlate(c, d, mx, my, mw, mapH);
+
+    const scoreY = my + mapH + (aspect === "1:1" ? 150 : 210);
+    c.fillStyle = LIME;
+    c.font = disp(aspect === "1:1" ? 150 : 220);
+    c.fillText(gradeFor(pct), pad, scoreY);
+
+    c.textAlign = "right";
+    c.fillStyle = INK;
+    c.font = disp(aspect === "1:1" ? 96 : 130);
+    c.fillText(d.total.toLocaleString(), logicalW - pad, scoreY - 40);
+    c.font = body(30, 600);
+    c.fillStyle = MUTED;
+    const subText =
+      template === "ranked" && d.rankName
+        ? `${d.rankName} (${(d.rpChange ?? 0) >= 0 ? "+" : ""}${d.rpChange ?? 0} RP)`
+        : `/ ${d.max.toLocaleString()} pts`;
+    c.fillText(subText, logicalW - pad, scoreY + 8);
+    c.textAlign = "left";
+
+    const statsY = scoreY + (aspect === "1:1" ? 36 : 55);
+    const statsH = aspect === "1:1" ? 130 : 165;
+    const stats: [string, string][] = [
+      ["Accuracy", `${Math.round(pct * 100)}%`],
+      ["Avg error", d.avgKm],
+      ["Perfects", String(d.perfects)],
+    ];
+    const sw = (mw - 32) / 3;
+    stats.forEach(([k, v], i) => {
+      const sx = pad + i * (sw + 16);
+      rr(c, sx, statsY, sw, statsH, 26);
+      c.fillStyle = PLATE;
+      c.fill();
+      c.fillStyle = INK;
+      c.font = disp(aspect === "1:1" ? 44 : 54);
+      c.fillText(v, sx + 24, statsY + statsH * 0.54);
+      c.fillStyle = MUTED;
+      c.font = body(24, 600);
+      c.fillText(k, sx + 24, statsY + statsH * 0.82);
+    });
+
+    if (aspect !== "1:1") {
+      drawRoundSquares(c, d, pad, statsY + statsH + 42, mw);
     }
-    c.beginPath(); c.arc(tx, ty, 20, 0, Math.PI * 2); c.fillStyle = LIME; c.fill();
-    c.fillStyle = "#000"; c.font = body(22, 800); c.textAlign = "center"; c.fillText(String(i + 1), tx, ty + 8); c.textAlign = "left";
-  });
-  c.restore();
 
-  // grade + score
-  const pct = d.total / d.max;
-  c.fillStyle = LIME; c.font = disp(300); c.fillText(gradeFor(pct), 70, 1150);
-  c.font = body(34, 700); c.fillStyle = MUTED; c.fillText("RANK", 80, 1210);
-  c.textAlign = "right"; c.fillStyle = INK; c.font = disp(150); c.fillText(d.total.toLocaleString(), W - 80, 1080);
-  c.font = body(36, 600); c.fillStyle = MUTED; c.fillText(`/ ${d.max.toLocaleString()} pts`, W - 80, 1140); c.textAlign = "left";
+    c.textAlign = "center";
+    c.fillStyle = LIME;
+    c.font = body(32, 800);
+    c.fillText(d.url, logicalW / 2, logicalH - pad * 0.65);
+    c.textAlign = "left";
+  }
 
-  // stats row
-  const stats: [string, string][] = [["Accuracy", `${Math.round(pct * 100)}%`], ["Avg error", d.avgKm], ["Perfect", String(d.perfects)]];
-  const sw = (W - 160 - 40) / 3;
-  stats.forEach(([k, v], i) => {
-    const x = 80 + i * (sw + 20);
-    rr(c, x, 1270, sw, 190, 32); c.fillStyle = PLATE; c.fill();
-    c.fillStyle = INK; c.font = disp(64); c.fillText(v, x + 32, 1370);
-    c.fillStyle = MUTED; c.font = body(28, 600); c.fillText(k, x + 32, 1420);
-  });
-
-  // round squares
-  const sq = 120, gap = 24, total = d.rounds.length * sq + (d.rounds.length - 1) * gap;
-  d.rounds.forEach((r, i) => {
-    const x = (W - total) / 2 + i * (sq + gap);
-    rr(c, x, 1520, sq, sq, 28);
-    c.fillStyle = r.points >= 4000 ? LIME : r.points >= 2000 ? "rgba(185,255,36,0.55)" : r.points > 0 ? "rgba(185,255,36,0.22)" : LINE; c.fill();
-    c.fillStyle = r.points >= 2000 ? "#000" : INK; c.font = body(30, 800); c.textAlign = "center";
-    c.fillText(r.points >= 1000 ? `${(r.points / 1000).toFixed(1)}k` : String(r.points), x + sq / 2, 1520 + sq / 2 + 11); c.textAlign = "left";
-  });
-
-  // footer
-  c.textAlign = "center"; c.fillStyle = MUTED; c.font = body(32, 600);
-  c.fillText("Can you beat me? Play at", W / 2, 1760);
-  c.fillStyle = LIME; c.font = body(40, 800); c.fillText(d.url, W / 2, 1815); c.textAlign = "left";
-
-  return new Promise((res, rej) => cv.toBlob((b) => (b ? res(b) : rej(new Error("render failed"))), "image/png"));
+  return new Promise((resBlob, rej) =>
+    cv.toBlob((b) => (b ? resBlob(b) : rej(new Error("render failed"))), "image/png"),
+  );
 }
 
-/** Opens the native share sheet (Instagram on phones); falls back to a download. */
-export async function shareCard(blob: Blob): Promise<"shared" | "downloaded" | "cancelled"> {
-  const file = new File([blob], "strafe-result.png", { type: "image/png" });
+function drawMapPlate(
+  c: CanvasRenderingContext2D,
+  d: CardData,
+  mx: number,
+  my: number,
+  mw: number,
+  mh: number,
+) {
+  rr(c, mx, my, mw, mh, 34);
+  c.fillStyle = PLATE;
+  c.fill();
+  c.save();
+  rr(c, mx, my, mw, mh, 34);
+  c.clip();
+  const px = (lng: number) => mx + ((lng + 180) / 360) * mw;
+  const py = (lat: number) => my + ((90 - Math.max(-60, Math.min(85, lat)) - 5) / 145) * mh;
+  c.strokeStyle = LINE;
+  c.lineWidth = 2;
+  for (let lng = -180; lng <= 180; lng += 30) {
+    c.beginPath();
+    c.moveTo(px(lng), my);
+    c.lineTo(px(lng), my + mh);
+    c.stroke();
+  }
+  for (let lat = -60; lat <= 85; lat += 30) {
+    c.beginPath();
+    c.moveTo(mx, py(lat));
+    c.lineTo(mx + mw, py(lat));
+    c.stroke();
+  }
+  d.rounds.forEach((r, i) => {
+    const tx = px(r.target.lng),
+      ty = py(r.target.lat);
+    if (r.guess) {
+      const gx = px(r.guess.lng),
+        gy = py(r.guess.lat);
+      c.setLineDash([12, 10]);
+      c.strokeStyle = BLUE;
+      c.lineWidth = 4.5;
+      c.beginPath();
+      c.moveTo(gx, gy);
+      c.lineTo(tx, ty);
+      c.stroke();
+      c.setLineDash([]);
+      c.beginPath();
+      c.arc(gx, gy, 11, 0, Math.PI * 2);
+      c.fillStyle = BLUE;
+      c.fill();
+    }
+    c.beginPath();
+    c.arc(tx, ty, 17, 0, Math.PI * 2);
+    c.fillStyle = LIME;
+    c.fill();
+    c.fillStyle = "#161616";
+    c.font = `800 19px Inter, sans-serif`;
+    c.textAlign = "center";
+    c.fillText(String(i + 1), tx, ty + 7);
+    c.textAlign = "left";
+  });
+  c.restore();
+}
+
+function drawRoundSquares(
+  c: CanvasRenderingContext2D,
+  d: CardData,
+  startX: number,
+  y: number,
+  availW: number,
+) {
+  const count = Math.max(1, d.rounds.length);
+  const gap = 16;
+  const sq = Math.min(108, Math.floor((availW - (count - 1) * gap) / count));
+  const totalW = count * sq + (count - 1) * gap;
+  d.rounds.forEach((r, i) => {
+    const x = startX + (availW - totalW) / 2 + i * (sq + gap);
+    rr(c, x, y, sq, sq, 22);
+    c.fillStyle =
+      r.points >= 4000
+        ? LIME
+        : r.points >= 2000
+          ? BLUE
+          : r.points > 0
+            ? "rgba(3,103,252,0.35)"
+            : LINE;
+    c.fill();
+    c.fillStyle = r.points >= 4000 ? "#161616" : INK;
+    c.font = `800 24px Inter, sans-serif`;
+    c.textAlign = "center";
+    c.fillText(
+      r.points >= 1000 ? `${(r.points / 1000).toFixed(1)}k` : String(r.points),
+      x + sq / 2,
+      y + sq / 2 + 9,
+    );
+    c.textAlign = "left";
+  });
+}
+
+/** Opens the native share sheet; falls back to a download. */
+export async function shareCard(blob: Blob, filename = "strafe-result.png"): Promise<"shared" | "downloaded" | "cancelled"> {
+  const file = new File([blob], filename, { type: "image/png" });
   const nav = navigator as Navigator & { canShare?: (d: ShareData) => boolean };
   if (nav.canShare?.({ files: [file] })) {
-    try { await nav.share({ files: [file], title: "STRAFE result" }); return "shared"; }
-    catch (e) { if ((e as Error).name === "AbortError") return "cancelled"; }
+    try {
+      await nav.share({ files: [file], title: "STRAFE result" });
+      return "shared";
+    } catch (e) {
+      if ((e as Error).name === "AbortError") return "cancelled";
+    }
   }
-  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = file.name; a.click();
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = file.name;
+  a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
   return "downloaded";
 }

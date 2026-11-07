@@ -32,9 +32,15 @@ function AchievementsPage() {
 
   useEffect(() => { syncAchievements(records ?? [], loadRank()); setUnlocked(loadUnlocked()); }, [records]);
 
-  const list = useMemo(() => ACH_ALL.filter((a) =>
-    (group === "all" || a.unit.group === group) &&
-    (filter === "all" || (filter === "on") === Boolean(unlocked[a.id]))), [group, filter, unlocked]);
+  const list = useMemo(
+    () =>
+      ACH_ALL.filter(
+        (a) =>
+          (group === "all" || a.unit.group === group) &&
+          (filter === "all" || (filter === "on") === Boolean(unlocked[a.id])),
+      ).sort((a, b) => Number(Boolean(unlocked[b.id])) - Number(Boolean(unlocked[a.id]))),
+    [group, filter, unlocked],
+  );
   const count = Object.keys(unlocked).length;
 
   return (

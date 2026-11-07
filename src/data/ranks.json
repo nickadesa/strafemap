@@ -1,0 +1,207 @@
+{
+ "version": 1,
+ "ranks": [
+  {
+   "key": "bronze",
+   "name": "Bronze",
+   "accent": "#CD7F32",
+   "rpMin": 0,
+   "rpMax": 999,
+   "frame": "/ranks/frames/bronze.svg",
+   "divisions": [
+    {
+     "name": "IV",
+     "rpMin": 0,
+     "rpMax": 249,
+     "banner": "/ranks/banners/bronze-iv.svg"
+    },
+    {
+     "name": "III",
+     "rpMin": 250,
+     "rpMax": 499,
+     "banner": "/ranks/banners/bronze-iii.svg"
+    },
+    {
+     "name": "II",
+     "rpMin": 500,
+     "rpMax": 749,
+     "banner": "/ranks/banners/bronze-ii.svg"
+    },
+    {
+     "name": "I",
+     "rpMin": 750,
+     "rpMax": 999,
+     "banner": "/ranks/banners/bronze-i.svg"
+    }
+   ]
+  },
+  {
+   "key": "silver",
+   "name": "Silver",
+   "accent": "#C5CCD8",
+   "rpMin": 1000,
+   "rpMax": 1999,
+   "frame": "/ranks/frames/silver.svg",
+   "divisions": [
+    {
+     "name": "IV",
+     "rpMin": 1000,
+     "rpMax": 1249,
+     "banner": "/ranks/banners/silver-iv.svg"
+    },
+    {
+     "name": "III",
+     "rpMin": 1250,
+     "rpMax": 1499,
+     "banner": "/ranks/banners/silver-iii.svg"
+    },
+    {
+     "name": "II",
+     "rpMin": 1500,
+     "rpMax": 1749,
+     "banner": "/ranks/banners/silver-ii.svg"
+    },
+    {
+     "name": "I",
+     "rpMin": 1750,
+     "rpMax": 1999,
+     "banner": "/ranks/banners/silver-i.svg"
+    }
+   ]
+  },
+  {
+   "key": "gold",
+   "name": "Gold",
+   "accent": "#FFC82A",
+   "rpMin": 2000,
+   "rpMax": 3499,
+   "frame": "/ranks/frames/gold.svg",
+   "divisions": [
+    {
+     "name": "IV",
+     "rpMin": 2000,
+     "rpMax": 2374,
+     "banner": "/ranks/banners/gold-iv.svg"
+    },
+    {
+     "name": "III",
+     "rpMin": 2375,
+     "rpMax": 2749,
+     "banner": "/ranks/banners/gold-iii.svg"
+    },
+    {
+     "name": "II",
+     "rpMin": 2750,
+     "rpMax": 3124,
+     "banner": "/ranks/banners/gold-ii.svg"
+    },
+    {
+     "name": "I",
+     "rpMin": 3125,
+     "rpMax": 3499,
+     "banner": "/ranks/banners/gold-i.svg"
+    }
+   ]
+  },
+  {
+   "key": "platinum",
+   "name": "Platinum",
+   "accent": "#62D6E6",
+   "rpMin": 3500,
+   "rpMax": 4999,
+   "frame": "/ranks/frames/platinum.svg",
+   "divisions": [
+    {
+     "name": "IV",
+     "rpMin": 3500,
+     "rpMax": 3874,
+     "banner": "/ranks/banners/platinum-iv.svg"
+    },
+    {
+     "name": "III",
+     "rpMin": 3875,
+     "rpMax": 4249,
+     "banner": "/ranks/banners/platinum-iii.svg"
+    },
+    {
+     "name": "II",
+     "rpMin": 4250,
+     "rpMax": 4624,
+     "banner": "/ranks/banners/platinum-ii.svg"
+    },
+    {
+     "name": "I",
+     "rpMin": 4625,
+     "rpMax": 4999,
+     "banner": "/ranks/banners/platinum-i.svg"
+    }
+   ]
+  },
+  {
+   "key": "diamond",
+   "name": "Diamond",
+   "accent": "#3F9DE8",
+   "rpMin": 5000,
+   "rpMax": 6999,
+   "frame": "/ranks/frames/diamond.svg",
+   "divisions": [
+    {
+     "name": "III",
+     "rpMin": 5000,
+     "rpMax": 5666,
+     "banner": "/ranks/banners/diamond-iii.svg"
+    },
+    {
+     "name": "II",
+     "rpMin": 5667,
+     "rpMax": 6333,
+     "banner": "/ranks/banners/diamond-ii.svg"
+    },
+    {
+     "name": "I",
+     "rpMin": 6334,
+     "rpMax": 6999,
+     "banner": "/ranks/banners/diamond-i.svg"
+    }
+   ]
+  },
+  {
+   "key": "master",
+   "name": "Master",
+   "accent": "#E8307A",
+   "rpMin": 7000,
+   "rpMax": null,
+   "frame": "/ranks/frames/master.svg",
+   "divisions": [],
+   "banner": "/ranks/banners/master.svg"
+  },
+  {
+   "key": "champion",
+   "name": "Champion",
+   "accent": "#DC1F30",
+   "type": "top",
+   "requires": "master",
+   "maxPosition": 50,
+   "bannerPattern": "/ranks/banners/champion-{NN}.svg",
+   "framePattern": "/ranks/frames/champion-{NN}.svg",
+   "bannerBlank": "/ranks/banners/champion-blank.svg",
+   "frameBlank": "/ranks/frames/champion-blank.svg"
+  }
+ ],
+ "rpRules": {
+  "win": 25,
+  "loss": -20,
+  "draw": 0,
+  "marginBonusPerRound": 1.5,
+  "opponentGapDivisor": 100,
+  "opponentGapClamp": 8,
+  "minRp": 0,
+  "placementMatches": 5,
+  "placementMultiplier": 1.5
+ },
+ "frameAvatar": {
+  "sizeRatioOfWidth": 0.408,
+  "centerXRatio": 0.5,
+  "centerYRatio": 0.467
+ }
+}

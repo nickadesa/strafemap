@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,6 +7,9 @@ import { pickRounds, poolFor } from "@/lib/game/engine";
 import { useSettings } from "@/lib/game/storage";
 
 export const Route = createFileRoute("/duel/")({
+  beforeLoad: () => {
+    throw redirect({ to: "/play" });
+  },
   head: () => ({
     meta: [
       { title: "Live Duels — STRAFE" },

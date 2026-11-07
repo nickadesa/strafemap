@@ -5,13 +5,14 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Inter Tight", "Inter", ui-sans-serif, sans-serif;
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
   --radius-sm: calc(var(--radius) - 12px);
   --radius-md: calc(var(--radius) - 8px);
   --radius-lg: calc(var(--radius) - 4px);
   --radius-xl: var(--radius);
-  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-2xl: var(--radius + 8px);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -22,6 +23,8 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-primary-pale: var(--primary-pale);
   --color-primary-active: var(--primary-active);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-blue-foreground: var(--brand-blue-foreground);
   --color-ink-deep: var(--ink-deep);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -40,58 +43,107 @@
 }
 
 :root {
+  --font-latin: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display-latin: "Inter Tight", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Default (en, es, fr) — Inter stays first in every stack */
+  --font-sans: var(--font-latin), "IBM Plex Sans Thai", sans-serif;
+  --font-display: var(--font-display-latin), "IBM Plex Sans Thai", sans-serif;
+  --lh-body: 1.45;
+  --lh-heading: 1.12;
+
   --radius: 1.5rem;
   --background: #f6f6f2;
-  --foreground: #17181a;
+  --foreground: #161616;
   --card: #ffffff;
-  --card-foreground: #1d1d1f;
+  --card-foreground: #161616;
   --popover: #ffffff;
-  --popover-foreground: #1d1d1f;
-  --primary: #b9ff24;
-  --primary-foreground: #000000;
-  --primary-pale: #eefcd0;
-  --primary-active: #c8ff00;
-  --ink-deep: #1d1d1f;
-  --secondary: #1d1d1f;
+  --popover-foreground: #161616;
+  --primary: #d2f801;
+  --primary-foreground: #161616;
+  --primary-pale: #f2fcca;
+  --primary-active: #dcff1a;
+  --brand-blue: #0367fc;
+  --brand-blue-foreground: #ffffff;
+  --ink-deep: #161616;
+  --secondary: #161616;
   --secondary-foreground: #ffffff;
   --muted: #efefe9;
   --muted-foreground: #6b6d68;
   --accent: #efefe9;
-  --accent-foreground: #1d1d1f;
+  --accent-foreground: #161616;
   --destructive: oklch(0.56 0.19 25);
   --destructive-foreground: #ffffff;
   --warning: oklch(0.87 0.17 90);
   --positive: oklch(0.64 0.16 145);
-  --border: rgb(23 24 26 / 0.09);
+  --border: rgb(22 22 22 / 0.09);
   --input: #d6d9d1;
-  --ring: #111213;
-  --link: #17181a;
+  --ring: #0367fc;
+  --link: #0367fc;
+}
+
+/* Thai: Extra vertical breathing room for upper/lower vowel & tone marks */
+:root:lang(th) {
+  --font-sans: var(--font-latin), "IBM Plex Sans Thai", "Noto Sans Thai", "Sukhumvit Set", "Thonburi", "Leelawadee UI", sans-serif;
+  --font-display: var(--font-display-latin), "IBM Plex Sans Thai", "Noto Sans Thai", sans-serif;
+  --lh-body: 1.65;
+  --lh-heading: 1.28;
+  letter-spacing: 0em;
+}
+
+/* Korean: Keep Hangul words intact on line wraps */
+:root:lang(ko) {
+  --font-sans: var(--font-latin), "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-display: var(--font-display-latin), "Pretendard", "Noto Sans KR", sans-serif;
+  --lh-body: 1.55;
+  --lh-heading: 1.22;
+  word-break: keep-all;
+}
+
+/* Simplified Chinese: Prioritizes SC Han glyphs over JP/KR */
+:root:lang(zh) {
+  --font-sans: var(--font-latin), "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-display: var(--font-display-latin), "Noto Sans SC", "PingFang SC", sans-serif;
+  --lh-body: 1.60;
+  --lh-heading: 1.25;
+}
+
+/* Japanese: Prioritizes JP Kanji/Kana glyphs over SC/KR */
+:root:lang(ja) {
+  --font-sans: var(--font-latin), "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+  --font-display: var(--font-display-latin), "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
+  --lh-body: 1.65;
+  --lh-heading: 1.28;
+  line-break: strict;
 }
 
 .dark {
-  --background: #121312;
-  --foreground: #f4f4f5;
-  --card: #1c1d1c;
-  --card-foreground: #f4f4f5;
-  --popover: #1c1d1c;
-  --popover-foreground: #f4f4f5;
-  --primary: #b9ff24;
-  --primary-foreground: #000000;
+  --background: #161616;
+  --foreground: #ffffff;
+  --card: #1e1e20;
+  --card-foreground: #ffffff;
+  --popover: #1e1e20;
+  --popover-foreground: #ffffff;
+  --primary: #d2f801;
+  --primary-foreground: #161616;
   --primary-pale: #2a331c;
-  --primary-active: #c8ff00;
-  --ink-deep: #b9ff24;
-  --secondary: #262826;
-  --secondary-foreground: #f4f4f5;
-  --muted: #242624;
+  --primary-active: #dcff1a;
+  --brand-blue: #0367fc;
+  --brand-blue-foreground: #ffffff;
+  --ink-deep: #d2f801;
+  --secondary: #26282a;
+  --secondary-foreground: #ffffff;
+  --muted: #242628;
   --muted-foreground: #9a9d97;
-  --accent: #2a331c;
-  --accent-foreground: #b9ff24;
+  --accent: #242a38;
+  --accent-foreground: #ffffff;
   --destructive: oklch(0.65 0.2 25);
   --destructive-foreground: #ffffff;
   --border: rgb(255 255 255 / 0.08);
-  --input: #3a3a3a;
-  --ring: #b9ff24;
-  --link: #b9ff24;
+  --input: #3a3a3c;
+  --ring: #d2f801;
+  --link: #d2f801;
   color-scheme: dark;
 }
 
@@ -101,17 +153,44 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    line-height: var(--lh-body, 1.45);
     -webkit-font-smoothing: antialiased;
+    font-variant-numeric: tabular-nums;
     font-feature-settings: "tnum" 1, "cv11" 1;
   }
+}
+
+/* Cap 700/800/900 utility weights to 600 (SemiBold) per Option A Typography Spec */
+.font-bold,
+.font-extrabold,
+.font-black {
+  font-weight: 600 !important;
+}
+
+/* Mandatory Tabular Numerals for Game HUD, Timers, Scores, Distances & Ranks */
+.tabular-nums,
+[data-numeric="true"],
+.font-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "zero" 1;
 }
 
 @utility font-display {
   font-family: var(--font-display);
   font-weight: 600;
-  letter-spacing: -0.025em;
-  line-height: 1;
+  letter-spacing: -0.02em;
+  line-height: var(--lh-heading, 1.12);
   font-variant-numeric: tabular-nums;
+}
+
+:root:lang(th) .font-display,
+:root:lang(zh) .font-display,
+:root:lang(ja) .font-display {
+  letter-spacing: 0em;
+}
+:root:lang(ko) .font-display {
+  letter-spacing: -0.01em;
 }
 
 @utility btn {
@@ -130,9 +209,14 @@
   &:disabled { opacity: 0.4; pointer-events: none; }
 }
 @utility btn-primary {
-  background: var(--color-primary);
-  color: var(--color-primary-foreground);
-  &:hover { background: var(--color-primary-active); }
+  background: #d2f801;
+  color: #161616;
+  &:hover { background: #dcff1a; }
+}
+@utility btn-blue {
+  background: #0367fc;
+  color: #ffffff;
+  &:hover { background: #257cfd; }
 }
 @utility btn-ink {
   background: var(--color-secondary);
@@ -140,9 +224,10 @@
   &:hover { opacity: 0.9; }
 }
 @utility btn-outline {
-  border: 1px solid var(--color-foreground);
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
   color: var(--color-foreground);
-  &:hover { background: var(--color-primary-pale); }
+  &:hover { background: var(--color-muted); }
 }
 @utility plate {
   background: var(--color-card);
@@ -157,15 +242,33 @@
   border-radius: var(--radius);
   border: 1px solid var(--color-border);
 }
+@utility clan-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  background: #0367fc;
+  color: #ffffff;
+  padding: 1px 7px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+@utility rainbow-border {
+  background: linear-gradient(135deg, #0367fc, #00e5ff, #d2f801, #ff9900, #ff0055, #a855f7, #0367fc);
+  padding: 2.5px;
+}
 
 /* Map pins */
 .pin { border-radius: 9999px; border: 3px solid var(--color-card); box-shadow: 0 0 0 1.5px var(--color-foreground); }
-.pin-guess { background: var(--color-foreground); }
-.pin-target { background: var(--color-primary); }
-.pin-bot { background: var(--color-muted-foreground); opacity: 0.85; }
+.pin-guess { background: #0367fc; box-shadow: 0 0 0 2px #ffffff, 0 0 12px rgba(3, 103, 252, 0.65); }
+.pin-guess-2 { background: #a855f7; box-shadow: 0 0 0 2px #ffffff, 0 0 12px rgba(168, 85, 247, 0.65); }
+.pin-target { background: #d2f801; box-shadow: 0 0 0 2px #161616, 0 0 14px rgba(210, 248, 1, 0.8); }
+.pin-bot { background: #ff3b5c; opacity: 0.95; box-shadow: 0 0 0 1.5px #ffffff; }
 .leaflet-container { font-family: var(--font-sans); background: var(--color-background); }
 /* Leave room for map credits and keep controls clear of the clue. */
 .leaflet-bottom.leaflet-left .leaflet-control-zoom { margin: 0 0 28px 10px; }
+.hide-zoom-controls .leaflet-control-zoom { display: none !important; }
 @media (max-width: 639px) {
   .game-logo { gap: 5px; }
   .game-logo > span:first-child { width: 24px; height: 24px; flex-shrink: 0; }
@@ -174,7 +277,15 @@
 }
 /* Native OS crosshair (Windows-style plus cursor) */
 .leaflet-container.crosshair { cursor: crosshair; }
-.bot-label { background: var(--color-card); border: none; border-radius: 9999px; font-weight: 600; font-size: 11px; padding: 2px 8px; box-shadow: none; }
+.bot-label { background: var(--color-card); color: var(--color-foreground); border: 1px solid var(--color-border); border-radius: 9999px; font-weight: 600; font-size: 11px; padding: 2px 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.25); }
+
+/* Animated trajectory line on reveal */
+@keyframes dash-flow {
+  to { stroke-dashoffset: -24; }
+}
+.leaflet-interactive.trajectory-line {
+  animation: dash-flow 0.9s linear infinite;
+}
 
 /* Round zoom buttons */
 .leaflet-touch .leaflet-bar, .leaflet-bar { border: none !important; box-shadow: none !important; background: transparent; display: flex; flex-direction: column; gap: 8px; }
@@ -185,7 +296,7 @@
   transition: transform 380ms var(--ease-spring), background-color 150ms ease;
   -webkit-tap-highlight-color: transparent;
 }
-.leaflet-bar a:hover { background: var(--color-primary); transform: scale(1.06); }
+.leaflet-bar a:hover { background: var(--color-primary); color: var(--color-primary-foreground); transform: scale(1.06); }
 .leaflet-bar a:active { transform: scale(0.92); transition-duration: 80ms; }
 .leaflet-bar a.leaflet-disabled { opacity: 0.4; }
 
@@ -194,8 +305,8 @@
 button, a, [role="button"] { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 button:not(.btn):active, [role="button"]:active { transform: scale(0.97); }
 button:not(.btn), [role="button"] { transition: transform 380ms var(--ease-spring), background-color 150ms ease, color 150ms ease; }
-.glass { background: color-mix(in oklab, var(--color-background) 72%, transparent); backdrop-filter: blur(20px) saturate(160%); }
-.glass-plate { background: color-mix(in oklab, var(--color-card) 82%, transparent); backdrop-filter: blur(24px) saturate(160%); border: 1px solid var(--color-border); }
+.glass { background: color-mix(in oklab, var(--color-background) 78%, transparent); backdrop-filter: blur(20px) saturate(160%); }
+.glass-plate { background: color-mix(in oklab, var(--color-card) 86%, transparent); backdrop-filter: blur(24px) saturate(160%); border: 1px solid var(--color-border); }
 @keyframes pop-in { from { opacity: 0; transform: translateY(-6px) scale(0.96); } to { opacity: 1; transform: none; } }
 .pop-in { animation: pop-in 320ms var(--ease-spring) both; transform-origin: top right; }
 @keyframes rise-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
@@ -225,18 +336,20 @@ button:not(.btn), [role="button"] { transition: transform 380ms var(--ease-sprin
   border: 1px solid var(--color-border);
 }
 @utility seg-item {
-  border-radius: 9999px; padding: 8px 16px; font-size: 0.875rem; font-weight: 500;
-  flex-shrink: 0; white-space: nowrap; scroll-snap-align: start; min-height: 40px;
+  border-radius: 9999px; padding: 8px 16px; font-size: 0.875rem; font-weight: 600;
+  flex-shrink: 0; white-space: nowrap; scroll-snap-align: start; min-height: 38px;
   color: var(--color-muted-foreground);
   &:hover { color: var(--color-foreground); }
   &[data-on="true"] {
-    background: var(--color-card); color: var(--color-foreground);
-    box-shadow: inset 0 0 0 1px var(--color-border), 0 1px 0 rgb(255 255 255 / 0.04);
+    background: var(--color-primary); color: var(--color-primary-foreground);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.12);
   }
 }
 @utility readout {
-  font-family: ui-monospace, "JetBrains Mono", SFMono-Regular, Menlo, monospace;
-  font-variant-numeric: tabular-nums; letter-spacing: -0.01em;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "zero" 1;
+  letter-spacing: -0.01em;
 }
 
 @utility no-scrollbar {
@@ -245,7 +358,7 @@ button:not(.btn), [role="button"] { transition: transform 380ms var(--ease-sprin
 }
 
 .clue-pill {
-  position: relative; max-width: min(320px, 100%); padding: 0;
+  position: relative; max-width: min(360px, 100%); padding: 0;
   border-radius: 20px; font-family: var(--font-sans); letter-spacing: 0;
   text-align: left; overflow: hidden; flex: 0 1 auto; cursor: pointer;
 }
@@ -253,15 +366,30 @@ button:not(.btn), [role="button"] { transition: transform 380ms var(--ease-sprin
 .clue-pill:active { transform: none !important; }
 .clue-body {
   box-sizing: border-box; max-width: 100%;
-  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; column-gap: 10px;
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; column-gap: 12px;
 }
-.clue-full { width: min(320px, calc(100vw - 24px)); padding: 14px 14px 16px; }
-.clue-compact { width: max-content; padding: 8px 10px 8px 9px; min-height: 44px; }
-.clue-heading { text-align: center; min-width: 0; }
-.clue-details { grid-column: 1 / -1; margin-top: 12px; text-align: center; }
-.clue-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; font-size: 15px; font-weight: 600; line-height: 24px; }
-.clue-controls { display: inline-flex; align-items: center; gap: 6px; flex: none; justify-self: end; }
-.clue-timer { width: 38px; text-align: center; font-size: 11px; line-height: 22px; border: 1px solid var(--color-border); border-radius: 999px; background: var(--color-muted); }
+.clue-full { width: min(350px, calc(100vw - 24px)); padding: 12px 14px 14px; }
+.clue-compact { width: max-content; min-width: 220px; padding: 7px 12px 7px 10px; min-height: 44px; }
+.clue-top-label {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-muted-foreground);
+  margin-bottom: 6px;
+}
+.clue-heading { text-align: center; min-width: 0; justify-self: center; width: 100%; }
+.clue-details { grid-column: 1 / -1; margin-top: 10px; text-align: center; }
+.clue-name {
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  text-align: center; justify-self: center; width: 100%; padding: 0 6px;
+  font-size: 15px; font-weight: 600; line-height: 24px;
+}
+.clue-controls { display: inline-flex; align-items: center; justify-content: flex-end; gap: 6px; flex: none; justify-self: end; }
+.clue-timer { min-width: 38px; padding: 0 6px; text-align: center; font-size: 11px; line-height: 22px; border: 1px solid var(--color-border); border-radius: 999px; background: var(--color-muted); }
+.clue-chevron { display: inline-grid; place-items: center; width: 20px; height: 20px; flex-shrink: 0; }
 .clue-badge { display: grid; place-items: center; align-self: center; line-height: 0; transform-origin: left top; }
 @media (prefers-reduced-motion: reduce) { .clue-pill, .clue-badge, .clue-body { animation: none; transition: none; } }
 
@@ -287,8 +415,30 @@ html[data-glass="rim"] .glass-plate {
   box-shadow: inset 1.5px 1.5px 0 0 rgb(255 255 255 / 0.9), inset -1.5px -1.5px 0 0 rgb(255 255 255 / 0.45), inset 0 0 18px 0 rgb(255 255 255 / 0.18), 0 10px 30px -14px rgb(0 0 0 / 0.4);
 }
 
-/* Navigation: 64px rail on desktop, bottom bar on mobile. */
+/* Super Chat Effects */
+.chat-aura-fire {
+  background: linear-gradient(135deg, rgba(255, 69, 0, 0.25), rgba(255, 165, 0, 0.15)) !important;
+  border: 1px solid rgba(255, 94, 0, 0.65) !important;
+  box-shadow: 0 0 12px rgba(255, 69, 0, 0.3);
+}
+.chat-aura-water {
+  background: linear-gradient(135deg, rgba(3, 103, 252, 0.28), rgba(0, 229, 255, 0.16)) !important;
+  border: 1px solid rgba(0, 200, 255, 0.65) !important;
+  box-shadow: 0 0 12px rgba(3, 103, 252, 0.3);
+}
+.chat-aura-rainbow {
+  background: linear-gradient(135deg, rgba(3, 103, 252, 0.24), rgba(210, 248, 1, 0.2), rgba(255, 0, 128, 0.24)) !important;
+  border: 1px solid rgba(210, 248, 1, 0.7) !important;
+  box-shadow: 0 0 14px rgba(210, 248, 1, 0.28);
+}
+.chat-aura-vines {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(210, 248, 1, 0.16)) !important;
+  border: 1px solid rgba(16, 185, 129, 0.65) !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.28);
+}
+
+/* Navigation: 64px / 240px rail on desktop, bottom bar + top-right bar on mobile. */
 .rail-offset { transition: margin-left 380ms var(--ease-spring, ease); }
 @media (min-width: 768px) { .rail-offset { margin-left: var(--rail-w, 64px); } }
-@media (max-width: 767px) { .rail-offset { padding-bottom: calc(88px + env(safe-area-inset-bottom)); } }
+@media (max-width: 767px) { .rail-offset { padding-bottom: calc(92px + env(safe-area-inset-bottom)); } }
 .reveal-on .leaflet-control-zoom { opacity: 0; pointer-events: none; }

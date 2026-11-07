@@ -117,6 +117,7 @@ const rows: Row[] = [
 ];
 
 import { EXTRA_LOCATIONS } from "./locations-extra";
+import { WIKIDATA_LOCATIONS } from "./locations-wikidata";
 
 export const LOCATIONS: Location[] = [
   ...rows.map(([name, country, lat, lng, category, difficulty, hint], i) => ({
@@ -124,4 +125,6 @@ export const LOCATIONS: Location[] = [
     name, country, lat, lng, category, difficulty, hint,
   })),
   ...EXTRA_LOCATIONS,
+  ...WIKIDATA_LOCATIONS,
 ];
+

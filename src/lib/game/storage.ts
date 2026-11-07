@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useUser } from "@/lib/auth";
 import type { Lang } from "@/lib/i18n";
 import type { ReactionSet } from "@/lib/reactions";
+import { addPlayerExp } from "@/lib/social";
 
 export interface Settings {
   name: string;
@@ -15,6 +16,10 @@ export interface Settings {
   /** Show emoji reaction buttons on round results. */
   reactions: boolean;
   reactionSet: ReactionSet;
+  /** Hide map zoom (+/-) buttons during gameplay. */
+  hideZoomButtons: boolean;
+  /** Customizable 5 quick emojis for in-game & post-match reactions. */
+  quickEmojis: string[];
 }
 export interface GameRecord {
   id: string;
@@ -29,7 +34,17 @@ export interface GameRecord {
 
 const SKEY = "strafe.settings";
 const RKEY = "strafe.records";
-const defaults: Settings = { name: "Guest", sound: true, unit: "km", promptCollapseSeconds: 5, language: "en", reactions: true, reactionSet: "classic" };
+const defaults: Settings = {
+  name: "StrafePlayer",
+  sound: true,
+  unit: "km",
+  promptCollapseSeconds: 5,
+  language: "en",
+  reactions: true,
+  reactionSet: "classic",
+  hideZoomButtons: false,
+  quickEmojis: ["🔥", "🎯", "🤯", "👏", "💀"],
+};
 
 const read = <T,>(k: string, fb: T): T => {
   try { const v = localStorage.getItem(k); return v ? { ...fb, ...JSON.parse(v) } : fb; } catch { return fb; }
@@ -41,9 +56,10 @@ export function loadRecords(): GameRecord[] {
   try { return JSON.parse(localStorage.getItem(RKEY) || "[]"); } catch { return []; }
 }
 
-/** Saves locally, and to the player's account when signed in. */
+/** Saves locally, awards player EXP, and syncs to the player's account when signed in. */
 export async function saveRecord(r: GameRecord) {
   localStorage.setItem(RKEY, JSON.stringify([...loadRecords(), r]));
+  addPlayerExp(Math.max(120, Math.round(r.score / 50)));
   const { data } = await supabase.auth.getSession();
   const uid = data.session?.user.id;
   if (uid) {
