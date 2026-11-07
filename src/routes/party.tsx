@@ -227,11 +227,11 @@ function PartyPage() {
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2">
-        <div>
+        <div className="min-w-0">
           <p className="mb-1.5 text-xs font-medium text-muted-foreground">
             {t(lang, "timePerRound")}
           </p>
-          <div className="seg w-full">
+          <div className="seg w-full min-w-0 max-w-full overflow-x-auto no-scrollbar">
             {TIME_OPTIONS.map((tOpt) => (
               <button
                 key={tOpt}
@@ -246,11 +246,11 @@ function PartyPage() {
           </div>
         </div>
 
-        <div>
+        <div className="min-w-0">
           <p className="mb-1.5 text-xs font-medium text-muted-foreground">
             Room Size (2–16 Players)
           </p>
-          <div className="seg w-full">
+          <div className="seg w-full min-w-0 max-w-full overflow-x-auto no-scrollbar">
             {PLAYER_LIMITS.map((lim) => (
               <button
                 key={lim}
@@ -267,11 +267,11 @@ function PartyPage() {
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2">
-        <div>
+        <div className="min-w-0">
           <p className="mb-1.5 text-xs font-medium text-muted-foreground">
             {t(lang, "category")}
           </p>
-          <div className="seg w-full">
+          <div className="seg w-full min-w-0 max-w-full overflow-x-auto no-scrollbar">
             {POOLS.map((p) => (
               <button
                 key={p}
@@ -286,11 +286,11 @@ function PartyPage() {
           </div>
         </div>
 
-        <div>
+        <div className="min-w-0">
           <p className="mb-1.5 text-xs font-medium text-muted-foreground">
             {t(lang, "difficulty")}
           </p>
-          <div className="seg w-full">
+          <div className="seg w-full min-w-0 max-w-full overflow-x-auto no-scrollbar">
             {DIFFS.map((d) => (
               <button
                 key={d}
@@ -311,8 +311,8 @@ function PartyPage() {
   return (
     <div className="min-h-screen">
       <Sidebar />
-      <main className="rail-offset px-4 pb-12 pt-8 md:px-6">
-        <div className="mx-auto max-w-3xl">
+      <main className="rail-offset w-full max-w-full overflow-x-hidden px-4 pb-12 pt-8 md:px-6">
+        <div className="mx-auto w-full max-w-3xl min-w-0">
           <div className="text-center">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-[#D2F801] px-3 py-1 text-xs font-extrabold uppercase text-[#161616]">
               <Users className="h-3.5 w-3.5" /> 2–16 Player Voice Party

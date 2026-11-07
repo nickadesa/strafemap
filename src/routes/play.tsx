@@ -164,16 +164,16 @@ function PlayHub() {
                 </div>
                 <p className="mt-2 text-xs text-muted-foreground">{t(lang, "rankedModeBlurb")}</p>
               </div>
-              <div className="mt-4 flex gap-2">
+              <div className="mt-4 flex flex-wrap items-center gap-2">
                 <Link
                   to="/game/$mode"
                   params={{ mode: "classic" }}
                   search={{ ranked: 1 }}
-                  className="btn btn-primary flex-1 !py-2.5 text-xs font-extrabold"
+                  className="btn btn-primary inline-flex px-5 py-2 text-xs font-extrabold"
                 >
                   {t(lang, "playRanked")}
                 </Link>
-                <Link to="/rank" className="btn btn-outline !px-3.5 !py-2.5 text-xs">
+                <Link to="/rank" className="btn btn-outline inline-flex px-4 py-2 text-xs">
                   Ladder
                 </Link>
               </div>
@@ -196,12 +196,14 @@ function PlayHub() {
                   Host custom rooms for 2–16 players with Unlimited ∞ timer, More Modes selection, Invite Friends & Voice Chat.
                 </p>
               </div>
-              <Link
-                to="/party"
-                className="btn btn-primary mt-4 w-full !py-2.5 text-xs font-extrabold"
-              >
-                {t(lang, "openParty")}
-              </Link>
+              <div className="mt-4">
+                <Link
+                  to="/party"
+                  className="btn btn-primary inline-flex px-6 py-2 text-xs font-extrabold"
+                >
+                  {t(lang, "openParty")}
+                </Link>
+              </div>
             </div>
 
             {/* Daily Challenge & Streak Card */}
@@ -234,27 +236,29 @@ function PlayHub() {
               </div>
 
               {hasPlayedDailyToday ? (
-                <div className="mt-4 space-y-1">
-                  <div className="rounded-xl border border-[#D2F801]/40 bg-[#D2F801]/10 py-1 text-center text-xs font-bold text-[#D2F801]">
+                <div className="mt-4 space-y-1.5">
+                  <div className="rounded-xl border border-[#D2F801]/40 bg-[#D2F801]/10 px-3 py-1 text-center text-xs font-bold text-[#D2F801]">
                     Completed Today ({todayDailyRecord?.score?.toLocaleString()} pts)
                   </div>
                   <button
                     type="button"
                     disabled
-                    className="btn btn-outline w-full !py-2.5 text-xs font-bold opacity-60 cursor-not-allowed"
+                    className="btn btn-outline inline-flex px-4 py-1.5 text-xs font-bold opacity-60 cursor-not-allowed"
                   >
-                    Played Today (Resets 00:00 UTC)
+                    Played Today
                   </button>
                 </div>
               ) : (
-                <Link
-                  to="/game/$mode"
-                  params={{ mode: "classic" }}
-                  search={{ daily: 1 }}
-                  className="btn btn-primary mt-4 w-full !py-2.5 text-xs font-extrabold"
-                >
-                  Play Daily Seed
-                </Link>
+                <div className="mt-4">
+                  <Link
+                    to="/game/$mode"
+                    params={{ mode: "classic" }}
+                    search={{ daily: 1 }}
+                    className="btn btn-primary inline-flex px-6 py-2 text-xs font-extrabold"
+                  >
+                    Play Daily Seed
+                  </Link>
+                </div>
               )}
             </div>
           </section>
@@ -450,7 +454,7 @@ function PlayHub() {
                   </div>
                 </div>
 
-                <div className="mt-4 border-t border-border pt-3">
+                <div className="mt-4 flex justify-end border-t border-border pt-3">
                   <Link
                     to="/game/$mode"
                     params={{ mode }}
@@ -462,7 +466,7 @@ function PlayHub() {
                       ...(mode === "sins" ? { sin: selectedSin } : {}),
                       ...(mode === "quiz" ? { zone: quizZone } : {}),
                     }}
-                    className="btn btn-primary w-full py-3.5 text-center text-sm font-extrabold"
+                    className="btn btn-primary inline-flex px-8 py-2.5 text-center text-sm font-extrabold"
                   >
                     Start {t(lang, mode)} Match →
                   </Link>

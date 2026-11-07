@@ -134,7 +134,6 @@ function PlayTab({
   const { prev, current, next } = getAdjacentRanks(rank.rp, rank.championPosition);
   const progress = Math.round(current.progressRatio * 100);
   const [showRewards, setShowRewards] = useState(false);
-  const [showSim, setShowSim] = useState(false);
 
   const stats = [
     [rank.wins, t(lang, "winsLabel")],
@@ -146,11 +145,6 @@ function PlayTab({
   return (
     <div className="space-y-4">
       <div className="plate relative overflow-hidden p-5 text-center md:p-9">
-        {/* Ambient Accent Glow */}
-        <div
-          className="pointer-events-none absolute left-1/2 top-6 h-52 w-72 -translate-x-1/2 rounded-full opacity-20 blur-3xl"
-          style={{ background: current.tier.accent }}
-        />
 
         {/* 3-Column Rank Showcase: Previous (left ~65%) - Current (center 100%) - Next (right ~65%) */}
         <div className="relative mx-auto grid max-w-2xl grid-cols-3 items-center gap-2 sm:gap-6">
@@ -279,73 +273,7 @@ function PlayTab({
             <Gift className="h-4 w-4" />
             {t(lang, "seasonRewards")}
           </button>
-          <button
-            type="button"
-            onClick={() => setShowSim((v) => !v)}
-            className="btn btn-outline !px-3.5 !py-3 text-xs"
-            title="Test Rank RP & Champion #1-50"
-          >
-            <SlidersHorizontal className="h-4 w-4" />
-          </button>
         </div>
-
-        {/* Interactive Rank Preview Tester */}
-        {showSim && (
-          <div className="mx-auto mt-5 max-w-lg rounded-2xl border border-border bg-background/70 p-4 text-left text-xs">
-            <div className="flex items-center justify-between font-bold">
-              <span>Rank & Champion Tester (RANKS.md)</span>
-              <span className="readout text-[#D2F801]">{current.bannerUrl}</span>
-            </div>
-            <div className="mt-3 grid gap-3 sm:grid-cols-2">
-              <label className="block">
-                <span className="text-muted-foreground">RP (0 – 8,500)</span>
-                <input
-                  type="number"
-                  min={0}
-                  max={10000}
-                  value={rank.rp}
-                  onChange={(e) => onPreviewChange(Number(e.target.value), rank.championPosition ?? null)}
-                  className="mt-1 w-full rounded-xl border border-border bg-card px-3 py-1.5 font-mono text-sm"
-                />
-              </label>
-              <label className="block">
-                <span className="text-muted-foreground">Leaderboard Rank (1–50 for Champion)</span>
-                <input
-                  type="number"
-                  min={1}
-                  max={200}
-                  placeholder="None (>50)"
-                  value={rank.championPosition ?? ""}
-                  onChange={(e) => {
-                    const v = e.target.value === "" ? null : Number(e.target.value);
-                    onPreviewChange(rank.rp, v);
-                  }}
-                  className="mt-1 w-full rounded-xl border border-border bg-card px-3 py-1.5 font-mono text-sm"
-                />
-              </label>
-            </div>
-            <div className="mt-2.5 flex flex-wrap gap-1.5">
-              {[
-                { label: "Bronze IV (0)", rp: 0, pos: null },
-                { label: "Silver IV (1000)", rp: 1000, pos: null },
-                { label: "Gold I (3499)", rp: 3499, pos: null },
-                { label: "Diamond III (5000)", rp: 5000, pos: null },
-                { label: "Master (7000, #120)", rp: 7000, pos: 120 },
-                { label: "Champion #1 (7500)", rp: 7500, pos: 1 },
-                { label: "Champion #50 (7300)", rp: 7300, pos: 50 },
-              ].map((preset) => (
-                <button
-                  key={preset.label}
-                  type="button"
-                  onClick={() => onPreviewChange(preset.rp, preset.pos)}
-                  className="rounded-full border border-border bg-card px-2.5 py-1 text-[11px] font-semibold hover:border-[#D2F801]"
-                >
-                  {preset.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Season Rank Rewards Preview Drawer */}
@@ -709,77 +637,103 @@ export function UnifiedLeaderboardView({
         )}
       </div>
 
-      {/* Leaderboard List */}
-      <div className="plate divide-y divide-border overflow-hidden">
-        {allEntries.map((p, idx) => {
-          const pos = idx + 1;
-          const effectiveChampPos = p.rp >= 7000 && pos <= 50 ? (p.championPosition ?? pos) : null;
-          const step = getRank(p.rp, effectiveChampPos);
-
-          return (
-            <div
-              key={p.id}
-              className={`flex items-center gap-3 px-3.5 py-3 transition-colors sm:gap-4 sm:px-5 sm:py-3.5 ${
-                p.me ? "bg-[#D2F801]/10" : "hover:bg-muted/40"
-              }`}
+      {/* Leaderboard List with internal scroll & sticky header */}
+      <div className="plate overflow-hidden !p-0">
+        {/* Sticky Header with columns and Jump to You button */}
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-card/95 px-3.5 py-2.5 text-xs font-semibold text-muted-foreground backdrop-blur-md sm:px-5">
+          <div className="flex items-center gap-3">
+            <span className="w-7 text-center font-bold sm:w-9">#</span>
+            <span>Player / Rank</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                buzz(4);
+                document.getElementById("leaderboard-me")?.scrollIntoView({ behavior: "smooth", block: "center" });
+              }}
+              className="inline-flex items-center gap-1 rounded-full bg-[#D2F801]/15 px-3 py-1 text-xs font-bold text-[#D2F801] transition-colors hover:bg-[#D2F801]/25 active:scale-95"
             >
-              {/* Rank Position Number */}
-              <div className="w-7 shrink-0 text-center font-display text-lg sm:w-9 sm:text-xl">
-                {pos <= 3 ? (
-                  <span
-                    className={`inline-grid h-7 w-7 place-items-center rounded-full text-xs font-black ${
-                      pos === 1
-                        ? "bg-[#D2F801] text-[#161616]"
-                        : pos === 2
-                          ? "bg-[#C5CCD8] text-[#161616]"
-                          : "bg-[#CD7F32] text-white"
-                    }`}
-                  >
-                    {pos}
-                  </span>
-                ) : (
-                  <span className="readout text-sm text-muted-foreground">#{pos}</span>
-                )}
-              </div>
+              <span>Jump to You</span>
+              <span className="text-[10px]">🎯</span>
+            </button>
+            <span className="hidden font-bold sm:inline">RP / Zone</span>
+          </div>
+        </div>
 
-              {/* AvatarFrame with circular avatar under frame */}
-              <AvatarFrame
-                src={p.avatarUrl}
-                name={p.nickname}
-                rp={p.rp}
-                championPosition={effectiveChampPos}
-                size={52}
-              />
+        {/* Scrollable list up to 100 ranks */}
+        <div className="max-h-[620px] divide-y divide-border overflow-y-auto scroll-smooth">
+          {allEntries.map((p, idx) => {
+            const pos = idx + 1;
+            const effectiveChampPos = p.rp >= 7000 && pos <= 50 ? (p.championPosition ?? pos) : null;
+            const step = getRank(p.rp, effectiveChampPos);
 
-              {/* Top line: [TAG] pill + Nickname + VerifiedBadge + Country Flag | Bottom line: @username */}
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-center gap-1.5">
-                  <ClanTagPill tag={p.clanTag} color={p.clanTagColor} />
-                  <span className="truncate font-bold text-foreground">{p.nickname}</span>
-                  <VerifiedBadge type={p.verifiedBadge} size={16} />
-                  <Flag country={p.country} size={18} />
-                  {p.me && (
-                    <span className="rounded-full bg-[#D2F801] px-2 py-0.5 text-[10px] font-black text-[#161616]">
-                      YOU
+            return (
+              <div
+                key={p.id}
+                id={p.me ? "leaderboard-me" : undefined}
+                className={`flex items-center gap-3 px-3.5 py-3 transition-colors sm:gap-4 sm:px-5 sm:py-3.5 ${
+                  p.me ? "bg-[#D2F801]/10 ring-1 ring-inset ring-[#D2F801]/30" : "hover:bg-muted/40"
+                }`}
+              >
+                {/* Rank Position Number */}
+                <div className="w-7 shrink-0 text-center font-display text-lg sm:w-9 sm:text-xl">
+                  {pos <= 3 ? (
+                    <span
+                      className={`inline-grid h-7 w-7 place-items-center rounded-full text-xs font-black ${
+                        pos === 1
+                          ? "bg-[#D2F801] text-[#161616]"
+                          : pos === 2
+                            ? "bg-[#C5CCD8] text-[#161616]"
+                            : "bg-[#CD7F32] text-white"
+                      }`}
+                    >
+                      {pos}
                     </span>
+                  ) : (
+                    <span className="readout text-sm text-muted-foreground">#{pos}</span>
                   )}
                 </div>
-                <p className="truncate text-xs text-muted-foreground">
-                  @{p.username} · <span style={{ color: step.tier.accent }}>{step.name}</span>
-                </p>
-              </div>
 
-              {/* Right: Rank Banner Mini + RP */}
-              <div className="flex shrink-0 items-center gap-2.5 text-right">
-                <RankBanner rp={p.rp} championPosition={effectiveChampPos} width={36} className="hidden sm:inline-flex" />
-                <div>
-                  <p className="readout text-sm font-extrabold sm:text-base">{p.rp.toLocaleString()} RP</p>
-                  <p className="text-[10px] text-muted-foreground">{p.zone}</p>
+                {/* AvatarFrame with circular avatar under frame */}
+                <AvatarFrame
+                  src={p.avatarUrl}
+                  name={p.nickname}
+                  rp={p.rp}
+                  championPosition={effectiveChampPos}
+                  size={52}
+                />
+
+                {/* Top line: [TAG] pill + Nickname + VerifiedBadge + Country Flag | Bottom line: @username */}
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <ClanTagPill tag={p.clanTag} color={p.clanTagColor} />
+                    <span className="truncate font-bold text-foreground">{p.nickname}</span>
+                    <VerifiedBadge type={p.verifiedBadge} size={16} />
+                    <Flag country={p.country} size={18} />
+                    {p.me && (
+                      <span className="rounded-full bg-[#D2F801] px-2 py-0.5 text-[10px] font-black text-[#161616]">
+                        YOU
+                      </span>
+                    )}
+                  </div>
+                  <p className="truncate text-xs text-muted-foreground">
+                    @{p.username} · <span style={{ color: step.tier.accent }}>{step.name}</span>
+                  </p>
+                </div>
+
+                {/* Right: Rank Banner Mini + RP */}
+                <div className="flex shrink-0 items-center gap-2.5 text-right">
+                  <RankBanner rp={p.rp} championPosition={effectiveChampPos} width={36} className="hidden sm:inline-flex" />
+                  <div>
+                    <p className="readout text-sm font-extrabold sm:text-base">{p.rp.toLocaleString()} RP</p>
+                    <p className="text-[10px] text-muted-foreground">{p.zone}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );

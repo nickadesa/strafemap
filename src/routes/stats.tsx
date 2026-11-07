@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Sidebar } from "@/components/Sidebar";
 import { MODES, formatDistance, type Mode } from "@/lib/game/engine";
-import { achievements, computeStats, useRecords, useSettings } from "@/lib/game/storage";
+import { computeStats, useRecords, useSettings } from "@/lib/game/storage";
 import { ActivityRings, CartographerRadar } from "@/components/BoardUIActivityRings";
 import { ContributionsHeatmap } from "@/components/BoardUIContributions";
 
@@ -15,7 +15,6 @@ function Stats() {
   const [settings] = useSettings();
   const list = records ?? [];
   const s = computeStats(list);
-  const ach = achievements(list);
   const recent = [...list].reverse().slice(0, 8);
   const cells = [
     ["Games", String(s.games)], ["Best score", s.bestScore.toLocaleString()],
@@ -79,25 +78,26 @@ function Stats() {
           </div>
           <div className="mt-4 grid gap-4 md:grid-cols-2">
             <div className="plate p-6">
-              <h2 className="font-display text-3xl">Personal bests</h2>
-              <ul className="mt-4 space-y-2">
-                {(Object.keys(MODES) as Mode[]).map((m) => <li key={m} className="flex justify-between font-semibold"><span>{MODES[m].name}</span><span>{s.bestBy(m).toLocaleString()}</span></li>)}
-              </ul>
-              <h2 className="font-display mt-8 text-3xl">Recent games</h2>
-              <ul className="mt-4 space-y-2 text-sm">
-                {recent.map((r) => <li key={r.id} className="flex justify-between"><span>{MODES[r.mode].name}{r.daily && " · Daily"} · {new Date(r.date).toLocaleDateString()}</span><span className="font-semibold">{r.score.toLocaleString()}</span></li>)}
-                {recent.length === 0 && <li className="text-muted-foreground">No games yet.</li>}
-              </ul>
-            </div>
-            <div className="plate-ink p-6">
-              <h2 className="font-display text-3xl">Achievements</h2>
-              <ul className="mt-4 space-y-3">
-                {ach.map((a) => (
-                  <li key={a.id} className={`flex items-center gap-3 ${a.done ? "" : "opacity-40"}`}>
-                    <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full ${a.done ? "bg-primary text-primary-foreground" : "border border-current"}`}>{a.done ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12l5 5L20 7"/></svg> : null}</span>
-                    <div><p className="font-semibold">{a.name}</p><p className="text-xs opacity-80">{a.desc}</p></div>
+              <h2 className="font-display text-2xl md:text-3xl">Personal bests</h2>
+              <ul className="mt-4 space-y-2.5">
+                {(Object.keys(MODES) as Mode[]).map((m) => (
+                  <li key={m} className="flex justify-between items-center py-1 border-b border-border/50 last:border-none font-semibold text-sm">
+                    <span className="text-muted-foreground">{MODES[m].name}</span>
+                    <span className="readout font-bold text-foreground">{s.bestBy(m).toLocaleString()}</span>
                   </li>
                 ))}
+              </ul>
+            </div>
+            <div className="plate p-6">
+              <h2 className="font-display text-2xl md:text-3xl">Recent games</h2>
+              <ul className="mt-4 space-y-2 text-sm">
+                {recent.map((r) => (
+                  <li key={r.id} className="flex justify-between items-center py-1 border-b border-border/50 last:border-none">
+                    <span className="text-muted-foreground">{MODES[r.mode].name}{r.daily && " · Daily"} · {new Date(r.date).toLocaleDateString()}</span>
+                    <span className="readout font-bold text-foreground">{r.score.toLocaleString()}</span>
+                  </li>
+                ))}
+                {recent.length === 0 && <li className="text-muted-foreground py-2">No games yet.</li>}
               </ul>
             </div>
           </div>

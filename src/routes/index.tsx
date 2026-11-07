@@ -128,11 +128,6 @@ function Home() {
 
           {/* Hero Banner: Neon Green Accents on Solid Surface */}
           <section className="plate relative overflow-hidden p-6 md:p-8">
-            <div
-              className="pointer-events-none absolute -bottom-16 left-12 h-56 w-56 rounded-full opacity-10 blur-3xl"
-              style={{ background: "#D2F801" }}
-            />
-
             <div className="relative grid gap-6 md:grid-cols-[1.35fr_1fr] md:items-center">
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-3 py-1 text-xs font-bold">
@@ -212,7 +207,7 @@ function Home() {
               <div className="flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-[#D2F801]" />
                 <h2 className="text-sm font-semibold text-muted-foreground">
-                  4:5 {t(lang, "stories")}
+                  {t(lang, "stories")}
                 </h2>
               </div>
               <Link
@@ -252,7 +247,7 @@ function Home() {
                     <Plus className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="font-display text-base text-white">Add 4:5 Story</p>
+                    <p className="font-display text-base text-white">Add Story</p>
                     <p className="text-[11px] text-muted-foreground">Share your best round</p>
                   </div>
                 </div>

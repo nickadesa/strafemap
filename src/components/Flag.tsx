@@ -60,6 +60,109 @@ export function countryCode(country: string): string | null {
   return isoCode(key);
 }
 
+const INLINE_FLAGS: Record<string, () => React.ReactNode> = {
+  gb: () => (
+    <svg viewBox="0 0 60 30" className="block h-full w-full">
+      <rect width="60" height="30" fill="#012169" />
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6" />
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" strokeWidth="2" />
+      <path d="M30,0 v30 M0,15 h60" stroke="#fff" strokeWidth="10" />
+      <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" strokeWidth="6" />
+    </svg>
+  ),
+  fr: () => (
+    <svg viewBox="0 0 3 2" className="block h-full w-full">
+      <rect width="1" height="2" fill="#002654" />
+      <rect x="1" width="1" height="2" fill="#FFFFFF" />
+      <rect x="2" width="1" height="2" fill="#ED2939" />
+    </svg>
+  ),
+  th: () => (
+    <svg viewBox="0 0 9 6" className="block h-full w-full">
+      <rect width="9" height="6" fill="#A51931" />
+      <rect y="1" width="9" height="4" fill="#F4F5F8" />
+      <rect y="2" width="9" height="2" fill="#2D2A4A" />
+    </svg>
+  ),
+  es: () => (
+    <svg viewBox="0 0 3 2" className="block h-full w-full">
+      <rect width="3" height="2" fill="#AA151B" />
+      <rect y="0.5" width="3" height="1" fill="#F1BF00" />
+    </svg>
+  ),
+  jp: () => (
+    <svg viewBox="0 0 3 2" className="block h-full w-full">
+      <rect width="3" height="2" fill="#FFFFFF" />
+      <circle cx="1.5" cy="1" r="0.6" fill="#BC002D" />
+    </svg>
+  ),
+  cn: () => (
+    <svg viewBox="0 0 30 20" className="block h-full w-full">
+      <rect width="30" height="20" fill="#DE2910" />
+      <polygon points="5,2 6.18,5.62 3.09,3.38 6.91,3.38 3.82,5.62" fill="#FFDE00" />
+      <circle cx="10" cy="2" r="0.8" fill="#FFDE00" />
+      <circle cx="12" cy="4" r="0.8" fill="#FFDE00" />
+      <circle cx="12" cy="7" r="0.8" fill="#FFDE00" />
+      <circle cx="10" cy="9" r="0.8" fill="#FFDE00" />
+    </svg>
+  ),
+  kr: () => (
+    <svg viewBox="0 0 6 4" className="block h-full w-full">
+      <rect width="6" height="4" fill="#FFFFFF" />
+      <path d="M3,1 A1,1 0 0,1 3,3 A0.5,0.5 0 0,1 3,2 A0.5,0.5 0 0,0 3,1" fill="#CD2E3A" />
+      <path d="M3,3 A1,1 0 0,1 3,1 A0.5,0.5 0 0,1 3,2 A0.5,0.5 0 0,0 3,3" fill="#0047A0" />
+    </svg>
+  ),
+  us: () => (
+    <svg viewBox="0 0 19 10" className="block h-full w-full">
+      <rect width="19" height="10" fill="#B22234" />
+      <path d="M0,1.54 h19 M0,3.08 h19 M0,4.62 h19 M0,6.15 h19 M0,7.69 h19 M0,9.23 h19" stroke="#fff" strokeWidth="0.77" />
+      <rect width="7.6" height="5.38" fill="#3C3B6E" />
+    </svg>
+  ),
+  de: () => (
+    <svg viewBox="0 0 5 3" className="block h-full w-full">
+      <rect width="5" height="1" y="0" fill="#000000" />
+      <rect width="5" height="1" y="1" fill="#DD0000" />
+      <rect width="5" height="1" y="2" fill="#FFCE00" />
+    </svg>
+  ),
+};
+
+// Aliases for inline vector flags
+const INLINE_ALIAS: Record<string, string> = {
+  "united kingdom": "gb",
+  "united-kingdom": "gb",
+  uk: "gb",
+  greatbritain: "gb",
+  britain: "gb",
+  england: "gb",
+  en: "gb",
+  france: "fr",
+  fr: "fr",
+  thailand: "th",
+  th: "th",
+  spain: "es",
+  es: "es",
+  japan: "jp",
+  ja: "jp",
+  jp: "jp",
+  china: "cn",
+  zh: "cn",
+  cn: "cn",
+  "south korea": "kr",
+  "south-korea": "kr",
+  korea: "kr",
+  ko: "kr",
+  kr: "kr",
+  "united states": "us",
+  "united-states": "us",
+  usa: "us",
+  us: "us",
+  germany: "de",
+  de: "de",
+};
+
 export function Flag({
   country,
   size = 24,
@@ -72,8 +175,25 @@ export function Flag({
   rectangular?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
+  const normalizedKey = (country.split("/")[0] ?? country).trim().toLowerCase();
+  const inlineCode = INLINE_ALIAS[normalizedKey] ?? (INLINE_FLAGS[normalizedKey] ? normalizedKey : null);
+  const inlineRenderer = inlineCode ? INLINE_FLAGS[inlineCode] : null;
+
   const file = flagFile(country);
   const code = countryCode(country);
+  const h = rectangular ? Math.round(size * 0.67) : file || inlineRenderer ? size : Math.round(size * 0.75);
+  const base = `inline-grid shrink-0 place-items-center overflow-hidden ${
+    rectangular ? "border border-border/60 rounded-[3px]" : file || inlineRenderer ? "rounded-full" : "rounded-[6px] bg-muted ring-1 ring-border"
+  } ${className}`;
+
+  if (inlineRenderer) {
+    return (
+      <span className={base} style={{ width: size, height: h }} aria-label={country}>
+        {inlineRenderer()}
+      </span>
+    );
+  }
+
   const src =
     rectangular && code
       ? `https://flagcdn.com/${code.toLowerCase()}.svg`
@@ -82,10 +202,7 @@ export function Flag({
         : code
           ? `https://flagcdn.com/${code.toLowerCase()}.svg`
           : null;
-  const h = rectangular ? Math.round(size * 0.67) : file ? size : Math.round(size * 0.75);
-  const base = `inline-grid shrink-0 place-items-center overflow-hidden ${
-    rectangular ? "border border-border/60" : file ? "" : "rounded-[6px] bg-muted ring-1 ring-border"
-  } ${className}`;
+
   if (!src || failed) {
     return (
       <span className={base} style={{ width: size, height: h }} aria-label={country}>

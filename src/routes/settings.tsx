@@ -95,12 +95,8 @@ function SettingsPage() {
       <Sidebar />
       <main className="rail-offset px-4 pb-12 pt-8 md:px-6">
         <div className="mx-auto max-w-2xl space-y-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center justify-between">
             <h1 className="font-display text-4xl md:text-5xl">{t(lang, "settings")}</h1>
-            <Link to="/profile" className="btn btn-outline !px-4 !py-2 text-xs font-bold">
-              <User className="h-4 w-4 text-[#D2F801]" />
-              {t(lang, "editProfileLink")}
-            </Link>
           </div>
 
           {/* 1. General Category */}
@@ -110,11 +106,8 @@ function SettingsPage() {
             </h2>
 
             {/* Language Selector with rectangular country flag */}
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="text-sm font-semibold">{t(lang, "language")}</p>
-                <p className="text-xs text-muted-foreground">{t(lang, "languageDesc")}</p>
-              </div>
+            <div className="flex items-center justify-between gap-4 min-h-[40px]">
+              <p className="text-sm font-semibold">{t(lang, "language")}</p>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="w-44 justify-between rounded-full px-3.5">
@@ -140,12 +133,9 @@ function SettingsPage() {
               </DropdownMenu>
             </div>
 
-            {/* Distance Units (<=3 choices -> Segmented Pills) */}
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="text-sm font-semibold">{t(lang, "units")}</p>
-                <p className="text-xs text-muted-foreground">{t(lang, "unitsDesc")}</p>
-              </div>
+            {/* Distance Units */}
+            <div className="flex items-center justify-between gap-4 min-h-[40px]">
+              <p className="text-sm font-semibold">{t(lang, "units")}</p>
               <div className="seg">
                 {(["km", "mi"] as const).map((u) => (
                   <button
@@ -161,12 +151,9 @@ function SettingsPage() {
               </div>
             </div>
 
-            {/* Sound Effects (Boolean -> Toggle Switch) */}
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="text-sm font-semibold">{t(lang, "sound")}</p>
-                <p className="text-xs text-muted-foreground">{t(lang, "soundDesc")}</p>
-              </div>
+            {/* Sound Effects */}
+            <div className="flex items-center justify-between gap-4 min-h-[40px]">
+              <p className="text-sm font-semibold">{t(lang, "sound")}</p>
               <ToggleSwitch
                 label={t(lang, "sound")}
                 checked={s.sound}
@@ -184,12 +171,9 @@ function SettingsPage() {
               {t(lang, "gameplay")}
             </h2>
 
-            {/* Hide Map Zoom Buttons (Boolean -> Toggle Switch) */}
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="text-sm font-semibold">{t(lang, "hideZoomButtons")}</p>
-                <p className="text-xs text-muted-foreground">{t(lang, "hideZoomDesc")}</p>
-              </div>
+            {/* Hide Map Zoom Buttons */}
+            <div className="flex items-center justify-between gap-4 min-h-[40px]">
+              <p className="text-sm font-semibold">{t(lang, "hideZoomButtons")}</p>
               <ToggleSwitch
                 label={t(lang, "hideZoomButtons")}
                 checked={Boolean(s.hideZoomButtons)}
@@ -197,12 +181,9 @@ function SettingsPage() {
               />
             </div>
 
-            {/* SmartClue Auto-collapse (<=3 choices -> Segmented Pills) */}
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="text-sm font-semibold">{t(lang, "promptAutoCollapse")}</p>
-                <p className="text-xs text-muted-foreground">{t(lang, "autoCollapseDesc")}</p>
-              </div>
+            {/* SmartClue Auto-collapse */}
+            <div className="flex items-center justify-between gap-4 min-h-[40px]">
+              <p className="text-sm font-semibold">{t(lang, "promptAutoCollapse")}</p>
               <div className="seg">
                 {([
                   [0, t(lang, "off")],
@@ -223,11 +204,8 @@ function SettingsPage() {
             </div>
 
             {/* Emoji Reactions Toggle */}
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="text-sm font-semibold">{t(lang, "emojiReactions")}</p>
-                <p className="text-xs text-muted-foreground">{t(lang, "reactionsDesc")}</p>
-              </div>
+            <div className="flex items-center justify-between gap-4 min-h-[40px]">
+              <p className="text-sm font-semibold">{t(lang, "emojiReactions")}</p>
               <ToggleSwitch
                 label={t(lang, "emojiReactions")}
                 checked={s.reactions !== false}
@@ -343,12 +321,9 @@ function SettingsPage() {
               {t(lang, "appearance")}
             </h2>
 
-            {/* Theme (2 choices -> Segmented Pills) */}
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="text-sm font-semibold">{t(lang, "theme")}</p>
-                <p className="text-xs text-muted-foreground">{t(lang, "themeDesc")}</p>
-              </div>
+            {/* Theme */}
+            <div className="flex items-center justify-between gap-4 min-h-[40px]">
+              <p className="text-sm font-semibold">{t(lang, "theme")}</p>
               <div className="seg">
                 {(["dark", "light"] as const).map((th) => (
                   <button

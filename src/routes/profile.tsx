@@ -156,15 +156,6 @@ function ProfileHubPage() {
                 Shop
               </button>
             </div>
-
-            <Link
-              to="/stats"
-              onClick={() => buzz(6)}
-              className="btn btn-outline !px-4 !py-2 text-xs font-bold"
-            >
-              <SymbolChartBar fill className="h-4 w-4 text-[#D2F801]" />
-              {t(lang, "stats")} →
-            </Link>
           </div>
 
           {tab === "overview" && (
@@ -270,6 +261,17 @@ function XStyleProfileTab({
     reader.readAsDataURL(file);
   };
 
+  const handleBannerFile = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const res = e.target?.result as string;
+      if (res) {
+        updateSocial({ bannerImageUrl: res });
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   const toggleFollow = (playerId: string) => {
     const isFollowing = social.followingIds.includes(playerId);
     const next = isFollowing
@@ -285,10 +287,13 @@ function XStyleProfileTab({
     <div className="space-y-5">
       {/* X-Style Profile Card */}
       <section className="plate overflow-hidden">
-        {/* Banner Header */}
+        {/* Banner Header (Apple Style Quiet Gray Default / Custom Color / Uploaded Image) */}
         <div
-          className="relative h-36 w-full sm:h-44"
-          style={{ background: social.bannerGradient }}
+          className="relative h-36 w-full sm:h-44 bg-cover bg-center transition-colors"
+          style={{
+            backgroundColor: social.bannerColor || "#27272a",
+            backgroundImage: social.bannerImageUrl ? `url(${social.bannerImageUrl})` : (social.bannerColor ? undefined : social.bannerGradient),
+          }}
         >
           <div className="absolute right-4 top-4 flex items-center gap-2">
             <RankBanner rp={rank.rp} championPosition={rank.championPosition} width={58} />
@@ -318,10 +323,6 @@ function XStyleProfileTab({
                 <Edit3 className="h-3.5 w-3.5" />
                 {editing ? "Cancel" : "Edit Profile"}
               </button>
-              <Link to="/stats" className="btn btn-primary !px-4 !py-2 text-xs font-extrabold">
-                <BarChart3 className="h-3.5 w-3.5" />
-                View Full {t(lang, "stats")}
-              </Link>
             </div>
           </div>
 
@@ -358,41 +359,7 @@ function XStyleProfileTab({
             </p>
           </div>
 
-          {/* Verified Badge Preview Switcher (Gold Default, Exclusive Rainbow for Owner, Green Creator, Red Admin) */}
-          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-background/50 p-3.5">
-            <div>
-              <p className="text-xs font-bold">Verified Badge Preview Switcher</p>
-              <p className="text-[11px] text-muted-foreground">
-                Gold is enabled by default. Preview Exclusive Rainbow (Owner only), Green (Creator), or Red (Admin):
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {(
-                [
-                  ["gold", "Gold (Premium)"],
-                  ["rainbow", "Rainbow (Exclusive You)"],
-                  ["green", "Green (Creator)"],
-                  ["red", "Red (Admin)"],
-                ] as [VerifiedBadgeType, string][]
-              ).map(([bType, bLabel]) => (
-                <button
-                  key={bType}
-                  type="button"
-                  onClick={() => updateSocial({ verifiedBadge: bType })}
-                  className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold transition-colors ${
-                    social.verifiedBadge === bType
-                      ? "border-[#D2F801] bg-[#D2F801]/15 text-foreground"
-                      : "border-border bg-card text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  <VerifiedBadge type={bType} size={14} />
-                  {bLabel}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Inline Profile Editor with Avatar Upload */}
+          {/* Inline Profile Editor with Avatar & Banner Customization */}
           {editing && (
             <div className="mt-4 space-y-3 rounded-2xl border border-[#D2F801]/40 bg-background/70 p-4">
               <div className="flex items-center justify-between">
@@ -410,38 +377,104 @@ function XStyleProfileTab({
                 </label>
               </div>
 
-              {/* Profile Avatar Upload */}
-              <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card/60 p-3">
-                <AvatarFrame
-                  src={social.avatarUrl}
-                  name={social.nickname}
-                  rp={rank.rp}
-                  championPosition={rank.championPosition}
-                  size={48}
-                />
-                <div className="flex-1 min-w-[180px]">
-                  <span className="block text-xs font-semibold text-muted-foreground">Profile Avatar Photo</span>
-                  <label className="btn btn-outline mt-1 inline-flex cursor-pointer items-center gap-1.5 !px-3 !py-1 text-xs font-bold">
-                    <Upload className="h-3.5 w-3.5 text-[#D2F801]" /> Upload Photo
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={(e) => {
-                        const f = e.target.files?.[0];
-                        if (f) handleAvatarFile(f);
-                      }}
-                    />
-                  </label>
-                  {social.avatarUrl && (
-                    <button
-                      type="button"
-                      onClick={() => updateSocial({ avatarUrl: null })}
-                      className="ml-3 text-xs text-muted-foreground hover:underline"
-                    >
-                      Remove photo
-                    </button>
-                  )}
+              {/* Profile Avatar & Banner Customization Row */}
+              <div className="grid gap-3 sm:grid-cols-2">
+                {/* Profile Avatar Upload */}
+                <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card/60 p-3">
+                  <AvatarFrame
+                    src={social.avatarUrl}
+                    name={social.nickname}
+                    rp={rank.rp}
+                    championPosition={rank.championPosition}
+                    size={48}
+                  />
+                  <div className="flex-1 min-w-[140px]">
+                    <span className="block text-xs font-semibold text-muted-foreground">Avatar Photo</span>
+                    <label className="btn btn-outline mt-1 inline-flex cursor-pointer items-center gap-1.5 !px-3 !py-1 text-xs font-bold">
+                      <Upload className="h-3.5 w-3.5 text-[#D2F801]" /> Upload Photo
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          const f = e.target.files?.[0];
+                          if (f) handleAvatarFile(f);
+                        }}
+                      />
+                    </label>
+                    {social.avatarUrl && (
+                      <button
+                        type="button"
+                        onClick={() => updateSocial({ avatarUrl: null })}
+                        className="ml-2 text-xs text-muted-foreground hover:underline"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Profile Banner Customization (Color + Image Upload) */}
+                <div className="space-y-2 rounded-xl border border-border bg-card/60 p-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="block text-xs font-semibold text-muted-foreground">Profile Banner</span>
+                    <div className="flex items-center gap-2">
+                      <label className="btn btn-outline inline-flex cursor-pointer items-center gap-1.5 !px-3 !py-1 text-xs font-bold">
+                        <Upload className="h-3.5 w-3.5 text-[#D2F801]" /> Upload Banner
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            const f = e.target.files?.[0];
+                            if (f) handleBannerFile(f);
+                          }}
+                        />
+                      </label>
+                      {social.bannerImageUrl && (
+                        <button
+                          type="button"
+                          onClick={() => updateSocial({ bannerImageUrl: null })}
+                          className="text-xs text-muted-foreground hover:underline"
+                        >
+                          Reset
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                    {[
+                      ["#27272a", "Graphite"],
+                      ["#1e1e20", "Space Gray"],
+                      ["#2d2d30", "Charcoal"],
+                      ["#1e293b", "Slate"],
+                      ["#064e3b", "Pine"],
+                      ["#2e1065", "Royal"],
+                    ].map(([hex, label]) => (
+                      <button
+                        key={hex}
+                        type="button"
+                        title={label}
+                        onClick={() => updateSocial({ bannerColor: hex, bannerImageUrl: null })}
+                        className={`h-5 w-5 rounded-full border transition-transform ${
+                          (social.bannerColor || "#27272a") === hex && !social.bannerImageUrl
+                            ? "ring-2 ring-[#D2F801] scale-110 border-white"
+                            : "border-border/80 hover:scale-105"
+                        }`}
+                        style={{ backgroundColor: hex }}
+                      />
+                    ))}
+                    <label className="flex items-center gap-1 text-[11px] text-muted-foreground cursor-pointer ml-1">
+                      <span>Custom:</span>
+                      <input
+                        type="color"
+                        value={social.bannerColor || "#27272a"}
+                        onChange={(e) => updateSocial({ bannerColor: e.target.value, bannerImageUrl: null })}
+                        className="h-5 w-6 cursor-pointer rounded border-0 bg-transparent p-0"
+                      />
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -574,97 +607,6 @@ function XStyleProfileTab({
         </div>
       </section>
 
-      {/* BoardUI Player Activity & Daily Streak Section */}
-      <section className="plate p-6 space-y-6">
-        <div>
-          <h2 className="font-display text-2xl">Player Activity & Daily Streak</h2>
-          <p className="text-xs text-muted-foreground">
-            Apple-style concentric velocity metrics, session activity, and 20-week daily contribution matrix
-          </p>
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-12 items-center">
-          <div className="lg:col-span-5 rounded-2xl border border-border bg-card/60 p-5">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">
-              Daily Activity Velocity
-            </h3>
-            <ActivityRings
-              rounds={totalPinsCount}
-              roundsTarget={10}
-              accuracy={Math.round((stats.accuracy || 0.84) * 100)}
-              streak={stats.currentStreak || 7}
-              streakTarget={14}
-              size={210}
-            />
-          </div>
-
-          <div className="lg:col-span-7 rounded-2xl border border-border bg-card/60 p-5">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">
-              20-Week Game Activity Grid
-            </h3>
-            <ContributionsHeatmap weeks={18} />
-          </div>
-        </div>
-      </section>
-
-      {/* Community Players Directory (Follow / Unfollow & Inspect Profile) */}
-      <section className="plate p-6">
-        <div className="mb-4 flex items-center justify-between">
-          <div>
-            <h2 className="font-display text-2xl">Cartographer Network · Follow & Inspect</h2>
-            <p className="text-xs text-muted-foreground">
-              Follow players to invite them to Party Voice rooms or inspect their X-style profile
-            </p>
-          </div>
-        </div>
-        <div className="grid gap-3 sm:grid-cols-2">
-          {COMMUNITY_PLAYERS.slice(0, 6).map((p) => {
-            const isFollowing = social.followingIds.includes(p.id);
-            const followsMe = social.followerIds.includes(p.id);
-            return (
-              <div
-                key={p.id}
-                className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-background/40 p-3.5"
-              >
-                <button
-                  type="button"
-                  onClick={() => setInspectedPlayer(p)}
-                  className="flex min-w-0 flex-1 items-center gap-2.5 text-left"
-                >
-                  <AvatarFrame
-                    name={p.nickname}
-                    rp={p.rp}
-                    championPosition={p.championPosition}
-                    size={46}
-                  />
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-1">
-                      <ClanTagPill tag={p.clanTag} color={p.clanTagColor} />
-                      <span className="truncate text-sm font-bold hover:underline">{p.nickname}</span>
-                      <VerifiedBadge type={p.verifiedBadge} size={13} />
-                      <Flag country={p.country} size={15} />
-                    </div>
-                    <p className="truncate text-xs text-muted-foreground">
-                      @{p.username} · Lv.{p.level} {followsMe ? "· Follows you" : ""}
-                    </p>
-                  </div>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => toggleFollow(p.id)}
-                  className={`btn !px-3.5 !py-1.5 text-xs font-semibold ${
-                    isFollowing ? "btn-outline" : "btn-primary"
-                  }`}
-                >
-                  {isFollowing ? "Following" : "+ Follow"}
-                </button>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
       {/* Modal: View All Unlocked Badges Only */}
       {showAllUnlockedModal && (
         <div className="fixed inset-0 z-50 grid place-items-center bg-black/80 p-4 backdrop-blur-sm">
@@ -699,87 +641,6 @@ function XStyleProfileTab({
           </div>
         </div>
       )}
-
-      {/* Modal: Inspect Another Player's X-Style Profile */}
-      {inspectedPlayer && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-black/80 p-4 backdrop-blur-sm">
-          <div className="plate w-full max-w-lg overflow-hidden">
-            <div className="flex h-24 items-end justify-between border-b border-border bg-[#19191b] p-4">
-              <AvatarFrame
-                name={inspectedPlayer.nickname}
-                rp={inspectedPlayer.rp}
-                championPosition={inspectedPlayer.championPosition}
-                size={64}
-              />
-              <button
-                type="button"
-                onClick={() => setInspectedPlayer(null)}
-                className="grid h-8 w-8 place-items-center rounded-full bg-black/50 text-white hover:bg-black/80"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-            <div className="p-6">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div>
-                  <div className="flex items-center gap-1.5">
-                    <ClanTagPill tag={inspectedPlayer.clanTag} color={inspectedPlayer.clanTagColor} />
-                    <h3 className="font-display text-2xl">{inspectedPlayer.nickname}</h3>
-                    <VerifiedBadge type={inspectedPlayer.verifiedBadge} size={16} />
-                    <Flag country={inspectedPlayer.country} size={18} />
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    @{inspectedPlayer.username} · Level {inspectedPlayer.level} · {inspectedPlayer.title}
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => toggleFollow(inspectedPlayer.id)}
-                  className={`btn !px-4 !py-1.5 text-xs font-semibold ${
-                    social.followingIds.includes(inspectedPlayer.id) ? "btn-outline" : "btn-primary"
-                  }`}
-                >
-                  {social.followingIds.includes(inspectedPlayer.id) ? "Following" : "+ Follow"}
-                </button>
-              </div>
-              <p className="mt-3 text-sm text-foreground/90">{inspectedPlayer.bio}</p>
-              <div className="mt-4 grid grid-cols-3 gap-2 text-center text-xs">
-                <div className="rounded-xl border border-border p-2.5">
-                  <p className="font-display text-lg text-[#D2F801]">
-                    {inspectedPlayer.rp.toLocaleString()} RP
-                  </p>
-                  <p className="text-muted-foreground">Rank Points</p>
-                </div>
-                <div className="rounded-xl border border-border p-2.5">
-                  <p className="font-display text-lg">{inspectedPlayer.totalPins.toLocaleString()}</p>
-                  <p className="text-muted-foreground">Pins Dropped</p>
-                </div>
-                <div className="rounded-xl border border-border p-2.5">
-                  <p className="font-display text-lg">{inspectedPlayer.totalGames.toLocaleString()}</p>
-                  <p className="text-muted-foreground">Games</p>
-                </div>
-              </div>
-              <p className="mt-4 text-xs font-bold uppercase text-muted-foreground">
-                Unlocked Showcase ({inspectedPlayer.pinnedBadges.length} / 5)
-              </p>
-              <div className="mt-2 grid grid-cols-5 gap-2">
-                {inspectedPlayer.pinnedBadges.slice(0, 5).map((bid) => {
-                  const badge = ACH_ALL.find((x) => x.id === bid) ?? ACH_ALL[0]!;
-                  return (
-                    <div
-                      key={bid}
-                      className="flex flex-col items-center rounded-xl border border-border p-2 text-center"
-                    >
-                      <img src={badge.files.compact.unlocked} alt={badge.name} className="h-10 w-10" />
-                      <span className="mt-1 line-clamp-1 text-[10px] font-semibold">{badge.name}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
@@ -810,6 +671,7 @@ function ClanSystemTab({
   const [editingClan, setEditingClan] = useState(false);
   const [editClanName, setEditClanName] = useState(myClan?.name ?? "");
   const [editClanTag, setEditClanTag] = useState(myClan?.tag ?? "");
+  const [editClanIcon, setEditClanIcon] = useState<string | null>(myClan?.iconUrl ?? null);
 
   const handleSaveClanEdits = () => {
     if (!myClan) return;
@@ -823,7 +685,7 @@ function ClanSystemTab({
       alert("Clan name must be at least 3 characters.");
       return;
     }
-    const updated = clans.map((c) => (c.id === myClan.id ? { ...c, name: cleanName, tag: cleanTag } : c));
+    const updated = clans.map((c) => (c.id === myClan.id ? { ...c, name: cleanName, tag: cleanTag, iconUrl: editClanIcon ?? c.iconUrl } : c));
     saveClans(updated);
     updateSocial({ clanTag: cleanTag });
     setEditingClan(false);
@@ -973,6 +835,42 @@ function ClanSystemTab({
                     className="mt-1 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm font-display tracking-wider"
                   />
                 </label>
+                <label className="block text-xs sm:col-span-2">
+                  <span className="font-semibold text-muted-foreground">Clan Profile / Avatar Photo</span>
+                  <div className="mt-1 flex items-center gap-3">
+                    {editClanIcon && (
+                      <img src={editClanIcon} alt="Clan Icon" className="h-10 w-10 rounded-xl object-cover border border-border" />
+                    )}
+                    <label className="btn btn-outline inline-flex cursor-pointer items-center gap-1.5 !px-3 !py-1 text-xs font-bold">
+                      <Upload className="h-3.5 w-3.5 text-[#D2F801]" /> Upload Clan Avatar
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const reader = new FileReader();
+                            reader.onload = (ev) => {
+                              const res = ev.target?.result as string;
+                              if (res) setEditClanIcon(res);
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                      />
+                    </label>
+                    {editClanIcon && (
+                      <button
+                        type="button"
+                        onClick={() => setEditClanIcon(null)}
+                        className="text-xs text-muted-foreground hover:underline"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                </label>
               </div>
               <button
                 type="button"
@@ -1074,13 +972,20 @@ function ClanSystemTab({
               />
             </label>
             <label className="block text-xs">
-              <span className="font-bold text-muted-foreground">Upload Clan Icon (Optional)</span>
+              <span className="font-bold text-muted-foreground">Upload Clan Avatar (Optional)</span>
               <input
                 type="file"
                 accept="image/*"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) setIconUrlInput(URL.createObjectURL(file));
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                      const res = ev.target?.result as string;
+                      if (res) setIconUrlInput(res);
+                    };
+                    reader.readAsDataURL(file);
+                  }
                 }}
                 className="mt-1 w-full text-xs text-muted-foreground"
               />
@@ -1095,63 +1000,6 @@ function ClanSystemTab({
           </button>
         </section>
       )}
-
-      {/* Global Clan Leaderboard */}
-      <section className="plate p-6">
-        <div className="mb-4 flex items-center justify-between">
-          <div>
-            <h2 className="font-display text-2xl">Global Clan Leaderboard</h2>
-            <p className="text-xs text-muted-foreground">
-              Ranked by member performance, Party clan-mate bonus & weekly missions
-            </p>
-          </div>
-        </div>
-        <div className="divide-y divide-border">
-          {[...clans]
-            .sort((a, b) => b.totalPoints - a.totalPoints)
-            .map((c, idx) => {
-              const isMine = c.id === social.clanId;
-              return (
-                <div
-                  key={c.id}
-                  className={`flex flex-wrap items-center justify-between gap-3 py-3.5 ${
-                    isMine ? "bg-[#D2F801]/5 px-3 rounded-xl" : ""
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="font-display w-6 text-lg text-[#D2F801]">#{idx + 1}</span>
-                    <ClanTagPill tag={c.tag} />
-                    <div>
-                      <p className="font-bold">
-                        {c.name}{" "}
-                        <span className="ml-1 rounded-full bg-muted px-2 py-0.5 text-[10px] font-extrabold">
-                          Lv.{c.level}
-                        </span>
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {c.members.length}/{c.maxMembers} Members · {c.description}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="readout text-sm font-extrabold text-[#D2F801]">
-                      {c.totalPoints.toLocaleString()} pts
-                    </span>
-                    {!isMine && (
-                      <button
-                        type="button"
-                        onClick={() => handleJoinClan(c.id)}
-                        className="btn btn-primary !px-4 !py-1.5 text-xs font-semibold"
-                      >
-                        Join
-                      </button>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-        </div>
-      </section>
     </div>
   );
 }
@@ -1462,10 +1310,10 @@ function SocialFeedTab({
 
   return (
     <div className="space-y-6">
-      {/* 4:5 Story Strip */}
+      {/* Story Strip */}
       <section>
         <h2 className="mb-2.5 text-xs font-semibold text-muted-foreground">
-          4:5 {t(lang, "stories")}
+          {t(lang, "stories")}
         </h2>
         <div className="no-scrollbar flex gap-3 overflow-x-auto pb-1">
           {/* + Add Story Button */}
