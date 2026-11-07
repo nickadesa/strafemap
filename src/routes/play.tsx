@@ -17,6 +17,14 @@ import {
 import { getRank, loadRank } from "@/lib/rank";
 import { RankBanner } from "@/components/RankVisuals";
 import { Calendar, Flame, Medal, Sparkles, Users, X } from "lucide-react";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerClose,
+} from "@/components/ui/drawer";
 
 const modeIds = Object.keys(MODES) as Mode[];
 
@@ -285,195 +293,191 @@ function PlayHub() {
             </div>
           </section>
 
-          {/* More Modes Modal / Drawer */}
-          {moreModesOpen && (
-            <div className="fixed inset-0 z-[1000] flex items-end justify-center sm:items-center p-0 sm:p-4">
-              <div
-                className="fixed inset-0 bg-black/60 backdrop-blur-sm"
-                onClick={() => setMoreModesOpen(false)}
-              />
-              <div className="glass-plate pop-in relative z-10 max-h-[90vh] w-full max-w-4xl rounded-t-3xl sm:rounded-3xl border-t sm:border border-border p-5 sm:p-6 shadow-2xl flex flex-col">
-                <div className="mx-auto mb-2 h-1.5 w-12 rounded-full bg-muted-foreground/30 sm:hidden" />
-                <div className="flex items-center justify-between border-b border-border pb-3">
-                  <div>
-                    <h3 className="font-display text-xl sm:text-2xl">More Game Modes & Custom Rules</h3>
-                    <p className="text-xs text-muted-foreground">Select a mode and customize rules</p>
-                  </div>
+          {/* More Modes iOS Drawer */}
+          <Drawer open={moreModesOpen} onOpenChange={setMoreModesOpen}>
+            <DrawerContent className="mx-auto max-w-4xl p-5 sm:p-6">
+              <DrawerHeader className="flex flex-row items-center justify-between border-b border-border px-0 pb-3 pt-1">
+                <div>
+                  <DrawerTitle>{t(lang, "modes")} & Custom Rules</DrawerTitle>
+                  <DrawerDescription className="mt-1">
+                    Select a mode and customize categories, difficulty & timer
+                  </DrawerDescription>
+                </div>
+                <DrawerClose asChild>
                   <button
                     type="button"
-                    onClick={() => setMoreModesOpen(false)}
                     className="rounded-full bg-muted p-1.5 text-muted-foreground hover:text-foreground"
                   >
                     <X className="h-4 w-4" />
                   </button>
-                </div>
+                </DrawerClose>
+              </DrawerHeader>
 
-                <div className="no-scrollbar mt-4 flex-1 overflow-y-auto space-y-5 pr-1">
-                  {/* Mode Grid */}
-                  <div className="grid gap-2.5 grid-cols-2 sm:grid-cols-4">
-                    {modeIds.map((m) => {
-                      const active = mode === m;
-                      return (
-                        <button
-                          key={m}
-                          type="button"
-                          onClick={() => setMode(m)}
-                          className={`rounded-2xl border p-3.5 text-left transition-colors ${
-                            active
-                              ? "border-[#D2F801] bg-[#D2F801]/10 ring-1 ring-[#D2F801]"
-                              : "border-border bg-card/60 hover:bg-muted"
-                          }`}
-                        >
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs font-medium text-muted-foreground">
-                              {t(lang, `${m}Tag`)}
+              <div className="no-scrollbar mt-4 max-h-[68vh] overflow-y-auto space-y-5 pr-1">
+                {/* Mode Grid */}
+                <div className="grid gap-2.5 grid-cols-2 sm:grid-cols-4">
+                  {modeIds.map((m) => {
+                    const active = mode === m;
+                    return (
+                      <button
+                        key={m}
+                        type="button"
+                        onClick={() => setMode(m)}
+                        className={`rounded-2xl border p-3.5 text-left transition-colors ${
+                          active
+                            ? "border-[#D2F801] bg-[#D2F801]/10 ring-1 ring-[#D2F801]"
+                            : "border-border bg-card/60 hover:bg-muted"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-medium text-muted-foreground">
+                            {t(lang, `${m}Tag`)}
+                          </span>
+                          {(m === "findCity" || m === "sins" || m === "quiz") && (
+                            <span className="rounded-full bg-[#D2F801]/20 px-2 py-0.5 text-[9px] font-semibold text-[#D2F801]">
+                              NEW
                             </span>
-                            {(m === "findCity" || m === "sins" || m === "quiz") && (
-                              <span className="rounded-full bg-[#D2F801]/20 px-2 py-0.5 text-[9px] font-semibold text-[#D2F801]">
-                                NEW
-                              </span>
-                            )}
-                          </div>
-                          <h4 className="font-display mt-1 text-base">{t(lang, m)}</h4>
-                          <p className="mt-1 line-clamp-2 text-[11px] text-muted-foreground">{t(lang, `${m}Blurb`)}</p>
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  {/* Mode Configuration Card */}
-                  <div className="rounded-2xl border border-border bg-card/60 p-4 space-y-4">
-                    <div className="flex items-center justify-between border-b border-border pb-2">
-                      <span className="font-display text-lg">{t(lang, mode)} Configuration</span>
-                      {difficulty === "hardcore" && (
-                        <span className="rounded-full bg-destructive px-2 py-0.5 text-[10px] font-bold text-white">
-                          Hardcore Active
-                        </span>
-                      )}
-                    </div>
-
-                    {/* 7 Deadly Sins Card Selector */}
-                    {mode === "sins" && (
-                      <div>
-                        <p className="mb-2 text-xs font-semibold text-muted-foreground">
-                          Deadly Sin Skill Card
-                        </p>
-                        <div className="grid gap-2 grid-cols-2 sm:grid-cols-4">
-                          {SIN_CARDS.map((card) => {
-                            const on = selectedSin === card.id;
-                            return (
-                              <button
-                                key={card.id}
-                                type="button"
-                                onClick={() => setSelectedSin(card.id)}
-                                className={`rounded-xl border p-2.5 text-left transition-colors ${
-                                  on
-                                    ? "border-[#D2F801] bg-[#D2F801]/10 ring-1 ring-[#D2F801]"
-                                    : "border-border bg-background/50 hover:bg-muted/50"
-                                }`}
-                              >
-                                <div className="flex items-center justify-between">
-                                  <span className="font-display text-sm" style={{ color: card.accent }}>
-                                    {card.sinName}
-                                  </span>
-                                </div>
-                                <p className="mt-1 line-clamp-1 text-[10px] text-positive">{card.boon}</p>
-                              </button>
-                            );
-                          })}
+                          )}
                         </div>
-                      </div>
-                    )}
-
-                    {/* Country Quiz Continent Zone Selector */}
-                    {mode === "quiz" ? (
-                      <div>
-                        <p className="mb-1.5 text-xs font-semibold text-muted-foreground">
-                          Continent Zone Filter
-                        </p>
-                        <div className="seg">
-                          {quizZones.map((z) => (
-                            <Chip key={z} on={quizZone === z} onClick={() => setQuizZone(z)}>
-                              {z}
-                            </Chip>
-                          ))}
-                        </div>
-                      </div>
-                    ) : (
-                      <div>
-                        <p className="mb-1.5 text-xs font-semibold text-muted-foreground">
-                          {t(lang, "category")}
-                        </p>
-                        <div className="seg">
-                          {pools.map((p) => (
-                            <Chip key={p.id} on={pool === p.id} onClick={() => setPool(p.id)}>
-                              {t(lang, p.id)}
-                            </Chip>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Difficulty Selector */}
-                    <div>
-                      <p className="mb-1.5 text-xs font-semibold text-muted-foreground">
-                        {t(lang, "difficulty")}
-                      </p>
-                      <div className="seg">
-                        {diffs.map((d) => (
-                          <Chip key={d} on={difficulty === d} onClick={() => setDiff(d)}>
-                            {t(lang, d)}
-                          </Chip>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Time Per Round */}
-                    <div>
-                      <p className="mb-1.5 text-xs font-semibold text-muted-foreground">
-                        {t(lang, "timePerRound")}
-                      </p>
-                      <div className="seg">
-                        {TIME_OPTIONS.map((tOpt) => (
-                          <Chip key={tOpt} on={time === tOpt} onClick={() => setTime(tOpt)}>
-                            {tOpt === 0 ? t(lang, "unlimited") : `${tOpt}s`}
-                          </Chip>
-                        ))}
-                      </div>
-                    </div>
-
-                    <label className="flex items-center gap-2 text-xs font-semibold">
-                      <input
-                        type="checkbox"
-                        checked={practice}
-                        onChange={(e) => setPractice(e.target.checked)}
-                        className="h-4 w-4 accent-[#D2F801]"
-                      />
-                      {t(lang, "practiceNote")}
-                    </label>
-                  </div>
+                        <h4 className="font-display mt-1 text-base">{t(lang, m)}</h4>
+                        <p className="mt-1 line-clamp-2 text-[11px] text-muted-foreground">{t(lang, `${m}Blurb`)}</p>
+                      </button>
+                    );
+                  })}
                 </div>
 
-                <div className="mt-4 flex justify-end border-t border-border pt-3">
-                  <Link
-                    to="/game/$mode"
-                    params={{ mode }}
-                    search={{
-                      pool,
-                      difficulty,
-                      time,
-                      ...(practice ? { practice: 1 as const } : {}),
-                      ...(mode === "sins" ? { sin: selectedSin } : {}),
-                      ...(mode === "quiz" ? { zone: quizZone } : {}),
-                    }}
-                    className="btn btn-primary inline-flex px-8 py-2.5 text-center text-sm font-extrabold"
-                  >
-                    Start {t(lang, mode)} Match →
-                  </Link>
+                {/* Mode Configuration Card */}
+                <div className="rounded-2xl border border-border bg-card/60 p-4 space-y-4">
+                  <div className="flex items-center justify-between border-b border-border pb-2">
+                    <span className="font-display text-lg">{t(lang, mode)} Configuration</span>
+                    {difficulty === "hardcore" && (
+                      <span className="rounded-full bg-destructive px-2 py-0.5 text-[10px] font-bold text-white">
+                        Hardcore Active
+                      </span>
+                    )}
+                  </div>
+
+                  {/* 7 Deadly Sins Card Selector */}
+                  {mode === "sins" && (
+                    <div>
+                      <p className="mb-2 text-xs font-semibold text-muted-foreground">
+                        Deadly Sin Skill Card
+                      </p>
+                      <div className="grid gap-2 grid-cols-2 sm:grid-cols-4">
+                        {SIN_CARDS.map((card) => {
+                          const on = selectedSin === card.id;
+                          return (
+                            <button
+                              key={card.id}
+                              type="button"
+                              onClick={() => setSelectedSin(card.id)}
+                              className={`rounded-xl border p-2.5 text-left transition-colors ${
+                                on
+                                  ? "border-[#D2F801] bg-[#D2F801]/10 ring-1 ring-[#D2F801]"
+                                  : "border-border bg-background/50 hover:bg-muted/50"
+                              }`}
+                            >
+                              <div className="flex items-center justify-between">
+                                <span className="font-display text-sm" style={{ color: card.accent }}>
+                                  {card.sinName}
+                                </span>
+                              </div>
+                              <p className="mt-1 line-clamp-1 text-[10px] text-positive">{card.boon}</p>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Country Quiz Continent Zone Selector */}
+                  {mode === "quiz" ? (
+                    <div>
+                      <p className="mb-1.5 text-xs font-semibold text-muted-foreground">
+                        Continent Zone Filter
+                      </p>
+                      <div className="seg">
+                        {quizZones.map((z) => (
+                          <Chip key={z} on={quizZone === z} onClick={() => setQuizZone(z)}>
+                            {z}
+                          </Chip>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <p className="mb-1.5 text-xs font-semibold text-muted-foreground">
+                        {t(lang, "category")}
+                      </p>
+                      <div className="seg">
+                        {pools.map((p) => (
+                          <Chip key={p.id} on={pool === p.id} onClick={() => setPool(p.id)}>
+                            {t(lang, p.id)}
+                          </Chip>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Difficulty Selector */}
+                  <div>
+                    <p className="mb-1.5 text-xs font-semibold text-muted-foreground">
+                      {t(lang, "difficulty")}
+                    </p>
+                    <div className="seg">
+                      {diffs.map((d) => (
+                        <Chip key={d} on={difficulty === d} onClick={() => setDiff(d)}>
+                          {t(lang, d)}
+                        </Chip>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Time Per Round */}
+                  <div>
+                    <p className="mb-1.5 text-xs font-semibold text-muted-foreground">
+                      {t(lang, "timePerRound")}
+                    </p>
+                    <div className="seg">
+                      {TIME_OPTIONS.map((tOpt) => (
+                        <Chip key={tOpt} on={time === tOpt} onClick={() => setTime(tOpt)}>
+                          {tOpt === 0 ? t(lang, "unlimited") : `${tOpt}s`}
+                        </Chip>
+                      ))}
+                    </div>
+                  </div>
+
+                  <label className="flex items-center gap-2 text-xs font-semibold">
+                    <input
+                      type="checkbox"
+                      checked={practice}
+                      onChange={(e) => setPractice(e.target.checked)}
+                      className="h-4 w-4 accent-[#D2F801]"
+                    />
+                    {t(lang, "practiceNote")}
+                  </label>
                 </div>
               </div>
-            </div>
-          )}
+
+              <div className="mt-4 flex justify-end border-t border-border pt-3">
+                <Link
+                  to="/game/$mode"
+                  params={{ mode }}
+                  search={{
+                    pool,
+                    difficulty,
+                    time,
+                    ...(practice ? { practice: 1 as const } : {}),
+                    ...(mode === "sins" ? { sin: selectedSin } : {}),
+                    ...(mode === "quiz" ? { zone: quizZone } : {}),
+                  }}
+                  className="btn btn-primary inline-flex px-8 py-2.5 text-center text-sm font-extrabold"
+                >
+                  Start {t(lang, mode)} Match →
+                </Link>
+              </div>
+            </DrawerContent>
+          </Drawer>
         </div>
       </main>
     </div>

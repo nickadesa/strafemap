@@ -8,11 +8,12 @@
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
   --font-mono: var(--font-mono);
-  --radius-sm: calc(var(--radius) - 12px);
-  --radius-md: calc(var(--radius) - 8px);
-  --radius-lg: calc(var(--radius) - 4px);
-  --radius-xl: var(--radius);
-  --radius-2xl: var(--radius + 8px);
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 1.75rem;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -79,6 +80,21 @@
   --input: #d6d9d1;
   --ring: #d2f801;
   --link: #161616;
+}
+
+/* Light theme accessibility: High-contrast green text & icons on light surfaces */
+:root:not(.dark) .text-\[\#D2F801\] {
+  color: #15803d !important;
+}
+:root:not(.dark) svg.text-\[\#D2F801\],
+:root:not(.dark) [class*="text-[#D2F801]"] svg {
+  color: #15803d !important;
+}
+:root:not(.dark) .bg-\[\#D2F801\]\/10,
+:root:not(.dark) .bg-\[\#D2F801\]\/15,
+:root:not(.dark) .bg-\[\#D2F801\]\/20 {
+  background-color: rgba(21, 128, 61, 0.12) !important;
+  color: #15803d !important;
 }
 
 /* Thai: Extra vertical breathing room for upper/lower vowel & tone marks */
@@ -279,8 +295,14 @@
 .pin-guess { background: #d2f801; box-shadow: 0 0 0 2px #161616, 0 0 10px rgba(210, 248, 1, 0.6); }
 .pin-guess-2 { background: #a855f7; box-shadow: 0 0 0 2px #ffffff, 0 0 10px rgba(168, 85, 247, 0.6); }
 .pin-target { background: #d2f801; box-shadow: 0 0 0 2px #161616, 0 0 14px rgba(210, 248, 1, 0.8); }
-.pin-bot { background: #ff3b5c; opacity: 0.95; box-shadow: 0 0 0 1.5px #ffffff; }
-.leaflet-container { font-family: var(--font-sans); background: var(--color-background); }
+.leaflet-container {
+  font-family: var(--font-sans);
+  background: var(--color-background);
+  border-radius: inherit;
+  isolation: isolate;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  transform: translateZ(0);
+}
 /* Leave room for map credits and keep controls clear of the clue. */
 .leaflet-bottom.leaflet-left .leaflet-control-zoom { margin: 0 0 28px 10px; }
 .hide-zoom-controls .leaflet-control-zoom { display: none !important; }

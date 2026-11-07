@@ -70,7 +70,7 @@ export function AvatarFrame({
 
   return (
     <div
-      className={`relative inline-flex shrink-0 select-none overflow-hidden rounded-full border border-border bg-[#1E1E20] text-white shadow-sm ${className}`}
+      className={`relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden rounded-full border border-border bg-[#1E1E20] text-white shadow-sm ${className}`}
       style={{ width: size, height: size }}
     >
       {src && !imgErr ? (
@@ -78,7 +78,7 @@ export function AvatarFrame({
           src={src}
           alt={name}
           onError={() => setImgErr(true)}
-          className="h-full w-full object-cover"
+          className="h-full w-full aspect-square object-cover object-center"
           draggable={false}
         />
       ) : (

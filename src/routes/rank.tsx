@@ -22,6 +22,13 @@ import {
 import { t, type Lang } from "@/lib/i18n";
 import { SymbolCompass, SymbolTrophy, SymbolShield } from "@/components/SFSymbols";
 import { Flag as FlagIcon, Gift, Globe, Sparkles, SlidersHorizontal } from "lucide-react";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+} from "@/components/ui/drawer";
 
 type RankTab = "play" | "leaderboard" | "guide";
 
@@ -276,21 +283,21 @@ function PlayTab({
         </div>
       </div>
 
-      {/* Season Rank Rewards Preview Drawer */}
-      {showRewards && (
-        <div className="plate rise-in p-5 md:p-6">
-          <div className="mb-4 flex items-center justify-between">
+      {/* Season Rank Rewards Preview iOS Drawer */}
+      <Drawer open={showRewards} onOpenChange={setShowRewards}>
+        <DrawerContent className="mx-auto max-w-4xl p-5 sm:p-6">
+          <DrawerHeader className="flex flex-row items-center justify-between border-b border-border px-0 pb-4 pt-1">
             <div>
-              <h3 className="font-display text-2xl">{t(lang, "seasonRewards")}</h3>
-              <p className="text-xs text-muted-foreground">
+              <DrawerTitle>{t(lang, "seasonRewards")}</DrawerTitle>
+              <DrawerDescription className="mt-1">
                 Unlock exclusive Avatar Frames, Titles, Gacha Packs & Super Chat Auras at your peak season tier
-              </p>
+              </DrawerDescription>
             </div>
             <span className="rounded-full bg-[#D2F801] px-3 py-1 text-xs font-extrabold text-[#161616]">
               Season 1
             </span>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          </DrawerHeader>
+          <div className="mt-4 grid max-h-[70vh] gap-3 overflow-y-auto pr-1 sm:grid-cols-2 lg:grid-cols-3">
             {SEASON_REWARDS.map((rw) => {
               const unlocked =
                 rw.tier === "champion"
@@ -341,8 +348,8 @@ function PlayTab({
               );
             })}
           </div>
-        </div>
-      )}
+        </DrawerContent>
+      </Drawer>
 
       <Link
         to="/achievements"

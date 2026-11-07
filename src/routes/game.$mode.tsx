@@ -857,9 +857,14 @@ function GamePage() {
       </header>
 
       <div
-        className={`relative mx-2 mb-2 flex-1 overflow-hidden rounded-2xl md:mx-4 md:mb-4 ${
+        className={`relative mx-2 mb-2 flex-1 overflow-hidden rounded-2xl md:mx-4 md:mb-4 border border-border shadow-sm isolate ${
           phase === "reveal" ? "reveal-on" : ""
         }`}
+        style={{
+          borderRadius: "1.5rem",
+          WebkitMaskImage: "-webkit-radial-gradient(white, black)",
+          transform: "translateZ(0)",
+        }}
       >
         <GameMap
           lang={lang}

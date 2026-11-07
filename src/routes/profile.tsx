@@ -303,14 +303,14 @@ function XStyleProfileTab({
         {/* Profile Body */}
         <div className="relative px-5 pb-6 sm:px-8">
           {/* AvatarFrame overlapping banner + Edit Profile Button */}
-          <div className="-mt-12 flex flex-wrap items-end justify-between gap-4">
-            <div className="rounded-full bg-card p-1.5 shadow-xl">
+          <div className="-mt-14 flex flex-wrap items-end justify-between gap-4">
+            <div className="inline-flex shrink-0 items-center justify-center rounded-full bg-card p-1 shadow-2xl ring-4 ring-card">
               <AvatarFrame
                 src={social.avatarUrl}
                 name={social.nickname}
                 rp={rank.rp}
                 championPosition={rank.championPosition}
-                size={92}
+                size={96}
               />
             </div>
 
@@ -573,7 +573,7 @@ function XStyleProfileTab({
           <div className="mt-6">
             <div className="mb-3 flex items-center justify-between">
               <div>
-                <h2 className="font-display text-xl">Featured Achievement Badges (Max 5)</h2>
+                <h2 className="font-display text-xl">Achievement Badges</h2>
                 <p className="text-xs text-muted-foreground">
                   Only unlocked badges are displayed on public profiles
                 </p>
