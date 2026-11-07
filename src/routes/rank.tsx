@@ -133,7 +133,7 @@ function PlayTab({
         <div className="relative mx-auto grid max-w-2xl grid-cols-3 items-center gap-2 sm:gap-6">
           {/* Previous Rank */}
           <div className="flex flex-col items-center opacity-65 transition-opacity hover:opacity-95">
-            <span className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+            <span className="mb-1.5 text-xs font-medium text-muted-foreground">
               {t(lang, "previousRank")}
             </span>
             {prev ? (
@@ -153,7 +153,7 @@ function PlayTab({
 
           {/* Current Rank (Center Hero) */}
           <div className="flex flex-col items-center">
-            <span className="mb-1 inline-flex items-center gap-1 rounded-full bg-[#D2F801]/15 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-[#D2F801]">
+            <span className="mb-1 inline-flex items-center gap-1.5 rounded-full bg-[#D2F801]/15 px-2.5 py-0.5 text-xs font-semibold text-[#D2F801]">
               <Sparkles className="h-3 w-3" /> {t(lang, "currentRank")}
             </span>
             <RankBanner
@@ -176,7 +176,7 @@ function PlayTab({
 
           {/* Next Rank */}
           <div className="flex flex-col items-center opacity-65 transition-opacity hover:opacity-95">
-            <span className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+            <span className="mb-1.5 text-xs font-medium text-muted-foreground">
               {t(lang, "nextRank")}
             </span>
             {next ? (
@@ -445,13 +445,13 @@ function GuideTab({
         <div className="grid grid-cols-2 gap-2.5">
           {/* Master */}
           <div
-            className={`flex flex-col items-center rounded-2xl border p-3 text-center transition-all ${
+            className={`flex flex-col items-center rounded-2xl border p-3 text-center transition-colors ${
               mine.rank === "master"
                 ? "border-[#D2F801] bg-[#D2F801]/10 ring-1 ring-[#D2F801]"
                 : "border-border bg-background/40"
             }`}
           >
-            <span className="mb-1 text-xs font-extrabold uppercase tracking-wider" style={{ color: "#E8307A" }}>
+            <span className="mb-1 text-xs font-semibold" style={{ color: "#E8307A" }}>
               Master
             </span>
             <RankBanner bannerUrl="/ranks/banners/master.svg" alt="Master" width={68} />
@@ -460,13 +460,13 @@ function GuideTab({
 
           {/* Champion */}
           <div
-            className={`flex flex-col items-center rounded-2xl border p-3 text-center transition-all ${
+            className={`flex flex-col items-center rounded-2xl border p-3 text-center transition-colors ${
               mine.rank === "champion"
                 ? "border-[#D2F801] bg-[#D2F801]/10 ring-1 ring-[#D2F801]"
                 : "border-border bg-background/40"
             }`}
           >
-            <span className="mb-1 text-xs font-extrabold uppercase tracking-wider" style={{ color: "#DC1F30" }}>
+            <span className="mb-1 text-xs font-semibold" style={{ color: "#DC1F30" }}>
               Champion · Top 50
             </span>
             <RankBanner bannerUrl="/ranks/banners/champion-01.svg" alt="Champion #1" width={68} />
@@ -477,7 +477,7 @@ function GuideTab({
         {/* ROW 2 (grid-cols-3): Diamond III -> II -> I */}
         <div className="rounded-2xl border border-border/70 bg-background/25 p-2.5">
           <div className="mb-1.5 flex items-center justify-between px-1">
-            <span className="text-xs font-extrabold uppercase tracking-wider" style={{ color: "#3F9DE8" }}>
+            <span className="text-xs font-semibold" style={{ color: "#3F9DE8" }}>
               Diamond
             </span>
             <span className="readout text-[10px] text-muted-foreground">5,000 – 6,999 RP</span>
@@ -510,7 +510,7 @@ function GuideTab({
           return (
             <div key={tier.key} className="rounded-2xl border border-border/70 bg-background/25 p-2.5">
               <div className="mb-1.5 flex items-center justify-between px-1">
-                <span className="text-xs font-extrabold uppercase tracking-wider" style={{ color: tier.color }}>
+                <span className="text-xs font-semibold" style={{ color: tier.color }}>
                   {tier.label}
                 </span>
                 <span className="readout text-[10px] text-muted-foreground">

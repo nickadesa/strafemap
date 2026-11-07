@@ -352,7 +352,7 @@ function XStyleProfileTab({
                   key={bType}
                   type="button"
                   onClick={() => updateSocial({ verifiedBadge: bType })}
-                  className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold transition-all ${
+                  className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold transition-colors ${
                     social.verifiedBadge === bType
                       ? "border-[#D2F801] bg-[#D2F801]/15 text-foreground"
                       : "border-border bg-card text-muted-foreground hover:text-foreground"
@@ -369,7 +369,7 @@ function XStyleProfileTab({
           {editing && (
             <div className="mt-4 space-y-3 rounded-2xl border border-[#D2F801]/40 bg-background/70 p-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-extrabold uppercase tracking-wider text-[#D2F801]">
+                <span className="text-xs font-semibold text-[#D2F801]">
                   Edit Profile Information
                 </span>
                 <label className="flex items-center gap-2 text-xs font-semibold">
@@ -481,7 +481,7 @@ function XStyleProfileTab({
             </div>
             <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-muted p-0.5">
               <div
-                className="h-full rounded-full transition-all duration-500 bg-[#D2F801]"
+                className="h-full rounded-full transition-[width] duration-500 bg-[#D2F801]"
                 style={{
                   width: `${lvl.progressPct}%`,
                 }}
@@ -892,7 +892,7 @@ function ClanSystemTab({
           {/* Clan Leader Edit Form */}
           {editingClan && (
             <div className="mt-4 space-y-3 rounded-2xl border border-[#D2F801]/40 bg-background/60 p-4">
-              <span className="text-xs font-extrabold uppercase tracking-wider text-[#D2F801]">
+              <span className="text-xs font-semibold text-[#D2F801]">
                 Leader Management: Edit Clan Name & Tag
               </span>
               <div className="grid gap-3 sm:grid-cols-2">
@@ -944,7 +944,7 @@ function ClanSystemTab({
 
           {/* Clan Roster */}
           <div className="mt-5">
-            <h3 className="mb-2.5 text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
+            <h3 className="mb-2.5 text-xs font-semibold text-muted-foreground">
               Clan Roster ({myClan.members.length}/{myClan.maxMembers})
             </h3>
             <div className="divide-y divide-border rounded-2xl border border-border bg-background/30">
@@ -1404,7 +1404,7 @@ function SocialFeedTab({
     <div className="space-y-6">
       {/* 4:5 Story Strip */}
       <section>
-        <h2 className="mb-2.5 text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
+        <h2 className="mb-2.5 text-xs font-semibold text-muted-foreground">
           4:5 {t(lang, "stories")}
         </h2>
         <div className="no-scrollbar flex gap-3 overflow-x-auto pb-1">

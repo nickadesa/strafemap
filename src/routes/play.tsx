@@ -314,18 +314,18 @@ function PlayHub() {
                           key={m}
                           type="button"
                           onClick={() => setMode(m)}
-                          className={`rounded-2xl border p-3.5 text-left transition-all ${
+                          className={`rounded-2xl border p-3.5 text-left transition-colors ${
                             active
                               ? "border-[#D2F801] bg-[#D2F801]/10 ring-1 ring-[#D2F801]"
                               : "border-border bg-card/60 hover:bg-muted"
                           }`}
                         >
                           <div className="flex items-center justify-between">
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                            <span className="text-xs font-medium text-muted-foreground">
                               {t(lang, `${m}Tag`)}
                             </span>
                             {(m === "findCity" || m === "sins" || m === "quiz") && (
-                              <span className="rounded-full bg-[#D2F801] px-1.5 py-0.2 text-[8px] font-black text-[#161616]">
+                              <span className="rounded-full bg-[#D2F801]/20 px-2 py-0.5 text-[9px] font-semibold text-[#D2F801]">
                                 NEW
                               </span>
                             )}
@@ -362,7 +362,7 @@ function PlayHub() {
                                 key={card.id}
                                 type="button"
                                 onClick={() => setSelectedSin(card.id)}
-                                className={`rounded-xl border p-2.5 text-left transition-all ${
+                                className={`rounded-xl border p-2.5 text-left transition-colors ${
                                   on
                                     ? "border-[#D2F801] bg-[#D2F801]/10 ring-1 ring-[#D2F801]"
                                     : "border-border bg-background/50 hover:bg-muted/50"

@@ -105,7 +105,7 @@ function SettingsPage() {
 
           {/* 1. General Category */}
           <section className="plate space-y-5 p-6">
-            <h2 className="text-xs font-extrabold uppercase tracking-wider text-[#D2F801]">
+            <h2 className="text-xs font-semibold text-[#D2F801]">
               {t(lang, "general")}
             </h2>
 
@@ -180,7 +180,7 @@ function SettingsPage() {
 
           {/* 2. Gameplay & HUD Category */}
           <section className="plate space-y-5 p-6">
-            <h2 className="text-xs font-extrabold uppercase tracking-wider text-[#D2F801]">
+            <h2 className="text-xs font-semibold text-[#D2F801]">
               {t(lang, "gameplay")}
             </h2>
 
@@ -339,7 +339,7 @@ function SettingsPage() {
 
           {/* 3. Appearance & Map Style Category */}
           <section className="plate space-y-5 p-6">
-            <h2 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
+            <h2 className="text-xs font-semibold text-muted-foreground">
               {t(lang, "appearance")}
             </h2>
 
@@ -404,7 +404,7 @@ function SettingsPage() {
                       key={v}
                       type="button"
                       onClick={() => setMapStyle(v)}
-                      className={`overflow-hidden rounded-xl border-2 text-left transition-all ${
+                      className={`overflow-hidden rounded-xl border-2 text-left transition-colors ${
                         on ? "border-[#D2F801] ring-2 ring-[#D2F801]/40" : "border-border/50 hover:border-muted"
                       }`}
                     >

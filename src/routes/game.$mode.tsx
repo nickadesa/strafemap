@@ -933,7 +933,7 @@ function GamePage() {
           {phase === "guess" ? (
             mode === "quiz" ? (
               <div className="plate w-full max-w-xl p-4">
-                <p className="mb-2.5 text-center text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                <p className="mb-2.5 text-center text-xs font-medium text-muted-foreground">
                   {tr("findCountry")} · Select 1 of 4 Options
                 </p>
                 <div className="grid grid-cols-2 gap-2.5">
@@ -945,7 +945,7 @@ function GamePage() {
                         setQuizSelected(countryOpt);
                         submit({ lat: loc.lat, lng: loc.lng }, countryOpt);
                       }}
-                      className="flex items-center justify-center rounded-2xl border border-border bg-background/90 px-4 py-3.5 text-center text-sm font-bold transition-all hover:border-[#D2F801] hover:bg-[#D2F801] hover:text-[#161616]"
+                      className="flex items-center justify-center rounded-2xl border border-border bg-background/90 px-4 py-3.5 text-center text-sm font-semibold transition-colors hover:border-[#D2F801] hover:bg-[#D2F801] hover:text-[#161616]"
                     >
                       <span className="truncate">{countryOpt}</span>
                     </button>
@@ -1124,7 +1124,7 @@ function GamePage() {
                     key={card.id}
                     type="button"
                     onClick={() => setActiveSin(card.id)}
-                    className={`w-full rounded-2xl border p-3.5 text-left transition-all ${
+                    className={`w-full rounded-2xl border p-3.5 text-left transition-colors ${
                       selected
                         ? "border-[#D2F801] bg-[#D2F801]/10 ring-1 ring-[#D2F801]"
                         : "border-border bg-card/60 hover:bg-muted"
@@ -1271,7 +1271,7 @@ function ShareCardStudio({
     <section className="plate mt-6 p-5 md:p-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <span className="inline-flex items-center gap-1 text-xs font-extrabold uppercase tracking-wider text-[#D2F801]">
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#D2F801]">
             <Sparkles className="h-3.5 w-3.5" /> Results Share Card Studio
           </span>
           <h2 className="font-display text-2xl">Live Card Preview & Export</h2>

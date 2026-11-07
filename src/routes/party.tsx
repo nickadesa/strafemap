@@ -199,7 +199,7 @@ function PartyPage() {
   const renderRoomSettingsControls = () => (
     <div className="space-y-4">
       <div>
-        <p className="mb-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+        <p className="mb-1.5 text-xs font-medium text-muted-foreground">
           Game Mode (All More Modes Supported)
         </p>
         <div className="flex flex-wrap gap-1.5">
@@ -222,7 +222,7 @@ function PartyPage() {
 
       <div className="grid gap-3 sm:grid-cols-2">
         <div>
-          <p className="mb-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+          <p className="mb-1.5 text-xs font-medium text-muted-foreground">
             {t(lang, "timePerRound")}
           </p>
           <div className="seg w-full">
@@ -241,7 +241,7 @@ function PartyPage() {
         </div>
 
         <div>
-          <p className="mb-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+          <p className="mb-1.5 text-xs font-medium text-muted-foreground">
             Room Size (2–16 Players)
           </p>
           <div className="seg w-full">
@@ -262,7 +262,7 @@ function PartyPage() {
 
       <div className="grid gap-3 sm:grid-cols-2">
         <div>
-          <p className="mb-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+          <p className="mb-1.5 text-xs font-medium text-muted-foreground">
             {t(lang, "category")}
           </p>
           <div className="seg w-full">
@@ -281,7 +281,7 @@ function PartyPage() {
         </div>
 
         <div>
-          <p className="mb-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+          <p className="mb-1.5 text-xs font-medium text-muted-foreground">
             {t(lang, "difficulty")}
           </p>
           <div className="seg w-full">
@@ -372,7 +372,7 @@ function PartyPage() {
                 <div className="flex flex-col gap-3 border-b border-border pb-4 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-center gap-3">
                     <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                      <span className="text-xs font-medium text-muted-foreground">
                         Room Code
                       </span>
                       <div className="flex items-center gap-2">
@@ -444,7 +444,7 @@ function PartyPage() {
                 {isHost && showHostSettings && (
                   <div className="mt-4 rounded-2xl border border-[#D2F801]/40 bg-background/60 p-4">
                     <div className="mb-3 flex items-center justify-between">
-                      <span className="text-xs font-extrabold uppercase tracking-wider text-[#D2F801]">
+                      <span className="text-xs font-semibold text-[#D2F801]">
                         Host Room Settings (Live Update)
                       </span>
                       <button
@@ -538,7 +538,7 @@ function PartyPage() {
                       <button
                         type="button"
                         onClick={() => setMicOn((m) => !m)}
-                        className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-extrabold transition-all ${
+                        className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ${
                           micOn
                             ? "bg-[#D2F801] text-[#161616]"
                             : "bg-destructive text-white"

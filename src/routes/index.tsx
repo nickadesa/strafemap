@@ -188,7 +188,7 @@ function Home() {
                 <div className="flex items-center gap-3">
                   <RankBanner rp={rank.rp} championPosition={rank.championPosition} width={72} />
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                    <span className="text-xs font-medium text-muted-foreground">
                       {t(lang, "currentRank")}
                     </span>
                     <p className="font-display text-2xl" style={{ color: curRank.tier.accent }}>
@@ -211,7 +211,7 @@ function Home() {
             <div className="mb-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-[#D2F801]" />
-                <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
+                <h2 className="text-sm font-semibold text-muted-foreground">
                   4:5 {t(lang, "stories")}
                 </h2>
               </div>
@@ -319,7 +319,7 @@ function Home() {
           {/* Quick Modes Grid */}
           <section>
             <div className="mb-3 flex items-center justify-between">
-              <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
+              <h2 className="text-sm font-semibold text-muted-foreground">
                 {t(lang, "modes")} Hub
               </h2>
               <Link to="/play" className="text-xs font-bold text-[#D2F801] hover:underline">
@@ -334,7 +334,7 @@ function Home() {
                     key={m}
                     to="/play"
                     search={{ mode: m }}
-                    className="plate flex items-center gap-4 p-4 transition-all hover:border-[#D2F801]/60 hover:bg-muted/50"
+                    className="plate flex items-center gap-4 p-4 transition-colors hover:border-[#D2F801]/60 hover:bg-muted/50"
                   >
                     <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-muted text-[#D2F801]">
                       <Icon className="h-5 w-5" />
@@ -343,7 +343,7 @@ function Home() {
                       <div className="flex items-center gap-2">
                         <p className="truncate font-bold">{t(lang, m)}</p>
                         {(m === "findCity" || m === "sins" || m === "quiz") && (
-                          <span className="rounded-full bg-[#D2F801] px-2 py-0.5 text-[9px] font-black uppercase text-[#161616]">
+                          <span className="rounded-full bg-[#D2F801]/20 px-2 py-0.5 text-[9px] font-semibold text-[#D2F801]">
                             NEW
                           </span>
                         )}
@@ -378,7 +378,7 @@ function Home() {
                     <Link
                       key={a.id}
                       to="/achievements"
-                      className={`flex flex-col items-center rounded-2xl border p-2 text-center transition-all ${
+                      className={`flex flex-col items-center rounded-2xl border p-2 text-center transition-colors ${
                         isUnlocked
                           ? "border-[#D2F801]/50 bg-[#D2F801]/10"
                           : "border-border bg-background/40 opacity-60"
