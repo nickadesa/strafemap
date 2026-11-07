@@ -19,7 +19,7 @@ import { AvatarFrame, ClanTagPill, RankBanner, VerifiedBadge } from "@/component
 import { Flag } from "@/components/Flag";
 import { computeLevelFromExp, useFeed, useSocialProfile, type StoryHighlight } from "@/lib/social";
 import { t, type Lang } from "@/lib/i18n";
-import { BarChart3, Compass, Flame, Plus, Sparkles, Trophy, Users, X } from "lucide-react";
+import { BarChart3, Compass, Flame, Plus, ShoppingBag, Sparkles, Trophy, Users, X } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -87,7 +87,7 @@ function Home() {
             <div>
               <div className="flex items-center gap-2.5">
                 <h1 className="font-display text-3xl md:text-4xl">STRAFE</h1>
-                <span className="rounded-full bg-[#0367FC] px-2.5 py-0.5 text-[11px] font-extrabold text-white">
+                <span className="rounded-full bg-[#D2F801] px-2.5 py-0.5 text-[11px] font-extrabold text-[#161616]">
                   SEASON 1
                 </span>
               </div>
@@ -126,14 +126,10 @@ function Home() {
             </Link>
           </header>
 
-          {/* Dual-Core Hero Banner: Acid Lime Play Button (#D2F801) + Electric Blue Daily Challenge Button (#0367FC) */}
+          {/* Hero Banner: Neon Green Accents on Solid Surface */}
           <section className="plate relative overflow-hidden p-6 md:p-8">
             <div
-              className="pointer-events-none absolute -right-12 -top-12 h-64 w-64 rounded-full opacity-20 blur-3xl"
-              style={{ background: "#0367FC" }}
-            />
-            <div
-              className="pointer-events-none absolute -bottom-16 left-12 h-56 w-56 rounded-full opacity-15 blur-3xl"
+              className="pointer-events-none absolute -bottom-16 left-12 h-56 w-56 rounded-full opacity-10 blur-3xl"
               style={{ background: "#D2F801" }}
             />
 
@@ -157,7 +153,7 @@ function Home() {
                     : "Five precision drops across the globe. Play the Modes Hub or lock in today's global Daily seed."}
                 </p>
 
-                {/* Distinct Dual CTA Buttons: Primary Play (#D2F801) + Daily Challenge (#0367FC) */}
+                {/* Primary Play (#D2F801) + Daily Challenge Outline CTA */}
                 <div className="mt-6 flex flex-wrap items-center gap-3">
                   <Link
                     to="/play"
@@ -171,10 +167,10 @@ function Home() {
                     to="/game/$mode"
                     params={{ mode: "classic" }}
                     search={{ daily: 1 }}
-                    className="btn btn-blue px-6 py-3.5 text-base font-extrabold shadow-lg"
+                    className="btn btn-outline px-6 py-3.5 text-base font-extrabold"
                   >
                     <IconCalendar className="h-4 w-4" />
-                    {t(lang, "daily")} Challenge · 🔥 {dailyStreak}
+                    {t(lang, "daily")} Challenge · {dailyStreak} Days
                   </Link>
 
                   <button
@@ -222,7 +218,7 @@ function Home() {
               <Link
                 to="/profile"
                 search={{ tab: "feed" } as any}
-                className="text-xs font-bold text-[#0367FC] hover:underline"
+                className="text-xs font-bold text-[#D2F801] hover:underline"
               >
                 Open Social Feed →
               </Link>
@@ -246,10 +242,10 @@ function Home() {
                     score: `${Math.max(21450, stats.bestScore).toLocaleString()}`,
                     accuracy: "96.4%",
                     caption: "Dropped my new personal best highlight on STRAFE! 🎯",
-                    gradient: "linear-gradient(160deg, #0367FC 0%, #161616 55%, #D2F801 100%)",
+                    gradient: "linear-gradient(160deg, #161616 0%, #262626 100%)",
                   })
                 }
-                className="rainbow-border group relative aspect-[4/5] w-36 shrink-0 rounded-[18px] text-left transition-transform hover:scale-[1.02] sm:w-40"
+                className="story-ring group relative aspect-[4/5] w-36 shrink-0 rounded-[18px] text-left transition-transform hover:scale-[1.02] sm:w-40"
               >
                 <div className="flex h-full w-full flex-col justify-between rounded-[15.5px] bg-[#161616] p-3">
                   <div className="grid h-9 w-9 place-items-center rounded-full bg-[#D2F801] text-[#161616]">
@@ -267,36 +263,54 @@ function Home() {
                   key={st.id}
                   type="button"
                   onClick={() => setActiveStory(st)}
-                  className="rainbow-border group relative aspect-[4/5] w-36 shrink-0 rounded-[18px] text-left transition-transform hover:scale-[1.02] sm:w-40"
+                  className="story-ring group relative aspect-[4/5] w-36 shrink-0 overflow-hidden rounded-[18px] text-left transition-transform hover:scale-[1.02] sm:w-40"
                 >
-                  <div
-                    className="flex h-full w-full flex-col justify-between rounded-[15.5px] p-3 text-white"
-                    style={{ background: st.gradient }}
-                  >
-                    <div className="flex items-center justify-between gap-1">
-                      <AvatarFrame
-                        name={st.authorName}
-                        rp={st.authorRp}
-                        championPosition={st.authorChampPos}
-                        size={34}
-                      />
-                      <span className="rounded-full bg-black/50 px-2 py-0.5 text-[10px] font-bold backdrop-blur-sm">
-                        {st.mode}
-                      </span>
-                    </div>
-
-                    <div>
-                      <p className="font-display text-2xl text-[#D2F801]">{st.score}</p>
-                      <p className="line-clamp-2 text-[11px] leading-snug text-white/90">
-                        {st.caption}
-                      </p>
-                      <div className="mt-1.5 flex items-center gap-1 text-[11px] font-bold">
-                        <ClanTagPill tag={st.authorClanTag} />
-                        <span className="truncate">{st.authorName}</span>
-                        <VerifiedBadge type={st.authorVerified} size={12} />
+                  {st.imageUrl ? (
+                    <div className="relative h-full w-full rounded-[15.5px] overflow-hidden">
+                      <img src={st.imageUrl} alt={st.caption} className="h-full w-full object-cover" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/50 p-3 flex flex-col justify-between text-white">
+                        <AvatarFrame
+                          name={st.authorName}
+                          rp={st.authorRp}
+                          championPosition={st.authorChampPos}
+                          size={32}
+                        />
+                        <div>
+                          <p className="truncate font-bold text-xs text-white">{st.authorName}</p>
+                          <p className="truncate text-[10px] text-white/75">{st.caption}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div
+                      className="flex h-full w-full flex-col justify-between rounded-[15.5px] p-3 text-white"
+                      style={{ background: st.gradient }}
+                    >
+                      <div className="flex items-center justify-between gap-1">
+                        <AvatarFrame
+                          name={st.authorName}
+                          rp={st.authorRp}
+                          championPosition={st.authorChampPos}
+                          size={34}
+                        />
+                        <span className="rounded-full bg-black/50 px-2 py-0.5 text-[10px] font-bold backdrop-blur-sm">
+                          {st.mode}
+                        </span>
+                      </div>
+
+                      <div>
+                        <p className="font-display text-2xl text-[#D2F801]">{st.score}</p>
+                        <p className="line-clamp-2 text-[11px] leading-snug text-white/90">
+                          {st.caption}
+                        </p>
+                        <div className="mt-1.5 flex items-center gap-1 text-[11px] font-bold">
+                          <ClanTagPill tag={st.authorClanTag} />
+                          <span className="truncate">{st.authorName}</span>
+                          <VerifiedBadge type={st.authorVerified} size={12} />
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </button>
               ))}
             </div>
@@ -308,7 +322,7 @@ function Home() {
               <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
                 {t(lang, "modes")} Hub
               </h2>
-              <Link to="/play" className="text-xs font-bold text-[#0367FC] hover:underline">
+              <Link to="/play" className="text-xs font-bold text-[#D2F801] hover:underline">
                 {t(lang, "viewAll")} (7 Modes) →
               </Link>
             </div>
@@ -329,7 +343,7 @@ function Home() {
                       <div className="flex items-center gap-2">
                         <p className="truncate font-bold">{t(lang, m)}</p>
                         {(m === "findCity" || m === "sins" || m === "quiz") && (
-                          <span className="rounded-full bg-[#0367FC] px-2 py-0.5 text-[9px] font-black uppercase text-white">
+                          <span className="rounded-full bg-[#D2F801] px-2 py-0.5 text-[9px] font-black uppercase text-[#161616]">
                             NEW
                           </span>
                         )}
@@ -417,7 +431,7 @@ function Home() {
                 className="plate flex items-center justify-between p-4 transition-colors hover:bg-muted/50"
               >
                 <div className="flex items-center gap-3">
-                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-[#0367FC]/15 text-[#0367FC]">
+                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-[#D2F801]/15 text-[#D2F801]">
                     <Users className="h-5 w-5" />
                   </div>
                   <div>
@@ -427,24 +441,24 @@ function Home() {
                     </p>
                   </div>
                 </div>
-                <span className="text-sm font-bold text-[#0367FC]">→</span>
+                <span className="text-sm font-bold text-[#D2F801]">→</span>
               </Link>
 
               <Link
                 to="/profile"
-                search={{ tab: "gacha" } as any}
+                search={{ tab: "shop" } as any}
                 className="plate flex items-center justify-between p-4 transition-colors hover:bg-muted/50"
               >
                 <div className="flex items-center gap-3">
-                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-purple-500/15 text-purple-400">
-                    <Sparkles className="h-5 w-5" />
+                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-[#D2F801]/15 text-[#D2F801]">
+                    <ShoppingBag className="h-5 w-5" />
                   </div>
                   <div>
                     <p className="font-bold">
-                      {t(lang, "gacha")} Pack Vault ({social.gachaTickets} Tickets)
+                      Cosmetic Shop ({social.coins?.toLocaleString() ?? "10,000"} Coins)
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      Open 4 packs for Chat Auras, Pins & [TAG] colors
+                      Direct buy Super Chat Auras, Pins & [TAG] colors
                     </p>
                   </div>
                 </div>
@@ -458,64 +472,117 @@ function Home() {
       {/* 4:5 Story Viewer Modal */}
       {activeStory && (
         <div className="fixed inset-0 z-50 grid place-items-center bg-black/80 p-4 backdrop-blur-md">
-          <div className="rainbow-border relative aspect-[4/5] w-full max-w-sm rounded-[24px]">
-            <div
-              className="flex h-full w-full flex-col justify-between rounded-[21px] p-6 text-white"
-              style={{ background: activeStory.gradient }}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <AvatarFrame
-                    name={activeStory.authorName}
-                    rp={activeStory.authorRp}
-                    championPosition={activeStory.authorChampPos}
-                    size={44}
-                  />
-                  <div>
-                    <div className="flex items-center gap-1">
-                      <ClanTagPill tag={activeStory.authorClanTag} />
-                      <span className="font-bold">{activeStory.authorName}</span>
-                      <VerifiedBadge type={activeStory.authorVerified} size={14} />
-                      <Flag country={activeStory.country} size={16} />
+          <div className="story-ring relative aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[24px]">
+            {activeStory.imageUrl ? (
+              <div className="relative h-full w-full rounded-[21px] overflow-hidden">
+                <img src={activeStory.imageUrl} alt={activeStory.caption} className="h-full w-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/60 p-6 flex flex-col justify-between text-white">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <AvatarFrame
+                        name={activeStory.authorName}
+                        rp={activeStory.authorRp}
+                        championPosition={activeStory.authorChampPos}
+                        size={40}
+                      />
+                      <div>
+                        <div className="flex items-center gap-1">
+                          <ClanTagPill tag={activeStory.authorClanTag} />
+                          <span className="font-bold text-sm">{activeStory.authorName}</span>
+                          <VerifiedBadge type={activeStory.authorVerified} size={13} />
+                        </div>
+                        <p className="text-xs text-white/75">
+                          @{activeStory.authorUsername} · {activeStory.timestamp}
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-xs text-white/75">
-                      @{activeStory.authorUsername} · {activeStory.timestamp}
-                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setActiveStory(null)}
+                      className="grid h-9 w-9 place-items-center rounded-full bg-black/60 text-white hover:bg-black/80"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+
+                  <div>
+                    <span className="rounded-full bg-[#D2F801] px-2.5 py-0.5 text-[10px] font-extrabold uppercase text-[#161616]">
+                      {activeStory.mode}
+                    </span>
+                    <p className="font-display mt-2 text-4xl text-[#D2F801]">{activeStory.score}</p>
+                    <p className="mt-1 text-sm text-white/90">{activeStory.caption}</p>
+                    <div className="mt-4 flex justify-between gap-2">
+                      <Link
+                        to="/game/$mode"
+                        params={{ mode: "classic" }}
+                        onClick={() => setActiveStory(null)}
+                        className="btn btn-primary w-full py-2.5 text-xs font-bold"
+                      >
+                        Challenge This Score
+                      </Link>
+                    </div>
                   </div>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setActiveStory(null)}
-                  className="grid h-9 w-9 place-items-center rounded-full bg-black/40 text-white hover:bg-black/70"
-                >
-                  <X className="h-4 w-4" />
-                </button>
               </div>
+            ) : (
+              <div
+                className="flex h-full w-full flex-col justify-between rounded-[21px] p-6 text-white"
+                style={{ background: activeStory.gradient }}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <AvatarFrame
+                      name={activeStory.authorName}
+                      rp={activeStory.authorRp}
+                      championPosition={activeStory.authorChampPos}
+                      size={44}
+                    />
+                    <div>
+                      <div className="flex items-center gap-1">
+                        <ClanTagPill tag={activeStory.authorClanTag} />
+                        <span className="font-bold">{activeStory.authorName}</span>
+                        <VerifiedBadge type={activeStory.authorVerified} size={14} />
+                        <Flag country={activeStory.country} size={16} />
+                      </div>
+                      <p className="text-xs text-white/75">
+                        @{activeStory.authorUsername} · {activeStory.timestamp}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setActiveStory(null)}
+                    className="grid h-9 w-9 place-items-center rounded-full bg-black/40 text-white hover:bg-black/70"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
 
-              <div className="my-auto text-center">
-                <span className="rounded-full bg-[#0367FC] px-3 py-1 text-xs font-extrabold uppercase">
-                  {activeStory.mode}
-                </span>
-                <p className="font-display mt-4 text-6xl text-[#D2F801]">{activeStory.score}</p>
-                <p className="mt-1 text-sm font-bold text-white/80">
-                  Accuracy: {activeStory.accuracy}
-                </p>
-                <p className="mt-4 rounded-2xl bg-black/35 p-4 text-sm leading-relaxed backdrop-blur-sm">
-                  “{activeStory.caption}”
-                </p>
-              </div>
+                <div className="my-auto text-center">
+                  <span className="rounded-full bg-[#D2F801] px-3 py-1 text-xs font-extrabold uppercase text-[#161616]">
+                    {activeStory.mode}
+                  </span>
+                  <p className="font-display mt-4 text-6xl text-[#D2F801]">{activeStory.score}</p>
+                  <p className="mt-1 text-sm font-bold text-white/80">
+                    Accuracy: {activeStory.accuracy}
+                  </p>
+                  <p className="mt-4 rounded-2xl bg-black/35 p-4 text-sm leading-relaxed backdrop-blur-sm">
+                    “{activeStory.caption}”
+                  </p>
+                </div>
 
-              <div className="flex justify-between gap-2">
-                <Link
-                  to="/game/$mode"
-                  params={{ mode: "classic" }}
-                  onClick={() => setActiveStory(null)}
-                  className="btn btn-primary w-full py-3 text-sm font-bold"
-                >
-                  Challenge This Score
-                </Link>
+                <div className="flex justify-between gap-2">
+                  <Link
+                    to="/game/$mode"
+                    params={{ mode: "classic" }}
+                    onClick={() => setActiveStory(null)}
+                    className="btn btn-primary w-full py-3 text-sm font-bold"
+                  >
+                    Challenge This Score
+                  </Link>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       )}
@@ -525,8 +592,8 @@ function Home() {
         <div className="fixed inset-0 z-50 grid place-items-center bg-black/80 p-4 backdrop-blur-sm">
           <div className="plate max-w-md w-full p-6">
             <div className="flex items-center justify-between">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#0367FC] px-3 py-1 text-xs font-bold text-white">
-                <Flame className="h-3.5 w-3.5 text-[#D2F801]" /> Daily Challenge Hub
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#D2F801] px-3 py-1 text-xs font-bold text-[#161616]">
+                <Flame className="h-3.5 w-3.5 text-[#161616]" /> Daily Challenge Hub
               </span>
               <button
                 type="button"
@@ -536,8 +603,8 @@ function Home() {
                 <X className="h-4 w-4" />
               </button>
             </div>
-            <h3 className="font-display mt-3 text-3xl">
-              🔥 {dailyStreak} Day Streak
+            <h3 className="font-display mt-3 text-3xl flex items-center gap-2">
+              <Flame className="h-7 w-7 text-[#D2F801]" /> {dailyStreak} Day Streak
             </h3>
             <p className="mt-1 text-xs text-muted-foreground">
               Global Seed: {todayKey()} · Same 5 coordinates for every player worldwide.
@@ -557,7 +624,9 @@ function Home() {
                     }`}
                   >
                     <p className="text-[10px] font-bold">D{d}</p>
-                    <p className="mt-1 text-sm">{done ? "🔥" : "·"}</p>
+                    <p className="mt-1 flex items-center justify-center text-sm">
+                      {done ? <Flame className="h-4 w-4 text-[#D2F801]" /> : "·"}
+                    </p>
                   </div>
                 );
               })}
@@ -569,7 +638,7 @@ function Home() {
                 params={{ mode: "classic" }}
                 search={{ daily: 1 }}
                 onClick={() => setShowDailyModal(false)}
-                className="btn btn-blue flex-1 py-3 text-sm font-bold"
+                className="btn btn-primary flex-1 py-3 text-sm font-bold"
               >
                 Play Today's Seed
               </Link>

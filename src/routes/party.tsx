@@ -308,7 +308,7 @@ function PartyPage() {
       <main className="rail-offset px-4 pb-12 pt-8 md:px-6">
         <div className="mx-auto max-w-3xl">
           <div className="text-center">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#0367FC] px-3 py-1 text-xs font-extrabold uppercase text-white">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#D2F801] px-3 py-1 text-xs font-extrabold uppercase text-[#161616]">
               <Users className="h-3.5 w-3.5" /> 2–16 Player Voice Party
             </span>
             <h1 className="font-display mt-3 text-4xl md:text-5xl">{t(lang, "party")}</h1>
@@ -320,8 +320,8 @@ function PartyPage() {
           {!room ? (
             <div className="mt-8 grid gap-5">
               {/* Host Room Configuration Card */}
-              <div className="plate space-y-5 p-6">
-                <div className="flex items-center justify-between border-b border-border pb-3">
+              <div className="plate space-y-5 p-5 sm:p-6">
+                <div className="flex flex-wrap items-center justify-between border-b border-border pb-3 gap-2">
                   <div>
                     <h2 className="font-display text-2xl">Host a Custom Party</h2>
                     <p className="text-xs text-muted-foreground">
@@ -345,20 +345,20 @@ function PartyPage() {
               </div>
 
               {/* Join Room by Code */}
-              <div className="plate p-6">
+              <div className="plate p-5 sm:p-6">
                 <p className="font-display text-2xl">Join a Friend's Room</p>
                 <div className="mt-3 flex gap-2">
                   <input
                     value={code}
                     onChange={(e) => setCode(e.target.value.toUpperCase().slice(0, 4))}
                     placeholder="CODE"
-                    className="flex-1 rounded-full border border-input bg-background px-5 py-3 text-center font-display text-2xl tracking-[0.3em]"
+                    className="flex-1 rounded-full border border-input bg-background px-4 py-2.5 text-center font-display text-xl tracking-[0.3em]"
                   />
                   <button
                     type="button"
                     onClick={joinRoom}
                     disabled={code.length < 4}
-                    className="btn btn-blue px-8 text-base font-bold"
+                    className="btn btn-primary px-6 text-sm font-bold"
                   >
                     Join
                   </button>
@@ -368,8 +368,8 @@ function PartyPage() {
           ) : (
             <div className="mt-8 space-y-4">
               {/* Waiting Lobby Card */}
-              <div className="plate p-6">
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4">
+              <div className="plate p-4 sm:p-6">
+                <div className="flex flex-col gap-3 border-b border-border pb-4 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-center gap-3">
                     <div>
                       <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
@@ -395,34 +395,36 @@ function PartyPage() {
 
                   {/* Active Room Summary Pills + Editable Host Settings Toggle */}
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="rounded-full bg-[#0367FC] px-3 py-1 text-xs font-bold text-white">
+                    <span className="rounded-full bg-[#D2F801] px-2.5 py-0.5 text-xs font-bold text-[#161616]">
                       {t(lang, selectedMode)}
                     </span>
-                    <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold">
+                    <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-semibold">
                       {selectedTime === 0 ? t(lang, "unlimited") : `${selectedTime}s`} · {t(lang, selectedDiff)}
                     </span>
-                    <span className="readout rounded-full bg-muted px-3 py-1 text-xs font-bold">
+                    <span className="readout rounded-full bg-muted px-2.5 py-0.5 text-xs font-bold">
                       {players.length}/{maxPlayers} Players
                     </span>
+                  </div>
 
+                  <div className="grid grid-cols-3 gap-2 w-full sm:flex sm:w-auto">
                     {isHost && (
                       <button
                         type="button"
                         onClick={() => setShowHostSettings((v) => !v)}
-                        className="btn btn-outline !px-3 !py-1.5 text-xs font-bold"
+                        className="btn btn-outline !px-3 !py-1.5 text-xs font-bold flex items-center justify-center gap-1"
                       >
                         <SlidersHorizontal className="h-3.5 w-3.5 text-[#D2F801]" />
-                        Edit Rules
+                        Rules
                       </button>
                     )}
 
                     <button
                       type="button"
                       onClick={() => setShowInviteModal(true)}
-                      className="btn btn-blue !px-3.5 !py-1.5 text-xs font-bold"
+                      className="btn btn-primary !px-3 !py-1.5 text-xs font-bold flex items-center justify-center gap-1"
                     >
                       <UserPlus className="h-3.5 w-3.5" />
-                      Invite Friends
+                      Invite
                     </button>
 
                     <button
@@ -431,7 +433,7 @@ function PartyPage() {
                         setRoom(null);
                         setPlayers([]);
                       }}
-                      className="rounded-full border border-border px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground"
+                      className="rounded-full border border-border px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground text-center"
                     >
                       Leave
                     </button>
@@ -440,15 +442,15 @@ function PartyPage() {
 
                 {/* Live Host Rule Editor inside Waiting Lobby */}
                 {isHost && showHostSettings && (
-                  <div className="mt-4 rounded-2xl border border-[#0367FC]/50 bg-background/60 p-4">
+                  <div className="mt-4 rounded-2xl border border-[#D2F801]/40 bg-background/60 p-4">
                     <div className="mb-3 flex items-center justify-between">
-                      <span className="text-xs font-extrabold uppercase tracking-wider text-[#0367FC]">
+                      <span className="text-xs font-extrabold uppercase tracking-wider text-[#D2F801]">
                         Host Room Settings (Live Update)
                       </span>
                       <button
                         type="button"
                         onClick={() => setShowHostSettings(false)}
-                        className="rounded-full bg-[#0367FC] px-3 py-1 text-xs font-bold text-white"
+                        className="rounded-full bg-[#D2F801] px-3 py-1 text-xs font-bold text-[#161616]"
                       >
                         Confirm Settings
                       </button>
@@ -466,63 +468,62 @@ function PartyPage() {
                         key={p.id}
                         className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-background/50 px-4 py-3"
                       >
-                        <div className="flex min-w-0 items-center gap-3">
+                        <div className="flex min-w-0 items-center gap-2.5">
                           <AvatarFrame
                             name={p.name}
                             rp={p.rp}
                             championPosition={p.championPosition}
-                            size={48}
+                            size={38}
                           />
                           <RankBanner
                             rp={p.rp}
                             championPosition={p.championPosition}
-                            width={32}
+                            width={30}
                             className="hidden sm:inline-flex"
                           />
                           <div className="min-w-0">
-                            <div className="flex flex-wrap items-center gap-1.5">
+                            <div className="flex flex-wrap items-center gap-1">
                               <ClanTagPill tag={p.clanTag} color={p.clanTagColor} />
-                              <span className="truncate font-bold">{p.name}</span>
-                              <VerifiedBadge type={p.verified} size={14} />
+                              <span className="truncate text-xs sm:text-sm font-bold">{p.name}</span>
+                              <VerifiedBadge type={p.verified} size={13} />
                               {p.host && (
-                                <span className="rounded-full bg-[#D2F801] px-2 py-0.5 text-[10px] font-black text-[#161616]">
+                                <span className="rounded-full bg-[#D2F801] px-1.5 py-0.2 text-[9px] font-black text-[#161616]">
                                   HOST
                                 </span>
                               )}
                             </div>
-                            <p className="text-xs text-muted-foreground">
-                              @{p.username} · <span style={{ color: step.tier.accent }}>{step.name}</span> (
-                              {p.rp.toLocaleString()} RP)
+                            <p className="truncate text-[11px] text-muted-foreground">
+                              @{p.username} · <span style={{ color: step.tier.accent }}>{step.name}</span>
                             </p>
                           </div>
                         </div>
 
-                        <div className="flex shrink-0 items-center gap-2">
+                        <div className="flex shrink-0 items-center gap-1.5">
                           {/* Per-Player Voice Mute Button */}
                           {p.id !== "me" && (
                             <button
                               type="button"
                               onClick={() => togglePlayerMute(p.id)}
-                              className={`grid h-9 w-9 place-items-center rounded-full border transition-colors ${
+                              className={`grid h-8 w-8 place-items-center rounded-full border transition-colors ${
                                 p.muted
                                   ? "border-destructive bg-destructive/15 text-destructive"
                                   : "border-border bg-card text-foreground hover:bg-muted"
                               }`}
                               title={p.muted ? `Unmute ${p.name}` : `Mute ${p.name}`}
                             >
-                              {p.muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+                              {p.muted ? <VolumeX className="h-3.5 w-3.5" /> : <Volume2 className="h-3.5 w-3.5" />}
                             </button>
                           )}
 
                           <span
-                            className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold ${
+                            className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-bold ${
                               p.ready
                                 ? "bg-[#D2F801] text-[#161616]"
                                 : "bg-muted text-muted-foreground"
                             }`}
                           >
-                            {p.ready && <IconCheck className="h-3.5 w-3.5" />}
-                            {p.ready ? "Ready" : "Waiting"}
+                            {p.ready && <IconCheck className="h-3 w-3" />}
+                            {p.ready ? "Ready" : "Wait"}
                           </span>
                         </div>
                       </li>
@@ -531,23 +532,23 @@ function PartyPage() {
                 </ul>
 
                 {/* Party Voice Chat Control Bar */}
-                <div className="mt-5 rounded-2xl border border-border bg-background/60 p-4">
+                <div className="mt-5 rounded-2xl border border-border bg-background/60 p-3 sm:p-4">
                   <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div className="flex items-center gap-2.5">
+                    <div className="flex items-center gap-2">
                       <button
                         type="button"
                         onClick={() => setMicOn((m) => !m)}
-                        className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-extrabold transition-all ${
+                        className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-extrabold transition-all ${
                           micOn
                             ? "bg-[#D2F801] text-[#161616]"
                             : "bg-destructive text-white"
                         }`}
                       >
-                        {micOn ? <Mic className="h-4 w-4" /> : <MicOff className="h-4 w-4" />}
-                        {micOn ? "Mic On (Voice Active)" : "Mic Muted"}
+                        {micOn ? <Mic className="h-3.5 w-3.5" /> : <MicOff className="h-3.5 w-3.5" />}
+                        {micOn ? "Mic Active" : "Mic Muted"}
                       </button>
                       <span className="text-xs text-muted-foreground">
-                        {micOn ? "🎙️ Transmitting in Party Room" : "Press to unmute mic"}
+                        {micOn ? "Transmitting in Party Room" : "Press to unmute"}
                       </span>
                     </div>
 

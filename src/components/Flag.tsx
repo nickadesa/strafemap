@@ -60,15 +60,32 @@ export function countryCode(country: string): string | null {
   return isoCode(key);
 }
 
-export function Flag({ country, size = 24, className = "" }: { country: string; size?: number; className?: string }) {
+export function Flag({
+  country,
+  size = 24,
+  className = "",
+  rectangular = false,
+}: {
+  country: string;
+  size?: number;
+  className?: string;
+  rectangular?: boolean;
+}) {
   const [failed, setFailed] = useState(false);
   const file = flagFile(country);
-  const code = file ? null : countryCode(country);
-  const src = file ? `/flags/${file}.svg` : code ? `https://flagcdn.com/${code}.svg` : null;
-  // The local pack already has rounded badges inside square SVG canvases.
-  // Preserve those canvases instead of squeezing them into a second 4:3 badge.
-  const h = file ? size : Math.round(size * 0.75);
-  const base = `inline-grid shrink-0 place-items-center overflow-hidden ${file ? "" : "rounded-[6px] bg-muted ring-1 ring-border"} ${className}`;
+  const code = countryCode(country);
+  const src =
+    rectangular && code
+      ? `https://flagcdn.com/${code.toLowerCase()}.svg`
+      : file
+        ? `/flags/${file}.svg`
+        : code
+          ? `https://flagcdn.com/${code.toLowerCase()}.svg`
+          : null;
+  const h = rectangular ? Math.round(size * 0.67) : file ? size : Math.round(size * 0.75);
+  const base = `inline-grid shrink-0 place-items-center overflow-hidden ${
+    rectangular ? "border border-border/60" : file ? "" : "rounded-[6px] bg-muted ring-1 ring-border"
+  } ${className}`;
   if (!src || failed) {
     return (
       <span className={base} style={{ width: size, height: h }} aria-label={country}>
@@ -80,7 +97,7 @@ export function Flag({ country, size = 24, className = "" }: { country: string; 
   }
   return (
     <span className={base} style={{ width: size, height: h }}>
-      <img src={src} alt={`${country} flag`} width={size} height={h} onError={() => setFailed(true)} className="block h-full w-full object-contain" draggable={false} />
+      <img src={src} alt={`${country} flag`} width={size} height={h} onError={() => setFailed(true)} className="block h-full w-full object-cover" draggable={false} />
     </span>
   );
 }

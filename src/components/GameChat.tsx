@@ -48,14 +48,14 @@ export function GameChat({
   const opp: MatchChatOpponent = opponent ?? {
     name: "KestrelMap",
     clanTag: "SEOUL",
-    clanTagColor: "#0367FC",
+    clanTagColor: "#D2F801",
     rp: 7280,
     verified: "gold",
   };
 
   const [text, setText] = useState("");
   const [selectedAura, setSelectedAura] = useState<"none" | "fire" | "water" | "rainbow" | "vines">(
-    social.chatAura ?? "rainbow",
+    social.chatAura ?? "none",
   );
   const [opponentLeft, setOpponentLeft] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -63,12 +63,11 @@ export function GameChat({
       id: "m-1",
       senderName: opp.name,
       senderTag: opp.clanTag,
-      senderTagColor: opp.clanTagColor ?? "#0367FC",
+      senderTagColor: opp.clanTagColor ?? "#D2F801",
       senderRp: opp.rp,
       senderVerified: opp.verified ?? "gold",
       text: t(lang, "chatDemoMsg"),
       me: false,
-      aura: "water",
     },
   ]);
 
@@ -132,8 +131,8 @@ export function GameChat({
         <div className="flex items-center gap-2">
           <span className="h-2.5 w-2.5 rounded-full bg-[#D2F801]" />
           <span className="text-sm font-bold">{t(lang, "matchChat")}</span>
-          <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">
-            {t(lang, "vsName", { name: `${opp.clanTag ? `[${opp.clanTag}] ` : ""}${opp.name}` })}
+          <span className="rounded-full bg-muted px-2.5 py-0.5 text-[11px] text-muted-foreground font-medium">
+            {t(lang, "vsName", { name: `${opp.clanTag ? `${opp.clanTag} ` : ""}${opp.name}` })}
           </span>
         </div>
 
@@ -188,7 +187,7 @@ export function GameChat({
               <AvatarFrame
                 name={m.senderName}
                 rp={m.senderRp ?? 1200}
-                size={38}
+                size={34}
               />
               <div className={`max-w-[78%] ${m.me ? "items-end text-right" : "items-start text-left"}`}>
                 <div
@@ -201,10 +200,10 @@ export function GameChat({
                   <VerifiedBadge type={m.senderVerified ?? "none"} size={13} />
                 </div>
                 <div
-                  className={`inline-block rounded-2xl px-3.5 py-2 text-sm font-medium ${
+                  className={`inline-block px-4 py-2 text-sm font-medium ${
                     m.me
-                      ? "bg-[#0367FC] text-white"
-                      : "bg-muted text-foreground"
+                      ? "rounded-[22px] rounded-br-sm bg-[#D2F801] text-[#161616] font-semibold"
+                      : "rounded-[22px] rounded-bl-sm bg-muted text-foreground"
                   } ${auraClass(m.aura)}`}
                 >
                   {m.text}
@@ -215,33 +214,6 @@ export function GameChat({
         })}
       </div>
 
-      {/* Quick Preset Pills + Quick Emojis */}
-      <div className="border-t border-border/60 bg-background/30 px-4 py-2">
-        <div className="no-scrollbar flex items-center gap-1.5 overflow-x-auto py-0.5">
-          {(settings.quickEmojis ?? ["🔥", "🎯", "🤯", "👏", "💀"]).map((emo) => (
-            <button
-              key={emo}
-              type="button"
-              onClick={() => sendMessage(emo)}
-              className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-muted text-sm hover:bg-[#D2F801] hover:text-[#161616]"
-            >
-              {emo}
-            </button>
-          ))}
-          <span className="mx-1 h-4 w-px shrink-0 bg-border" />
-          {QUICK_CHAT_PRESET_KEYS.map((key) => (
-            <button
-              key={key}
-              type="button"
-              onClick={() => sendMessage(t(lang, key))}
-              className="shrink-0 rounded-full border border-border bg-card px-2.5 py-1 text-xs font-semibold text-foreground transition-colors hover:border-[#0367FC] hover:bg-[#0367FC] hover:text-white"
-            >
-              {t(lang, key)}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Input Row */}
       <div className="flex items-center gap-2 border-t border-border p-3">
         <input
@@ -249,7 +221,7 @@ export function GameChat({
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && sendMessage(text)}
           placeholder={t(lang, "chatPlaceholder")}
-          className="flex-1 rounded-full border border-border bg-background px-4 py-2 text-sm outline-none focus:border-[#0367FC]"
+          className="flex-1 rounded-full border border-border bg-background px-4 py-2 text-sm outline-none focus:border-[#D2F801]"
         />
         <button
           type="button"

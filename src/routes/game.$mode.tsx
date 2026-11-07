@@ -149,10 +149,39 @@ function GamePage() {
   // 7 Deadly Sins state
   const [activeSin, setActiveSin] = useState<SinCardId>(search.sin ?? "pride");
   const [sinConfirmed, setSinConfirmed] = useState<boolean>(mode !== "sins" || Boolean(search.sin));
+  const [sinCountdown, setSinCountdown] = useState(30);
+  const [shareDrawerOpen, setShareDrawerOpen] = useState(false);
   const [greedChargesLeft, setGreedChargesLeft] = useState(2);
   const [placingSecondPin, setPlacingSecondPin] = useState(false);
   const [guess2, setGuess2] = useState<LatLng | null>(null);
   const [gluttonyStreak, setGluttonyStreak] = useState(0);
+
+  // 30s countdown for 7 Deadly Sins card selection drawer
+  useEffect(() => {
+    if (mode !== "sins" || sinConfirmed) return;
+    const timer = setInterval(() => {
+      setSinCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          setSinConfirmed(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [mode, sinConfirmed]);
+
+  const todayKeyStr = useMemo(() => {
+    const d = new Date();
+    return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
+  }, []);
+
+  const existingDailyRecord = useMemo(() => {
+    if (!daily) return null;
+    const records = loadRecords();
+    return records.find((r) => r.daily && (r.date === todayKeyStr || r.seed === todayKeyStr)) ?? null;
+  }, [daily, todayKeyStr]);
 
   const [seed, setSeed] = useState(0);
   const [rounds, setRounds] = useState<Location[]>([]);
@@ -500,69 +529,37 @@ function GamePage() {
     return Object.entries(totals).sort((a, b) => b[1].pts - a[1].pts);
   }, [results, mode, ranked, social.nickname, settings.name, lang]);
 
+  if (existingDailyRecord) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center p-6 text-center">
+        <Logo />
+        <div className="plate mt-6 max-w-md p-6 sm:p-8 space-y-4">
+          <span className="rounded-full bg-[#D2F801] px-3 py-1 text-xs font-black uppercase text-[#161616]">
+            Daily Challenge
+          </span>
+          <h1 className="font-display text-3xl">Already Completed Today</h1>
+          <p className="text-sm text-muted-foreground">
+            You achieved <strong className="text-[#D2F801]">{existingDailyRecord.score.toLocaleString()}</strong> / 25,000 points today. Daily challenge seeds are strictly one attempt per calendar day.
+          </p>
+          <div className="pt-2 flex flex-col gap-2">
+            <Link to="/play" className="btn btn-primary w-full !py-2.5 text-xs font-bold">
+              Play Other Modes
+            </Link>
+            <Link to="/stats" className="btn btn-outline w-full !py-2.5 text-xs font-bold">
+              View Stats & Streaks
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!loc)
     return (
       <div className="grid min-h-screen place-items-center font-semibold text-muted-foreground">
         {tr("preparing")}
       </div>
     );
-
-  // Pre-match 7 Deadly Sins Card Picker Modal if in `sins` mode and not yet confirmed
-  if (mode === "sins" && !sinConfirmed) {
-    return (
-      <div className="min-h-screen px-4 py-8">
-        <div className="mx-auto max-w-4xl">
-          <Logo />
-          <div className="plate mt-6 p-6 md:p-8">
-            <span className="rounded-full bg-[#D2F801] px-3 py-1 text-xs font-extrabold uppercase text-[#161616]">
-              100% Self-Only Skill Cards
-            </span>
-            <h1 className="font-display mt-3 text-3xl md:text-5xl">{tr("sins")}</h1>
-            <p className="mt-1 text-sm text-muted-foreground">{tr("sinsBlurb")}</p>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              {SIN_CARDS.map((card) => {
-                const selected = activeSin === card.id;
-                return (
-                  <button
-                    key={card.id}
-                    type="button"
-                    onClick={() => setActiveSin(card.id)}
-                    className={`rounded-2xl border p-4 text-left transition-all ${
-                      selected
-                        ? "border-[#D2F801] bg-[#D2F801]/10 ring-1 ring-[#D2F801]"
-                        : "border-border bg-background/50 hover:bg-muted/50"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-display text-xl" style={{ color: card.accent }}>
-                        {card.sinName}
-                      </span>
-                      <span className="rounded-full bg-card px-2.5 py-0.5 text-xs font-bold text-foreground">
-                        {card.skillName}
-                      </span>
-                    </div>
-                    <p className="mt-2 text-xs text-positive">
-                      <strong>Boon:</strong> {card.boon}
-                    </p>
-                    <p className="mt-1 text-xs text-destructive">
-                      <strong>Trade-off:</strong> {card.tradeoff}
-                    </p>
-                  </button>
-                );
-              })}
-            </div>
-            <button
-              type="button"
-              onClick={() => setSinConfirmed(true)}
-              className="btn btn-primary mt-6 w-full py-3.5 text-base font-bold"
-            >
-              Lock Sin Card & Start Match
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   const last = results[results.length - 1];
   const showHint = difficulty === "easy" || difficulty === "medium";
@@ -680,63 +677,77 @@ function GamePage() {
             ))}
           </div>
 
-          {/* Action Buttons */}
-          <div className="mt-6 flex flex-wrap gap-3">
-            {!daily && (
-              <button onClick={() => setSeed((s) => s + 1)} className="btn btn-primary">
-                {tr("playAgain")}
-              </button>
-            )}
+          {/* Share Results Card Trigger Button */}
+          <div className="mt-4 flex flex-wrap gap-2.5">
             <button
+              type="button"
+              onClick={() => setShareDrawerOpen(true)}
+              className="btn btn-primary flex-1 !py-3 flex items-center justify-center gap-2 text-xs font-bold"
+            >
+              <Share2 className="h-4 w-4" /> Share Results Card
+            </button>
+            <button
+              type="button"
               onClick={() => {
                 navigator.clipboard?.writeText(share).then(() => setCopied(true));
               }}
-              className="btn btn-blue"
+              className="btn btn-outline !px-4 !py-3 text-xs font-bold"
             >
               {copied ? tr("copied") : tr("copyResult")}
             </button>
-            {ranked ? (
-              <Link to="/rank" className="btn btn-outline">
-                {tr("backRank")}
-              </Link>
-            ) : (
-              <Link to="/play" className="btn btn-outline">
-                {tr("changeMode")}
-              </Link>
-            )}
-            <Link to="/" className="btn btn-outline">
-              {tr("menu")}
-            </Link>
           </div>
 
-          {/* Results Share Card Studio with Live Preview */}
-          <ShareCardStudio
-            lang={lang}
-            defaultTemplate={defaultTemplate}
-            baseData={{
-              mode: MODES[mode].name,
-              tag: daily ? "Daily Challenge" : ranked ? "Ranked Match" : `${tr(mode)} · ${difficulty}`,
-              playerName: social.nickname || settings.name || "Player",
-              clanTag: social.clanTag,
-              rankName: rankAfter?.name,
-              rpChange: eloChange,
-              opponentName: ranked ? opponent.nickname : null,
-              total,
-              max: MAX_POINTS * ROUNDS,
-              avgKm: errs.length
-                ? formatDistance(errs.reduce((a, b) => a + b, 0) / errs.length, settings.unit)
-                : "—",
-              perfects: results.filter((r) => r.km !== null && r.km <= 25).length,
-              rounds: results.map((r) => ({
-                name: r.loc.name,
-                points: r.points,
-                km: r.km,
-                guess: r.guess,
-                target: { lat: r.loc.lat, lng: r.loc.lng },
-              })),
-              url: "strafemap.lovable.app",
-            }}
-          />
+          {/* Share Card Drawer */}
+          {shareDrawerOpen && (
+            <div className="fixed inset-0 z-[1000] flex items-end justify-center">
+              <div
+                className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+                onClick={() => setShareDrawerOpen(false)}
+              />
+              <div className="glass-plate pop-in relative z-10 max-h-[90vh] w-full max-w-xl rounded-t-3xl border-t border-border p-5 shadow-2xl flex flex-col">
+                <div className="mx-auto mb-2 h-1.5 w-12 rounded-full bg-muted-foreground/30" />
+                <div className="flex items-center justify-between border-b border-border pb-3">
+                  <h3 className="font-display text-lg">Share Results Card</h3>
+                  <button
+                    type="button"
+                    onClick={() => setShareDrawerOpen(false)}
+                    className="rounded-full bg-muted px-3 py-1 text-xs font-bold text-foreground"
+                  >
+                    Close
+                  </button>
+                </div>
+                <div className="no-scrollbar mt-3 flex-1 overflow-y-auto">
+                  <ShareCardStudio
+                    lang={lang}
+                    defaultTemplate={defaultTemplate}
+                    baseData={{
+                      mode: MODES[mode].name,
+                      tag: daily ? "Daily Challenge" : ranked ? "Ranked Match" : `${tr(mode)} · ${difficulty}`,
+                      playerName: social.nickname || settings.name || "Player",
+                      clanTag: social.clanTag,
+                      rankName: rankAfter?.name,
+                      rpChange: eloChange,
+                      opponentName: ranked ? opponent.nickname : null,
+                      total,
+                      max: MAX_POINTS * ROUNDS,
+                      avgKm: errs.length
+                        ? formatDistance(errs.reduce((a, b) => a + b, 0) / errs.length, settings.unit)
+                        : "—",
+                      perfects: results.filter((r) => r.km !== null && r.km <= 25).length,
+                      rounds: results.map((r) => ({
+                        name: r.loc.name,
+                        points: r.points,
+                        km: r.km,
+                        guess: r.guess,
+                        target: { lat: r.loc.lat, lng: r.loc.lng },
+                      })),
+                      url: "strafemap.lovable.app",
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Inline Match Chat Embedded Directly on Results Page */}
           <GameChat
@@ -749,6 +760,27 @@ function GamePage() {
               verified: opponent.verifiedBadge,
             }}
           />
+
+          {/* Action Buttons: Moved to the very bottom */}
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3 border-t border-border pt-6">
+            {!daily && (
+              <button onClick={() => setSeed((s) => s + 1)} className="btn btn-primary !px-6 !py-3 text-sm font-extrabold">
+                {tr("playAgain")}
+              </button>
+            )}
+            {ranked ? (
+              <Link to="/rank" className="btn btn-outline !px-5 !py-3 text-sm font-bold">
+                {tr("backRank")}
+              </Link>
+            ) : (
+              <Link to="/play" className="btn btn-outline !px-5 !py-3 text-sm font-bold">
+                {tr("changeMode")}
+              </Link>
+            )}
+            <Link to="/" className="btn btn-outline !px-5 !py-3 text-sm font-bold">
+              {tr("menu")}
+            </Link>
+          </div>
         </main>
       </div>
     );
@@ -756,16 +788,16 @@ function GamePage() {
 
   return (
     <div className="flex h-[100dvh] flex-col">
-      <header className="game-header grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2 px-2 py-2 sm:flex sm:justify-between sm:gap-3 sm:px-4 sm:py-3">
+      <header className="game-header grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2 px-3 pt-[max(0.6rem,env(safe-area-inset-top))] pb-2 sm:flex sm:justify-between sm:gap-3 sm:px-4 sm:py-3">
         <Logo className="game-logo shrink-0" />
         <div className="game-hud flex min-w-0 flex-wrap items-center justify-end gap-1.5 text-[11px] font-semibold sm:gap-2 sm:text-sm">
           {/* Ranked Opponent HUD Pill */}
           {ranked && (
-            <div className="flex items-center gap-1.5 rounded-full border border-[#0367FC]/50 bg-card px-2.5 py-1">
+            <div className="flex items-center gap-1.5 rounded-full border border-[#D2F801]/40 bg-card px-2.5 py-1">
               <span className="text-[10px] font-bold uppercase text-muted-foreground">VS</span>
-              <AvatarFrame name={opponent.nickname} rp={opponent.rp} size={24} />
+              <AvatarFrame name={opponent.nickname} rp={opponent.rp} size={22} />
               <ClanTagPill tag={opponent.clanTag} color={opponent.clanTagColor} />
-              <span className="max-w-[90px] truncate text-xs font-bold">{opponent.nickname}</span>
+              <span className="max-w-[80px] truncate text-xs font-bold">{opponent.nickname}</span>
               <VerifiedBadge type={opponent.verifiedBadge} size={12} />
               <span className="readout hidden text-[10px] text-[#D2F801] md:inline">
                 {opponent.rp.toLocaleString()} RP
@@ -865,16 +897,13 @@ function GamePage() {
               <div>
                 <div className="overflow-hidden">
                   <div className="border-t border-border pt-2.5">
-                    {showHint && loc.hint && (
-                      <p className="text-[12px] leading-relaxed text-muted-foreground">{loc.hint}</p>
-                    )}
                     {mode === "sins" && activeSin === "lust" && (
-                      <p className="mt-1 text-[11px] font-semibold text-[#D2F801]">
+                      <p className="text-[11px] font-semibold text-[#D2F801]">
                         🧭 Lust Whisper: {compassWhisperFor(loc)}
                       </p>
                     )}
                     {phase === "guess" && !unlimitedTime && (
-                      <div className="mt-2 h-[2px] overflow-hidden rounded-full bg-muted">
+                      <div className="mt-1 h-[2px] overflow-hidden rounded-full bg-muted">
                         <div
                           className="h-full bg-[#D2F801] transition-[width] duration-100"
                           style={{ width: `${100 - (elapsed / limit) * 100}%` }}
@@ -916,9 +945,8 @@ function GamePage() {
                         setQuizSelected(countryOpt);
                         submit({ lat: loc.lat, lng: loc.lng }, countryOpt);
                       }}
-                      className="flex items-center gap-2.5 rounded-2xl border border-border bg-background/80 px-4 py-3 text-left text-sm font-bold transition-all hover:border-[#D2F801] hover:bg-[#D2F801] hover:text-[#161616]"
+                      className="flex items-center justify-center rounded-2xl border border-border bg-background/90 px-4 py-3.5 text-center text-sm font-bold transition-all hover:border-[#D2F801] hover:bg-[#D2F801] hover:text-[#161616]"
                     >
-                      <Flag country={countryOpt} size={24} />
                       <span className="truncate">{countryOpt}</span>
                     </button>
                   ))}
@@ -931,7 +959,7 @@ function GamePage() {
                     type="button"
                     onClick={() => setPlacingSecondPin((v) => !v)}
                     className={`btn text-xs font-bold ${
-                      placingSecondPin ? "btn-blue" : "btn-outline"
+                      placingSecondPin ? "btn-primary" : "btn-outline"
                     }`}
                   >
                     {placingSecondPin
@@ -1039,7 +1067,7 @@ function GamePage() {
                 )}
                 <button onClick={next} className="btn btn-ink relative mt-3 w-full overflow-hidden">
                   <span
-                    className="absolute inset-y-0 left-0 bg-[#0367FC]/35"
+                    className="absolute inset-y-0 left-0 bg-[#D2F801]/35"
                     style={{ width: `${(1 - revealLeft / AUTO_NEXT_SECONDS) * 100}%` }}
                     aria-hidden="true"
                   />
@@ -1060,6 +1088,79 @@ function GamePage() {
           )}
         </div>
       </div>
+
+      {/* 7 Deadly Sins Pre-Match Drawer with 30s countdown */}
+      {mode === "sins" && !sinConfirmed && (
+        <div className="fixed inset-0 z-[1000] flex items-end justify-center">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
+          <div className="glass-plate pop-in relative z-10 max-h-[85vh] w-full max-w-2xl rounded-t-3xl border-t border-border p-5 shadow-2xl flex flex-col">
+            <div className="mx-auto mb-2 h-1.5 w-12 rounded-full bg-muted-foreground/30" />
+            <div className="flex items-center justify-between border-b border-border pb-3">
+              <div>
+                <span className="rounded-full bg-[#D2F801] px-2.5 py-0.5 text-[10px] font-extrabold uppercase text-[#161616]">
+                  7 Deadly Sins
+                </span>
+                <h2 className="font-display mt-1 text-xl">Select Your Sin Card</h2>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="readout rounded-full border border-[#D2F801] px-3 py-1 text-xs font-black text-[#D2F801]">
+                  {sinCountdown}s
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setSinConfirmed(true)}
+                  className="btn btn-primary !px-4 !py-1.5 text-xs font-bold"
+                >
+                  Skip / Start
+                </button>
+              </div>
+            </div>
+
+            <div className="no-scrollbar mt-3 flex-1 overflow-y-auto space-y-2.5 pr-1">
+              {SIN_CARDS.map((card) => {
+                const selected = activeSin === card.id;
+                return (
+                  <button
+                    key={card.id}
+                    type="button"
+                    onClick={() => setActiveSin(card.id)}
+                    className={`w-full rounded-2xl border p-3.5 text-left transition-all ${
+                      selected
+                        ? "border-[#D2F801] bg-[#D2F801]/10 ring-1 ring-[#D2F801]"
+                        : "border-border bg-card/60 hover:bg-muted"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-display text-lg" style={{ color: card.accent }}>
+                        {card.sinName}
+                      </span>
+                      <span className="rounded-full bg-muted px-2.5 py-0.5 text-[11px] font-bold text-foreground">
+                        {card.skillName}
+                      </span>
+                    </div>
+                    <p className="mt-1 text-xs text-positive">
+                      <strong>Boon:</strong> {card.boon}
+                    </p>
+                    <p className="text-[11px] text-destructive">
+                      <strong>Trade-off:</strong> {card.tradeoff}
+                    </p>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="mt-3 border-t border-border pt-3">
+              <button
+                type="button"
+                onClick={() => setSinConfirmed(true)}
+                className="btn btn-primary w-full !py-3 text-sm font-bold"
+              >
+                Confirm & Start Match ({activeSin.toUpperCase()})
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

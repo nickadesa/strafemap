@@ -346,7 +346,50 @@ export function pickRounds(list: Location[], n: number, rng: () => number = Math
 }
 
 export function dailyRounds() {
-  return pickRounds(poolFor("world", "medium"), ROUNDS, seededRng("strafe-" + todayKey()));
+  const pool = poolFor("world", "medium");
+  const now = new Date();
+  const dayIndex = Math.floor(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()) / 86400000);
+  const rng = seededRng("strafe-daily-" + todayKey() + "-" + dayIndex);
+
+  // De-duplicate pool by clean name-country key
+  const seen = new Set<string>();
+  const uniquePool = pool.filter((l) => {
+    const key = `${l.name.toLowerCase()}::${l.country.toLowerCase()}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  // Deterministically shuffle with daily seed
+  const shuffled = [...uniquePool];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    const t = shuffled[i]!;
+    shuffled[i] = shuffled[j]!;
+    shuffled[j] = t;
+  }
+
+  // Pick 5 locations ensuring distinct countries across all rounds
+  const selected: Location[] = [];
+  const pickedCountries = new Set<string>();
+  for (const loc of shuffled) {
+    if (!pickedCountries.has(loc.country)) {
+      pickedCountries.add(loc.country);
+      selected.push(loc);
+      if (selected.length === ROUNDS) break;
+    }
+  }
+
+  if (selected.length < ROUNDS) {
+    for (const loc of shuffled) {
+      if (!selected.some((s) => s.id === loc.id)) {
+        selected.push(loc);
+        if (selected.length === ROUNDS) break;
+      }
+    }
+  }
+
+  return selected;
 }
 
 /* ---------- Map Shrink & Time Limits (0 = Unlimited ∞) ---------- */

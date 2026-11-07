@@ -64,8 +64,6 @@
   --primary-foreground: #161616;
   --primary-pale: #f2fcca;
   --primary-active: #dcff1a;
-  --brand-blue: #0367fc;
-  --brand-blue-foreground: #ffffff;
   --ink-deep: #161616;
   --secondary: #161616;
   --secondary-foreground: #ffffff;
@@ -79,8 +77,8 @@
   --positive: oklch(0.64 0.16 145);
   --border: rgb(22 22 22 / 0.09);
   --input: #d6d9d1;
-  --ring: #0367fc;
-  --link: #0367fc;
+  --ring: #d2f801;
+  --link: #161616;
 }
 
 /* Thai: Extra vertical breathing room for upper/lower vowel & tone marks */
@@ -129,14 +127,12 @@
   --primary-foreground: #161616;
   --primary-pale: #2a331c;
   --primary-active: #dcff1a;
-  --brand-blue: #0367fc;
-  --brand-blue-foreground: #ffffff;
   --ink-deep: #d2f801;
   --secondary: #26282a;
   --secondary-foreground: #ffffff;
   --muted: #242628;
   --muted-foreground: #9a9d97;
-  --accent: #242a38;
+  --accent: #242628;
   --accent-foreground: #ffffff;
   --destructive: oklch(0.65 0.2 25);
   --destructive-foreground: #ffffff;
@@ -214,9 +210,10 @@
   &:hover { background: #dcff1a; }
 }
 @utility btn-blue {
-  background: #0367fc;
-  color: #ffffff;
-  &:hover { background: #257cfd; }
+  background: var(--color-secondary);
+  color: var(--color-secondary-foreground);
+  border: 1px solid var(--color-border);
+  &:hover { opacity: 0.9; }
 }
 @utility btn-ink {
   background: var(--color-secondary);
@@ -246,23 +243,26 @@
   display: inline-flex;
   align-items: center;
   border-radius: 9999px;
-  background: #0367fc;
-  color: #ffffff;
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
   padding: 1px 7px;
   font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   line-height: 1.4;
 }
-@utility rainbow-border {
-  background: linear-gradient(135deg, #0367fc, #00e5ff, #d2f801, #ff9900, #ff0055, #a855f7, #0367fc);
-  padding: 2.5px;
+@utility story-ring {
+  border: 2.5px solid #d2f801;
+  padding: 2px;
+}
+.dark .story-ring {
+  border-color: #d2f801;
 }
 
 /* Map pins */
 .pin { border-radius: 9999px; border: 3px solid var(--color-card); box-shadow: 0 0 0 1.5px var(--color-foreground); }
-.pin-guess { background: #0367fc; box-shadow: 0 0 0 2px #ffffff, 0 0 12px rgba(3, 103, 252, 0.65); }
-.pin-guess-2 { background: #a855f7; box-shadow: 0 0 0 2px #ffffff, 0 0 12px rgba(168, 85, 247, 0.65); }
+.pin-guess { background: #d2f801; box-shadow: 0 0 0 2px #161616, 0 0 10px rgba(210, 248, 1, 0.6); }
+.pin-guess-2 { background: #a855f7; box-shadow: 0 0 0 2px #ffffff, 0 0 10px rgba(168, 85, 247, 0.6); }
 .pin-target { background: #d2f801; box-shadow: 0 0 0 2px #161616, 0 0 14px rgba(210, 248, 1, 0.8); }
 .pin-bot { background: #ff3b5c; opacity: 0.95; box-shadow: 0 0 0 1.5px #ffffff; }
 .leaflet-container { font-family: var(--font-sans); background: var(--color-background); }
@@ -279,12 +279,9 @@
 .leaflet-container.crosshair { cursor: crosshair; }
 .bot-label { background: var(--color-card); color: var(--color-foreground); border: 1px solid var(--color-border); border-radius: 9999px; font-weight: 600; font-size: 11px; padding: 2px 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.25); }
 
-/* Animated trajectory line on reveal */
-@keyframes dash-flow {
-  to { stroke-dashoffset: -24; }
-}
+/* Static clean trajectory line on reveal (no flashing animation) */
 .leaflet-interactive.trajectory-line {
-  animation: dash-flow 0.9s linear infinite;
+  stroke-linecap: round;
 }
 
 /* Round zoom buttons */
@@ -437,8 +434,8 @@ html[data-glass="rim"] .glass-plate {
   box-shadow: 0 0 12px rgba(16, 185, 129, 0.28);
 }
 
-/* Navigation: 64px / 240px rail on desktop, bottom bar + top-right bar on mobile. */
+/* Navigation: 240px fixed rail on desktop, bottom bar + top-right bar on mobile. */
 .rail-offset { transition: margin-left 380ms var(--ease-spring, ease); }
-@media (min-width: 768px) { .rail-offset { margin-left: var(--rail-w, 64px); } }
+@media (min-width: 768px) { .rail-offset { margin-left: var(--rail-w, 240px); } }
 @media (max-width: 767px) { .rail-offset { padding-bottom: calc(92px + env(safe-area-inset-bottom)); } }
 .reveal-on .leaflet-control-zoom { opacity: 0; pointer-events: none; }

@@ -30,6 +30,7 @@ export interface GameRecord {
   score: number;
   max: number;
   rounds: { km: number | null; points: number }[];
+  seed?: string | undefined;
 }
 
 const SKEY = "strafe.settings";

@@ -57,76 +57,40 @@ export interface AvatarFrameProps {
 }
 
 /**
- * Places the circular player avatar UNDER the rank frame SVG (400×368).
- * Avatar diameter = width * 0.408, centered at X = 50%, Y = 46.7%.
+ * Displays a clean circular player avatar icon or uploaded profile picture.
  */
 export function AvatarFrame({
   src,
   name = "Player",
-  rp = 0,
-  championPosition = null,
-  frameUrl,
-  size = 64,
+  size = 40,
   className = "",
-  loadingPosition = false,
 }: AvatarFrameProps) {
   const [imgErr, setImgErr] = useState(false);
-  const step = getRank(rp, championPosition, { loadingPosition });
-  const resolvedFrame = frameUrl ?? step.frameUrl;
-
-  const width = size;
-  const height = Math.round(size * (368 / 400));
-  const avatarDiameter = width * FRAME_AVATAR.sizeRatioOfWidth;
-  const centerX = `${FRAME_AVATAR.centerXRatio * 100}%`;
-  const centerY = `${FRAME_AVATAR.centerYRatio * 100}%`;
   const initial = (name?.trim()?.[0] ?? "S").toUpperCase();
 
   return (
     <div
-      className={`relative inline-block shrink-0 select-none ${className}`}
-      style={{ width, height }}
+      className={`relative inline-flex shrink-0 select-none overflow-hidden rounded-full border border-border bg-[#1E1E20] text-white shadow-sm ${className}`}
+      style={{ width: size, height: size }}
     >
-      {/* Avatar circle UNDER the frame (z-index 1) */}
-      <div
-        className=" absolute z-[1] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-[#1E1E20] text-white"
-        style={{
-          width: avatarDiameter,
-          height: avatarDiameter,
-          left: centerX,
-          top: centerY,
-        }}
-      >
-        {src && !imgErr ? (
-          <img
-            src={src}
-            alt={name}
-            onError={() => setImgErr(true)}
-            className="h-full w-full object-cover"
-            draggable={false}
-          />
-        ) : (
-          <div
-            className="grid h-full w-full place-items-center font-display font-bold"
-            style={{
-              background: "linear-gradient(135deg, #0367FC 0%, #161616 100%)",
-              color: "#D2F801",
-              fontSize: Math.max(10, Math.round(avatarDiameter * 0.46)),
-            }}
-          >
-            {initial}
-          </div>
-        )}
-      </div>
-
-      {/* Rank frame SVG OVER the avatar (z-index 2) */}
-      <img
-        src={resolvedFrame}
-        alt={`${step.name} frame`}
-        width={width}
-        height={height}
-        className="pointer-events-none relative z-[2] block h-full w-full object-contain"
-        draggable={false}
-      />
+      {src && !imgErr ? (
+        <img
+          src={src}
+          alt={name}
+          onError={() => setImgErr(true)}
+          className="h-full w-full object-cover"
+          draggable={false}
+        />
+      ) : (
+        <div
+          className="grid h-full w-full place-items-center font-display font-bold bg-[#1C1D1F] text-[#D2F801]"
+          style={{
+            fontSize: Math.max(10, Math.round(size * 0.44)),
+          }}
+        >
+          {initial}
+        </div>
+      )}
     </div>
   );
 }
@@ -208,7 +172,7 @@ export function VerifiedBadge({
 
 export function ClanTagPill({
   tag,
-  color = "#0367FC",
+  color = "#D2F801",
   className = "",
 }: {
   tag?: string | null | undefined;
@@ -216,7 +180,7 @@ export function ClanTagPill({
   className?: string | undefined;
 }) {
   if (!tag) return null;
-  const isLime = color.toUpperCase() === "#D2F801" || color.toUpperCase() === "#FFC82A";
+  const isLime = color.toUpperCase() === "#D2F801" || color.toUpperCase() === "#FFC82A" || color.toUpperCase() === "#B9FF24";
   return (
     <span
       className={`inline-flex shrink-0 items-center rounded-full px-1.5 py-0.5 text-[10px] font-extrabold tracking-wider uppercase leading-none ${className}`}
@@ -225,7 +189,7 @@ export function ClanTagPill({
         color: isLime ? "#161616" : "#FFFFFF",
       }}
     >
-      [{tag}]
+      {tag}
     </span>
   );
 }

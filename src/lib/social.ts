@@ -113,6 +113,7 @@ export interface StoryHighlight {
   accuracy: string;
   caption: string;
   gradient: string;
+  imageUrl?: string | undefined;
   timestamp: string;
   viewed?: boolean | undefined;
 }

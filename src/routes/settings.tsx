@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Sidebar } from "@/components/Sidebar";
 import { useSettings } from "@/lib/game/storage";
@@ -14,12 +15,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { REACTION_SETS, REACTION_SET_IDS, type ReactionSet } from "@/lib/reactions";
-import { ChevronDown, User } from "lucide-react";
+import { ChevronDown, User, X } from "lucide-react";
 
 const tile = (u: string) =>
   u.replace("{z}", "2").replace("{y}", "1").replace("{x}", "2").replace("{s}", "a").replace("{r}", "");
 
-const EMOJI_POOL = ["🔥", "🎯", "🤯", "👏", "💀", "🚀", "💯", "⚡", "🏆", "🌍", "🗺️", "📍", "🧭", "😂", "😭", "🤝", "👑", "💎"];
+const RICH_EMOJI_POOL = [
+  "🔥", "🎯", "🤯", "👏", "💀", "🚀", "💯", "⚡", "🏆", "🌍", "🗺️", "📍", "🧭", "😂", "😭", "🤝", "👑", "💎",
+  "😎", "🤩", "🥳", "😜", "🥶", "🤖", "🤡", "👽", "👾", "👀", "✨", "🎉", "🥇", "💣", "❤️", "💚", "🧠", "👋",
+  "🙌", "💪", "🫡", "🙏", "🍕", "🍔", "☕", "🍺", "🏔️", "🏝️", "✈️", "🚗", "⛵", "🏎️", "⚽", "🏀", "🎮", "🎲",
+  "🧩", "🦄", "🦁", "🐧", "🐱", "🐶", "👍", "👎", "✌️", "🤞", "🤟", "🤘", "🤙", "👌", "🤌", "🤏", "👈", "👉"
+];
 
 export const Route = createFileRoute("/settings")({
   head: () => ({
@@ -72,6 +78,7 @@ function SettingsPage() {
   const { glass, setGlass } = useAppearance();
   const currentLang = LANGS.find((l) => l.id === lang) ?? LANGS[0]!;
   const quickEmojis = s.quickEmojis ?? ["🔥", "🎯", "🤯", "👏", "💀"];
+  const [emojiDrawerOpen, setEmojiDrawerOpen] = useState(false);
 
   const toggleQuickEmoji = (emoji: string) => {
     if (quickEmojis.includes(emoji)) {
@@ -91,18 +98,18 @@ function SettingsPage() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h1 className="font-display text-4xl md:text-5xl">{t(lang, "settings")}</h1>
             <Link to="/profile" className="btn btn-outline !px-4 !py-2 text-xs font-bold">
-              <User className="h-4 w-4 text-[#0367FC]" />
+              <User className="h-4 w-4 text-[#D2F801]" />
               {t(lang, "editProfileLink")}
             </Link>
           </div>
 
           {/* 1. General Category */}
           <section className="plate space-y-5 p-6">
-            <h2 className="text-xs font-extrabold uppercase tracking-wider text-[#0367FC]">
+            <h2 className="text-xs font-extrabold uppercase tracking-wider text-[#D2F801]">
               {t(lang, "general")}
             </h2>
 
-            {/* Language Selector with circular country flag */}
+            {/* Language Selector with rectangular country flag */}
             <div className="flex items-center justify-between gap-4">
               <div>
                 <p className="text-sm font-semibold">{t(lang, "language")}</p>
@@ -112,7 +119,7 @@ function SettingsPage() {
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="w-44 justify-between rounded-full px-3.5">
                     <span className="flex items-center gap-2">
-                      <Flag country={currentLang.country} size={20} className="rounded-full" />
+                      <Flag country={currentLang.country} size={22} rectangular />
                       <span>{currentLang.label}</span>
                     </span>
                     <ChevronDown className="h-4 w-4 opacity-60" />
@@ -125,7 +132,7 @@ function SettingsPage() {
                       onSelect={() => update({ language: l.id })}
                       className="flex cursor-pointer items-center gap-2.5 py-2"
                     >
-                      <Flag country={l.country} size={20} className="rounded-full" />
+                      <Flag country={l.country} size={22} rectangular />
                       <span className="font-medium">{l.label}</span>
                     </DropdownMenuItem>
                   ))}
@@ -230,49 +237,105 @@ function SettingsPage() {
 
             {/* Quick Emoji Presets Customization */}
             <div>
-              <div className="mb-2 flex items-center justify-between">
-                <span className="text-sm font-semibold">{t(lang, "quickEmojiPresets")} ({t(lang, "nActive", { n: quickEmojis.length })})</span>
-                <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-bold">
-                  {quickEmojis.join("  ")}
-                </span>
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <span className="text-sm font-semibold">{t(lang, "quickEmojiPresets")}</span>
+                  <p className="text-xs text-muted-foreground">Select up to 5 emojis for match reactions</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setEmojiDrawerOpen(true)}
+                  className="btn btn-primary !px-4 !py-2 text-xs font-bold"
+                >
+                  Choose Emojis ({quickEmojis.length}/5)
+                </button>
               </div>
-              <div className=" mb-3 flex flex-wrap gap-1.5">
-                {REACTION_SET_IDS.map((setId: ReactionSet) => (
-                  <button
-                    key={setId}
-                    type="button"
-                    onClick={() => update({ reactionSet: setId, quickEmojis: REACTION_SETS[setId] })}
-                    className={`rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${
-                      s.reactionSet === setId
-                        ? "border-[#0367FC] bg-[#0367FC] text-white"
-                        : "border-border bg-background/60 text-muted-foreground hover:text-foreground"
-                    }`}
+
+              <div className="mt-3 flex items-center gap-2">
+                {quickEmojis.map((emo) => (
+                  <span
+                    key={emo}
+                    className="grid h-10 w-10 place-items-center rounded-2xl border border-[#D2F801]/40 bg-[#D2F801]/10 text-lg"
                   >
-                    {t(lang, `set${setId[0]!.toUpperCase()}${setId.slice(1)}`)} ({REACTION_SETS[setId].join("")})
-                  </button>
+                    {emo}
+                  </span>
                 ))}
               </div>
-              <div className="flex flex-wrap gap-1.5">
-                {EMOJI_POOL.map((emo) => {
-                  const active = quickEmojis.includes(emo);
-                  return (
+            </div>
+          </section>
+
+          {/* Emoji Selector Drawer */}
+          {emojiDrawerOpen && (
+            <div className="fixed inset-0 z-[100] flex items-end justify-center">
+              <div
+                className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+                onClick={() => setEmojiDrawerOpen(false)}
+              />
+              <div className="glass-plate pop-in relative z-10 max-h-[85vh] w-full max-w-lg rounded-t-3xl border-t border-border p-5 shadow-2xl flex flex-col">
+                <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-muted-foreground/30" />
+                <div className="flex items-center justify-between pb-3 border-b border-border">
+                  <div>
+                    <h3 className="font-display text-lg">Customize Quick Emojis</h3>
+                    <p className="text-xs text-muted-foreground">Tap an emoji to toggle (Max 5)</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setEmojiDrawerOpen(false)}
+                    className="grid h-8 w-8 place-items-center rounded-full bg-muted text-foreground hover:bg-muted/80"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+
+                <div className="my-3 flex items-center justify-center gap-2 rounded-2xl bg-muted/40 p-2">
+                  <span className="text-xs font-bold text-muted-foreground">Active ({quickEmojis.length}/5):</span>
+                  {quickEmojis.map((emo) => (
                     <button
                       key={emo}
                       type="button"
                       onClick={() => toggleQuickEmoji(emo)}
-                      className={`grid h-9 w-9 place-items-center rounded-full border text-base transition-all ${
-                        active
-                          ? "border-[#D2F801] bg-[#D2F801]/20 ring-1 ring-[#D2F801]"
-                          : "border-border bg-card opacity-65 hover:opacity-100"
-                      }`}
+                      title="Tap to remove"
+                      className="grid h-9 w-9 place-items-center rounded-xl bg-[#D2F801] text-base text-[#161616] font-bold shadow-sm"
                     >
                       {emo}
                     </button>
-                  );
-                })}
+                  ))}
+                </div>
+
+                <div className="no-scrollbar flex-1 overflow-y-auto p-1">
+                  <div className="grid grid-cols-6 gap-2 sm:grid-cols-8">
+                    {RICH_EMOJI_POOL.map((emo) => {
+                      const active = quickEmojis.includes(emo);
+                      return (
+                        <button
+                          key={emo}
+                          type="button"
+                          onClick={() => toggleQuickEmoji(emo)}
+                          className={`grid h-11 w-11 place-items-center rounded-2xl border text-xl transition-all ${
+                            active
+                              ? "border-[#D2F801] bg-[#D2F801]/20 ring-2 ring-[#D2F801] scale-105"
+                              : "border-border bg-card/70 hover:scale-105 hover:bg-muted"
+                          }`}
+                        >
+                          {emo}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="mt-4 border-t border-border pt-3">
+                  <button
+                    type="button"
+                    onClick={() => setEmojiDrawerOpen(false)}
+                    className="btn btn-primary w-full !py-3 text-sm font-bold"
+                  >
+                    Done
+                  </button>
+                </div>
               </div>
             </div>
-          </section>
+          )}
 
           {/* 3. Appearance & Map Style Category */}
           <section className="plate space-y-5 p-6">

@@ -32,33 +32,36 @@ import {
   Compass,
   Edit3,
   Heart,
+  Image,
   MessageCircle,
   Plus,
   Send,
   Shield,
+  ShoppingBag,
   Sparkles,
   Trophy,
+  Upload,
   UserPlus,
   Users,
   X,
 } from "lucide-react";
 
-type ProfileTab = "overview" | "feed" | "clan" | "gacha";
+type ProfileTab = "overview" | "feed" | "clan" | "shop" | "gacha";
 
 export const Route = createFileRoute("/profile")({
   head: () => ({
     meta: [
-      { title: "Profile, Clan, Gacha & Feed — STRAFE" },
-      { name: "description", content: "Your X-style STRAFE profile, Clan hub, Multi-Pack Gacha Vault, and Social Feed." },
-      { property: "og:title", content: "Profile, Clan, Gacha & Feed — STRAFE" },
-      { property: "og:description", content: "Your X-style STRAFE profile, Clan hub, Multi-Pack Gacha Vault, and Social Feed." },
+      { title: "Profile, Clan, Shop & Feed — STRAFE" },
+      { name: "description", content: "Your X-style STRAFE profile, Clan hub, Cosmetic Shop, and Social Feed." },
+      { property: "og:title", content: "Profile, Clan, Shop & Feed — STRAFE" },
+      { property: "og:description", content: "Your X-style STRAFE profile, Clan hub, Cosmetic Shop, and Social Feed." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   validateSearch: (s: Record<string, unknown>): { tab?: ProfileTab } => {
     const tab = s["tab"];
-    if (tab === "overview" || tab === "feed" || tab === "clan" || tab === "gacha") return { tab };
+    if (tab === "overview" || tab === "feed" || tab === "clan" || tab === "shop" || tab === "gacha") return { tab };
     return {};
   },
   component: ProfileHubPage,
@@ -122,12 +125,12 @@ function ProfileHubPage() {
               </button>
               <button
                 type="button"
-                onClick={() => setTab("gacha")}
-                data-on={tab === "gacha"}
+                onClick={() => setTab("shop")}
+                data-on={tab === "shop" || tab === "gacha"}
                 className="seg-item"
               >
-                <Sparkles className="mr-1.5 inline h-4 w-4" />
-                {t(lang, "gacha")} ({social.gachaTickets})
+                <ShoppingBag className="mr-1.5 inline h-4 w-4" />
+                Shop
               </button>
             </div>
 
@@ -158,8 +161,8 @@ function ProfileHubPage() {
             <ClanSystemTab social={social} updateSocial={updateSocial} rank={rank} />
           )}
 
-          {tab === "gacha" && (
-            <GachaVaultTab social={social} updateSocial={updateSocial} />
+          {(tab === "shop" || tab === "gacha") && (
+            <CosmeticShopTab social={social} updateSocial={updateSocial} />
           )}
         </div>
       </main>
@@ -227,6 +230,17 @@ function XStyleProfileTab({
     });
     updateSettings({ name: cleanNick });
     setEditing(false);
+  };
+
+  const handleAvatarFile = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const res = e.target?.result as string;
+      if (res) {
+        updateSocial({ avatarUrl: res });
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   const toggleFollow = (playerId: string) => {
@@ -303,7 +317,7 @@ function XStyleProfileTab({
                 @{social.isGuest ? "guest_locked (Guest Account)" : social.username}
               </span>
               <span>·</span>
-              <span className="rounded-full bg-[#0367FC]/15 px-2.5 py-0.5 font-bold text-[#0367FC]">
+              <span className="rounded-full bg-[#D2F801]/15 px-2.5 py-0.5 font-bold text-[#D2F801]">
                 {social.title}
               </span>
               <span>·</span>
@@ -351,12 +365,12 @@ function XStyleProfileTab({
             </div>
           </div>
 
-          {/* Inline Profile Editor */}
+          {/* Inline Profile Editor with Avatar Upload */}
           {editing && (
-            <div className="mt-4 space-y-3 rounded-2xl border border-[#0367FC]/60 bg-background/70 p-4">
+            <div className="mt-4 space-y-3 rounded-2xl border border-[#D2F801]/40 bg-background/70 p-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-extrabold uppercase tracking-wider text-[#0367FC]">
-                  Edit X-Style Profile
+                <span className="text-xs font-extrabold uppercase tracking-wider text-[#D2F801]">
+                  Edit Profile Information
                 </span>
                 <label className="flex items-center gap-2 text-xs font-semibold">
                   <input
@@ -368,6 +382,42 @@ function XStyleProfileTab({
                   Simulate Guest Account (Locks @username)
                 </label>
               </div>
+
+              {/* Profile Avatar Upload */}
+              <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card/60 p-3">
+                <AvatarFrame
+                  src={social.avatarUrl}
+                  name={social.nickname}
+                  rp={rank.rp}
+                  championPosition={rank.championPosition}
+                  size={48}
+                />
+                <div className="flex-1 min-w-[180px]">
+                  <span className="block text-xs font-semibold text-muted-foreground">Profile Avatar Photo</span>
+                  <label className="btn btn-outline mt-1 inline-flex cursor-pointer items-center gap-1.5 !px-3 !py-1 text-xs font-bold">
+                    <Upload className="h-3.5 w-3.5 text-[#D2F801]" /> Upload Photo
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const f = e.target.files?.[0];
+                        if (f) handleAvatarFile(f);
+                      }}
+                    />
+                  </label>
+                  {social.avatarUrl && (
+                    <button
+                      type="button"
+                      onClick={() => updateSocial({ avatarUrl: null })}
+                      className="ml-3 text-xs text-muted-foreground hover:underline"
+                    >
+                      Remove photo
+                    </button>
+                  )}
+                </div>
+              </div>
+
               <div className="grid gap-3 sm:grid-cols-3">
                 <label className="block text-xs">
                   <span className="font-semibold text-muted-foreground">Nickname</span>
@@ -426,15 +476,14 @@ function XStyleProfileTab({
                 LEVEL {lvl.level} / 1,000
               </span>
               <span className="readout text-muted-foreground">
-                {lvl.currentLevelExp} / {lvl.nextLevelExp} EXP · Next Milestone: +1 Gacha Ticket
+                {lvl.currentLevelExp} / {lvl.nextLevelExp} EXP · Next Milestone: +250 Coins
               </span>
             </div>
             <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-muted p-0.5">
               <div
-                className="h-full rounded-full transition-all duration-500"
+                className="h-full rounded-full transition-all duration-500 bg-[#D2F801]"
                 style={{
                   width: `${lvl.progressPct}%`,
-                  background: "linear-gradient(90deg, #0367FC 0%, #D2F801 100%)",
                 }}
               />
             </div>
@@ -698,12 +747,36 @@ function ClanSystemTab({
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const myClan = clans.find((c) => c.id === social.clanId) ?? null;
+  const isLeader = myClan
+    ? myClan.members.some((m) => m.id === "me" && m.role === "Leader") || myClan.tag === social.clanTag
+    : false;
+  const [editingClan, setEditingClan] = useState(false);
+  const [editClanName, setEditClanName] = useState(myClan?.name ?? "");
+  const [editClanTag, setEditClanTag] = useState(myClan?.tag ?? "");
+
+  const handleSaveClanEdits = () => {
+    if (!myClan) return;
+    const cleanTag = editClanTag.trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
+    const cleanName = editClanName.trim();
+    if (cleanTag.length < 2 || cleanTag.length > 5) {
+      alert("Clan TAG must be 2 to 5 characters.");
+      return;
+    }
+    if (cleanName.length < 3) {
+      alert("Clan name must be at least 3 characters.");
+      return;
+    }
+    const updated = clans.map((c) => (c.id === myClan.id ? { ...c, name: cleanName, tag: cleanTag } : c));
+    saveClans(updated);
+    updateSocial({ clanTag: cleanTag });
+    setEditingClan(false);
+  };
 
   const handleCreateClan = () => {
     const cleanTag = tagInput.trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
     const cleanName = nameInput.trim();
     if (cleanTag.length < 2 || cleanTag.length > 5) {
-      setErrorMsg("Clan [TAG] must be 2 to 5 characters.");
+      setErrorMsg("Clan TAG must be 2 to 5 characters.");
       return;
     }
     if (cleanName.length < 3) {
@@ -711,7 +784,7 @@ function ClanSystemTab({
       return;
     }
     if (clans.some((c) => c.name.toLowerCase() === cleanName.toLowerCase() || c.tag === cleanTag)) {
-      setErrorMsg("Clan name or [TAG] is already taken!");
+      setErrorMsg("Clan name or TAG is already taken!");
       return;
     }
 
@@ -773,11 +846,11 @@ function ClanSystemTab({
         <section className="plate p-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="grid h-16 w-16 place-items-center overflow-hidden rounded-2xl border border-[#0367FC] bg-[#0367FC]/15 font-display text-xl text-[#D2F801]">
+              <div className="grid h-16 w-16 place-items-center overflow-hidden rounded-2xl border border-[#D2F801]/40 bg-[#D2F801]/10 font-display text-xl text-[#D2F801]">
                 {myClan.iconUrl ? (
                   <img src={myClan.iconUrl} alt={myClan.name} className="h-full w-full object-cover" />
                 ) : (
-                  `[${myClan.tag}]`
+                  myClan.tag
                 )}
               </div>
               <div>
@@ -789,19 +862,70 @@ function ClanSystemTab({
                   </span>
                 </div>
                 <p className="mt-1 text-xs text-muted-foreground">{myClan.description}</p>
-                <p className="readout mt-1 text-xs font-semibold text-[#0367FC]">
+                <p className="readout mt-1 text-xs font-semibold text-[#D2F801]">
                   Members: {myClan.members.length} / {myClan.maxMembers} · Party Clan Bonus: +15% Clan Points
                 </p>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={() => updateSocial({ clanId: null, clanTag: null })}
-              className="btn btn-outline !px-4 !py-1.5 text-xs"
-            >
-              Leave Clan
-            </button>
+            <div className="flex items-center gap-2">
+              {isLeader && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditClanName(myClan.name);
+                    setEditClanTag(myClan.tag);
+                    setEditingClan((v) => !v);
+                  }}
+                  className="btn btn-outline !px-3 !py-1.5 text-xs font-bold"
+                >
+                  <Edit3 className="mr-1 inline h-3.5 w-3.5" />
+                  {editingClan ? "Cancel" : "Edit Clan"}
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => updateSocial({ clanId: null, clanTag: null })}
+                className="btn btn-outline !px-4 !py-1.5 text-xs"
+              >
+                Leave Clan
+              </button>
+            </div>
           </div>
+
+          {/* Clan Leader Edit Form */}
+          {editingClan && (
+            <div className="mt-4 space-y-3 rounded-2xl border border-[#D2F801]/40 bg-background/60 p-4">
+              <span className="text-xs font-extrabold uppercase tracking-wider text-[#D2F801]">
+                Leader Management: Edit Clan Name & Tag
+              </span>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <label className="block text-xs">
+                  <span className="font-semibold text-muted-foreground">Clan Name</span>
+                  <input
+                    value={editClanName}
+                    onChange={(e) => setEditClanName(e.target.value)}
+                    className="mt-1 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm font-semibold"
+                  />
+                </label>
+                <label className="block text-xs">
+                  <span className="font-semibold text-muted-foreground">Clan TAG (2–5 Chars)</span>
+                  <input
+                    value={editClanTag}
+                    maxLength={5}
+                    onChange={(e) => setEditClanTag(e.target.value.toUpperCase())}
+                    className="mt-1 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm font-display tracking-wider"
+                  />
+                </label>
+              </div>
+              <button
+                type="button"
+                onClick={handleSaveClanEdits}
+                className="btn btn-primary !px-5 !py-2 text-xs font-bold"
+              >
+                Save Clan Changes
+              </button>
+            </div>
+          )}
 
           {/* Weekly Clan Mission Bar */}
           <div className="mt-5 rounded-2xl border border-border bg-background/50 p-4">
@@ -831,11 +955,10 @@ function ClanSystemTab({
                 <div key={m.id} className="flex items-center justify-between px-4 py-2.5 text-sm">
                   <div className="flex items-center gap-2.5">
                     <AvatarFrame name={m.nickname} rp={m.rp} size={36} />
-                    <div>
-                      <span className="font-bold">
-                        [{myClan.tag}] {m.nickname}
-                      </span>
-                      <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-[10px] font-bold">
+                    <div className="flex items-center gap-1.5">
+                      <ClanTagPill tag={myClan.tag} />
+                      <span className="font-bold">{m.nickname}</span>
+                      <span className="ml-1 rounded-full bg-muted px-2 py-0.5 text-[10px] font-bold">
                         {m.role}
                       </span>
                     </div>
@@ -977,63 +1100,54 @@ function ClanSystemTab({
 }
 
 /* ============================================================================
- * 3. MULTI-PACK GACHA VAULT TAB (4 Packs + Tear & Flip Animation)
+ * 3. COSMETIC SHOP TAB (Direct Buy with Coins, Equip Loadout & Categories)
  * ========================================================================== */
-function GachaVaultTab({
+function CosmeticShopTab({
   social,
   updateSocial,
 }: {
   social: ReturnType<typeof useSocialProfile>[0];
   updateSocial: ReturnType<typeof useSocialProfile>[1];
 }) {
-  const [selectedPack, setSelectedPack] = useState<GachaPack>(GACHA_PACKS[0]!);
-  const [openingPhase, setOpeningPhase] = useState<"idle" | "tearing" | "revealed">("idle");
-  const [pulledItems, setPulledItems] = useState<GachaItem[]>([]);
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
 
-  const rarityGlow: Record<GachaItem["rarity"], string> = {
+  const rarityPrices: Record<GachaItem["rarity"], number> = {
+    Common: 250,
+    Rare: 500,
+    Epic: 1000,
+    Mythic: 2500,
+  };
+
+  const rarityColor: Record<GachaItem["rarity"], string> = {
     Common: "#9A9D97",
-    Rare: "#0367FC",
+    Rare: "#3898FF",
     Epic: "#D2F801",
     Mythic: "#DC1F30",
   };
 
-  const openPack = (pack: GachaPack) => {
-    const currentCoins = social.coins ?? 10000;
-    const canAffordCoins = currentCoins >= pack.costCoins;
-    const canAffordTickets = social.gachaTickets >= pack.costTickets;
+  const categories = [
+    { id: "all", label: "All Items" },
+    { id: "aura", label: "Chat Auras" },
+    { id: "pin", label: "Map Pins" },
+    { id: "trail", label: "Trails" },
+    { id: "tagColor", label: "TAG Colors" },
+    { id: "nameColor", label: "Name Colors" },
+    { id: "title", label: "Titles" },
+  ];
 
-    if (!canAffordCoins && !canAffordTickets) {
-      alert(`Not enough Coins or Tickets! This pack costs ${pack.costCoins.toLocaleString()} Coins (You have ${currentCoins.toLocaleString()} Coins).`);
-      return;
-    }
+  const filteredItems = useMemo(() => {
+    if (categoryFilter === "all") return GACHA_ITEMS;
+    return GACHA_ITEMS.filter((i) => i.category === categoryFilter);
+  }, [categoryFilter]);
 
-    setSelectedPack(pack);
-    setOpeningPhase("tearing");
-    setTimeout(() => {
-      const pool = GACHA_ITEMS.filter((i) => i.packId === pack.id || pack.id === "mythic-pack");
-      const draws: GachaItem[] = [];
-      for (let k = 0; k < 3; k++) {
-        const pick = pool[Math.floor(Math.random() * pool.length)] ?? GACHA_ITEMS[0]!;
-        draws.push(pick);
-      }
-      setPulledItems(draws);
-      const nextUnlocked = Array.from(
-        new Set([...social.unlockedCosmetics, ...draws.map((d) => d.id)]),
-      );
-
-      if (canAffordCoins) {
-        updateSocial({
-          coins: currentCoins - pack.costCoins,
-          unlockedCosmetics: nextUnlocked,
-        });
-      } else {
-        updateSocial({
-          gachaTickets: Math.max(0, social.gachaTickets - pack.costTickets),
-          unlockedCosmetics: nextUnlocked,
-        });
-      }
-      setOpeningPhase("revealed");
-    }, 650);
+  const isEquipped = (item: GachaItem): boolean => {
+    if (item.category === "aura") return social.chatAura === item.value;
+    if (item.category === "pin") return social.pinStyle === item.value;
+    if (item.category === "trail") return social.trailStyle === item.value;
+    if (item.category === "tagColor") return social.clanTagColor === item.value;
+    if (item.category === "nameColor") return social.nameColor === item.value;
+    if (item.category === "title") return social.title === item.value;
+    return false;
   };
 
   const equipItem = (item: GachaItem) => {
@@ -1052,174 +1166,148 @@ function GachaVaultTab({
     }
   };
 
+  const buyItem = (item: GachaItem) => {
+    const cost = rarityPrices[item.rarity];
+    const currentCoins = social.coins ?? 10000;
+    if (currentCoins < cost) {
+      alert(`Not enough Coins! This item costs ${cost.toLocaleString()} Coins (You have ${currentCoins.toLocaleString()} Coins).`);
+      return;
+    }
+    const nextUnlocked = Array.from(new Set([...social.unlockedCosmetics, item.id]));
+    updateSocial({
+      coins: currentCoins - cost,
+      unlockedCosmetics: nextUnlocked,
+    });
+    equipItem(item);
+  };
+
   return (
     <div className="space-y-6">
+      {/* Shop Header & Currency Balance */}
       <section className="plate p-6">
-        <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <span className="inline-flex items-center gap-1 rounded-full bg-[#D2F801] px-3 py-0.5 text-xs font-extrabold uppercase text-[#161616]">
-              <Sparkles className="h-3.5 w-3.5" /> Multi-Pack Cosmetic Vault
+              <ShoppingBag className="h-3.5 w-3.5" /> Cosmetic Shop
             </span>
-            <h2 className="font-display mt-2 text-3xl">Select a Pack to Tear Open</h2>
+            <h2 className="font-display mt-2 text-3xl">Direct Cosmetic Store</h2>
             <p className="text-xs text-muted-foreground">
-              Unlock Super Chat Auras, Custom Map Pins, Trajectory Trails, [TAG] Colors & Titles
+              Purchase Super Chat Auras, Custom Map Pins, Trajectory Trails, Clan TAG Colors & Titles directly with Coins
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <span className="readout rounded-full border border-[#D2F801] bg-[#D2F801]/10 px-3.5 py-1 text-sm font-extrabold text-[#D2F801]">
+            <span className="readout rounded-full border border-[#D2F801] bg-[#D2F801]/10 px-4 py-1.5 text-sm font-extrabold text-[#D2F801]">
               🪙 {(social.coins ?? 10000).toLocaleString()} Coins
-            </span>
-            <span className="readout rounded-full border border-border bg-background/60 px-3 py-1 text-xs font-bold text-muted-foreground">
-              🎟️ {social.gachaTickets} Tickets
             </span>
             <button
               type="button"
               onClick={() => updateSocial({ coins: (social.coins ?? 10000) + 2000 })}
-              className="btn btn-outline !px-3 !py-1 text-xs font-bold"
+              className="btn btn-outline !px-3.5 !py-1.5 text-xs font-bold"
             >
-              +2,000 Coins
+              +2,000 Coins (Demo)
             </button>
           </div>
         </div>
 
-        {/* 4 Gacha Packs Grid */}
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {GACHA_PACKS.map((pack) => {
-            const currentCoins = social.coins ?? 10000;
-            const canAfford = currentCoins >= pack.costCoins || social.gachaTickets >= pack.costTickets;
-            return (
-              <div
-                key={pack.id}
-                className="flex flex-col justify-between rounded-2xl border border-border bg-background/50 p-4 transition-transform hover:-translate-y-1"
-                style={{ boxShadow: `inset 0 2px 0 0 ${pack.accent}` }}
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-1">
-                    <span
-                      className="inline-block rounded-full px-2.5 py-0.5 text-[10px] font-extrabold uppercase"
-                      style={{
-                        backgroundColor: pack.accent,
-                        color: pack.accent === "#D2F801" ? "#161616" : "#FFFFFF",
-                      }}
-                    >
-                      🪙 {pack.costCoins.toLocaleString()} Coins
-                    </span>
-                    <span className="text-[10px] font-mono text-muted-foreground">
-                      or {pack.costTickets} 🎟️
-                    </span>
-                  </div>
-                  <h3 className="font-display mt-3 text-xl">{pack.name}</h3>
-                  <p className="mt-1 text-xs text-muted-foreground">{pack.subtitle}</p>
-                  <ul className="mt-3 space-y-1 text-[11px] text-foreground/80">
-                    {pack.featuredItems.map((fi) => (
-                      <li key={fi}>• {fi}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                <button
-                  type="button"
-                  disabled={openingPhase === "tearing" || !canAfford}
-                  onClick={() => openPack(pack)}
-                  className="btn btn-primary mt-4 w-full !py-2.5 text-xs font-extrabold disabled:opacity-50"
-                >
-                  {canAfford ? `Tear Pack (${pack.costCoins} 🪙)` : "Insufficient Coins"}
-                </button>
-              </div>
-            );
-          })}
+        {/* Category Filters */}
+        <div className="no-scrollbar mt-6 flex gap-2 overflow-x-auto pb-1">
+          {categories.map((c) => (
+            <button
+              key={c.id}
+              type="button"
+              onClick={() => setCategoryFilter(c.id)}
+              className={`rounded-full px-4 py-1.5 text-xs font-bold transition-colors ${
+                categoryFilter === c.id
+                  ? "bg-[#D2F801] text-[#161616]"
+                  : "border border-border bg-background/60 text-muted-foreground hover:bg-muted"
+              }`}
+            >
+              {c.label}
+            </button>
+          ))}
         </div>
-
-        {/* Interactive Pack Opening & Card Flip Stage */}
-        {openingPhase !== "idle" && (
-          <div className="mt-6 rounded-2xl border border-[#D2F801]/50 bg-[#161616] p-6 text-center">
-            {openingPhase === "tearing" ? (
-              <div className="py-10">
-                <div className="mx-auto grid h-36 w-28 animate-bounce place-items-center rounded-2xl border-2 border-[#D2F801] bg-gradient-to-b from-[#0367FC] to-[#161616] shadow-[0_0_40px_rgba(210,248,1,0.5)]">
-                  <Sparkles className="h-10 w-10 text-[#D2F801]" />
-                </div>
-                <p className="font-display mt-4 text-2xl text-[#D2F801]">
-                  Tearing Open {selectedPack.name}…
-                </p>
-              </div>
-            ) : (
-              <div className="rise-in">
-                <p className="text-xs font-extrabold uppercase tracking-wider text-[#D2F801]">
-                  Pack Opened · 3 Cosmetics Revealed!
-                </p>
-                <div className="mt-4 grid gap-4 sm:grid-cols-3">
-                  {pulledItems.map((item, i) => {
-                    const color = rarityGlow[item.rarity];
-                    return (
-                      <div
-                        key={`${item.id}-${i}`}
-                        className="flex flex-col justify-between rounded-2xl border p-4 text-left"
-                        style={{
-                          borderColor: color,
-                          boxShadow: `0 0 24px ${color}33`,
-                          background: "#1E1E20",
-                        }}
-                      >
-                        <div>
-                          <span
-                            className="rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase"
-                            style={{
-                              backgroundColor: color,
-                              color: color === "#D2F801" ? "#161616" : "#FFFFFF",
-                            }}
-                          >
-                            {item.rarity}
-                          </span>
-                          <h4 className="font-display mt-2.5 text-xl text-white">{item.name}</h4>
-                          <p className="mt-1 text-xs text-muted-foreground">{item.previewText}</p>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => equipItem(item)}
-                          className="btn btn-blue mt-4 w-full !py-2 text-xs font-bold"
-                        >
-                          Equip Now
-                        </button>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
       </section>
 
-      {/* Cosmetic Inventory & Active Loadout */}
+      {/* Cosmetics Grid */}
       <section className="plate p-6">
-        <h3 className="font-display text-2xl">Your Unlocked Cosmetics ({social.unlockedCosmetics.length})</h3>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {GACHA_ITEMS.map((item) => {
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="font-display text-xl">
+            Items ({filteredItems.length})
+          </h3>
+          <span className="text-xs text-muted-foreground">
+            {social.unlockedCosmetics.length} / {GACHA_ITEMS.length} Owned
+          </span>
+        </div>
+
+        <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+          {filteredItems.map((item) => {
             const owned = social.unlockedCosmetics.includes(item.id);
-            const color = rarityGlow[item.rarity];
+            const equipped = isEquipped(item);
+            const price = rarityPrices[item.rarity];
+            const color = rarityColor[item.rarity];
+
             return (
               <div
                 key={item.id}
-                className={`flex items-center justify-between rounded-2xl border p-3.5 ${
-                  owned ? "border-border bg-background/50" : "border-border/40 opacity-50"
+                className={`flex flex-col justify-between rounded-2xl border p-4 transition-colors ${
+                  equipped
+                    ? "border-[#D2F801] bg-[#D2F801]/5"
+                    : owned
+                    ? "border-border bg-background/50"
+                    : "border-border/60 bg-background/30"
                 }`}
               >
                 <div>
-                  <span className="text-[10px] font-extrabold uppercase" style={{ color }}>
-                    {item.rarity} · {item.category}
-                  </span>
-                  <p className="text-sm font-bold">{item.name}</p>
-                  <p className="text-xs text-muted-foreground">{item.previewText}</p>
+                  <div className="flex items-center justify-between gap-2">
+                    <span
+                      className="rounded-full px-2.5 py-0.5 text-[10px] font-extrabold uppercase"
+                      style={{
+                        backgroundColor: color === "#D2F801" ? "#D2F801" : `${color}22`,
+                        color: color === "#D2F801" ? "#161616" : color,
+                        border: color === "#D2F801" ? "none" : `1px solid ${color}44`,
+                      }}
+                    >
+                      {item.rarity}
+                    </span>
+                    <span className="text-[10px] font-bold uppercase text-muted-foreground">
+                      {item.category}
+                    </span>
+                  </div>
+
+                  <h4 className="font-display mt-2.5 text-lg font-bold">{item.name}</h4>
+                  <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+                    {item.previewText}
+                  </p>
                 </div>
-                {owned && (
-                  <button
-                    type="button"
-                    onClick={() => equipItem(item)}
-                    className="btn btn-outline !px-3 !py-1.5 text-xs font-bold"
-                  >
-                    Equip
-                  </button>
-                )}
+
+                <div className="mt-4 pt-3 border-t border-border/50">
+                  {equipped ? (
+                    <div className="flex items-center justify-center gap-1.5 rounded-xl border border-[#D2F801] bg-[#D2F801]/10 py-2 text-xs font-extrabold text-[#D2F801]">
+                      <Check className="h-4 w-4" /> Equipped
+                    </div>
+                  ) : owned ? (
+                    <button
+                      type="button"
+                      onClick={() => equipItem(item)}
+                      className="btn btn-outline w-full !py-2 text-xs font-bold"
+                    >
+                      Equip
+                    </button>
+                  ) : (
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="readout text-xs font-extrabold text-[#D2F801]">
+                        🪙 {price.toLocaleString()}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => buyItem(item)}
+                        className="btn btn-primary !px-4 !py-1.5 text-xs font-extrabold"
+                      >
+                        Buy Now
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             );
           })}
@@ -1243,11 +1331,38 @@ function SocialFeedTab({
   stats: ReturnType<typeof computeStats>;
   lang: Lang;
 }) {
-  const { posts, stories, addPost, toggleLike, addComment } = useFeed();
+  const { posts, stories, addPost, toggleLike, addComment, addStory } = useFeed();
   const [postText, setPostText] = useState("");
   const [attachResultCard, setAttachResultCard] = useState(true);
   const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
   const [activeStory, setActiveStory] = useState<StoryHighlight | null>(null);
+
+  const handleUploadStory = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const imgUrl = reader.result as string;
+      addStory({
+        authorId: "me",
+        authorName: social.nickname,
+        authorUsername: social.username,
+        authorClanTag: social.clanTag,
+        authorVerified: social.verifiedBadge,
+        authorRp: rank.rp,
+        authorChampPos: rank.championPosition,
+        country: social.country,
+        mode: "Photo Story",
+        score: "Story",
+        accuracy: "100%",
+        caption: "Shared a new photo story",
+        gradient: "linear-gradient(160deg, #161616 0%, #262626 100%)",
+        imageUrl: imgUrl,
+      });
+    };
+    reader.readAsDataURL(file);
+    e.target.value = "";
+  };
 
   const publishPost = () => {
     if (!postText.trim() && !attachResultCard) return;
@@ -1290,34 +1405,68 @@ function SocialFeedTab({
 
   return (
     <div className="space-y-6">
-      {/* 4:5 Rainbow-Bordered Story Strip */}
+      {/* 4:5 Story Strip */}
       <section>
         <h2 className="mb-2.5 text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
           4:5 {t(lang, "stories")}
         </h2>
         <div className="no-scrollbar flex gap-3 overflow-x-auto pb-1">
+          {/* + Add Story Button */}
+          <label className="story-ring relative aspect-[4/5] w-28 shrink-0 cursor-pointer rounded-[18px] text-center transition-transform hover:scale-[1.02]">
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleUploadStory}
+            />
+            <div className="flex h-full w-full flex-col items-center justify-center rounded-[15.5px] bg-card p-2 text-foreground">
+              <div className="grid h-10 w-10 place-items-center rounded-full bg-[#D2F801] text-[#161616]">
+                <Plus className="h-5 w-5" />
+              </div>
+              <span className="mt-2 text-xs font-extrabold text-[#D2F801]">+ Add Story</span>
+              <span className="text-[10px] text-muted-foreground">Upload photo</span>
+            </div>
+          </label>
+
           {stories.map((st) => (
             <button
               key={st.id}
               type="button"
               onClick={() => setActiveStory(st)}
-              className="rainbow-border aspect-[4/5] w-32 shrink-0 rounded-[18px] text-left transition-transform hover:scale-[1.02]"
+              className="story-ring relative aspect-[4/5] w-28 shrink-0 overflow-hidden rounded-[18px] text-left transition-transform hover:scale-[1.02]"
             >
-              <div
-                className="flex h-full w-full flex-col justify-between rounded-[15.5px] p-2.5 text-white"
-                style={{ background: st.gradient }}
-              >
-                <AvatarFrame
-                  name={st.authorName}
-                  rp={st.authorRp}
-                  championPosition={st.authorChampPos}
-                  size={30}
-                />
-                <div>
-                  <p className="font-display text-xl text-[#D2F801]">{st.score}</p>
-                  <p className="truncate text-[10px] font-bold">{st.authorName}</p>
+              {st.imageUrl ? (
+                <div className="relative h-full w-full rounded-[15.5px] overflow-hidden">
+                  <img src={st.imageUrl} alt={st.caption} className="h-full w-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 p-2.5 flex flex-col justify-between text-white">
+                    <AvatarFrame
+                      name={st.authorName}
+                      rp={st.authorRp}
+                      championPosition={st.authorChampPos}
+                      size={28}
+                    />
+                    <div>
+                      <p className="truncate text-xs font-bold text-white">{st.authorName}</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div
+                  className="flex h-full w-full flex-col justify-between rounded-[15.5px] p-2.5 text-white"
+                  style={{ background: st.gradient }}
+                >
+                  <AvatarFrame
+                    name={st.authorName}
+                    rp={st.authorRp}
+                    championPosition={st.authorChampPos}
+                    size={28}
+                  />
+                  <div>
+                    <p className="font-display text-lg text-[#D2F801]">{st.score}</p>
+                    <p className="truncate text-[10px] font-bold">{st.authorName}</p>
+                  </div>
+                </div>
+              )}
             </button>
           ))}
         </div>
@@ -1396,7 +1545,7 @@ function SocialFeedTab({
             {post.resultCard && (
               <div className="mt-3 flex items-center justify-between rounded-2xl border border-[#D2F801]/40 bg-[#161616] p-4 text-white">
                 <div>
-                  <span className="rounded-full bg-[#0367FC] px-2.5 py-0.5 text-[10px] font-bold uppercase">
+                  <span className="rounded-full bg-[#D2F801] px-2.5 py-0.5 text-[10px] font-bold uppercase text-[#161616]">
                     {post.resultCard.mode}
                   </span>
                   <p className="font-display mt-2 text-3xl text-[#D2F801]">
@@ -1458,12 +1607,12 @@ function SocialFeedTab({
                 }
                 onKeyDown={(e) => e.key === "Enter" && submitComment(post.id)}
                 placeholder="Write a comment…"
-                className="flex-1 rounded-full border border-border bg-background px-3.5 py-1.5 text-xs outline-none focus:border-[#0367FC]"
+                className="flex-1 rounded-full border border-border bg-background px-3.5 py-1.5 text-xs outline-none focus:border-[#D2F801]"
               />
               <button
                 type="button"
                 onClick={() => submitComment(post.id)}
-                className="rounded-full bg-[#0367FC] px-3.5 py-1.5 text-xs font-bold text-white"
+                className="rounded-full bg-[#D2F801] px-3.5 py-1.5 text-xs font-bold text-[#161616]"
               >
                 Reply
               </button>
@@ -1475,33 +1624,62 @@ function SocialFeedTab({
       {/* Story Modal */}
       {activeStory && (
         <div className="fixed inset-0 z-50 grid place-items-center bg-black/80 p-4 backdrop-blur-md">
-          <div className="rainbow-border aspect-[4/5] w-full max-w-sm rounded-[24px]">
-            <div
-              className="flex h-full w-full flex-col justify-between rounded-[21px] p-6 text-white"
-              style={{ background: activeStory.gradient }}
-            >
-              <div className="flex items-center justify-between">
-                <span className="font-bold">{activeStory.authorName}</span>
+          <div className="story-ring relative aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[24px]">
+            {activeStory.imageUrl ? (
+              <div className="relative h-full w-full rounded-[21px] overflow-hidden">
+                <img src={activeStory.imageUrl} alt={activeStory.caption} className="h-full w-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/60 p-6 flex flex-col justify-between text-white">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-lg">{activeStory.authorName}</span>
+                    <button
+                      type="button"
+                      onClick={() => setActiveStory(null)}
+                      className="grid h-8 w-8 place-items-center rounded-full bg-black/60"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                  <div>
+                    <p className="font-display text-4xl text-[#D2F801]">{activeStory.score}</p>
+                    <p className="mt-2 text-sm text-white/90">{activeStory.caption}</p>
+                    <button
+                      type="button"
+                      onClick={() => setActiveStory(null)}
+                      className="btn btn-primary mt-4 w-full py-2.5 text-xs font-bold"
+                    >
+                      Close Story
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div
+                className="flex h-full w-full flex-col justify-between rounded-[21px] p-6 text-white"
+                style={{ background: activeStory.gradient }}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-bold">{activeStory.authorName}</span>
+                  <button
+                    type="button"
+                    onClick={() => setActiveStory(null)}
+                    className="grid h-8 w-8 place-items-center rounded-full bg-black/50"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+                <div className="text-center">
+                  <p className="font-display text-5xl text-[#D2F801]">{activeStory.score}</p>
+                  <p className="mt-2 text-sm">{activeStory.caption}</p>
+                </div>
                 <button
                   type="button"
                   onClick={() => setActiveStory(null)}
-                  className="grid h-8 w-8 place-items-center rounded-full bg-black/50"
+                  className="btn btn-primary w-full py-2.5 text-xs font-bold"
                 >
-                  <X className="h-4 w-4" />
+                  Close Story
                 </button>
               </div>
-              <div className="text-center">
-                <p className="font-display text-5xl text-[#D2F801]">{activeStory.score}</p>
-                <p className="mt-2 text-sm">{activeStory.caption}</p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setActiveStory(null)}
-                className="btn btn-primary w-full py-2.5 text-xs font-bold"
-              >
-                Close Story
-              </button>
-            </div>
+            )}
           </div>
         </div>
       )}
