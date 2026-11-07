@@ -115,7 +115,7 @@ export function SmartClue({
           </div>
         )}
 
-        <div className="flex min-w-[64px] items-center justify-start">
+        <div className="flex min-w-16 items-center justify-start">
           <div ref={flag} className="clue-badge">
             <Flag country={country} size={collapsed ? 28 : 56} />
           </div>
@@ -134,7 +134,7 @@ export function SmartClue({
           </div>
         )}
 
-        <span className="clue-controls min-w-[64px]">
+        <span className="clue-controls min-w-16">
           {seconds !== null && <span className="readout clue-timer">{seconds}s</span>}
           <span className="clue-chevron">
             <svg

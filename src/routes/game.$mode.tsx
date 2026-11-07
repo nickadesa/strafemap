@@ -385,7 +385,7 @@ function GamePage() {
       if (phase !== "guess") return;
       // Wrath Sin Card locks pin immediately after first placement
       if (mode === "sins" && activeSin === "wrath" && guess !== null) {
-        setFlash("Wrath Snap Lock: Pin is locked!");
+        setFlash("Wrath snap lock: pin locked");
         return;
       }
       if (mode === "shrink" && center && distanceKm(p, center) > shrinkRadius(elapsed, limit || 30)) {
@@ -545,7 +545,7 @@ function GamePage() {
       <div className="flex min-h-screen flex-col items-center justify-center p-6 text-center">
         <Logo />
         <div className="plate mt-6 max-w-md p-6 sm:p-8 space-y-4">
-          <span className="rounded-full bg-[#D2F801] px-3 py-1 text-xs font-black uppercase text-[#161616]">
+          <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-foreground">
             Daily Challenge
           </span>
           <h1 className="font-display text-3xl">Already Completed Today</h1>
@@ -553,10 +553,10 @@ function GamePage() {
             You achieved <strong className="text-[#D2F801]">{existingDailyRecord.score.toLocaleString()}</strong> / 25,000 points today. Daily challenge seeds are strictly one attempt per calendar day.
           </p>
           <div className="pt-2 flex flex-col gap-2">
-            <Link to="/play" className="btn btn-primary w-full !py-2.5 text-xs font-bold">
+            <Link to="/play" className="btn btn-primary w-full !py-2.5 text-xs font-semibold">
               Play Other Modes
             </Link>
-            <Link to="/stats" className="btn btn-outline w-full !py-2.5 text-xs font-bold">
+            <Link to="/stats" className="btn btn-outline w-full !py-2.5 text-xs font-semibold">
               View Stats & Streaks
             </Link>
           </div>
@@ -611,13 +611,13 @@ function GamePage() {
                 <div className="flex items-center gap-3 rounded-2xl border border-border bg-background/60 p-4">
                   <RankBanner bannerUrl={rankAfter.bannerUrl} alt={rankAfter.name} width={76} />
                   <div>
-                    <p className="text-xs font-bold uppercase text-muted-foreground">Ranked Outcome</p>
+                    <p className="text-xs font-semibold text-muted-foreground">Ranked Outcome</p>
                     <p className="font-display text-2xl" style={{ color: rankAfter.tier.accent }}>
                       {rankAfter.name}
                     </p>
                     {eloChange !== null && (
                       <p
-                        className={`readout text-base font-extrabold ${
+                        className={`readout text-base font-semibold ${
                           eloChange >= 0 ? "text-[#D2F801]" : "text-destructive"
                         }`}
                       >
@@ -693,7 +693,7 @@ function GamePage() {
             <button
               type="button"
               onClick={() => setShareDrawerOpen(true)}
-              className="btn btn-primary flex-1 !py-3 flex items-center justify-center gap-2 text-xs font-bold"
+              className="btn btn-primary flex-1 !py-3 flex items-center justify-center gap-2 text-xs font-semibold"
             >
               <Share2 className="h-4 w-4" /> Share Results Card
             </button>
@@ -702,7 +702,7 @@ function GamePage() {
               onClick={() => {
                 navigator.clipboard?.writeText(share).then(() => setCopied(true));
               }}
-              className="btn btn-outline !px-4 !py-3 text-xs font-bold"
+              className="btn btn-outline !px-4 !py-3 text-xs font-semibold"
             >
               {copied ? tr("copied") : tr("copyResult")}
             </button>
@@ -722,7 +722,7 @@ function GamePage() {
                   <button
                     type="button"
                     onClick={() => setShareDrawerOpen(false)}
-                    className="rounded-full bg-muted px-3 py-1 text-xs font-bold text-foreground"
+                    className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-foreground"
                   >
                     Close
                   </button>
@@ -775,20 +775,20 @@ function GamePage() {
           {/* Action Buttons: Moved to the very bottom */}
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3 border-t border-border pt-6">
             {!daily && (
-              <button onClick={() => setSeed((s) => s + 1)} className="btn btn-primary !px-6 !py-3 text-sm font-extrabold">
+              <button onClick={() => setSeed((s) => s + 1)} className="btn btn-primary !px-6 !py-3 text-sm font-semibold">
                 {tr("playAgain")}
               </button>
             )}
             {ranked ? (
-              <Link to="/rank" className="btn btn-outline !px-5 !py-3 text-sm font-bold">
+              <Link to="/rank" className="btn btn-outline !px-5 !py-3 text-sm font-semibold">
                 {tr("backRank")}
               </Link>
             ) : (
-              <Link to="/play" className="btn btn-outline !px-5 !py-3 text-sm font-bold">
+              <Link to="/play" className="btn btn-outline !px-5 !py-3 text-sm font-semibold">
                 {tr("changeMode")}
               </Link>
             )}
-            <Link to="/" className="btn btn-outline !px-5 !py-3 text-sm font-bold">
+            <Link to="/" className="btn btn-outline !px-5 !py-3 text-sm font-semibold">
               {tr("menu")}
             </Link>
           </div>
@@ -804,11 +804,11 @@ function GamePage() {
         <div className="game-hud flex min-w-0 flex-wrap items-center justify-end gap-1.5 text-[11px] font-semibold sm:gap-2 sm:text-sm">
           {/* Ranked Opponent HUD Pill */}
           {ranked && (
-            <div className="flex items-center gap-1.5 rounded-full border border-[#D2F801]/40 bg-card px-2.5 py-1">
-              <span className="text-[10px] font-bold uppercase text-muted-foreground">VS</span>
+            <div className="flex items-center gap-1.5 rounded-full border border-border bg-card px-2.5 py-1">
+              <span className="text-[10px] font-semibold text-muted-foreground">VS</span>
               <AvatarFrame name={opponent.nickname} rp={opponent.rp} size={22} />
               <ClanTagPill tag={opponent.clanTag} color={opponent.clanTagColor} />
-              <span className="max-w-[80px] truncate text-xs font-bold">{opponent.nickname}</span>
+              <span className="max-w-20 truncate text-xs font-semibold">{opponent.nickname}</span>
               <VerifiedBadge type={opponent.verifiedBadge} size={12} />
               <span className="readout hidden text-[10px] text-[#D2F801] md:inline">
                 {opponent.rp.toLocaleString()} RP
@@ -825,7 +825,7 @@ function GamePage() {
           {/* Active Sin Card Pill */}
           {currentSinCard && (
             <span
-              className="rounded-full border border-border bg-card px-2.5 py-1 text-xs font-bold"
+              className="rounded-full border border-border bg-card px-2.5 py-1 text-xs font-semibold"
               style={{ color: currentSinCard.accent }}
             >
               {currentSinCard.sinName}
@@ -850,7 +850,7 @@ function GamePage() {
             </span>
           </span>
           <span
-            className="readout shrink-0 whitespace-nowrap rounded-full bg-[#D2F801] px-2.5 py-1 font-bold text-[#161616] sm:px-3"
+            className="readout shrink-0 whitespace-nowrap rounded-full bg-muted px-2.5 py-1 font-semibold text-muted-foreground sm:px-3"
             title={`${total.toLocaleString()} ${tr("points")}`}
           >
             {total.toLocaleString()} <span className="hidden sm:inline">{tr("points")}</span>
@@ -915,7 +915,7 @@ function GamePage() {
                   <div className="border-t border-border pt-2.5">
                     {mode === "sins" && activeSin === "lust" && (
                       <p className="text-[11px] font-semibold text-[#D2F801]">
-                        🧭 Lust Whisper: {compassWhisperFor(loc)}
+                        Lust whisper: {compassWhisperFor(loc)}
                       </p>
                     )}
                     {phase === "guess" && !unlimitedTime && (
@@ -961,7 +961,7 @@ function GamePage() {
                         setQuizSelected(countryOpt);
                         submit({ lat: loc.lat, lng: loc.lng }, countryOpt);
                       }}
-                      className="flex items-center justify-center rounded-2xl border border-border bg-background/90 px-4 py-3.5 text-center text-sm font-semibold transition-colors hover:border-[#D2F801] hover:bg-[#D2F801] hover:text-[#161616]"
+                      className="flex items-center justify-center rounded-2xl border border-border bg-background/90 px-4 py-3.5 text-center text-sm font-semibold transition-colors hover:border-foreground/60 hover:bg-[#D2F801] hover:text-[#161616]"
                     >
                       <span className="truncate">{countryOpt}</span>
                     </button>
@@ -974,7 +974,7 @@ function GamePage() {
                   <button
                     type="button"
                     onClick={() => setPlacingSecondPin((v) => !v)}
-                    className={`btn text-xs font-bold ${
+                    className={`btn text-xs font-semibold ${
                       placingSecondPin ? "btn-primary" : "btn-outline"
                     }`}
                   >
@@ -986,7 +986,7 @@ function GamePage() {
                 <Button
                   onClick={() => submit()}
                   disabled={!guess}
-                  className="game-confirm h-auto min-h-11 max-w-full flex-col gap-0.5 whitespace-normal rounded-full bg-[#D2F801] px-6 py-2.5 text-sm font-bold text-[#161616] shadow-lg hover:bg-[#DCFF1A]"
+                  className="game-confirm h-auto min-h-11 max-w-full flex-col gap-0.5 whitespace-normal rounded-full bg-[#D2F801] px-6 py-2.5 text-sm font-semibold text-[#161616] shadow-lg hover:bg-[#DCFF1A]"
                 >
                   {guess ? (
                     <>
@@ -1049,7 +1049,7 @@ function GamePage() {
                         <li
                           key={p.name}
                           className={`flex justify-between rounded-full px-3 py-1 ${
-                            i === 0 ? "bg-[#D2F801] font-bold text-[#161616]" : "bg-muted/50"
+                            i === 0 ? "bg-[#D2F801] font-semibold text-[#161616]" : "bg-muted/50"
                           }`}
                         >
                           <span>
@@ -1113,19 +1113,19 @@ function GamePage() {
             <div className="mx-auto mb-2 h-1.5 w-12 rounded-full bg-muted-foreground/30" />
             <div className="flex items-center justify-between border-b border-border pb-3">
               <div>
-                <span className="rounded-full bg-[#D2F801] px-2.5 py-0.5 text-[10px] font-extrabold uppercase text-[#161616]">
+                <span className="rounded-full bg-muted px-2.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
                   7 Deadly Sins
                 </span>
                 <h2 className="font-display mt-1 text-xl">Select Your Sin Card</h2>
               </div>
               <div className="flex items-center gap-2">
-                <span className="readout rounded-full border border-[#D2F801] px-3 py-1 text-xs font-black text-[#D2F801]">
+                <span className="readout rounded-full border border-foreground/60 px-3 py-1 text-xs font-semibold text-[#D2F801]">
                   {sinCountdown}s
                 </span>
                 <button
                   type="button"
                   onClick={() => setSinConfirmed(true)}
-                  className="btn btn-primary !px-4 !py-1.5 text-xs font-bold"
+                  className="btn btn-primary !px-4 !py-1.5 text-xs font-semibold"
                 >
                   Skip / Start
                 </button>
@@ -1142,7 +1142,7 @@ function GamePage() {
                     onClick={() => setActiveSin(card.id)}
                     className={`w-full rounded-2xl border p-3.5 text-left transition-colors ${
                       selected
-                        ? "border-[#D2F801] bg-[#D2F801]/10 ring-1 ring-[#D2F801]"
+                        ? "border-foreground/60 bg-[#D2F801]/10 ring-1 ring-foreground/40"
                         : "border-border bg-card/60 hover:bg-muted"
                     }`}
                   >
@@ -1150,7 +1150,7 @@ function GamePage() {
                       <span className="font-display text-lg" style={{ color: card.accent }}>
                         {card.sinName}
                       </span>
-                      <span className="rounded-full bg-muted px-2.5 py-0.5 text-[11px] font-bold text-foreground">
+                      <span className="rounded-full bg-muted px-2.5 py-0.5 text-[11px] font-semibold text-foreground">
                         {card.skillName}
                       </span>
                     </div>
@@ -1169,7 +1169,7 @@ function GamePage() {
               <button
                 type="button"
                 onClick={() => setSinConfirmed(true)}
-                className="btn btn-primary w-full !py-3 text-sm font-bold"
+                className="btn btn-primary w-full !py-3 text-sm font-semibold"
               >
                 Confirm & Start Match ({activeSin.toUpperCase()})
               </button>
@@ -1270,7 +1270,7 @@ function ShareCardStudio({
       authorRp: rank.rp,
       authorChampPos: rank.championPosition,
       country: social.country,
-      content: `Scored ${baseData.total.toLocaleString()} / ${baseData.max.toLocaleString()} pts in ${baseData.mode}! 🌍🔥`,
+      content: `Scored ${baseData.total.toLocaleString()} / ${baseData.max.toLocaleString()} pts in ${baseData.mode}`,
       resultCard: {
         mode: baseData.tag,
         score: baseData.total,
@@ -1297,7 +1297,7 @@ function ShareCardStudio({
             type="button"
             disabled={!currentBlob || busy}
             onClick={() => currentBlob && shareCard(currentBlob, `strafe-${template}-${aspect}.png`)}
-            className="btn btn-primary !px-4 !py-2 text-xs font-bold"
+            className="btn btn-primary !px-4 !py-2 text-xs font-semibold"
           >
             <Share2 className="h-4 w-4" />
             {busy ? t(lang, "creating") : t(lang, "shareCard")}
@@ -1309,7 +1309,7 @@ function ShareCardStudio({
             className="btn btn-outline !px-4 !py-2 text-xs font-semibold"
           >
             {postedToFeed ? <Check className="h-4 w-4" /> : <Send className="h-4 w-4" />}
-            {postedToFeed ? "Posted to Feed!" : "Post to Social Feed"}
+            {postedToFeed ? "Posted to feed" : "Post to Social Feed"}
           </button>
         </div>
       </div>

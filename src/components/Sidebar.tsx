@@ -93,7 +93,7 @@ export function Sidebar() {
       >
         <div className="mb-3 flex h-11 items-center justify-between px-1.5">
           <Link to="/" className="flex items-center gap-3 font-display text-xl" aria-label="STRAFE">
-            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[#D2F801] text-sm font-black text-[#161616]">
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[#D2F801] text-sm font-semibold text-[#161616]">
               S
             </span>
             <span className="tracking-tight">STRAFE</span>
@@ -104,12 +104,12 @@ export function Sidebar() {
               setNotifOpen((v) => !v);
               setUserPopoverOpen(false);
             }}
-            className="relative grid h-8 w-8 place-items-center rounded-full bg-muted text-foreground hover:bg-[#D2F801] hover:text-[#161616] transition-colors"
+            className="relative grid h-8 w-8 place-items-center rounded-full bg-muted text-foreground hover:bg-muted/70 transition-colors"
             title="Notifications"
           >
             <SymbolBell className="h-4 w-4" fill={unreadCount > 0} />
             {unreadCount > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 grid h-4 w-4 place-items-center rounded-full bg-[#D2F801] text-[9px] font-black text-[#161616]">
+              <span className="absolute -right-0.5 -top-0.5 grid h-4 w-4 place-items-center rounded-full bg-muted text-[10px] font-semibold text-muted-foreground">
                 {unreadCount}
               </span>
             )}
@@ -126,9 +126,9 @@ export function Sidebar() {
                 search={search as any}
                 onClick={() => buzz(6)}
                 aria-label={t(lang, key)}
-                className="group flex h-10 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-[0.98]"
+                className="group flex h-10 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:scale-[0.98]"
                 activeOptions={{ exact: to === "/" }}
-                activeProps={{ className: "!bg-[#D2F801] !text-[#161616] font-bold shadow-sm" }}
+                activeProps={{ className: "!bg-muted !text-foreground font-semibold" }}
               >
                 <Icon
                   fill={active}
@@ -162,7 +162,7 @@ export function Sidebar() {
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1">
                 <ClanTagPill tag={social.clanTag} color={social.clanTagColor} />
-                <span className="truncate text-xs font-bold">{social.nickname}</span>
+                <span className="truncate text-xs font-semibold">{social.nickname}</span>
                 <VerifiedBadge type={social.verifiedBadge} size={13} />
               </div>
               <p className="readout truncate text-[10px] text-muted-foreground">
@@ -178,7 +178,7 @@ export function Sidebar() {
                 <div className="border-b border-border px-3 py-2">
                   <div className="flex items-center gap-1.5">
                     <ClanTagPill tag={social.clanTag} color={social.clanTagColor} />
-                    <span className="truncate text-sm font-bold">{social.nickname}</span>
+                    <span className="truncate text-sm font-semibold">{social.nickname}</span>
                     <VerifiedBadge type={social.verifiedBadge} size={14} />
                   </div>
                   <p className="readout text-xs text-[#D2F801]">
@@ -195,7 +195,7 @@ export function Sidebar() {
                     }}
                     className="flex items-center gap-2.5 rounded-xl px-3 py-2 font-medium hover:bg-muted"
                   >
-                    <SymbolPerson fill className="h-4 w-4 text-[#D2F801]" /> {t(lang, "profile")}
+                    <SymbolPerson fill className="h-4 w-4 text-muted-foreground" /> {t(lang, "profile")}
                   </Link>
                   <Link
                     to="/stats"
@@ -205,7 +205,7 @@ export function Sidebar() {
                     }}
                     className="flex items-center gap-2.5 rounded-xl px-3 py-2 font-medium hover:bg-muted"
                   >
-                    <SymbolChartBar fill className="h-4 w-4 text-[#D2F801]" /> {t(lang, "stats")}
+                    <SymbolChartBar fill className="h-4 w-4 text-muted-foreground" /> {t(lang, "stats")}
                   </Link>
                   <Link
                     to="/profile"
@@ -216,7 +216,7 @@ export function Sidebar() {
                     }}
                     className="flex items-center gap-2.5 rounded-xl px-3 py-2 font-medium hover:bg-muted"
                   >
-                    <SymbolShield fill className="h-4 w-4 text-[#D2F801]" /> {t(lang, "clan")}
+                    <SymbolShield fill className="h-4 w-4 text-muted-foreground" /> {t(lang, "clan")}
                   </Link>
                   <Link
                     to="/profile"
@@ -227,7 +227,7 @@ export function Sidebar() {
                     }}
                     className="flex items-center gap-2.5 rounded-xl px-3 py-2 font-medium hover:bg-muted"
                   >
-                    <SymbolBag fill className="h-4 w-4 text-[#D2F801]" /> Shop
+                    <SymbolBag fill className="h-4 w-4 text-muted-foreground" /> Shop
                   </Link>
                   <Link
                     to="/settings"
@@ -265,11 +265,11 @@ export function Sidebar() {
           setMobileOpen(true);
         }}
         aria-label="Open navigation menu"
-        className="glass-plate fixed left-3 top-3 z-50 grid h-10 w-10 place-items-center rounded-xl text-foreground shadow-md transition-all active:scale-90 hover:bg-muted md:hidden"
+        className="glass-plate fixed left-3 top-3 z-50 grid h-10 w-10 place-items-center rounded-xl text-foreground shadow-md transition-colors active:scale-90 hover:bg-muted md:hidden"
       >
         <SymbolMenu className="h-5 w-5" />
         {unreadCount > 0 && (
-          <span className="absolute -right-0.5 -top-0.5 grid h-3.5 w-3.5 place-items-center rounded-full bg-[#D2F801] text-[8px] font-black text-[#161616]">
+          <span className="absolute -right-0.5 -top-0.5 grid h-3.5 w-3.5 place-items-center rounded-full bg-muted text-[10px] font-semibold text-muted-foreground">
             {unreadCount}
           </span>
         )}
@@ -304,7 +304,7 @@ export function Sidebar() {
                 className="flex items-center gap-2.5 font-display text-xl"
                 aria-label="STRAFE"
               >
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[#D2F801] text-sm font-black text-[#161616]">
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[#D2F801] text-sm font-semibold text-[#161616]">
                   S
                 </span>
                 <span className="tracking-tight">STRAFE</span>
@@ -316,7 +316,7 @@ export function Sidebar() {
                   setMobileOpen(false);
                 }}
                 aria-label="Close navigation menu"
-                className="grid h-8 w-8 place-items-center rounded-full bg-muted text-muted-foreground transition-all active:scale-90 hover:bg-muted/80 hover:text-foreground"
+                className="grid h-8 w-8 place-items-center rounded-full bg-muted text-muted-foreground transition-colors active:scale-90 hover:bg-muted/80 hover:text-foreground"
               >
                 <SymbolCross className="h-4 w-4" />
               </button>
@@ -343,7 +343,7 @@ export function Sidebar() {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-1">
                     <ClanTagPill tag={social.clanTag} color={social.clanTagColor} />
-                    <span className="truncate text-xs font-bold">{social.nickname}</span>
+                    <span className="truncate text-xs font-semibold">{social.nickname}</span>
                     <VerifiedBadge type={social.verifiedBadge} size={13} />
                   </div>
                   <p className="readout text-[11px] text-[#D2F801]">
@@ -367,9 +367,9 @@ export function Sidebar() {
                       setMobileOpen(false);
                     }}
                     aria-label={t(lang, key)}
-                    className="group flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-[0.98]"
+                    className="group flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:scale-[0.98]"
                     activeOptions={{ exact: to === "/" }}
-                    activeProps={{ className: "!bg-[#D2F801] !text-[#161616] font-bold shadow-sm" }}
+                    activeProps={{ className: "!bg-muted !text-foreground font-semibold" }}
                   >
                     <Icon
                       fill={active}
@@ -387,9 +387,9 @@ export function Sidebar() {
                   buzz(6);
                   setMobileOpen(false);
                 }}
-                className="group flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-[0.98]"
+                className="group flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:scale-[0.98]"
               >
-                <SymbolShield fill className="h-5 w-5 shrink-0 text-[#D2F801] transition-transform duration-200 group-active:scale-90" />
+                <SymbolShield fill className="h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-200 group-active:scale-90" />
                 <span className="truncate">{t(lang, "clan")}</span>
               </Link>
 
@@ -400,9 +400,9 @@ export function Sidebar() {
                   buzz(6);
                   setMobileOpen(false);
                 }}
-                className="group flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-[0.98]"
+                className="group flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:scale-[0.98]"
               >
-                <SymbolBag fill className="h-5 w-5 shrink-0 text-[#D2F801] transition-transform duration-200 group-active:scale-90" />
+                <SymbolBag fill className="h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-200 group-active:scale-90" />
                 <span className="truncate">Shop</span>
               </Link>
 
@@ -413,9 +413,9 @@ export function Sidebar() {
                   setMobileOpen(false);
                 }}
                 aria-label={t(lang, "settings")}
-                className="group flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-[0.98]"
+                className="group flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:scale-[0.98]"
                 activeOptions={{ exact: true }}
-                activeProps={{ className: "!bg-[#D2F801] !text-[#161616] font-bold shadow-sm" }}
+                activeProps={{ className: "!bg-muted !text-foreground font-semibold" }}
               >
                 <SymbolGearshape
                   fill={location.pathname === "/settings"}
@@ -441,7 +441,7 @@ export function Sidebar() {
                   <span>Notifications</span>
                 </div>
                 {unreadCount > 0 && (
-                  <span className="grid h-4 min-w-4 place-items-center rounded-full bg-[#D2F801] px-1 text-[9px] font-black text-[#161616]">
+                  <span className="grid h-4 min-w-4 place-items-center rounded-full bg-muted px-1 text-[10px] font-semibold text-muted-foreground">
                     {unreadCount}
                   </span>
                 )}
@@ -475,11 +475,11 @@ export function Sidebar() {
               setUserPopoverOpen(false);
             }}
             aria-label="Notifications"
-            className="glass-plate relative grid h-10 w-10 place-items-center rounded-full text-foreground shadow-md transition-all active:scale-90"
+            className="glass-plate relative grid h-10 w-10 place-items-center rounded-full text-foreground shadow-md transition-colors active:scale-90"
           >
             <SymbolBell className="h-4 w-4" fill={unreadCount > 0} />
             {unreadCount > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 grid h-4 w-4 place-items-center rounded-full bg-[#D2F801] text-[9px] font-black text-[#161616]">
+              <span className="absolute -right-0.5 -top-0.5 grid h-4 w-4 place-items-center rounded-full bg-muted text-[10px] font-semibold text-muted-foreground">
                 {unreadCount}
               </span>
             )}
@@ -497,7 +497,7 @@ export function Sidebar() {
               championPosition={rank.championPosition}
               size={34}
             />
-            <span className="readout text-[11px] font-extrabold text-[#D2F801]">Lv.{lvlInfo.level}</span>
+            <span className="readout text-[11px] font-semibold text-[#D2F801]">Lv.{lvlInfo.level}</span>
           </Link>
         </div>
       )}
@@ -512,7 +512,7 @@ export function Sidebar() {
               <button
                 type="button"
                 onClick={markAllRead}
-                className="text-xs font-bold text-[#D2F801] hover:underline"
+                className="text-xs font-semibold text-[#D2F801] hover:underline"
               >
                 Mark all read
               </button>
@@ -527,11 +527,11 @@ export function Sidebar() {
                     setNotifOpen(false);
                   }}
                   className={`block rounded-2xl border p-3 transition-colors ${
-                    n.read ? "border-border bg-background/40" : "border-[#D2F801]/50 bg-[#D2F801]/10"
+                    n.read ? "border-border bg-background/40" : "border-border bg-muted"
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold">{n.title}</span>
+                    <span className="text-xs font-semibold">{n.title}</span>
                     <span className="text-[10px] text-muted-foreground">{n.time}</span>
                   </div>
                   <p className="mt-1 text-xs text-muted-foreground">{n.body}</p>

@@ -83,7 +83,7 @@ function Stats() {
                 {(Object.keys(MODES) as Mode[]).map((m) => (
                   <li key={m} className="flex justify-between items-center py-1 border-b border-border/50 last:border-none font-semibold text-sm">
                     <span className="text-muted-foreground">{MODES[m].name}</span>
-                    <span className="readout font-bold text-foreground">{s.bestBy(m).toLocaleString()}</span>
+                    <span className="readout font-semibold text-foreground">{s.bestBy(m).toLocaleString()}</span>
                   </li>
                 ))}
               </ul>
@@ -94,7 +94,7 @@ function Stats() {
                 {recent.map((r) => (
                   <li key={r.id} className="flex justify-between items-center py-1 border-b border-border/50 last:border-none">
                     <span className="text-muted-foreground">{MODES[r.mode].name}{r.daily && " · Daily"} · {new Date(r.date).toLocaleDateString()}</span>
-                    <span className="readout font-bold text-foreground">{r.score.toLocaleString()}</span>
+                    <span className="readout font-semibold text-foreground">{r.score.toLocaleString()}</span>
                   </li>
                 ))}
                 {recent.length === 0 && <li className="text-muted-foreground py-2">No games yet.</li>}

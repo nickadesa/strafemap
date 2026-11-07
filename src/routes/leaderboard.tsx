@@ -42,7 +42,7 @@ function LeaderboardPage() {
               </p>
             </div>
             <Link to="/rank" className="btn btn-primary text-sm">
-              {t(lang, "rank")} Hub →
+              {t(lang, "rank")} Hub
             </Link>
           </div>
           <UnifiedLeaderboardView rank={rank} social={social} lang={lang} />

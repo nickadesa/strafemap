@@ -278,8 +278,8 @@
   color: var(--color-primary-foreground);
   padding: 1px 7px;
   font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-weight: 600;
+  letter-spacing: 0;
   line-height: 1.4;
 }
 @utility story-ring {
@@ -292,9 +292,9 @@
 
 /* Map pins */
 .pin { border-radius: 9999px; border: 3px solid var(--color-card); box-shadow: 0 0 0 1.5px var(--color-foreground); }
-.pin-guess { background: #d2f801; box-shadow: 0 0 0 2px #161616, 0 0 10px rgba(210, 248, 1, 0.6); }
-.pin-guess-2 { background: #a855f7; box-shadow: 0 0 0 2px #ffffff, 0 0 10px rgba(168, 85, 247, 0.6); }
-.pin-target { background: #d2f801; box-shadow: 0 0 0 2px #161616, 0 0 14px rgba(210, 248, 1, 0.8); }
+.pin-guess { background: #d2f801; box-shadow: 0 0 0 2px #161616; }
+.pin-guess-2 { background: #a855f7; box-shadow: 0 0 0 2px #ffffff; }
+.pin-target { background: #d2f801; box-shadow: 0 0 0 2px #161616; }
 .leaflet-container {
   font-family: var(--font-sans);
   background: var(--color-background);
@@ -416,9 +416,8 @@ button:not(.btn), [role="button"] { transition: transform 380ms var(--ease-sprin
   grid-column: 1 / -1;
   text-align: center;
   font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-weight: 500;
+  letter-spacing: 0.01em;
   color: var(--color-muted-foreground);
   margin-bottom: 6px;
 }
@@ -455,28 +454,6 @@ html[data-glass="frost"] .glass-plate { background: color-mix(in oklab, var(--co
 html[data-glass="rim"] .glass-plate {
   background: color-mix(in oklab, var(--color-card) 30%, transparent); backdrop-filter: blur(4px) saturate(1.6);
   box-shadow: inset 1.5px 1.5px 0 0 rgb(255 255 255 / 0.9), inset -1.5px -1.5px 0 0 rgb(255 255 255 / 0.45), inset 0 0 18px 0 rgb(255 255 255 / 0.18), 0 10px 30px -14px rgb(0 0 0 / 0.4);
-}
-
-/* Super Chat Effects */
-.chat-aura-fire {
-  background: linear-gradient(135deg, rgba(255, 69, 0, 0.25), rgba(255, 165, 0, 0.15)) !important;
-  border: 1px solid rgba(255, 94, 0, 0.65) !important;
-  box-shadow: 0 0 12px rgba(255, 69, 0, 0.3);
-}
-.chat-aura-water {
-  background: linear-gradient(135deg, rgba(3, 103, 252, 0.28), rgba(0, 229, 255, 0.16)) !important;
-  border: 1px solid rgba(0, 200, 255, 0.65) !important;
-  box-shadow: 0 0 12px rgba(3, 103, 252, 0.3);
-}
-.chat-aura-rainbow {
-  background: linear-gradient(135deg, rgba(3, 103, 252, 0.24), rgba(210, 248, 1, 0.2), rgba(255, 0, 128, 0.24)) !important;
-  border: 1px solid rgba(210, 248, 1, 0.7) !important;
-  box-shadow: 0 0 14px rgba(210, 248, 1, 0.28);
-}
-.chat-aura-vines {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(210, 248, 1, 0.16)) !important;
-  border: 1px solid rgba(16, 185, 129, 0.65) !important;
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.28);
 }
 
 /* Navigation: 240px fixed rail on desktop, top-left hamburger menu on mobile. */

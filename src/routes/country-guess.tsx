@@ -144,7 +144,7 @@ function CountryGuessPage() {
         <main className="mx-auto max-w-2xl">
           <div className="plate p-6 md:p-8 space-y-6">
             <div>
-              <span className="rounded-full bg-[#D2F801] px-3 py-1 text-xs font-black uppercase text-[#161616]">
+              <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-foreground">
                 Standalone Game Mode
               </span>
               <h1 className="font-display mt-3 text-3xl md:text-5xl">Country Guess Trivia</h1>
@@ -155,7 +155,7 @@ function CountryGuessPage() {
 
             {/* Zone Selector */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
+              <label className="block text-xs font-semibold text-muted-foreground mb-2">
                 Geographic Zone:
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -164,13 +164,13 @@ function CountryGuessPage() {
                     key={z}
                     type="button"
                     onClick={() => setZone(z)}
-                    className={`rounded-2xl border p-3 text-left transition-all ${
+                    className={`rounded-2xl border p-3 text-left transition-colors ${
                       zone === z
-                        ? "border-[#D2F801] bg-[#D2F801]/15 text-[#D2F801] ring-1 ring-[#D2F801]"
+                        ? "border-foreground/60 bg-[#D2F801]/15 text-[#D2F801] ring-1 ring-foreground/40"
                         : "border-border bg-card/60 hover:bg-muted"
                     }`}
                   >
-                    <span className="block font-bold text-sm capitalize">{z}</span>
+                    <span className="block font-semibold text-sm capitalize">{z}</span>
                     <span className="text-[11px] text-muted-foreground">
                       {z === "world" ? "All 195+ Countries" : `${z} Continent`}
                     </span>
@@ -181,7 +181,7 @@ function CountryGuessPage() {
 
             {/* Difficulty Selector */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
+              <label className="block text-xs font-semibold text-muted-foreground mb-2">
                 Difficulty Tier:
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -190,13 +190,13 @@ function CountryGuessPage() {
                     key={d}
                     type="button"
                     onClick={() => setDifficulty(d)}
-                    className={`rounded-2xl border p-3 text-center transition-all ${
+                    className={`rounded-2xl border p-3 text-center transition-colors ${
                       difficulty === d
-                        ? "border-[#D2F801] bg-[#D2F801]/15 text-[#D2F801] ring-1 ring-[#D2F801]"
+                        ? "border-foreground/60 bg-[#D2F801]/15 text-[#D2F801] ring-1 ring-foreground/40"
                         : "border-border bg-card/60 hover:bg-muted"
                     }`}
                   >
-                    <span className="block font-bold text-sm capitalize">{d}</span>
+                    <span className="block font-semibold text-sm capitalize">{d}</span>
                   </button>
                 ))}
               </div>
@@ -205,7 +205,7 @@ function CountryGuessPage() {
             <button
               type="button"
               onClick={startNewGame}
-              className="btn btn-primary w-full !py-3.5 text-base font-extrabold flex items-center justify-center gap-2"
+              className="btn btn-primary w-full !py-3.5 text-base font-semibold flex items-center justify-center gap-2"
             >
               <Sparkles className="h-5 w-5" /> Start Country Guess (10 Rounds)
             </button>
@@ -225,7 +225,7 @@ function CountryGuessPage() {
 
         <main className="mx-auto max-w-xl">
           <div className="plate p-6 md:p-8 space-y-6 text-center">
-            <span className="rounded-full bg-[#D2F801] px-3.5 py-1 text-xs font-black uppercase text-[#161616]">
+            <span className="rounded-full bg-muted px-3.5 py-1 text-xs font-semibold text-muted-foreground">
               Quiz Completed
             </span>
             <div>
@@ -238,15 +238,15 @@ function CountryGuessPage() {
             <div className="grid grid-cols-3 gap-3 border-y border-border py-4">
               <div>
                 <p className="text-xs text-muted-foreground font-semibold">Zone</p>
-                <p className="text-base font-bold capitalize">{zone}</p>
+                <p className="text-base font-semibold capitalize">{zone}</p>
               </div>
               <div>
                 <p className="text-xs text-muted-foreground font-semibold">Max Streak</p>
-                <p className="text-base font-bold text-[#D2F801]">{bestStreak} 🔥</p>
+                <p className="text-base font-semibold text-[#D2F801]">{bestStreak}</p>
               </div>
               <div>
                 <p className="text-xs text-muted-foreground font-semibold">Performance</p>
-                <p className="text-base font-bold">{accuracy >= 80 ? "S Tier" : accuracy >= 50 ? "A Tier" : "B Tier"}</p>
+                <p className="text-base font-semibold">{accuracy >= 80 ? "S Tier" : accuracy >= 50 ? "A Tier" : "B Tier"}</p>
               </div>
             </div>
 
@@ -254,14 +254,14 @@ function CountryGuessPage() {
               <button
                 type="button"
                 onClick={startNewGame}
-                className="btn btn-primary flex-1 !py-3 text-sm font-bold flex items-center justify-center gap-2"
+                className="btn btn-primary flex-1 !py-3 text-sm font-semibold flex items-center justify-center gap-2"
               >
                 <RotateCcw className="h-4 w-4" /> Play Again
               </button>
               <button
                 type="button"
                 onClick={() => setGameState("lobby")}
-                className="btn btn-outline flex-1 !py-3 text-sm font-bold"
+                className="btn btn-outline flex-1 !py-3 text-sm font-semibold"
               >
                 Change Zone / Tier
               </button>
@@ -278,15 +278,15 @@ function CountryGuessPage() {
       <header className="mx-auto max-w-3xl w-full flex flex-wrap items-center justify-between gap-3 pb-4">
         <Logo />
         <div className="flex items-center gap-2">
-          <span className="rounded-full border border-border bg-card px-3 py-1 text-xs font-bold">
+          <span className="rounded-full border border-border bg-card px-3 py-1 text-xs font-semibold">
             Round {roundIdx + 1} / {TOTAL_ROUNDS}
           </span>
           {streak > 0 && (
-            <span className="flex items-center gap-1 rounded-full border border-orange-500/40 bg-orange-500/10 px-2.5 py-1 text-xs font-black text-orange-400">
+            <span className="flex items-center gap-1 rounded-full border border-orange-500/40 bg-orange-500/10 px-2.5 py-1 text-xs font-semibold text-orange-400">
               <Flame className="h-3.5 w-3.5 fill-current" /> {streak} Streak
             </span>
           )}
-          <span className="readout rounded-full border border-[#D2F801]/40 bg-card px-3 py-1 text-xs font-black text-[#D2F801]">
+          <span className="readout rounded-full border border-border bg-card px-3 py-1 text-xs font-semibold text-[#D2F801]">
             {animatedScore.toLocaleString()} pts
           </span>
         </div>
@@ -297,15 +297,15 @@ function CountryGuessPage() {
         <div className="plate overflow-hidden p-6 md:p-8 space-y-6">
           {/* Progress / Time Bar */}
           <div className="space-y-1.5">
-            <div className="flex items-center justify-between text-xs font-bold">
-              <span className="text-muted-foreground uppercase">{currentQ?.type.replace("-", " ")} QUESTION</span>
-              <span className={`font-mono ${timeLeft <= 3 ? "text-destructive font-black animate-pulse" : "text-[#D2F801]"}`}>
+            <div className="flex items-center justify-between text-xs font-semibold">
+              <span className="text-muted-foreground">{currentQ?.type.replace("-", " ")} question</span>
+              <span className={`font-mono ${timeLeft <= 3 ? "text-destructive font-semibold animate-pulse" : "text-[#D2F801]"}`}>
                 {timeLeft}s
               </span>
             </div>
             <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
               <div
-                className={`h-full transition-all duration-1000 ${timeLeft <= 3 ? "bg-destructive" : "bg-[#D2F801]"}`}
+                className={`h-full transition-[width] duration-1000 ease-linear ${timeLeft <= 3 ? "bg-destructive" : "bg-[#D2F801]"}`}
                 style={{ width: `${(timeLeft / SECONDS_PER_ROUND) * 100}%` }}
               />
             </div>
@@ -353,10 +353,10 @@ function CountryGuessPage() {
                   type="button"
                   disabled={answered}
                   onClick={() => handleAnswer(idx)}
-                  className={`flex items-center justify-between rounded-2xl border p-4 text-left transition-all ${btnStyle}`}
+                  className={`flex items-center justify-between rounded-2xl border p-4 text-left transition-colors ${btnStyle}`}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="grid h-6 w-6 place-items-center rounded-full bg-muted text-xs font-bold">
+                    <span className="grid h-6 w-6 place-items-center rounded-full bg-muted text-xs font-semibold">
                       {idx + 1}
                     </span>
                     <span className="font-semibold text-sm md:text-base">{option}</span>
@@ -372,7 +372,7 @@ function CountryGuessPage() {
           {answered && (
             <div className="rounded-2xl border border-border bg-background/70 p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
               <div>
-                <p className="text-xs font-bold uppercase text-muted-foreground">Correct Answer:</p>
+                <p className="text-xs font-semibold text-muted-foreground">Correct answer</p>
                 <p className="font-display text-lg text-[#D2F801]">
                   {currentQ?.correctAnswer} ({currentQ?.target.subregion})
                 </p>
@@ -380,7 +380,7 @@ function CountryGuessPage() {
               <button
                 type="button"
                 onClick={nextQuestion}
-                className="btn btn-primary w-full sm:w-auto !px-6 !py-2.5 text-xs font-extrabold flex items-center justify-center gap-1.5"
+                className="btn btn-primary w-full sm:w-auto !px-6 !py-2.5 text-xs font-semibold flex items-center justify-center gap-1.5"
               >
                 <span>{roundIdx + 1 >= TOTAL_ROUNDS ? "View Results" : "Next Round"}</span>
                 <ArrowRight className="h-4 w-4" />

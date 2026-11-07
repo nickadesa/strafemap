@@ -166,7 +166,7 @@ function PlayTab({
             {prev ? (
               <>
                 <RankBanner bannerUrl={prev.bannerUrl} alt={prev.name} width={86} className="sm:scale-105" />
-                <p className="mt-1.5 text-xs font-bold" style={{ color: prev.tier.accent }}>
+                <p className="mt-1.5 text-xs font-semibold" style={{ color: prev.tier.accent }}>
                   {prev.name}
                 </p>
                 <p className="readout text-[10px] text-muted-foreground">{prev.min.toLocaleString()} RP</p>
@@ -180,7 +180,7 @@ function PlayTab({
 
           {/* Current Rank (Center Hero) */}
           <div className="flex flex-col items-center">
-            <span className="mb-1 inline-flex items-center gap-1.5 rounded-full bg-[#D2F801]/15 px-2.5 py-0.5 text-xs font-semibold text-[#D2F801]">
+            <span className="mb-1 inline-flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-0.5 text-xs font-semibold text-foreground">
               <Sparkles className="h-3 w-3" /> {t(lang, "currentRank")}
             </span>
             <RankBanner
@@ -195,7 +195,7 @@ function PlayTab({
             >
               {current.name}
             </h2>
-            <p className="mt-0.5 text-base font-bold sm:text-lg">
+            <p className="mt-0.5 text-base font-semibold sm:text-lg">
               <span className="readout text-[#D2F801]">{animatedRp.toLocaleString()}</span>{" "}
               <span className="text-xs text-muted-foreground">RP</span>
             </p>
@@ -209,7 +209,7 @@ function PlayTab({
             {next ? (
               <>
                 <RankBanner bannerUrl={next.bannerUrl} alt={next.name} width={86} className="sm:scale-105" />
-                <p className="mt-1.5 text-xs font-bold" style={{ color: next.tier.accent }}>
+                <p className="mt-1.5 text-xs font-semibold" style={{ color: next.tier.accent }}>
                   {next.name}
                 </p>
                 <p className="readout text-[10px] text-muted-foreground">
@@ -259,7 +259,7 @@ function PlayTab({
         <div className="mx-auto mt-6 grid w-full max-w-lg grid-cols-4 divide-x divide-border rounded-2xl border border-border bg-background/40">
           {stats.map(([v, l]) => (
             <div key={l} className="px-2 py-3">
-              <p className="readout text-xl font-bold">{v}</p>
+              <p className="readout text-xl font-semibold">{v}</p>
               <p className="text-[11px] text-muted-foreground">{l}</p>
             </div>
           ))}
@@ -271,7 +271,7 @@ function PlayTab({
             to="/game/$mode"
             params={{ mode: "classic" }}
             search={{ ranked: 1 }}
-            className="btn btn-primary px-9 py-3.5 text-base font-bold shadow-lg"
+            className="btn btn-primary px-9 py-3.5 text-base font-semibold shadow-lg"
           >
             {t(lang, "playRanked")}
           </Link>
@@ -296,7 +296,7 @@ function PlayTab({
                 Unlock exclusive Avatar Frames, Titles, Gacha Packs & Super Chat Auras at your peak season tier
               </DrawerDescription>
             </div>
-            <span className="rounded-full bg-[#D2F801] px-3 py-1 text-xs font-extrabold text-[#161616]">
+            <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-foreground">
               Season 1
             </span>
           </DrawerHeader>
@@ -311,7 +311,7 @@ function PlayTab({
                   key={rw.tier}
                   className={`flex flex-col justify-between rounded-2xl border p-4 transition-colors ${
                     unlocked
-                      ? "border-[#D2F801]/60 bg-[#D2F801]/5"
+                      ? "border-border bg-[#D2F801]/5"
                       : "border-border bg-background/40 opacity-80"
                   }`}
                 >
@@ -323,7 +323,7 @@ function PlayTab({
                           {rw.name}
                         </span>
                         {unlocked && (
-                          <span className="rounded-full bg-[#D2F801] px-2 py-0.5 text-[10px] font-extrabold text-[#161616]">
+                          <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
                             CLAIMABLE
                           </span>
                         )}
@@ -362,7 +362,7 @@ function PlayTab({
           <SymbolTrophy fill className="h-4 w-4 text-[#D2F801]" />
           {t(lang, "achievements")}
         </span>
-        <span className="text-sm text-muted-foreground">{t(lang, "viewAll")} →</span>
+        <span className="text-sm text-muted-foreground">{t(lang, "viewAll")}</span>
       </Link>
     </div>
   );
@@ -408,7 +408,7 @@ function GuideTab({
           <div
             className={`flex flex-col items-center rounded-2xl border p-3 text-center transition-colors ${
               mine.rank === "master"
-                ? "border-[#D2F801] bg-[#D2F801]/10 ring-1 ring-[#D2F801]"
+                ? "border-foreground/60 bg-[#D2F801]/10 ring-1 ring-foreground/40"
                 : "border-border bg-background/40"
             }`}
           >
@@ -416,14 +416,14 @@ function GuideTab({
               Master
             </span>
             <RankBanner bannerUrl="/ranks/banners/master.svg" alt="Master" width={68} />
-            <p className="readout mt-1.5 text-[11px] font-bold text-foreground">7,000+ RP</p>
+            <p className="readout mt-1.5 text-[11px] font-semibold text-foreground">7,000+ RP</p>
           </div>
 
           {/* Champion */}
           <div
             className={`flex flex-col items-center rounded-2xl border p-3 text-center transition-colors ${
               mine.rank === "champion"
-                ? "border-[#D2F801] bg-[#D2F801]/10 ring-1 ring-[#D2F801]"
+                ? "border-foreground/60 bg-[#D2F801]/10 ring-1 ring-foreground/40"
                 : "border-border bg-background/40"
             }`}
           >
@@ -431,7 +431,7 @@ function GuideTab({
               Champion · Top 50
             </span>
             <RankBanner bannerUrl="/ranks/banners/champion-01.svg" alt="Champion #1" width={68} />
-            <p className="readout mt-1.5 text-[11px] font-bold text-[#D2F801]">7,000+ RP · #1–50</p>
+            <p className="readout mt-1.5 text-[11px] font-semibold text-[#D2F801]">7,000+ RP · #1–50</p>
           </div>
         </div>
 
@@ -450,7 +450,7 @@ function GuideTab({
                 <div
                   key={s.name}
                   className={`flex flex-col items-center rounded-xl border p-2 text-center ${
-                    active ? "border-[#D2F801] bg-[#D2F801]/10" : "border-border/60 bg-card/60"
+                    active ? "border-foreground/60 bg-[#D2F801]/10" : "border-border/60 bg-card/60"
                   }`}
                 >
                   <RankBanner bannerUrl={s.bannerUrl} alt={s.name} width={54} />
@@ -485,7 +485,7 @@ function GuideTab({
                     <div
                       key={s.name}
                       className={`flex flex-col items-center rounded-xl border p-1.5 text-center ${
-                        active ? "border-[#D2F801] bg-[#D2F801]/10" : "border-border/60 bg-card/60"
+                        active ? "border-foreground/60 bg-[#D2F801]/10" : "border-border/60 bg-card/60"
                       }`}
                     >
                       <RankBanner bannerUrl={s.bannerUrl} alt={s.name} width={48} />
@@ -504,13 +504,13 @@ function GuideTab({
       {/* Compact How RP Works Banner */}
       <div className="mt-4 flex flex-col gap-2 rounded-2xl border border-border bg-background/50 p-4 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="font-bold text-foreground">{t(lang, "howRp")}</p>
+          <p className="font-semibold text-foreground">{t(lang, "howRp")}</p>
           <p className="mt-0.5">
             10 rounds per Ranked match · Win <span className="text-positive font-semibold">+25 RP</span> · Loss{" "}
             <span className="text-destructive font-semibold">−20 RP</span> · Margin bonus ±1.5/round · First 5 placement matches ×1.5 RP gain!
           </p>
         </div>
-        <span className="readout shrink-0 rounded-full bg-[#D2F801]/10 px-3 py-1 font-bold text-[#D2F801]">
+        <span className="readout shrink-0 rounded-full bg-muted px-3 py-1 font-semibold text-foreground">
           Champion = 7,000+ RP & Top 50
         </span>
       </div>
@@ -620,7 +620,7 @@ export function UnifiedLeaderboardView({
               <button
                 key={z}
                 onClick={() => setSelectedZone(z)}
-                className={`rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
+                className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
                   selectedZone === z ? "bg-[#D2F801] text-[#161616]" : "bg-muted text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -636,7 +636,7 @@ export function UnifiedLeaderboardView({
               <button
                 key={c}
                 onClick={() => setSelectedCountry(c)}
-                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
+                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
                   selectedCountry === c ? "bg-[#D2F801] text-[#161616]" : "bg-muted text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -653,7 +653,7 @@ export function UnifiedLeaderboardView({
         {/* Sticky Header with columns and Jump to You button */}
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-card/95 px-3.5 py-2.5 text-xs font-semibold text-muted-foreground backdrop-blur-md sm:px-5">
           <div className="flex items-center gap-3">
-            <span className="w-7 text-center font-bold sm:w-9">#</span>
+            <span className="w-7 text-center font-semibold sm:w-9">#</span>
             <span>Player / Rank</span>
           </div>
           <div className="flex items-center gap-3">
@@ -663,12 +663,11 @@ export function UnifiedLeaderboardView({
                 buzz(4);
                 document.getElementById("leaderboard-me")?.scrollIntoView({ behavior: "smooth", block: "center" });
               }}
-              className="inline-flex items-center gap-1 rounded-full bg-[#D2F801]/15 px-3 py-1 text-xs font-bold text-[#D2F801] transition-colors hover:bg-[#D2F801]/25 active:scale-95"
+              className="inline-flex items-center gap-1 rounded-full bg-[#D2F801]/15 px-3 py-1 text-xs font-semibold text-[#D2F801] transition-colors hover:bg-[#D2F801]/25 active:scale-95"
             >
               <span>Jump to You</span>
-              <span className="text-[10px]">🎯</span>
             </button>
-            <span className="hidden font-bold sm:inline">RP / Zone</span>
+            <span className="hidden font-semibold sm:inline">RP / Zone</span>
           </div>
         </div>
 
@@ -687,14 +686,14 @@ export function UnifiedLeaderboardView({
                 key={p.id}
                 id={p.me ? "leaderboard-me" : undefined}
                 className={`flex items-center gap-3 px-3.5 py-3 transition-colors sm:gap-4 sm:px-5 sm:py-3.5 ${
-                  p.me ? "bg-[#D2F801]/10 ring-1 ring-inset ring-[#D2F801]/30" : "hover:bg-muted/40"
+                  p.me ? "bg-[#D2F801]/10 ring-1 ring-inset ring-foreground/40" : "hover:bg-muted/40"
                 }`}
               >
                 {/* Rank Position Number */}
                 <div className="w-7 shrink-0 text-center font-display text-lg sm:w-9 sm:text-xl">
                   {pos <= 3 ? (
                     <span
-                      className={`inline-grid h-7 w-7 place-items-center rounded-full text-xs font-black ${
+                      className={`inline-grid h-7 w-7 place-items-center rounded-full text-xs font-semibold ${
                         pos === 1
                           ? "bg-[#D2F801] text-[#161616]"
                           : pos === 2
@@ -722,11 +721,11 @@ export function UnifiedLeaderboardView({
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-1.5">
                     <ClanTagPill tag={p.clanTag} color={p.clanTagColor} />
-                    <span className="truncate font-bold text-foreground">{p.nickname}</span>
+                    <span className="truncate font-semibold text-foreground">{p.nickname}</span>
                     <VerifiedBadge type={p.verifiedBadge} size={16} />
                     <Flag country={p.country} size={18} />
                     {p.me && (
-                      <span className="rounded-full bg-[#D2F801] px-2 py-0.5 text-[10px] font-black text-[#161616]">
+                      <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
                         YOU
                       </span>
                     )}
@@ -740,7 +739,7 @@ export function UnifiedLeaderboardView({
                 <div className="flex shrink-0 items-center gap-2.5 text-right">
                   <RankBanner rp={p.rp} championPosition={effectiveChampPos} width={36} className="hidden sm:inline-flex" />
                   <div>
-                    <p className="readout text-sm font-extrabold sm:text-base">{p.rp.toLocaleString()} RP</p>
+                    <p className="readout text-sm font-semibold sm:text-base">{p.rp.toLocaleString()} RP</p>
                     <p className="text-[10px] text-muted-foreground">{p.zone}</p>
                   </div>
                 </div>

@@ -106,7 +106,7 @@ function SettingsPage() {
             </h2>
 
             {/* Language Selector with rectangular country flag */}
-            <div className="flex items-center justify-between gap-4 min-h-[40px]">
+            <div className="flex items-center justify-between gap-4 min-h-10">
               <p className="text-sm font-semibold">{t(lang, "language")}</p>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -134,7 +134,7 @@ function SettingsPage() {
             </div>
 
             {/* Distance Units */}
-            <div className="flex items-center justify-between gap-4 min-h-[40px]">
+            <div className="flex items-center justify-between gap-4 min-h-10">
               <p className="text-sm font-semibold">{t(lang, "units")}</p>
               <div className="seg">
                 {(["km", "mi"] as const).map((u) => (
@@ -152,7 +152,7 @@ function SettingsPage() {
             </div>
 
             {/* Sound Effects */}
-            <div className="flex items-center justify-between gap-4 min-h-[40px]">
+            <div className="flex items-center justify-between gap-4 min-h-10">
               <p className="text-sm font-semibold">{t(lang, "sound")}</p>
               <ToggleSwitch
                 label={t(lang, "sound")}
@@ -172,7 +172,7 @@ function SettingsPage() {
             </h2>
 
             {/* Hide Map Zoom Buttons */}
-            <div className="flex items-center justify-between gap-4 min-h-[40px]">
+            <div className="flex items-center justify-between gap-4 min-h-10">
               <p className="text-sm font-semibold">{t(lang, "hideZoomButtons")}</p>
               <ToggleSwitch
                 label={t(lang, "hideZoomButtons")}
@@ -182,7 +182,7 @@ function SettingsPage() {
             </div>
 
             {/* SmartClue Auto-collapse */}
-            <div className="flex items-center justify-between gap-4 min-h-[40px]">
+            <div className="flex items-center justify-between gap-4 min-h-10">
               <p className="text-sm font-semibold">{t(lang, "promptAutoCollapse")}</p>
               <div className="seg">
                 {([
@@ -204,7 +204,7 @@ function SettingsPage() {
             </div>
 
             {/* Emoji Reactions Toggle */}
-            <div className="flex items-center justify-between gap-4 min-h-[40px]">
+            <div className="flex items-center justify-between gap-4 min-h-10">
               <p className="text-sm font-semibold">{t(lang, "emojiReactions")}</p>
               <ToggleSwitch
                 label={t(lang, "emojiReactions")}
@@ -223,7 +223,7 @@ function SettingsPage() {
                 <button
                   type="button"
                   onClick={() => setEmojiDrawerOpen(true)}
-                  className="btn btn-primary !px-4 !py-2 text-xs font-bold"
+                  className="btn btn-primary !px-4 !py-2 text-xs font-semibold"
                 >
                   Choose Emojis ({quickEmojis.length}/5)
                 </button>
@@ -233,7 +233,7 @@ function SettingsPage() {
                 {quickEmojis.map((emo) => (
                   <span
                     key={emo}
-                    className="grid h-10 w-10 place-items-center rounded-2xl border border-[#D2F801]/40 bg-[#D2F801]/10 text-lg"
+                    className="grid h-10 w-10 place-items-center rounded-2xl border border-border bg-[#D2F801]/10 text-lg"
                   >
                     {emo}
                   </span>
@@ -266,14 +266,14 @@ function SettingsPage() {
                 </div>
 
                 <div className="my-3 flex items-center justify-center gap-2 rounded-2xl bg-muted/40 p-2">
-                  <span className="text-xs font-bold text-muted-foreground">Active ({quickEmojis.length}/5):</span>
+                  <span className="text-xs font-semibold text-muted-foreground">Active ({quickEmojis.length}/5):</span>
                   {quickEmojis.map((emo) => (
                     <button
                       key={emo}
                       type="button"
                       onClick={() => toggleQuickEmoji(emo)}
                       title="Tap to remove"
-                      className="grid h-9 w-9 place-items-center rounded-xl bg-[#D2F801] text-base text-[#161616] font-bold shadow-sm"
+                      className="grid h-9 w-9 place-items-center rounded-xl bg-[#D2F801] text-base text-[#161616] font-semibold shadow-sm"
                     >
                       {emo}
                     </button>
@@ -291,7 +291,7 @@ function SettingsPage() {
                           onClick={() => toggleQuickEmoji(emo)}
                           className={`grid h-11 w-11 place-items-center rounded-2xl border text-xl transition-colors ${
                             active
-                              ? "border-[#D2F801] bg-[#D2F801]/15"
+                              ? "border-foreground/60 bg-[#D2F801]/15"
                               : "border-border bg-card/70 hover:bg-muted"
                           }`}
                         >
@@ -306,7 +306,7 @@ function SettingsPage() {
                   <button
                     type="button"
                     onClick={() => setEmojiDrawerOpen(false)}
-                    className="btn btn-primary w-full !py-3 text-sm font-bold"
+                    className="btn btn-primary w-full !py-3 text-sm font-semibold"
                   >
                     Done
                   </button>
@@ -322,7 +322,7 @@ function SettingsPage() {
             </h2>
 
             {/* Theme */}
-            <div className="flex items-center justify-between gap-4 min-h-[40px]">
+            <div className="flex items-center justify-between gap-4 min-h-10">
               <p className="text-sm font-semibold">{t(lang, "theme")}</p>
               <div className="seg">
                 {(["dark", "light"] as const).map((th) => (
@@ -380,7 +380,7 @@ function SettingsPage() {
                       type="button"
                       onClick={() => setMapStyle(v)}
                       className={`overflow-hidden rounded-xl border-2 text-left transition-colors ${
-                        on ? "border-[#D2F801] ring-2 ring-[#D2F801]/40" : "border-border/50 hover:border-muted"
+                        on ? "border-foreground/60 ring-2 ring-foreground/40" : "border-border/50 hover:border-muted"
                       }`}
                     >
                       <div className="relative aspect-square bg-muted">
@@ -398,7 +398,7 @@ function SettingsPage() {
                         />
                       </div>
                       <div
-                        className={`px-2.5 py-1.5 text-xs font-bold ${
+                        className={`px-2.5 py-1.5 text-xs font-semibold ${
                           on ? "bg-[#D2F801] text-[#161616]" : "bg-card"
                         }`}
                       >

@@ -89,9 +89,9 @@ function AdminsPage() {
                   key={bType}
                   type="button"
                   onClick={() => updateSocial({ verifiedBadge: bType })}
-                  className={`inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-xs font-bold transition-colors ${
+                  className={`inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-xs font-semibold transition-colors ${
                     social.verifiedBadge === bType
-                      ? "border-[#D2F801] bg-[#D2F801]/15 text-foreground ring-1 ring-[#D2F801]"
+                      ? "border-foreground/60 bg-[#D2F801]/15 text-foreground ring-1 ring-foreground/40"
                       : "border-border bg-card text-muted-foreground hover:text-foreground"
                   }`}
                 >
@@ -114,7 +114,7 @@ function AdminsPage() {
                   Adjust player profile level and experience points in real-time.
                 </p>
               </div>
-              <div className="rounded-full border border-[#D2F801]/40 bg-[#D2F801]/10 px-3.5 py-1 text-xs font-black text-[#D2F801]">
+              <div className="rounded-full border border-border bg-[#D2F801]/10 px-3.5 py-1 text-xs font-semibold text-[#D2F801]">
                 LVL {computeLevelFromExp(social.exp).level} ({social.exp.toLocaleString()} EXP)
               </div>
             </div>
@@ -122,7 +122,7 @@ function AdminsPage() {
             <div>
               <div className="flex items-center justify-between text-xs font-semibold">
                 <span className="text-muted-foreground">Adjust Level Slider:</span>
-                <span className="font-mono font-bold text-[#D2F801]">
+                <span className="font-mono font-semibold text-[#D2F801]">
                   Level {computeLevelFromExp(social.exp).level} / {LEVEL_MAX}
                 </span>
               </div>
@@ -155,7 +155,7 @@ function AdminsPage() {
                     key={preset.label}
                     type="button"
                     onClick={() => updateSocial({ exp: (preset.lvl - 1) * EXP_PER_LEVEL })}
-                    className="rounded-full border border-border bg-background/50 px-3 py-1 text-xs font-semibold hover:border-[#D2F801]"
+                    className="rounded-full border border-border bg-background/50 px-3 py-1 text-xs font-semibold hover:border-foreground/60"
                   >
                     {preset.label}
                   </button>
@@ -178,7 +178,7 @@ function AdminsPage() {
               </div>
               <div className="flex items-center gap-2">
                 <RankBanner rp={rank.rp} championPosition={rank.championPosition} width={48} />
-                <span className="font-display text-sm font-bold" style={{ color: current.tier.accent }}>
+                <span className="font-display text-sm font-semibold" style={{ color: current.tier.accent }}>
                   {current.name}
                 </span>
               </div>
@@ -186,19 +186,19 @@ function AdminsPage() {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <label className="block text-xs">
-                <span className="font-bold text-muted-foreground">Rank Points (RP: 0 – 10,000)</span>
+                <span className="font-semibold text-muted-foreground">Rank Points (RP: 0 – 10,000)</span>
                 <input
                   type="number"
                   min={0}
                   max={10000}
                   value={rank.rp}
                   onChange={(e) => onRpChange(Number(e.target.value), rank.championPosition ?? null)}
-                  className="mt-1.5 w-full rounded-xl border border-border bg-background px-3 py-2 font-mono text-sm font-bold"
+                  className="mt-1.5 w-full rounded-xl border border-border bg-background px-3 py-2 font-mono text-sm font-semibold"
                 />
               </label>
 
               <label className="block text-xs">
-                <span className="font-bold text-muted-foreground">
+                <span className="font-semibold text-muted-foreground">
                   Leaderboard Position (1–50 for Champion)
                 </span>
                 <input
@@ -211,7 +211,7 @@ function AdminsPage() {
                     const v = e.target.value === "" ? null : Number(e.target.value);
                     onRpChange(rank.rp, v);
                   }}
-                  className="mt-1.5 w-full rounded-xl border border-border bg-background px-3 py-2 font-mono text-sm font-bold"
+                  className="mt-1.5 w-full rounded-xl border border-border bg-background px-3 py-2 font-mono text-sm font-semibold"
                 />
               </label>
             </div>
@@ -232,7 +232,7 @@ function AdminsPage() {
                     key={preset.label}
                     type="button"
                     onClick={() => onRpChange(preset.rp, preset.pos)}
-                    className="rounded-full border border-border bg-background/50 px-3 py-1 text-xs font-semibold hover:border-[#D2F801]"
+                    className="rounded-full border border-border bg-background/50 px-3 py-1 text-xs font-semibold hover:border-foreground/60"
                   >
                     {preset.label}
                   </button>

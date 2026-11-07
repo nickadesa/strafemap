@@ -111,7 +111,7 @@ function DuelLobby() {
               <button
                 onClick={join}
                 disabled={busy || !user || code.length !== 4}
-                className="btn btn-primary mt-5 w-full py-3 font-bold"
+                className="btn btn-primary mt-5 w-full py-3 font-semibold"
               >
                 Join Duel
               </button>

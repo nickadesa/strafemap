@@ -87,7 +87,7 @@ function Home() {
             <div>
               <div className="flex items-center gap-2.5">
                 <h1 className="font-display text-3xl md:text-4xl">STRAFE</h1>
-                <span className="rounded-full bg-[#D2F801] px-2.5 py-0.5 text-[11px] font-extrabold text-[#161616]">
+                <span className="rounded-full bg-muted px-2.5 py-0.5 text-[11px] font-semibold text-muted-foreground">
                   SEASON 1
                 </span>
               </div>
@@ -110,11 +110,11 @@ function Home() {
               <div>
                 <div className="flex items-center gap-1.5">
                   <ClanTagPill tag={social.clanTag} color={social.clanTagColor} />
-                  <span className="text-sm font-bold">{social.nickname}</span>
+                  <span className="text-sm font-semibold">{social.nickname}</span>
                   <VerifiedBadge type={social.verifiedBadge} size={14} />
                 </div>
                 <div className="mt-1 flex items-center gap-2">
-                  <span className="readout text-xs font-bold text-[#D2F801]">Lv.{lvl.level}</span>
+                  <span className="readout text-xs font-semibold text-[#D2F801]">Lv.{lvl.level}</span>
                   <div className="h-1.5 w-20 overflow-hidden rounded-full bg-muted">
                     <div
                       className="h-full bg-[#D2F801]"
@@ -130,7 +130,7 @@ function Home() {
           <section className="plate relative overflow-hidden p-6 md:p-8">
             <div className="relative grid gap-6 md:grid-cols-[1.35fr_1fr] md:items-center">
               <div>
-                <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-3 py-1 text-xs font-bold">
+                <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-3 py-1 text-xs font-semibold">
                   <Flame className="h-3.5 w-3.5 text-[#D2F801]" />
                   <span>
                     {t(lang, "dailyStreak")}:{" "}
@@ -144,7 +144,7 @@ function Home() {
                 </h2>
                 <p className="mt-2.5 max-w-lg text-sm text-muted-foreground">
                   {today
-                    ? `Daily Challenge completed (${today.score.toLocaleString()} / ${today.max.toLocaleString()}). Jump into Ranked or Modes Hub!`
+                    ? `Daily Challenge completed (${today.score.toLocaleString()} / ${today.max.toLocaleString()}). Jump into Ranked or the Modes hub`
                     : "Five precision drops across the globe. Play the Modes Hub or lock in today's global Daily seed."}
                 </p>
 
@@ -152,7 +152,7 @@ function Home() {
                 <div className="mt-6 flex flex-wrap items-center gap-3">
                   <Link
                     to="/play"
-                    className="btn btn-primary px-7 py-3.5 text-base font-extrabold shadow-lg"
+                    className="btn btn-primary px-7 py-3.5 text-base font-semibold shadow-lg"
                   >
                     <IconPin className="h-4 w-4" />
                     {t(lang, "playNow")}
@@ -162,7 +162,7 @@ function Home() {
                     to="/game/$mode"
                     params={{ mode: "classic" }}
                     search={{ daily: 1 }}
-                    className="btn btn-outline px-6 py-3.5 text-base font-extrabold"
+                    className="btn btn-outline px-6 py-3.5 text-base font-semibold"
                   >
                     <IconCalendar className="h-4 w-4" />
                     {t(lang, "daily")} Challenge · {dailyStreak} Days
@@ -171,7 +171,7 @@ function Home() {
                   <button
                     type="button"
                     onClick={() => setShowDailyModal(true)}
-                    className="btn btn-outline !px-4 !py-3 text-xs font-bold"
+                    className="btn btn-outline !px-4 !py-3 text-xs font-semibold"
                   >
                     Streak Calendar
                   </button>
@@ -189,13 +189,13 @@ function Home() {
                     <p className="font-display text-2xl" style={{ color: curRank.tier.accent }}>
                       {curRank.name}
                     </p>
-                    <p className="readout text-xs font-bold text-[#D2F801]">
+                    <p className="readout text-xs font-semibold text-[#D2F801]">
                       {rank.rp.toLocaleString()} RP
                     </p>
                   </div>
                 </div>
-                <Link to="/rank" className="btn btn-outline !px-3.5 !py-2 text-xs font-bold">
-                  {t(lang, "rank")} →
+                <Link to="/rank" className="btn btn-outline !px-3.5 !py-2 text-xs font-semibold">
+                  {t(lang, "rank")}
                 </Link>
               </div>
             </div>
@@ -213,9 +213,9 @@ function Home() {
               <Link
                 to="/profile"
                 search={{ tab: "feed" } as any}
-                className="text-xs font-bold text-[#D2F801] hover:underline"
+                className="text-xs font-semibold text-[#D2F801] hover:underline"
               >
-                Open Social Feed →
+                Open social feed
               </Link>
             </div>
 
@@ -236,7 +236,7 @@ function Home() {
                     mode: "Daily Challenge",
                     score: `${Math.max(21450, stats.bestScore).toLocaleString()}`,
                     accuracy: "96.4%",
-                    caption: "Dropped my new personal best highlight on STRAFE! 🎯",
+                    caption: "New personal best on STRAFE",
                     gradient: "linear-gradient(160deg, #161616 0%, #262626 100%)",
                   })
                 }
@@ -271,7 +271,7 @@ function Home() {
                           size={32}
                         />
                         <div>
-                          <p className="truncate font-bold text-xs text-white">{st.authorName}</p>
+                          <p className="truncate font-semibold text-xs text-white">{st.authorName}</p>
                           <p className="truncate text-[10px] text-white/75">{st.caption}</p>
                         </div>
                       </div>
@@ -288,7 +288,7 @@ function Home() {
                           championPosition={st.authorChampPos}
                           size={34}
                         />
-                        <span className="rounded-full bg-black/50 px-2 py-0.5 text-[10px] font-bold backdrop-blur-sm">
+                        <span className="rounded-full bg-black/50 px-2 py-0.5 text-[10px] font-semibold backdrop-blur-sm">
                           {st.mode}
                         </span>
                       </div>
@@ -298,7 +298,7 @@ function Home() {
                         <p className="line-clamp-2 text-[11px] leading-snug text-white/90">
                           {st.caption}
                         </p>
-                        <div className="mt-1.5 flex items-center gap-1 text-[11px] font-bold">
+                        <div className="mt-1.5 flex items-center gap-1 text-[11px] font-semibold">
                           <ClanTagPill tag={st.authorClanTag} />
                           <span className="truncate">{st.authorName}</span>
                           <VerifiedBadge type={st.authorVerified} size={12} />
@@ -317,8 +317,8 @@ function Home() {
               <h2 className="text-sm font-semibold text-muted-foreground">
                 {t(lang, "modes")} Hub
               </h2>
-              <Link to="/play" className="text-xs font-bold text-[#D2F801] hover:underline">
-                {t(lang, "viewAll")} (7 Modes) →
+              <Link to="/play" className="text-xs font-semibold text-[#D2F801] hover:underline">
+                {t(lang, "viewAll")} (7 modes)
               </Link>
             </div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -329,16 +329,16 @@ function Home() {
                     key={m}
                     to="/play"
                     search={{ mode: m }}
-                    className="plate flex items-center gap-4 p-4 transition-colors hover:border-[#D2F801]/60 hover:bg-muted/50"
+                    className="plate flex items-center gap-4 p-4 transition-colors hover:border-border hover:bg-muted/50"
                   >
                     <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-muted text-[#D2F801]">
                       <Icon className="h-5 w-5" />
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
-                        <p className="truncate font-bold">{t(lang, m)}</p>
+                        <p className="truncate font-semibold">{t(lang, m)}</p>
                         {(m === "findCity" || m === "sins" || m === "quiz") && (
-                          <span className="rounded-full bg-[#D2F801]/20 px-2 py-0.5 text-[9px] font-semibold text-[#D2F801]">
+                          <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold text-foreground">
                             NEW
                           </span>
                         )}
@@ -362,8 +362,8 @@ function Home() {
                     {t(lang, "achUnlocked", { n: unlockedCount, total: ACH_ALL.length })} · Unlocked sorted to top
                   </p>
                 </div>
-                <Link to="/achievements" className="btn btn-outline !px-3.5 !py-1.5 text-xs font-bold">
-                  {t(lang, "viewAll")} →
+                <Link to="/achievements" className="btn btn-outline !px-3.5 !py-1.5 text-xs font-semibold">
+                  {t(lang, "viewAll")}
                 </Link>
               </div>
               <div className="grid grid-cols-4 gap-2 sm:grid-cols-4">
@@ -375,7 +375,7 @@ function Home() {
                       to="/achievements"
                       className={`flex flex-col items-center rounded-2xl border p-2 text-center transition-colors ${
                         isUnlocked
-                          ? "border-[#D2F801]/50 bg-[#D2F801]/10"
+                          ? "border-border bg-[#D2F801]/10"
                           : "border-border bg-background/40 opacity-60"
                       }`}
                     >
@@ -385,9 +385,9 @@ function Home() {
                         className="h-12 w-12 object-contain"
                         loading="lazy"
                       />
-                      <span className="mt-1 line-clamp-1 text-[11px] font-bold">{a.name}</span>
+                      <span className="mt-1 line-clamp-1 text-[11px] font-semibold">{a.name}</span>
                       <span
-                        className={`text-[9px] font-extrabold uppercase ${
+                        className={`text-[10px] font-semibold ${
                           isUnlocked ? "text-[#D2F801]" : "text-muted-foreground"
                         }`}
                       >
@@ -418,7 +418,7 @@ function Home() {
                     </p>
                   </div>
                 </div>
-                <span className="text-sm font-bold text-[#D2F801]">→</span>
+                <span aria-hidden className="text-lg leading-none text-muted-foreground">›</span>
               </Link>
 
               <Link
@@ -430,13 +430,13 @@ function Home() {
                     <Users className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="font-bold">{t(lang, "party")} + Voice Chat</p>
+                    <p className="font-semibold">{t(lang, "party")} + Voice Chat</p>
                     <p className="text-xs text-muted-foreground">
                       2–16 players · Unlimited ∞ timer · Soundboard
                     </p>
                   </div>
                 </div>
-                <span className="text-sm font-bold text-[#D2F801]">→</span>
+                <span aria-hidden className="text-lg leading-none text-muted-foreground">›</span>
               </Link>
 
               <Link
@@ -449,7 +449,7 @@ function Home() {
                     <ShoppingBag className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="font-bold">
+                    <p className="font-semibold">
                       Cosmetic Shop ({social.coins?.toLocaleString() ?? "10,000"} Coins)
                     </p>
                     <p className="text-xs text-muted-foreground">
@@ -457,7 +457,7 @@ function Home() {
                     </p>
                   </div>
                 </div>
-                <span className="text-sm font-bold text-[#D2F801]">→</span>
+                <span aria-hidden className="text-lg leading-none text-muted-foreground">›</span>
               </Link>
             </div>
           </div>
@@ -483,7 +483,7 @@ function Home() {
                       <div>
                         <div className="flex items-center gap-1">
                           <ClanTagPill tag={activeStory.authorClanTag} />
-                          <span className="font-bold text-sm">{activeStory.authorName}</span>
+                          <span className="font-semibold text-sm">{activeStory.authorName}</span>
                           <VerifiedBadge type={activeStory.authorVerified} size={13} />
                         </div>
                         <p className="text-xs text-white/75">
@@ -501,7 +501,7 @@ function Home() {
                   </div>
 
                   <div>
-                    <span className="rounded-full bg-[#D2F801] px-2.5 py-0.5 text-[10px] font-extrabold uppercase text-[#161616]">
+                    <span className="rounded-full bg-muted px-2.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
                       {activeStory.mode}
                     </span>
                     <p className="font-display mt-2 text-4xl text-[#D2F801]">{activeStory.score}</p>
@@ -511,7 +511,7 @@ function Home() {
                         to="/game/$mode"
                         params={{ mode: "classic" }}
                         onClick={() => setActiveStory(null)}
-                        className="btn btn-primary w-full py-2.5 text-xs font-bold"
+                        className="btn btn-primary w-full py-2.5 text-xs font-semibold"
                       >
                         Challenge This Score
                       </Link>
@@ -535,7 +535,7 @@ function Home() {
                     <div>
                       <div className="flex items-center gap-1">
                         <ClanTagPill tag={activeStory.authorClanTag} />
-                        <span className="font-bold">{activeStory.authorName}</span>
+                        <span className="font-semibold">{activeStory.authorName}</span>
                         <VerifiedBadge type={activeStory.authorVerified} size={14} />
                         <Flag country={activeStory.country} size={16} />
                       </div>
@@ -554,11 +554,11 @@ function Home() {
                 </div>
 
                 <div className="my-auto text-center">
-                  <span className="rounded-full bg-[#D2F801] px-3 py-1 text-xs font-extrabold uppercase text-[#161616]">
+                  <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-foreground">
                     {activeStory.mode}
                   </span>
                   <p className="font-display mt-4 text-6xl text-[#D2F801]">{activeStory.score}</p>
-                  <p className="mt-1 text-sm font-bold text-white/80">
+                  <p className="mt-1 text-sm font-semibold text-white/80">
                     Accuracy: {activeStory.accuracy}
                   </p>
                   <p className="mt-4 rounded-2xl bg-black/35 p-4 text-sm leading-relaxed backdrop-blur-sm">
@@ -571,7 +571,7 @@ function Home() {
                     to="/game/$mode"
                     params={{ mode: "classic" }}
                     onClick={() => setActiveStory(null)}
-                    className="btn btn-primary w-full py-3 text-sm font-bold"
+                    className="btn btn-primary w-full py-3 text-sm font-semibold"
                   >
                     Challenge This Score
                   </Link>
@@ -587,7 +587,7 @@ function Home() {
         <div className="fixed inset-0 z-50 grid place-items-center bg-black/80 p-4 backdrop-blur-sm">
           <div className="plate max-w-md w-full p-6">
             <div className="flex items-center justify-between">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#D2F801] px-3 py-1 text-xs font-bold text-[#161616]">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-foreground">
                 <Flame className="h-3.5 w-3.5 text-[#161616]" /> Daily Challenge Hub
               </span>
               <button
@@ -614,11 +614,11 @@ function Home() {
                     key={d}
                     className={`rounded-xl border p-2 ${
                       done
-                        ? "border-[#D2F801] bg-[#D2F801]/15 text-[#D2F801]"
+                        ? "border-foreground/60 bg-[#D2F801]/15 text-[#D2F801]"
                         : "border-border bg-background/40 text-muted-foreground"
                     }`}
                   >
-                    <p className="text-[10px] font-bold">D{d}</p>
+                    <p className="text-[10px] font-semibold">D{d}</p>
                     <p className="mt-1 flex items-center justify-center text-sm">
                       {done ? <Flame className="h-4 w-4 text-[#D2F801]" /> : "·"}
                     </p>
@@ -633,7 +633,7 @@ function Home() {
                 params={{ mode: "classic" }}
                 search={{ daily: 1 }}
                 onClick={() => setShowDailyModal(false)}
-                className="btn btn-primary flex-1 py-3 text-sm font-bold"
+                className="btn btn-primary flex-1 py-3 text-sm font-semibold"
               >
                 Play Today's Seed
               </Link>

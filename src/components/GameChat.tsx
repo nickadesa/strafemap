@@ -27,35 +27,35 @@ interface ChatMessage {
 }
 
 const QUICK_CHAT_PILLS = [
-  "GG! 🤝",
-  "Well played! 🔥",
-  "Close match! 🎯",
-  "Insane pin! 📍",
-  "Rematch? ⚔️",
+  "GG",
+  "Well played",
+  "Close match",
+  "Great pin",
+  "Rematch?",
 ];
 
 const SMART_REPLIES: Record<string, string[]> = {
   gg: [
-    "GG! That was super intense!",
-    "GGs! Really well played mate 🤝",
-    "Gg wp! You definitely know your geography!",
+    "GG, that was intense",
+    "GGs, really well played",
+    "GG WP, you know your geography",
   ],
   rematch: [
-    "I'm totally down for a rematch! Ready when you are 🔥",
-    "Let's do it! Queue up another one!",
+    "Down for a rematch. Ready when you are",
+    "Let's queue another one",
   ],
   close: [
-    "I thought I had you in round 3! Super close! 😅",
-    "Yeah, down to the wire! Respect!",
+    "Thought I had you in round 3. Close one",
+    "Down to the wire. Respect",
   ],
   insane: [
-    "Thanks! Got lucky with the coastline clue haha 🌊",
-    "Haha hours of practice paying off!",
+    "Thanks, got lucky with the coastline clue",
+    "Hours of practice paying off",
   ],
   default: [
-    "Well played! Catch you on the global leaderboard 🏆",
-    "Nice match! Thanks for the game!",
-    "Great guesses throughout!",
+    "Well played. See you on the leaderboard",
+    "Nice match, thanks for the game",
+    "Great guesses throughout",
   ],
 };
 
@@ -177,11 +177,7 @@ export function GameChat({
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-card/60 px-4 py-3">
         <div className="flex items-center gap-2">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#D2F801] opacity-75" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#D2F801]" />
-          </span>
-          <span className="text-sm font-bold">{t(lang, "matchChat")}</span>
+          <span className="text-sm font-semibold">{t(lang, "matchChat")}</span>
           <span className="rounded-full bg-muted px-2.5 py-0.5 text-[11px] text-muted-foreground font-medium">
             {t(lang, "vsName", { name: `${opp.clanTag ? `${opp.clanTag} ` : ""}${opp.name}` })}
           </span>
@@ -189,7 +185,7 @@ export function GameChat({
 
         <div className="flex items-center gap-2">
           <span className="rounded-full border border-border/80 bg-background/50 px-2.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
-            🟢 Post-Match Room
+            Post-match room
           </span>
         </div>
       </div>
@@ -224,7 +220,7 @@ export function GameChat({
                   }`}
                 >
                   <ClanTagPill tag={m.senderTag} color={m.senderTagColor} />
-                  <span className="font-bold text-foreground">{m.senderName}</span>
+                  <span className="font-semibold text-foreground">{m.senderName}</span>
                   <VerifiedBadge type={m.senderVerified ?? "none"} size={13} />
                   <span className="text-[10px] opacity-60 ml-1">{m.time}</span>
                 </div>
@@ -261,7 +257,7 @@ export function GameChat({
             key={pill}
             type="button"
             onClick={() => sendMessage(pill)}
-            className="rounded-full border border-border bg-background/60 px-2.5 py-1 text-xs font-semibold hover:border-[#D2F801] hover:text-[#D2F801] transition-colors"
+            className="rounded-full border border-border bg-background/60 px-2.5 py-1 text-xs font-semibold hover:border-foreground/60 hover:text-[#D2F801] transition-colors"
           >
             {pill}
           </button>
@@ -275,7 +271,7 @@ export function GameChat({
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && sendMessage(text)}
           placeholder={t(lang, "chatPlaceholder")}
-          className="flex-1 rounded-full border border-border bg-background px-4 py-2 text-sm outline-none focus:border-[#D2F801] transition-colors"
+          className="flex-1 rounded-full border border-border bg-background px-4 py-2 text-sm outline-none focus:border-foreground/60 transition-colors"
         />
         <button
           type="button"

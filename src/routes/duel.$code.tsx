@@ -141,9 +141,9 @@ function DuelRoom() {
     return (
       <Center>
         <p className="text-sm font-semibold text-muted-foreground">Room code</p>
-        <p className="font-display mt-2 text-8xl tracking-widest">{duel.code}</p>
+        <p className="font-display mt-2 text-8xl">{duel.code}</p>
         <p className="mt-4 text-muted-foreground">Waiting for your opponent to join…</p>
-        <button onClick={() => navigator.clipboard?.writeText(link).then(() => setCopied(true))} className="btn btn-primary mt-6">{copied ? "Link copied!" : "Copy invite link"}</button>
+        <button onClick={() => navigator.clipboard?.writeText(link).then(() => setCopied(true))} className="btn btn-primary mt-6">{copied ? "Link copied" : "Copy invite link"}</button>
       </Center>
     );
   }

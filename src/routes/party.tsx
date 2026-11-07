@@ -218,7 +218,7 @@ function PartyPage() {
               key={m}
               type="button"
               onClick={() => setSelectedMode(m)}
-              className={`rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
+              className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
                 selectedMode === m
                   ? "bg-[#D2F801] text-[#161616]"
                   : "bg-muted text-muted-foreground hover:text-foreground"
@@ -318,7 +318,7 @@ function PartyPage() {
       <main className="rail-offset w-full max-w-full overflow-x-hidden px-4 pb-12 pt-8 md:px-6">
         <div className="mx-auto w-full max-w-3xl min-w-0">
           <div className="text-center">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#D2F801] px-3 py-1 text-xs font-extrabold uppercase text-[#161616]">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-foreground">
               <Users className="h-3.5 w-3.5" /> 2–16 Player Voice Party
             </span>
             <h1 className="font-display mt-3 text-4xl md:text-5xl">{t(lang, "party")}</h1>
@@ -338,7 +338,7 @@ function PartyPage() {
                       Configure rules now — or tweak them anytime inside the waiting lobby
                     </p>
                   </div>
-                  <span className="rounded-full bg-[#D2F801]/15 px-3 py-1 text-xs font-bold text-[#D2F801]">
+                  <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-foreground">
                     Max {maxPlayers} Players
                   </span>
                 </div>
@@ -348,7 +348,7 @@ function PartyPage() {
                 <button
                   type="button"
                   onClick={createRoom}
-                  className="btn btn-primary w-full py-3.5 text-base font-extrabold"
+                  className="btn btn-primary w-full py-3.5 text-base font-semibold"
                 >
                   Create Party Room ({t(lang, selectedMode)} · {selectedTime === 0 ? "∞" : `${selectedTime}s`})
                 </button>
@@ -393,7 +393,7 @@ function PartyPage() {
                     type="button"
                     onClick={joinRoom}
                     disabled={code.length < 4}
-                    className="btn btn-primary w-full sm:w-auto px-7 py-3 text-sm font-bold"
+                    className="btn btn-primary w-full sm:w-auto px-7 py-3 text-sm font-semibold"
                   >
                     Join Party
                   </button>
@@ -430,13 +430,13 @@ function PartyPage() {
 
                   {/* Active Room Summary Pills + Editable Host Settings Toggle */}
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="rounded-full bg-[#D2F801] px-2.5 py-0.5 text-xs font-bold text-[#161616]">
+                    <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-semibold text-muted-foreground">
                       {t(lang, selectedMode)}
                     </span>
                     <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-semibold">
                       {selectedTime === 0 ? t(lang, "unlimited") : `${selectedTime}s`} · {t(lang, selectedDiff)}
                     </span>
-                    <span className="readout rounded-full bg-muted px-2.5 py-0.5 text-xs font-bold">
+                    <span className="readout rounded-full bg-muted px-2.5 py-0.5 text-xs font-semibold">
                       {players.length}/{maxPlayers} Players
                     </span>
                   </div>
@@ -446,7 +446,7 @@ function PartyPage() {
                       <button
                         type="button"
                         onClick={() => setShowHostSettings((v) => !v)}
-                        className="btn btn-outline !px-3 !py-1.5 text-xs font-bold flex items-center justify-center gap-1"
+                        className="btn btn-outline !px-3 !py-1.5 text-xs font-semibold flex items-center justify-center gap-1"
                       >
                         <SlidersHorizontal className="h-3.5 w-3.5 text-[#D2F801]" />
                         Rules
@@ -456,7 +456,7 @@ function PartyPage() {
                     <button
                       type="button"
                       onClick={() => setShowInviteModal(true)}
-                      className="btn btn-primary !px-3 !py-1.5 text-xs font-bold flex items-center justify-center gap-1"
+                      className="btn btn-primary !px-3 !py-1.5 text-xs font-semibold flex items-center justify-center gap-1"
                     >
                       <UserPlus className="h-3.5 w-3.5" />
                       Invite
@@ -477,7 +477,7 @@ function PartyPage() {
 
                 {/* Live Host Rule Editor inside Waiting Lobby */}
                 {isHost && showHostSettings && (
-                  <div className="mt-4 rounded-2xl border border-[#D2F801]/40 bg-background/60 p-4">
+                  <div className="mt-4 rounded-2xl border border-border bg-background/60 p-4">
                     <div className="mb-3 flex items-center justify-between">
                       <span className="text-xs font-semibold text-[#D2F801]">
                         Host Room Settings (Live Update)
@@ -485,7 +485,7 @@ function PartyPage() {
                       <button
                         type="button"
                         onClick={() => setShowHostSettings(false)}
-                        className="rounded-full bg-[#D2F801] px-3 py-1 text-xs font-bold text-[#161616]"
+                        className="rounded-full bg-[#D2F801] px-3 py-1 text-xs font-semibold text-[#161616]"
                       >
                         Confirm Settings
                       </button>
@@ -524,10 +524,10 @@ function PartyPage() {
                           <div className="min-w-0">
                             <div className="flex flex-wrap items-center gap-1">
                               <ClanTagPill tag={p.clanTag} color={p.clanTagColor} />
-                              <span className="truncate text-xs sm:text-sm font-bold">{p.name}</span>
+                              <span className="truncate text-xs sm:text-sm font-semibold">{p.name}</span>
                               <VerifiedBadge type={p.verified} size={13} />
                               {p.host && (
-                                <span className="rounded-full bg-[#D2F801] px-1.5 py-0.2 text-[9px] font-black text-[#161616]">
+                                <span className="rounded-full bg-muted px-1.5 py-0.2 text-[10px] font-semibold text-muted-foreground">
                                   HOST
                                 </span>
                               )}
@@ -556,7 +556,7 @@ function PartyPage() {
                           )}
 
                           <span
-                            className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-bold ${
+                            className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${
                               p.ready
                                 ? "bg-[#D2F801] text-[#161616]"
                                 : "bg-muted text-muted-foreground"
@@ -613,9 +613,9 @@ function PartyPage() {
                       type="button"
                       onClick={start}
                       disabled={!allReady}
-                      className="btn btn-primary flex-1 font-extrabold disabled:opacity-40"
+                      className="btn btn-primary flex-1 font-semibold disabled:opacity-40"
                     >
-                      Start Party Match →
+                      Start party match
                     </button>
                   )}
                 </div>
@@ -668,7 +668,7 @@ function PartyPage() {
                       <div>
                         <div className="flex items-center gap-1">
                           <ClanTagPill tag={f.clanTag} color={f.clanTagColor} />
-                          <span className="text-sm font-bold">{f.nickname}</span>
+                          <span className="text-sm font-semibold">{f.nickname}</span>
                           <VerifiedBadge type={f.verifiedBadge} size={13} />
                         </div>
                         <p className="text-xs text-muted-foreground">@{f.username}</p>

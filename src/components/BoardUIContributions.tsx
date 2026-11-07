@@ -100,9 +100,9 @@ export function ContributionsHeatmap({
 
   const getColorClass = (count: number) => {
     if (count === 0) return "bg-[#222428] border-border/40";
-    if (count <= 2) return "bg-[#D2F801]/30 border-[#D2F801]/30";
-    if (count <= 5) return "bg-[#D2F801]/60 border-[#D2F801]/60";
-    return "bg-[#D2F801] border-[#D2F801] shadow-[0_0_8px_rgba(210,248,1,0.35)]";
+    if (count <= 2) return "bg-[#D2F801]/30 border-border";
+    if (count <= 5) return "bg-[#D2F801]/60 border-border";
+    return "bg-[#D2F801] border-foreground/60";
   };
 
   return (
@@ -111,19 +111,19 @@ export function ContributionsHeatmap({
       <div className="grid grid-cols-3 gap-3 border-b border-border/60 pb-3">
         <div>
           <span className="text-[11px] font-medium text-muted-foreground">Total Games Pinned</span>
-          <p className="font-mono text-xl font-bold text-foreground tabular-nums">
+          <p className="font-mono text-xl font-semibold text-foreground tabular-nums">
             {stats.total.toLocaleString()}
           </p>
         </div>
         <div>
           <span className="text-[11px] font-medium text-muted-foreground">Current Streak</span>
-          <p className="font-mono text-xl font-bold text-[#D2F801] tabular-nums">
+          <p className="font-mono text-xl font-semibold text-[#D2F801] tabular-nums">
             {stats.currentStreak} Days
           </p>
         </div>
         <div>
           <span className="text-[11px] font-medium text-muted-foreground">Best Streak</span>
-          <p className="font-mono text-xl font-bold text-foreground tabular-nums">
+          <p className="font-mono text-xl font-semibold text-foreground tabular-nums">
             {stats.maxStreak} Days
           </p>
         </div>
@@ -149,7 +149,7 @@ export function ContributionsHeatmap({
 
           <div className="flex gap-1.5 items-start">
             {/* Day of Week Labels (Mon, Wed, Fri) */}
-            <div className="flex flex-col gap-1 text-[9px] text-muted-foreground font-mono pt-0.5 select-none w-5">
+            <div className="flex flex-col gap-1 text-[10px] text-muted-foreground font-mono pt-0.5 select-none w-5">
               <span>Mon</span>
               <span className="opacity-0">Tue</span>
               <span>Wed</span>
@@ -174,7 +174,7 @@ export function ContributionsHeatmap({
                       onMouseLeave={() => setHovered(null)}
                       onClick={() => haptic(8)}
                       aria-label={`${day.count} games on ${day.date}`}
-                      className={`aspect-square w-full rounded-[3.5px] border transition-transform hover:scale-110 ${getColorClass(
+                      className={`aspect-square w-full rounded-[3.5px] border transition-transform ${getColorClass(
                         day.count
                       )}`}
                     />
@@ -189,7 +189,7 @@ export function ContributionsHeatmap({
             <div className="h-5 flex items-center">
               {hovered ? (
                 <p className="font-mono text-[11px] text-foreground">
-                  <span className="font-bold text-[#D2F801]">{hovered.count} games</span> on{" "}
+                  <span className="font-semibold text-[#D2F801]">{hovered.count} games</span> on{" "}
                   {new Date(hovered.date).toLocaleDateString("en", {
                     month: "short",
                     day: "numeric",
@@ -204,9 +204,9 @@ export function ContributionsHeatmap({
             <div className="flex items-center gap-1.5 font-mono text-[10px]">
               <span>Less</span>
               <span className="h-2.5 w-2.5 rounded-[2px] bg-[#222428] border border-border/40" />
-              <span className="h-2.5 w-2.5 rounded-[2px] bg-[#D2F801]/30 border border-[#D2F801]/30" />
-              <span className="h-2.5 w-2.5 rounded-[2px] bg-[#D2F801]/60 border border-[#D2F801]/60" />
-              <span className="h-2.5 w-2.5 rounded-[2px] bg-[#D2F801] border border-[#D2F801]" />
+              <span className="h-2.5 w-2.5 rounded-[2px] bg-[#D2F801]/30 border border-border" />
+              <span className="h-2.5 w-2.5 rounded-[2px] bg-[#D2F801]/60 border border-border" />
+              <span className="h-2.5 w-2.5 rounded-[2px] bg-[#D2F801] border border-foreground/60" />
               <span>More</span>
             </div>
           </div>

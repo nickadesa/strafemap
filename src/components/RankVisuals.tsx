@@ -83,7 +83,7 @@ export function AvatarFrame({
         />
       ) : (
         <div
-          className="grid h-full w-full place-items-center font-display font-bold bg-[#1C1D1F] text-[#D2F801]"
+          className="grid h-full w-full place-items-center font-display font-semibold bg-[#1C1D1F] text-[#D2F801]"
           style={{
             fontSize: Math.max(10, Math.round(size * 0.44)),
           }}
@@ -366,7 +366,7 @@ export function ClanTagPill({
   const isLime = color.toUpperCase() === "#D2F801" || color.toUpperCase() === "#FFC82A" || color.toUpperCase() === "#B9FF24";
   return (
     <span
-      className={`inline-flex shrink-0 items-center rounded-full px-1.5 py-0.5 text-[10px] font-extrabold tracking-wider uppercase leading-none ${className}`}
+      className={`inline-flex shrink-0 items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold uppercase leading-none ${className}`}
       style={{
         backgroundColor: color,
         color: isLime ? "#161616" : "#FFFFFF",
