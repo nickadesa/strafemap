@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Sidebar } from "@/components/Sidebar";
 import { MODES, formatDistance, type Mode } from "@/lib/game/engine";
 import { computeStats, useRecords, useSettings } from "@/lib/game/storage";
+import { useSocialProfile } from "@/lib/social";
 import { ActivityRings, CartographerRadar } from "@/components/BoardUIActivityRings";
 import { ContributionsHeatmap } from "@/components/BoardUIContributions";
 
@@ -13,11 +14,13 @@ export const Route = createFileRoute("/stats")({
 function Stats() {
   const [records] = useRecords();
   const [settings] = useSettings();
+  const [social] = useSocialProfile();
   const list = records ?? [];
   const s = computeStats(list);
+  const gamesCount = social.totalGames ?? s.games;
   const recent = [...list].reverse().slice(0, 8);
   const cells = [
-    ["Games", String(s.games)], ["Best score", s.bestScore.toLocaleString()],
+    ["Games", gamesCount.toLocaleString()], ["Best score", s.bestScore.toLocaleString()],
     ["Accuracy", `${Math.round(s.accuracy * 100)}%`], ["Avg error", s.avgError === null ? "—" : formatDistance(s.avgError, settings.unit)],
     ["Closest pin", s.closest === null ? "—" : formatDistance(s.closest, settings.unit)], ["Current streak", String(s.currentStreak)],
     ["Best streak", String(s.bestStreak)], ["Dailies", String(s.dailies)],

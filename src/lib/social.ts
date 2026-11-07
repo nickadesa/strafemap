@@ -31,6 +31,8 @@ export interface SocialProfile {
   followingIds: string[];
   followerIds: string[];
   unlockedCosmetics: string[];
+  totalGames?: number | undefined;
+  totalPins?: number | undefined;
 }
 
 export interface CommunityPlayer {

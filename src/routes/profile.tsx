@@ -295,8 +295,8 @@ function XStyleProfileTab({
     updateSocial({ followingIds: next });
   };
 
-  const totalPinsCount = Math.max(stats.rounds, 45);
-  const totalGamesCount = Math.max(stats.games, 9);
+  const totalPinsCount = social.totalPins ?? Math.max(stats.rounds, 45);
+  const totalGamesCount = social.totalGames ?? Math.max(stats.games, 9);
 
   return (
     <div className="space-y-5">
