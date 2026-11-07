@@ -40,6 +40,8 @@ export const LANGS: { id: Lang; label: string; country: string }[] = [
 
 export const dictionaries: Record<Lang, Record<string, string>> = {
   "en": {
+    "chat": "Chat",
+    "chatPlaceholder": "Send a message...",
     "rankPoints": "Rank Points",
     "currentRank": "Current rank",
     "rpToNext": "{n} RP to {rank}",
@@ -220,6 +222,8 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "attractions": "Tourist Attractions"
   },
   "th": {
+    "chat": "แชท",
+    "chatPlaceholder": "ส่งข้อความ...",
     "rankPoints": "แต้มแรงค์",
     "currentRank": "แรงค์ปัจจุบัน",
     "rpToNext": "อีก {n} RP ถึง {rank}",
@@ -400,6 +404,8 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "attractions": "สถานที่ท่องเที่ยวยอดนิยม"
   },
   "ko": {
+    "chat": "채팅",
+    "chatPlaceholder": "메시지 보내기...",
     "rankPoints": "랭크 포인트",
     "currentRank": "현재 랭크",
     "rpToNext": "{rank}까지 {n} RP",
@@ -580,6 +586,8 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "attractions": "인기 명소"
   },
   "zh": {
+    "chat": "聊天",
+    "chatPlaceholder": "发送消息...",
     "rankPoints": "段位分",
     "currentRank": "当前段位",
     "rpToNext": "距 {rank} 还差 {n} RP",
@@ -760,6 +768,8 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "attractions": "热门景点"
   },
   "ja": {
+    "chat": "チャット",
+    "chatPlaceholder": "メッセージを送信...",
     "rankPoints": "ランクポイント",
     "currentRank": "現在のランク",
     "rpToNext": "{rank}まで {n} RP",
@@ -940,6 +950,8 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "attractions": "人気観光スポット"
   },
   "es": {
+    "chat": "Chat",
+    "chatPlaceholder": "Enviar un mensaje...",
     "rankPoints": "Puntos de rango",
     "currentRank": "Rango actual",
     "rpToNext": "{n} RP para {rank}",
@@ -1120,6 +1132,8 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "attractions": "Atracciones turísticas"
   },
   "fr": {
+    "chat": "Chat",
+    "chatPlaceholder": "Envoyer un message...",
     "rankPoints": "Points de rang",
     "currentRank": "Rang actuel",
     "rpToNext": "{n} RP avant {rank}",

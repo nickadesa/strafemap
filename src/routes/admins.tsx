@@ -4,7 +4,8 @@ import { Sidebar } from "@/components/Sidebar";
 import { getRank, loadRank, saveRank, type RankedProfile } from "@/lib/rank";
 import { RankBanner, VerifiedBadge, type VerifiedBadgeType } from "@/components/RankVisuals";
 import { useSocialProfile, computeLevelFromExp, LEVEL_MAX, EXP_PER_LEVEL } from "@/lib/social";
-import { ShieldCheck, Sliders, Sparkles } from "lucide-react";
+import { ShieldCheck, Sliders, Sparkles, Flame } from "lucide-react";
+import { GameChat } from "@/components/GameChat";
 
 export const Route = createFileRoute("/admins")({
   head: () => ({
@@ -239,6 +240,32 @@ function AdminsPage() {
                 ))}
               </div>
             </div>
+          </section>
+
+          {/* Toxic Bot Chat Sandbox Tester */}
+          <section className="plate space-y-4 p-5 sm:p-6">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4">
+              <div>
+                <h2 className="flex items-center gap-2 font-display text-lg font-semibold sm:text-xl">
+                  <Flame className="h-4 w-4 text-red-400" />
+                  Toxic AI Bot Chat Tester
+                </h2>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Test savage gamer banter & swear-word detection in real time. Try typing insults or low-score banter.
+                </p>
+              </div>
+            </div>
+            <GameChat
+              inline
+              playerScore={500}
+              opponent={{
+                name: "ToxicGamer99",
+                clanTag: "RAGE",
+                clanTagColor: "#ef4444",
+                rp: 8400,
+                verified: "fire",
+              }}
+            />
           </section>
         </div>
       </main>

@@ -12,7 +12,7 @@ import {
   SEASON_REWARDS,
   type RankedProfile,
 } from "@/lib/rank";
-import { AvatarFrame, ClanTagPill, RankBanner, VerifiedBadge } from "@/components/RankVisuals";
+import { AvatarFrame, ClanTagPill, RankBanner, VerifiedBadge, type VerifiedBadgeType } from "@/components/RankVisuals";
 import { Flag } from "@/components/Flag";
 import {
   COMMUNITY_PLAYERS,
@@ -518,6 +518,155 @@ function GuideTab({
   );
 }
 
+interface PodiumEntry {
+  id: string;
+  nickname: string;
+  username: string;
+  country: string;
+  zone: string;
+  rp: number;
+  championPosition: number | null;
+  clanTag?: string | null | undefined;
+  clanTagColor?: string | undefined;
+  verifiedBadge?: VerifiedBadgeType | undefined;
+  avatarUrl?: string | null | undefined;
+  me: boolean;
+}
+
+function LeaderboardPodium({ topThree }: { topThree: PodiumEntry[] }) {
+  if (topThree.length < 3) return null;
+
+  const p1 = topThree[0]!;
+  const p2 = topThree[1]!;
+  const p3 = topThree[2]!;
+  const champ1 = p1.rp >= 7000 ? (p1.championPosition ?? 1) : null;
+  const champ2 = p2.rp >= 7000 ? (p2.championPosition ?? 2) : null;
+  const champ3 = p3.rp >= 7000 ? (p3.championPosition ?? 3) : null;
+
+  const step1 = getRank(p1.rp, champ1);
+  const step2 = getRank(p2.rp, champ2);
+  const step3 = getRank(p3.rp, champ3);
+
+  const stands = [
+    {
+      player: p2,
+      pos: 2,
+      champPos: champ2,
+      step: step2,
+      avatarSize: 52,
+      heightClass: "h-24 sm:h-30",
+      pedestalBorder: "border-t-2 border-x border-[#C5CCD8]/50",
+      pedestalBg: "bg-gradient-to-b from-white/10 via-card/90 to-card/50",
+      badgeBg: "bg-[#C5CCD8] text-[#161616]",
+      stepNumColor: "text-[#C5CCD8]/30",
+    },
+    {
+      player: p1,
+      pos: 1,
+      champPos: champ1,
+      step: step1,
+      avatarSize: 64,
+      heightClass: "h-32 sm:h-42",
+      pedestalBorder: "border-t-2 border-x border-[#D2F801]/70",
+      pedestalBg: "bg-gradient-to-b from-[#D2F801]/15 via-card/95 to-card/60",
+      badgeBg: "bg-[#D2F801] text-[#161616]",
+      stepNumColor: "text-[#D2F801]/35",
+    },
+    {
+      player: p3,
+      pos: 3,
+      champPos: champ3,
+      step: step3,
+      avatarSize: 48,
+      heightClass: "h-18 sm:h-24",
+      pedestalBorder: "border-t-2 border-x border-[#CD7F32]/50",
+      pedestalBg: "bg-gradient-to-b from-[#CD7F32]/10 via-card/85 to-card/40",
+      badgeBg: "bg-[#CD7F32] text-white",
+      stepNumColor: "text-[#CD7F32]/30",
+    },
+  ];
+
+  return (
+    <div className="plate relative overflow-hidden p-4 sm:p-6 mb-4">
+      {/* Background subtle radial glow behind 1st place */}
+      <div className="pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 h-32 w-64 rounded-full bg-[#D2F801]/5 blur-3xl" />
+
+      {/* Podium Grid: 3 columns (Rank 2, Rank 1, Rank 3) */}
+      <div className="relative grid grid-cols-3 items-end gap-2 sm:gap-4 max-w-xl mx-auto pt-5">
+        {stands.map(({ player: p, pos, champPos, step, avatarSize, heightClass, pedestalBorder, pedestalBg, badgeBg, stepNumColor }) => {
+          return (
+            <div
+              key={p.id}
+              id={p.me ? "leaderboard-me" : undefined}
+              className={`flex flex-col items-center text-center transition-transform ${
+                p.me ? "scale-[1.02]" : ""
+              }`}
+            >
+              {/* Avatar + Floating Rank Badge */}
+              <div className="relative mb-2 flex flex-col items-center">
+                {pos === 1 && (
+                  <div className="mb-1 flex items-center justify-center">
+                    <SymbolTrophy className="h-5 w-5 text-[#D2F801]" fill />
+                  </div>
+                )}
+                <div className="relative">
+                  <AvatarFrame
+                    src={p.avatarUrl}
+                    name={p.nickname}
+                    rp={p.rp}
+                    championPosition={champPos}
+                    size={avatarSize}
+                  />
+                  <span
+                    className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 inline-grid h-5 w-5 place-items-center rounded-full text-[11px] font-semibold shadow-sm ${badgeBg}`}
+                  >
+                    {pos}
+                  </span>
+                </div>
+              </div>
+
+              {/* Player Info */}
+              <div className="mb-2 w-full px-1">
+                <div className="flex items-center justify-center gap-1">
+                  <ClanTagPill tag={p.clanTag} color={p.clanTagColor} />
+                  <span className="truncate text-xs sm:text-sm font-semibold text-foreground max-w-[80px] sm:max-w-[110px]">
+                    {p.nickname}
+                  </span>
+                  <VerifiedBadge type={p.verifiedBadge} size={13} />
+                </div>
+                <div className="mt-0.5 flex items-center justify-center gap-1 text-[11px] text-muted-foreground">
+                  <Flag country={p.country} size={14} />
+                  <span className="truncate max-w-[65px] sm:max-w-[95px]">@{p.username}</span>
+                </div>
+                <p className="readout mt-1 text-xs sm:text-sm font-semibold text-foreground">
+                  {p.rp.toLocaleString()} <span className="text-[10px] text-muted-foreground">RP</span>
+                </p>
+                {p.me && (
+                  <span className="mt-1 inline-block rounded-full bg-muted px-2 py-0.5 text-[9px] font-semibold text-muted-foreground">
+                    YOU
+                  </span>
+                )}
+              </div>
+
+              {/* Pedestal Stand Pillar */}
+              <div
+                className={`w-full rounded-t-2xl ${pedestalBorder} ${pedestalBg} ${heightClass} flex flex-col items-center justify-between p-2 shadow-inner`}
+              >
+                <span className={`font-display text-2xl sm:text-4xl font-semibold select-none ${stepNumColor}`}>
+                  {pos}
+                </span>
+                <span className="text-[10px] font-medium text-muted-foreground/80 truncate w-full px-1" style={{ color: step.tier.accent }}>
+                  {step.name}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export function UnifiedLeaderboardView({
   rank,
   social,
@@ -532,7 +681,7 @@ export function UnifiedLeaderboardView({
   const [selectedCountry, setSelectedCountry] = useState<string>(social.country);
   const fade = useScrollFade();
 
-  const meEntry = {
+  const meEntry: PodiumEntry = {
     id: "me",
     nickname: social.nickname,
     username: social.isGuest ? "guest" : social.username,
@@ -547,7 +696,7 @@ export function UnifiedLeaderboardView({
     me: true,
   };
 
-  const allEntries = [
+  const allEntries: PodiumEntry[] = [
     meEntry,
     ...COMMUNITY_PLAYERS.map((p) => ({
       id: p.id,
@@ -573,6 +722,11 @@ export function UnifiedLeaderboardView({
 
   const countries = Array.from(new Set([social.country, ...COMMUNITY_PLAYERS.map((p) => p.country)]));
   const zones: Exclude<ContinentZone, "Global">[] = ["Asia", "Europe", "Americas", "Africa", "Oceania"];
+
+  const showPodium = allEntries.length >= 3;
+  const topThree = showPodium ? allEntries.slice(0, 3) : [];
+  const listEntries = showPodium ? allEntries.slice(3) : allEntries;
+  const listStartIndex = showPodium ? 3 : 0;
 
   return (
     <div className="space-y-4">
@@ -648,6 +802,9 @@ export function UnifiedLeaderboardView({
         )}
       </div>
 
+      {/* Top 3 Podium */}
+      {showPodium && <LeaderboardPodium topThree={topThree} />}
+
       {/* Leaderboard List with internal scroll & sticky header */}
       <div className="plate relative overflow-hidden !p-0">
         {/* Sticky Header with columns and Jump to You button */}
@@ -676,8 +833,8 @@ export function UnifiedLeaderboardView({
 
         {/* Scrollable list up to 100 ranks */}
         <div onScroll={fade.onScroll} className="max-h-[620px] divide-y divide-border overflow-y-auto scroll-smooth">
-          {allEntries.map((p, idx) => {
-            const pos = idx + 1;
+          {listEntries.map((p, idx) => {
+            const pos = listStartIndex + idx + 1;
             const effectiveChampPos = p.rp >= 7000 && pos <= 50 ? (p.championPosition ?? pos) : null;
             const step = getRank(p.rp, effectiveChampPos);
 

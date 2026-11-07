@@ -763,6 +763,7 @@ function GamePage() {
           {/* Inline Match Chat Embedded Directly on Results Page */}
           <GameChat
             inline
+            playerScore={total}
             opponent={{
               name: opponent.nickname,
               clanTag: opponent.clanTag,
