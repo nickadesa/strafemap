@@ -28,6 +28,14 @@ import {
   type StoryHighlight,
 } from "@/lib/social";
 import { t, type Lang } from "@/lib/i18n";
+import { buzz } from "@/lib/game/sound";
+import {
+  SymbolCompass,
+  SymbolShield,
+  SymbolBag,
+  SymbolChartBar,
+  SymbolPerson,
+} from "@/components/SFSymbols";
 import {
   BarChart3,
   Check,
@@ -101,43 +109,60 @@ function ProfileHubPage() {
             <div className="seg">
               <button
                 type="button"
-                onClick={() => setTab("overview")}
+                onClick={() => {
+                  buzz(6);
+                  setTab("overview");
+                }}
                 data-on={tab === "overview"}
-                className="seg-item"
+                className="seg-item flex items-center gap-1.5"
               >
+                <SymbolPerson fill={tab === "overview"} className="h-4 w-4" />
                 {t(lang, "profile")}
               </button>
               <button
                 type="button"
-                onClick={() => setTab("feed")}
+                onClick={() => {
+                  buzz(6);
+                  setTab("feed");
+                }}
                 data-on={tab === "feed"}
-                className="seg-item"
+                className="seg-item flex items-center gap-1.5"
               >
-                <Compass className="mr-1.5 inline h-4 w-4" />
+                <SymbolCompass fill={tab === "feed"} className="h-4 w-4" />
                 {t(lang, "feedAndClan").split("&")[0]?.trim() || "Feed"}
               </button>
               <button
                 type="button"
-                onClick={() => setTab("clan")}
+                onClick={() => {
+                  buzz(6);
+                  setTab("clan");
+                }}
                 data-on={tab === "clan"}
-                className="seg-item"
+                className="seg-item flex items-center gap-1.5"
               >
-                <Shield className="mr-1.5 inline h-4 w-4" />
+                <SymbolShield fill={tab === "clan"} className="h-4 w-4" />
                 {t(lang, "clan")}
               </button>
               <button
                 type="button"
-                onClick={() => setTab("shop")}
+                onClick={() => {
+                  buzz(6);
+                  setTab("shop");
+                }}
                 data-on={tab === "shop" || tab === "gacha"}
-                className="seg-item"
+                className="seg-item flex items-center gap-1.5"
               >
-                <ShoppingBag className="mr-1.5 inline h-4 w-4" />
+                <SymbolBag fill={tab === "shop" || tab === "gacha"} className="h-4 w-4" />
                 Shop
               </button>
             </div>
 
-            <Link to="/stats" className="btn btn-outline !px-4 !py-2 text-xs font-bold">
-              <BarChart3 className="h-4 w-4 text-[#D2F801]" />
+            <Link
+              to="/stats"
+              onClick={() => buzz(6)}
+              className="btn btn-outline !px-4 !py-2 text-xs font-bold"
+            >
+              <SymbolChartBar fill className="h-4 w-4 text-[#D2F801]" />
               {t(lang, "stats")} →
             </Link>
           </div>

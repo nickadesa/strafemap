@@ -1,38 +1,44 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 import {
-  Award,
-  BarChart3,
-  Bell,
-  Compass,
-  Gamepad2,
-  Home,
-  LogOut,
-  Medal,
-  Menu,
-  Settings,
-  Shield,
-  ShoppingBag,
-  User,
-  Users,
-  X,
-  type LucideIcon,
-} from "lucide-react";
+  SymbolHouse,
+  SymbolGameController,
+  SymbolTrophy,
+  SymbolPerson2,
+  SymbolCompass,
+  SymbolMedal,
+  SymbolChartBar,
+  SymbolGearshape,
+  SymbolBell,
+  SymbolCross,
+  SymbolMenu,
+  SymbolBag,
+  SymbolShield,
+  SymbolPerson,
+  SymbolLogOut,
+  type SymbolProps,
+} from "@/components/SFSymbols";
 import { useSettings } from "@/lib/game/storage";
 import { loadRank } from "@/lib/rank";
 import { AvatarFrame, ClanTagPill, VerifiedBadge } from "@/components/RankVisuals";
 import { computeLevelFromExp, useNotifications, useSocialProfile } from "@/lib/social";
 import { t, type Lang } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
+import { buzz } from "@/lib/game/sound";
 
-const desktopItems: { to: string; key: string; icon: LucideIcon; search?: Record<string, string> }[] = [
-  { to: "/", key: "home", icon: Home },
-  { to: "/play", key: "modes", icon: Gamepad2 },
-  { to: "/rank", key: "rank", icon: Medal },
-  { to: "/party", key: "party", icon: Users },
-  { to: "/profile", key: "feedAndClan", icon: Compass, search: { tab: "feed" } },
-  { to: "/achievements", key: "achievements", icon: Award },
-  { to: "/stats", key: "stats", icon: BarChart3 },
+const desktopItems: {
+  to: string;
+  key: string;
+  icon: React.ComponentType<SymbolProps>;
+  search?: Record<string, string>;
+}[] = [
+  { to: "/", key: "home", icon: SymbolHouse },
+  { to: "/play", key: "modes", icon: SymbolGameController },
+  { to: "/rank", key: "rank", icon: SymbolTrophy },
+  { to: "/party", key: "party", icon: SymbolPerson2 },
+  { to: "/profile", key: "feedAndClan", icon: SymbolCompass, search: { tab: "feed" } },
+  { to: "/achievements", key: "achievements", icon: SymbolMedal },
+  { to: "/stats", key: "stats", icon: SymbolChartBar },
 ];
 
 export function Sidebar() {
@@ -101,7 +107,7 @@ export function Sidebar() {
             className="relative grid h-8 w-8 place-items-center rounded-full bg-muted text-foreground hover:bg-[#D2F801] hover:text-[#161616] transition-colors"
             title="Notifications"
           >
-            <Bell className="h-4 w-4" />
+            <SymbolBell className="h-4 w-4" fill={unreadCount > 0} />
             {unreadCount > 0 && (
               <span className="absolute -right-0.5 -top-0.5 grid h-4 w-4 place-items-center rounded-full bg-[#D2F801] text-[9px] font-black text-[#161616]">
                 {unreadCount}
@@ -111,20 +117,27 @@ export function Sidebar() {
         </div>
 
         <nav className="flex flex-1 flex-col gap-1">
-          {desktopItems.map(({ to, key, icon: Icon, search }) => (
-            <Link
-              key={key}
-              to={to}
-              search={search as any}
-              aria-label={t(lang, key)}
-              className="flex h-10 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-              activeOptions={{ exact: to === "/" }}
-              activeProps={{ className: "!bg-[#D2F801] !text-[#161616] font-bold" }}
-            >
-              <Icon className="h-[18px] w-[18px] shrink-0" strokeWidth={1.85} />
-              <span className="truncate">{t(lang, key)}</span>
-            </Link>
-          ))}
+          {desktopItems.map(({ to, key, icon: Icon, search }) => {
+            const active = to === "/" ? location.pathname === "/" : location.pathname.startsWith(to);
+            return (
+              <Link
+                key={key}
+                to={to}
+                search={search as any}
+                onClick={() => buzz(6)}
+                aria-label={t(lang, key)}
+                className="group flex h-10 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-[0.98]"
+                activeOptions={{ exact: to === "/" }}
+                activeProps={{ className: "!bg-[#D2F801] !text-[#161616] font-bold shadow-sm" }}
+              >
+                <Icon
+                  fill={active}
+                  className="h-5 w-5 shrink-0 transition-transform duration-200 group-active:scale-90"
+                />
+                <span className="truncate">{t(lang, key)}</span>
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Bottom User Profile Bar + Popover */}
@@ -132,6 +145,7 @@ export function Sidebar() {
           <button
             type="button"
             onClick={() => {
+              buzz(6);
               setUserPopoverOpen((v) => !v);
               setNotifOpen(false);
             }}
@@ -175,50 +189,66 @@ export function Sidebar() {
                   <Link
                     to="/profile"
                     search={{ tab: "overview" } as any}
-                    onClick={() => setUserPopoverOpen(false)}
+                    onClick={() => {
+                      buzz(6);
+                      setUserPopoverOpen(false);
+                    }}
                     className="flex items-center gap-2.5 rounded-xl px-3 py-2 font-medium hover:bg-muted"
                   >
-                    <User className="h-4 w-4 text-[#D2F801]" /> {t(lang, "profile")}
+                    <SymbolPerson fill className="h-4 w-4 text-[#D2F801]" /> {t(lang, "profile")}
                   </Link>
                   <Link
                     to="/stats"
-                    onClick={() => setUserPopoverOpen(false)}
+                    onClick={() => {
+                      buzz(6);
+                      setUserPopoverOpen(false);
+                    }}
                     className="flex items-center gap-2.5 rounded-xl px-3 py-2 font-medium hover:bg-muted"
                   >
-                    <BarChart3 className="h-4 w-4 text-[#D2F801]" /> {t(lang, "stats")}
+                    <SymbolChartBar fill className="h-4 w-4 text-[#D2F801]" /> {t(lang, "stats")}
                   </Link>
                   <Link
                     to="/profile"
                     search={{ tab: "clan" } as any}
-                    onClick={() => setUserPopoverOpen(false)}
+                    onClick={() => {
+                      buzz(6);
+                      setUserPopoverOpen(false);
+                    }}
                     className="flex items-center gap-2.5 rounded-xl px-3 py-2 font-medium hover:bg-muted"
                   >
-                    <Shield className="h-4 w-4 text-[#D2F801]" /> {t(lang, "clan")}
+                    <SymbolShield fill className="h-4 w-4 text-[#D2F801]" /> {t(lang, "clan")}
                   </Link>
                   <Link
                     to="/profile"
                     search={{ tab: "shop" } as any}
-                    onClick={() => setUserPopoverOpen(false)}
+                    onClick={() => {
+                      buzz(6);
+                      setUserPopoverOpen(false);
+                    }}
                     className="flex items-center gap-2.5 rounded-xl px-3 py-2 font-medium hover:bg-muted"
                   >
-                    <ShoppingBag className="h-4 w-4 text-[#D2F801]" /> Shop
+                    <SymbolBag fill className="h-4 w-4 text-[#D2F801]" /> Shop
                   </Link>
                   <Link
                     to="/settings"
-                    onClick={() => setUserPopoverOpen(false)}
+                    onClick={() => {
+                      buzz(6);
+                      setUserPopoverOpen(false);
+                    }}
                     className="flex items-center gap-2.5 rounded-xl px-3 py-2 font-medium hover:bg-muted"
                   >
-                    <Settings className="h-4 w-4 text-muted-foreground" /> {t(lang, "settings")}
+                    <SymbolGearshape className="h-4 w-4 text-muted-foreground" /> {t(lang, "settings")}
                   </Link>
                   <button
                     type="button"
                     onClick={() => {
+                      buzz(8);
                       setUserPopoverOpen(false);
                       supabase.auth.signOut();
                     }}
                     className="mt-1 flex items-center gap-2.5 rounded-xl border-t border-border px-3 py-2 text-left text-xs font-semibold text-muted-foreground hover:bg-muted hover:text-foreground"
                   >
-                    <LogOut className="h-4 w-4" /> {t(lang, "signOut")}
+                    <SymbolLogOut className="h-4 w-4" /> {t(lang, "signOut")}
                   </button>
                 </div>
               </div>
@@ -230,11 +260,14 @@ export function Sidebar() {
       {/* Mobile Top-Left Hamburger Menu Button (Rendered on all mobile screens) */}
       <button
         type="button"
-        onClick={() => setMobileOpen(true)}
+        onClick={() => {
+          buzz(6);
+          setMobileOpen(true);
+        }}
         aria-label="Open navigation menu"
-        className="glass-plate fixed left-3 top-3 z-50 grid h-10 w-10 place-items-center rounded-xl text-foreground shadow-md transition-colors hover:bg-muted md:hidden"
+        className="glass-plate fixed left-3 top-3 z-50 grid h-10 w-10 place-items-center rounded-xl text-foreground shadow-md transition-all active:scale-90 hover:bg-muted md:hidden"
       >
-        <Menu className="h-5 w-5" />
+        <SymbolMenu className="h-5 w-5" />
         {unreadCount > 0 && (
           <span className="absolute -right-0.5 -top-0.5 grid h-3.5 w-3.5 place-items-center rounded-full bg-[#D2F801] text-[8px] font-black text-[#161616]">
             {unreadCount}
@@ -248,7 +281,10 @@ export function Sidebar() {
           {/* Backdrop */}
           <div
             className="fixed inset-0 bg-background/80 backdrop-blur-sm transition-opacity"
-            onClick={() => setMobileOpen(false)}
+            onClick={() => {
+              buzz(6);
+              setMobileOpen(false);
+            }}
             aria-hidden="true"
           />
 
@@ -261,7 +297,10 @@ export function Sidebar() {
             <div className="flex h-11 items-center justify-between border-b border-border pb-3">
               <Link
                 to="/"
-                onClick={() => setMobileOpen(false)}
+                onClick={() => {
+                  buzz(6);
+                  setMobileOpen(false);
+                }}
                 className="flex items-center gap-2.5 font-display text-xl"
                 aria-label="STRAFE"
               >
@@ -272,11 +311,14 @@ export function Sidebar() {
               </Link>
               <button
                 type="button"
-                onClick={() => setMobileOpen(false)}
+                onClick={() => {
+                  buzz(6);
+                  setMobileOpen(false);
+                }}
                 aria-label="Close navigation menu"
-                className="grid h-8 w-8 place-items-center rounded-full bg-muted text-muted-foreground transition-colors hover:bg-muted/80 hover:text-foreground"
+                className="grid h-8 w-8 place-items-center rounded-full bg-muted text-muted-foreground transition-all active:scale-90 hover:bg-muted/80 hover:text-foreground"
               >
-                <X className="h-4 w-4" />
+                <SymbolCross className="h-4 w-4" />
               </button>
             </div>
 
@@ -285,7 +327,10 @@ export function Sidebar() {
               <Link
                 to="/profile"
                 search={{ tab: "overview" } as any}
-                onClick={() => setMobileOpen(false)}
+                onClick={() => {
+                  buzz(6);
+                  setMobileOpen(false);
+                }}
                 className="flex items-center gap-2.5 rounded-xl p-1 transition-colors hover:bg-muted"
               >
                 <AvatarFrame
@@ -310,51 +355,72 @@ export function Sidebar() {
 
             {/* Navigation Links */}
             <nav className="flex flex-1 flex-col gap-1 overflow-y-auto py-3">
-              {desktopItems.map(({ to, key, icon: Icon, search }) => (
-                <Link
-                  key={key}
-                  to={to}
-                  search={search as any}
-                  onClick={() => setMobileOpen(false)}
-                  aria-label={t(lang, key)}
-                  className="flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                  activeOptions={{ exact: to === "/" }}
-                  activeProps={{ className: "!bg-[#D2F801] !text-[#161616] font-bold" }}
-                >
-                  <Icon className="h-5 w-5 shrink-0" strokeWidth={1.85} />
-                  <span className="truncate">{t(lang, key)}</span>
-                </Link>
-              ))}
+              {desktopItems.map(({ to, key, icon: Icon, search }) => {
+                const active = to === "/" ? location.pathname === "/" : location.pathname.startsWith(to);
+                return (
+                  <Link
+                    key={key}
+                    to={to}
+                    search={search as any}
+                    onClick={() => {
+                      buzz(6);
+                      setMobileOpen(false);
+                    }}
+                    aria-label={t(lang, key)}
+                    className="group flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-[0.98]"
+                    activeOptions={{ exact: to === "/" }}
+                    activeProps={{ className: "!bg-[#D2F801] !text-[#161616] font-bold shadow-sm" }}
+                  >
+                    <Icon
+                      fill={active}
+                      className="h-5 w-5 shrink-0 transition-transform duration-200 group-active:scale-90"
+                    />
+                    <span className="truncate">{t(lang, key)}</span>
+                  </Link>
+                );
+              })}
 
               <Link
                 to="/profile"
                 search={{ tab: "clan" } as any}
-                onClick={() => setMobileOpen(false)}
-                className="flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                onClick={() => {
+                  buzz(6);
+                  setMobileOpen(false);
+                }}
+                className="group flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-[0.98]"
               >
-                <Shield className="h-5 w-5 shrink-0 text-[#D2F801]" strokeWidth={1.85} />
+                <SymbolShield fill className="h-5 w-5 shrink-0 text-[#D2F801] transition-transform duration-200 group-active:scale-90" />
                 <span className="truncate">{t(lang, "clan")}</span>
               </Link>
 
               <Link
                 to="/profile"
                 search={{ tab: "shop" } as any}
-                onClick={() => setMobileOpen(false)}
-                className="flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                onClick={() => {
+                  buzz(6);
+                  setMobileOpen(false);
+                }}
+                className="group flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-[0.98]"
               >
-                <ShoppingBag className="h-5 w-5 shrink-0 text-[#D2F801]" strokeWidth={1.85} />
+                <SymbolBag fill className="h-5 w-5 shrink-0 text-[#D2F801] transition-transform duration-200 group-active:scale-90" />
                 <span className="truncate">Shop</span>
               </Link>
 
               <Link
                 to="/settings"
-                onClick={() => setMobileOpen(false)}
+                onClick={() => {
+                  buzz(6);
+                  setMobileOpen(false);
+                }}
                 aria-label={t(lang, "settings")}
-                className="flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="group flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-[0.98]"
                 activeOptions={{ exact: true }}
-                activeProps={{ className: "!bg-[#D2F801] !text-[#161616] font-bold" }}
+                activeProps={{ className: "!bg-[#D2F801] !text-[#161616] font-bold shadow-sm" }}
               >
-                <Settings className="h-5 w-5 shrink-0" strokeWidth={1.85} />
+                <SymbolGearshape
+                  fill={location.pathname === "/settings"}
+                  className="h-5 w-5 shrink-0 transition-transform duration-200 group-active:scale-90"
+                />
                 <span className="truncate">{t(lang, "settings")}</span>
               </Link>
             </nav>
@@ -364,13 +430,14 @@ export function Sidebar() {
               <button
                 type="button"
                 onClick={() => {
+                  buzz(6);
                   setMobileOpen(false);
                   setNotifOpen(true);
                 }}
-                className="flex h-10 w-full items-center justify-between rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="flex h-10 w-full items-center justify-between rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:scale-[0.98]"
               >
                 <div className="flex items-center gap-3">
-                  <Bell className="h-4 w-4" />
+                  <SymbolBell className="h-4 w-4" fill={unreadCount > 0} />
                   <span>Notifications</span>
                 </div>
                 {unreadCount > 0 && (
@@ -383,12 +450,13 @@ export function Sidebar() {
               <button
                 type="button"
                 onClick={() => {
+                  buzz(8);
                   setMobileOpen(false);
                   supabase.auth.signOut();
                 }}
-                className="flex h-10 w-full items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="flex h-10 w-full items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:scale-[0.98]"
               >
-                <LogOut className="h-4 w-4" />
+                <SymbolLogOut className="h-4 w-4" />
                 <span>{t(lang, "signOut")}</span>
               </button>
             </div>
@@ -402,13 +470,14 @@ export function Sidebar() {
           <button
             type="button"
             onClick={() => {
+              buzz(6);
               setNotifOpen((v) => !v);
               setUserPopoverOpen(false);
             }}
             aria-label="Notifications"
-            className="glass-plate relative grid h-10 w-10 place-items-center rounded-full text-foreground shadow-md"
+            className="glass-plate relative grid h-10 w-10 place-items-center rounded-full text-foreground shadow-md transition-all active:scale-90"
           >
-            <Bell className="h-4 w-4" />
+            <SymbolBell className="h-4 w-4" fill={unreadCount > 0} />
             {unreadCount > 0 && (
               <span className="absolute -right-0.5 -top-0.5 grid h-4 w-4 place-items-center rounded-full bg-[#D2F801] text-[9px] font-black text-[#161616]">
                 {unreadCount}

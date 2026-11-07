@@ -20,7 +20,8 @@ import {
   type ContinentZone,
 } from "@/lib/social";
 import { t, type Lang } from "@/lib/i18n";
-import { Compass, Flag as FlagIcon, Gift, Globe, Shield, Sparkles, SlidersHorizontal, Trophy } from "lucide-react";
+import { SymbolCompass, SymbolTrophy, SymbolShield } from "@/components/SFSymbols";
+import { Flag as FlagIcon, Gift, Globe, Sparkles, SlidersHorizontal } from "lucide-react";
 
 type RankTab = "play" | "leaderboard" | "guide";
 
@@ -420,7 +421,7 @@ function PlayTab({
         className="plate flex items-center justify-between p-4 transition-colors hover:bg-muted/50"
       >
         <span className="flex items-center gap-2 font-semibold">
-          <Trophy className="h-4 w-4 text-[#D2F801]" />
+          <SymbolTrophy fill className="h-4 w-4 text-[#D2F801]" />
           {t(lang, "achievements")}
         </span>
         <span className="text-sm text-muted-foreground">{t(lang, "viewAll")} →</span>
@@ -658,7 +659,7 @@ export function UnifiedLeaderboardView({
             data-on={scope === "zone"}
             className="seg-item"
           >
-            <Compass className="mr-1.5 inline h-3.5 w-3.5" />
+            <SymbolCompass fill={scope === "zone"} className="mr-1.5 inline h-3.5 w-3.5" />
             {t(lang, "zoneFilter")}
           </button>
           <button
