@@ -34,6 +34,7 @@ import {
   VolumeX,
   X,
 } from "lucide-react";
+import { ScrollFade, useScrollFade } from "@/components/ScrollFade";
 
 export const Route = createFileRoute("/party")({
   head: () => ({
@@ -96,6 +97,9 @@ function PartyPage() {
   const meName = social.nickname || settings.name || "StrafePlayer";
 
   const followedFriends = COMMUNITY_PLAYERS.filter((p) => social.followingIds.includes(p.id));
+
+  const lobbyFade = useScrollFade();
+  const inviteFade = useScrollFade();
 
   const createRoom = () => {
     const c = Math.random().toString(36).slice(2, 8).toUpperCase();
@@ -490,8 +494,13 @@ function PartyPage() {
                   </div>
                 )}
 
-                {/* Waiting Lobby Players List with AvatarFrame + Rank Banner + [TAG] Pill + Mute Toggle */}
-                <ul className="mt-5 space-y-2.5">
+                {/* Waiting Lobby Players List with BoardUI Progressive Scroll Fade */}
+                <div className="relative mt-5">
+                  <ScrollFade progress={lobbyFade.progress} surfaceClassName="from-card/95" className="top-0" />
+                  <ul
+                    onScroll={lobbyFade.onScroll}
+                    className="max-h-[360px] overflow-y-auto space-y-2.5 pr-1 scroll-smooth"
+                  >
                   {players.map((p) => {
                     const step = getRank(p.rp, p.championPosition);
                     return (
@@ -560,7 +569,8 @@ function PartyPage() {
                       </li>
                     );
                   })}
-                </ul>
+                  </ul>
+                </div>
 
                 {/* Party Voice Chat Control Bar */}
                 <div className="mt-5 rounded-2xl border border-border bg-background/60 p-3 sm:p-4">
@@ -635,7 +645,12 @@ function PartyPage() {
               </button>
             </div>
 
-            <div className="mt-4 max-h-72 space-y-2.5 overflow-y-auto">
+            <div className="relative mt-4">
+              <ScrollFade progress={inviteFade.progress} surfaceClassName="from-card/95" className="top-0" />
+              <div
+                onScroll={inviteFade.onScroll}
+                className="max-h-72 space-y-2.5 overflow-y-auto pr-1 scroll-smooth"
+              >
               {(followedFriends.length ? followedFriends : COMMUNITY_PLAYERS.slice(0, 4)).map((f) => {
                 const alreadyIn = players.some((p) => p.id === f.id);
                 return (
@@ -672,6 +687,7 @@ function PartyPage() {
                   </div>
                 );
               })}
+              </div>
             </div>
           </div>
         </div>

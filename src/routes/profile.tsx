@@ -6,6 +6,7 @@ import { getRank, loadRank } from "@/lib/rank";
 import { ACH_ALL, loadUnlocked, syncAchievements } from "@/lib/achievements";
 import { ActivityRings } from "@/components/BoardUIActivityRings";
 import { ContributionsHeatmap } from "@/components/BoardUIContributions";
+import { useCountUp } from "@/lib/use-count-up";
 import {
   AvatarFrame,
   ClanTagPill,
@@ -219,6 +220,9 @@ function XStyleProfileTab({
   const [inspectedPlayer, setInspectedPlayer] = useState<CommunityPlayer | null>(null);
 
   const curRank = getRank(rank.rp, rank.championPosition);
+  const animatedRp = useCountUp(rank.rp, 850, true);
+  const animatedLvl = useCountUp(lvl.level, 850, true);
+  const animatedExp = useCountUp(lvl.currentLevelExp, 850, true);
 
   // All unlocked achievement objects (ensure at least 5 fallback unlocked for demo if fresh profile)
   const unlockedBadges = useMemo(() => {
@@ -350,7 +354,7 @@ function XStyleProfileTab({
               </span>
               <span>·</span>
               <span className="font-bold" style={{ color: curRank.tier.accent }}>
-                {curRank.name} ({rank.rp.toLocaleString()} RP)
+                {curRank.name} ({animatedRp.toLocaleString()} RP)
               </span>
             </div>
 
@@ -533,10 +537,10 @@ function XStyleProfileTab({
           <div className="mt-5 rounded-2xl border border-border bg-background/40 p-4">
             <div className="flex items-center justify-between text-xs font-bold">
               <span className="text-[#D2F801]">
-                LEVEL {lvl.level} / 1,000
+                LEVEL {animatedLvl} / 1,000
               </span>
               <span className="readout text-muted-foreground">
-                {lvl.currentLevelExp} / {lvl.nextLevelExp} EXP · Next Milestone: +250 Coins
+                {animatedExp.toLocaleString()} / {lvl.nextLevelExp.toLocaleString()} EXP · Next Milestone: +250 Coins
               </span>
             </div>
             <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-muted p-0.5">

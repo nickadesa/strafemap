@@ -29,6 +29,8 @@ import {
   DrawerTitle,
   DrawerDescription,
 } from "@/components/ui/drawer";
+import { useCountUp } from "@/lib/use-count-up";
+import { ScrollFade, useScrollFade } from "@/components/ScrollFade";
 
 type RankTab = "play" | "leaderboard" | "guide";
 
@@ -141,6 +143,7 @@ function PlayTab({
   const { prev, current, next } = getAdjacentRanks(rank.rp, rank.championPosition);
   const progress = Math.round(current.progressRatio * 100);
   const [showRewards, setShowRewards] = useState(false);
+  const animatedRp = useCountUp(rank.rp, 850, true);
 
   const stats = [
     [rank.wins, t(lang, "winsLabel")],
@@ -193,7 +196,7 @@ function PlayTab({
               {current.name}
             </h2>
             <p className="mt-0.5 text-base font-bold sm:text-lg">
-              <span className="readout text-[#D2F801]">{rank.rp.toLocaleString()}</span>{" "}
+              <span className="readout text-[#D2F801]">{animatedRp.toLocaleString()}</span>{" "}
               <span className="text-xs text-muted-foreground">RP</span>
             </p>
           </div>
@@ -527,6 +530,7 @@ export function UnifiedLeaderboardView({
   const [scope, setScope] = useState<"global" | "zone" | "country">("global");
   const [selectedZone, setSelectedZone] = useState<Exclude<ContinentZone, "Global">>(social.zone);
   const [selectedCountry, setSelectedCountry] = useState<string>(social.country);
+  const fade = useScrollFade();
 
   const meEntry = {
     id: "me",
@@ -645,7 +649,7 @@ export function UnifiedLeaderboardView({
       </div>
 
       {/* Leaderboard List with internal scroll & sticky header */}
-      <div className="plate overflow-hidden !p-0">
+      <div className="plate relative overflow-hidden !p-0">
         {/* Sticky Header with columns and Jump to You button */}
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-card/95 px-3.5 py-2.5 text-xs font-semibold text-muted-foreground backdrop-blur-md sm:px-5">
           <div className="flex items-center gap-3">
@@ -668,8 +672,11 @@ export function UnifiedLeaderboardView({
           </div>
         </div>
 
+        {/* BoardUI Progressive Scroll Fade */}
+        <ScrollFade progress={fade.progress} surfaceClassName="from-card/95" className="top-[38px]" />
+
         {/* Scrollable list up to 100 ranks */}
-        <div className="max-h-[620px] divide-y divide-border overflow-y-auto scroll-smooth">
+        <div onScroll={fade.onScroll} className="max-h-[620px] divide-y divide-border overflow-y-auto scroll-smooth">
           {allEntries.map((p, idx) => {
             const pos = idx + 1;
             const effectiveChampPos = p.rp >= 7000 && pos <= 50 ? (p.championPosition ?? pos) : null;

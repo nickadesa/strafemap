@@ -53,6 +53,17 @@ import { REACTION_SETS } from "@/lib/reactions";
 import { ACH_ALL, syncAchievements } from "@/lib/achievements";
 import { GameChat } from "@/components/GameChat";
 import { Download, Share2, Sparkles, Check, Send } from "lucide-react";
+import { useCountUp } from "@/lib/use-count-up";
+
+function AnimatedRoundPoints({ points }: { points: number }) {
+  const animated = useCountUp(points, 750, true);
+  return <>{animated.toLocaleString()}</>;
+}
+
+function AnimatedTotalScore({ total }: { total: number }) {
+  const animated = useCountUp(total, 950, true);
+  return <>{animated.toLocaleString()}</>;
+}
 
 const AUTO_NEXT_SECONDS = 5;
 
@@ -589,7 +600,7 @@ function GamePage() {
                   {ranked && ` · ${tr("ranked")}`} · {tr("final")}
                 </p>
                 <h1 className="font-display mt-2 text-[clamp(3.5rem,14vw,7rem)] text-[#D2F801]">
-                  {total.toLocaleString()}
+                  <AnimatedTotalScore total={total} />
                 </h1>
                 <p className="mt-1 font-semibold text-muted-foreground">
                   {tr("outOf", { max: (MAX_POINTS * ROUNDS).toLocaleString() })}
@@ -1004,7 +1015,7 @@ function GamePage() {
                       {last.loc.name}, {last.loc.country}
                     </p>
                     <p className="font-display readout mt-1 text-5xl text-[#D2F801]">
-                      +{last.points.toLocaleString()}
+                      +<AnimatedRoundPoints points={last.points} />
                     </p>
                     {last.sinNote && (
                       <p className="mt-1 text-xs font-semibold text-[#D2F801]">{last.sinNote}</p>
