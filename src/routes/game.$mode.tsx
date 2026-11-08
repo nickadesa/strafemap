@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GameMap } from "@/components/GameMap";
 import { Logo } from "@/components/SiteHeader";
@@ -52,7 +52,7 @@ import { COMMUNITY_PLAYERS, addPlayerExp, awardCoins, useFeed, useSocialProfile 
 import { REACTION_SETS } from "@/lib/reactions";
 import { ACH_ALL, syncAchievements } from "@/lib/achievements";
 import { GameChat } from "@/components/GameChat";
-import { Download, Share2, Sparkles, Check, Send } from "lucide-react";
+import { Download, Share2, Sparkles, Check, Send, AlertTriangle, Info } from "lucide-react";
 import { useCountUp } from "@/lib/use-count-up";
 
 function AnimatedRoundPoints({ points }: { points: number }) {
@@ -210,6 +210,9 @@ function GamePage() {
   const [rankAfter, setRankAfter] = useState<RankStep | null>(null);
   const [newAch, setNewAch] = useState<string[]>([]);
   const saved = useRef(false);
+  const navigate = useNavigate();
+  const [quitModalOpen, setQuitModalOpen] = useState(false);
+  const [expandedSinId, setExpandedSinId] = useState<SinCardId | null>(null);
 
   // Ranked Opponent Rival
   const opponent = useMemo(() => {
@@ -219,6 +222,59 @@ function GamePage() {
     );
     return sorted[seed % sorted.length] ?? COMMUNITY_PLAYERS[0]!;
   }, [seed]);
+
+  // Intercept logo / exit during active gameplay
+  const handleLogoClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      if (phase !== "done") {
+        setQuitModalOpen(true);
+      } else {
+        navigate({ to: "/play" });
+      }
+    },
+    [phase, navigate],
+  );
+
+  const handleConfirmQuit = useCallback(() => {
+    if (phase !== "done" && !saved.current && !practice) {
+      saved.current = true;
+      if (daily) {
+        // Record 0 points forfeit for today's daily briefing so it cannot be retried/exploited
+        saveRecord({
+          id: crypto.randomUUID(),
+          player: social.nickname || settings.name || "Guest",
+          mode,
+          daily: true,
+          date: todayKeyStr,
+          seed: todayKeyStr,
+          score: 0,
+          max: MAX_POINTS * ROUNDS,
+          rounds: [],
+        });
+      } else if (ranked) {
+        applyMatchResult("loss", 0, {
+          opponentName: opponent.nickname,
+          opponentTag: opponent.clanTag ?? "RIV",
+          opponentRp: opponent.rp,
+          myRoundsWon: 0,
+          oppRoundsWon: ROUNDS,
+        });
+      }
+    }
+    setQuitModalOpen(false);
+    navigate({ to: "/play" });
+  }, [phase, practice, daily, ranked, social.nickname, settings.name, mode, todayKeyStr, opponent, navigate]);
+
+  useEffect(() => {
+    if (phase === "done" || practice) return;
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [phase, practice]);
 
   useEffect(() => {
     const list = daily ? dailyRounds() : pickRounds(poolFor(pool, difficulty, mode), ROUNDS);
@@ -801,7 +857,7 @@ function GamePage() {
   return (
     <div className="flex h-[100dvh] flex-col">
       <header className="game-header grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2 px-3 pt-[max(0.6rem,env(safe-area-inset-top))] pb-2 sm:flex sm:justify-between sm:gap-3 sm:px-4 sm:py-3">
-        <Logo className="game-logo shrink-0" />
+        <Logo className="game-logo shrink-0" onClick={handleLogoClick} />
         <div className="game-hud flex min-w-0 flex-wrap items-center justify-end gap-1.5 text-[11px] font-semibold sm:gap-2 sm:text-sm">
           {/* Ranked Opponent HUD Pill */}
           {ranked && (
@@ -1133,35 +1189,71 @@ function GamePage() {
               </div>
             </div>
 
-            <div className="no-scrollbar mt-3 flex-1 overflow-y-auto space-y-2.5 pr-1">
+            <div className="no-scrollbar mt-3 flex-1 overflow-y-auto space-y-2 pr-1">
               {SIN_CARDS.map((card) => {
                 const selected = activeSin === card.id;
+                const isExpanded = expandedSinId === card.id;
                 return (
-                  <button
+                  <div
                     key={card.id}
-                    type="button"
-                    onClick={() => setActiveSin(card.id)}
-                    className={`w-full rounded-2xl border p-3.5 text-left transition-colors ${
+                    className={`rounded-2xl border transition-all ${
                       selected
-                        ? "border-foreground/60 bg-[#D2F801]/10 ring-1 ring-foreground/40"
-                        : "border-border bg-card/60 hover:bg-muted"
+                        ? "border-foreground/70 bg-[#D2F801]/10 ring-1 ring-foreground/40 shadow-sm"
+                        : "border-border bg-card/60 hover:bg-muted/70"
                     }`}
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="font-display text-lg" style={{ color: card.accent }}>
-                        {card.sinName}
-                      </span>
-                      <span className="rounded-full bg-muted px-2.5 py-0.5 text-[11px] font-semibold text-foreground">
-                        {card.skillName}
-                      </span>
+                    <div
+                      onClick={() => setActiveSin(card.id)}
+                      className="flex cursor-pointer items-center justify-between p-3 gap-2"
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <span
+                          className="font-display text-base tracking-wide"
+                          style={{ color: card.accent }}
+                        >
+                          {card.sinName}
+                        </span>
+                        <span className="rounded-full bg-muted px-2.5 py-0.5 text-[11px] font-semibold text-foreground truncate">
+                          {card.skillName}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2 shrink-0">
+                        {selected && (
+                          <span className="rounded-full bg-[#D2F801] px-2 py-0.5 text-[10px] font-bold text-black uppercase">
+                            Selected
+                          </span>
+                        )}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setExpandedSinId(isExpanded ? null : card.id);
+                          }}
+                          title="View skill details"
+                          aria-label={`View ${card.sinName} details`}
+                          className={`h-7 w-7 rounded-full border flex items-center justify-center transition-colors ${
+                            isExpanded
+                              ? "border-foreground bg-foreground text-background"
+                              : "border-border bg-muted/80 text-muted-foreground hover:text-foreground"
+                          }`}
+                        >
+                          <Info className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
                     </div>
-                    <p className="mt-1 text-xs text-positive">
-                      <strong>Boon:</strong> {card.boon}
-                    </p>
-                    <p className="text-[11px] text-destructive">
-                      <strong>Trade-off:</strong> {card.tradeoff}
-                    </p>
-                  </button>
+
+                    {isExpanded && (
+                      <div className="border-t border-border/70 bg-background/50 px-3.5 py-2.5 space-y-1 text-xs">
+                        <p className="text-positive">
+                          <strong>Boon:</strong> {card.boon}
+                        </p>
+                        <p className="text-[11px] text-destructive">
+                          <strong>Trade-off:</strong> {card.tradeoff}
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 );
               })}
             </div>
@@ -1173,6 +1265,55 @@ function GamePage() {
                 className="btn btn-primary w-full !py-3 text-sm font-semibold"
               >
                 Confirm & Start Match ({activeSin.toUpperCase()})
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* iOS-Style Game Exit Confirmation Modal */}
+      {quitModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="w-full max-w-sm rounded-2xl border border-border bg-card p-5 shadow-2xl space-y-4">
+            <div className="flex items-center gap-2.5 text-destructive">
+              <div className="rounded-full bg-destructive/15 p-2">
+                <AlertTriangle className="h-5 w-5" />
+              </div>
+              <h3 className="font-display text-lg text-foreground">
+                {daily ? "Forfeit Daily Challenge?" : ranked ? "Forfeit Ranked Match?" : "Quit Current Game?"}
+              </h3>
+            </div>
+
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              {daily ? (
+                <>
+                  Leaving now will record an immediate <strong>forfeit with 0 points</strong>. You will <strong>not</strong> be able to replay today's Daily Challenge ({todayKeyStr}).
+                </>
+              ) : ranked ? (
+                <>
+                  Leaving an active Ranked match counts as an immediate <strong>forfeit loss</strong> and RP penalty.
+                </>
+              ) : (
+                <>
+                  Are you sure you want to exit? Your current game progress will be lost.
+                </>
+              )}
+            </p>
+
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-border">
+              <button
+                type="button"
+                onClick={() => setQuitModalOpen(false)}
+                className="btn btn-outline !px-4 !py-2 text-xs font-semibold"
+              >
+                Resume Game
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmQuit}
+                className="btn btn-destructive !px-4 !py-2 text-xs font-semibold bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              >
+                {daily || ranked ? "Forfeit & Exit" : "Exit to Menu"}
               </button>
             </div>
           </div>

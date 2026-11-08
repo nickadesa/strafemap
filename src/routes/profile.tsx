@@ -42,6 +42,7 @@ import {
   Check,
   Compass,
   Edit3,
+  Eye,
   Heart,
   Image,
   MessageCircle,
@@ -1008,8 +1009,114 @@ function ClanSystemTab({
 }
 
 /* ============================================================================
- * 3. COSMETIC SHOP TAB (Direct Buy with Coins, Equip Loadout & Categories)
+ * 3. COSMETIC SHOP TAB (Direct Buy with Coins, Live Preview & 5 Categories)
  * ========================================================================== */
+function CosmeticLivePreview({
+  item,
+  social,
+}: {
+  item: GachaItem;
+  social: ReturnType<typeof useSocialProfile>[0];
+}) {
+  if (item.category === "aura") {
+    const auraStyles: Record<string, string> = {
+      fire: "border border-orange-500/80 bg-orange-500/10 text-orange-200",
+      water: "border border-sky-400/80 bg-sky-500/10 text-sky-200",
+      rainbow: "border border-purple-400/80 bg-purple-500/10 text-purple-200",
+      vines: "border border-emerald-500/80 bg-emerald-500/10 text-emerald-200",
+    };
+    return (
+      <div className="rounded-2xl border border-border bg-background/60 p-4">
+        <p className="text-[10px] font-semibold text-muted-foreground uppercase mb-2">Live Chat Aura Preview</p>
+        <div className="flex items-end gap-2.5">
+          <AvatarFrame src={social.avatarUrl} name={social.nickname} size={32} />
+          <div className="max-w-[80%]">
+            <span className="text-[11px] font-semibold text-muted-foreground mb-0.5 block">{social.nickname}</span>
+            <div className={`rounded-[18px] rounded-bl-xs px-3.5 py-1.5 text-xs font-medium ${auraStyles[item.value] ?? "border border-border bg-muted text-foreground"}`}>
+              GG! That pin was seriously fast.
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (item.category === "pin") {
+    const pinColors: Record<string, string> = {
+      lime: "#D2F801",
+      crimson: "#DC1F30",
+      violet: "#9333EA",
+    };
+    const c = pinColors[item.value] ?? "#D2F801";
+    return (
+      <div className="rounded-2xl border border-border bg-background/60 p-4">
+        <p className="text-[10px] font-semibold text-muted-foreground uppercase mb-2">Map Pin Marker Preview</p>
+        <div className="relative h-20 w-full rounded-xl border border-border/60 bg-[#161618] flex items-center justify-center overflow-hidden">
+          <div className="absolute h-14 w-14 rounded-full border border-border/40" />
+          <div className="absolute h-8 w-8 rounded-full border border-border/60" />
+          <div className="relative flex flex-col items-center">
+            <div
+              className="h-6 w-6 rounded-full border-2 border-[#161616] flex items-center justify-center shadow-md scale-110"
+              style={{ backgroundColor: c }}
+            >
+              <div className="h-1.5 w-1.5 rounded-full bg-black/80" />
+            </div>
+            <div className="h-2 w-0.5" style={{ backgroundColor: c }} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (item.category === "trail") {
+    const trailColors: Record<string, string> = {
+      blue: "from-cyan-400 via-sky-500 to-blue-600",
+      rainbow: "from-pink-500 via-[#D2F801] to-cyan-400",
+      solar: "from-amber-400 via-yellow-500 to-orange-500",
+    };
+    return (
+      <div className="rounded-2xl border border-border bg-background/60 p-4">
+        <p className="text-[10px] font-semibold text-muted-foreground uppercase mb-2">Trajectory Laser Trail Preview</p>
+        <div className="relative h-20 w-full rounded-xl border border-border/60 bg-[#161618] flex items-center justify-between px-6 overflow-hidden">
+          <div className="h-3 w-3 rounded-full bg-foreground shadow-sm" />
+          <div className={`h-0.5 flex-1 mx-2 bg-gradient-to-r ${trailColors[item.value] ?? "from-primary to-muted"} border-dashed`} />
+          <div className="h-3 w-3 rounded-full bg-[#D2F801] shadow-sm" />
+        </div>
+      </div>
+    );
+  }
+
+  if (item.category === "tagColor") {
+    return (
+      <div className="rounded-2xl border border-border bg-background/60 p-4">
+        <p className="text-[10px] font-semibold text-muted-foreground uppercase mb-2">Clan TAG Pill Preview</p>
+        <div className="flex items-center gap-2 rounded-xl border border-border/60 bg-card p-3">
+          <ClanTagPill tag={social.clanTag ?? "POR"} color={item.value} />
+          <span className="font-semibold text-sm">{social.nickname}</span>
+          <VerifiedBadge type={social.verifiedBadge} size={14} />
+        </div>
+      </div>
+    );
+  }
+
+  if (item.category === "nameColor") {
+    return (
+      <div className="rounded-2xl border border-border bg-background/60 p-4">
+        <p className="text-[10px] font-semibold text-muted-foreground uppercase mb-2">Nickname Display Color Preview</p>
+        <div className="flex items-center gap-2 rounded-xl border border-border/60 bg-card p-3">
+          <AvatarFrame src={social.avatarUrl} name={social.nickname} size={30} />
+          <span className="font-semibold text-base" style={{ color: item.value }}>
+            {social.nickname}
+          </span>
+          <span className="text-xs text-muted-foreground">@{social.username}</span>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+}
+
 function CosmeticShopTab({
   social,
   updateSocial,
@@ -1018,6 +1125,7 @@ function CosmeticShopTab({
   updateSocial: ReturnType<typeof useSocialProfile>[1];
 }) {
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [previewItem, setPreviewItem] = useState<GachaItem | null>(null);
 
   const rarityPrices: Record<GachaItem["rarity"], number> = {
     Common: 250,
@@ -1040,7 +1148,6 @@ function CosmeticShopTab({
     { id: "trail", label: "Trails" },
     { id: "tagColor", label: "TAG Colors" },
     { id: "nameColor", label: "Name Colors" },
-    { id: "title", label: "Titles" },
   ];
 
   const filteredItems = useMemo(() => {
@@ -1054,7 +1161,6 @@ function CosmeticShopTab({
     if (item.category === "trail") return social.trailStyle === item.value;
     if (item.category === "tagColor") return social.clanTagColor === item.value;
     if (item.category === "nameColor") return social.nameColor === item.value;
-    if (item.category === "title") return social.title === item.value;
     return false;
   };
 
@@ -1069,8 +1175,6 @@ function CosmeticShopTab({
       updateSocial({ clanTagColor: item.value });
     } else if (item.category === "nameColor") {
       updateSocial({ nameColor: item.value });
-    } else if (item.category === "title") {
-      updateSocial({ title: item.value });
     }
   };
 
@@ -1100,7 +1204,7 @@ function CosmeticShopTab({
             </span>
             <h2 className="font-display mt-2 text-3xl">Direct Cosmetic Store</h2>
             <p className="text-xs text-muted-foreground">
-              Purchase Super Chat Auras, Custom Map Pins, Trajectory Trails, Clan TAG Colors & Titles directly with Coins
+              Purchase Chat Auras, Custom Map Pins, Trajectory Trails, Clan TAG Colors & Nickname Colors directly with Coins. (Titles are earned via Achievements).
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -1136,7 +1240,7 @@ function CosmeticShopTab({
         </div>
       </section>
 
-      {/* Cosmetics Grid */}
+      {/* Cosmetics Grid with Live Previews */}
       <section className="plate p-6">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="font-display text-xl">
@@ -1177,15 +1281,25 @@ function CosmeticShopTab({
                     >
                       {item.rarity}
                     </span>
-                    <span className="text-[10px] font-semibold text-muted-foreground">
-                      {item.category}
-                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setPreviewItem(item)}
+                      className="inline-flex items-center gap-1 rounded-full bg-muted/60 px-2 py-0.5 text-[10px] font-semibold text-muted-foreground hover:text-foreground transition-colors"
+                      title="View Live Preview"
+                    >
+                      <Eye className="h-3 w-3" /> Preview
+                    </button>
                   </div>
 
                   <h4 className="font-display mt-2.5 text-lg font-semibold">{item.name}</h4>
                   <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
                     {item.previewText}
                   </p>
+
+                  {/* Inline Mini Live Preview Thumbnail */}
+                  <div className="mt-3">
+                    <CosmeticLivePreview item={item} social={social} />
+                  </div>
                 </div>
 
                 <div className="mt-4 pt-3 border-t border-border/50">
@@ -1221,6 +1335,79 @@ function CosmeticShopTab({
           })}
         </div>
       </section>
+
+      {/* Focused Live Preview Modal Dialog */}
+      {previewItem && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/80 p-4 backdrop-blur-sm animate-in fade-in">
+          <div className="plate max-h-[85vh] w-full max-w-md overflow-hidden p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-border pb-3">
+              <div>
+                <span className="rounded-full bg-muted px-2.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                  Cosmetic Preview · {previewItem.category}
+                </span>
+                <h3 className="font-display mt-1 text-xl font-semibold">{previewItem.name}</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setPreviewItem(null)}
+                className="rounded-full bg-muted p-1.5 text-muted-foreground hover:text-foreground"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <p className="text-xs text-muted-foreground">{previewItem.previewText}</p>
+
+            {/* Live Interactive Rendering Box */}
+            <CosmeticLivePreview item={previewItem} social={social} />
+
+            <div className="flex items-center justify-between border-t border-border pt-4">
+              <div className="text-xs text-muted-foreground">
+                Price:{" "}
+                <span className="font-mono font-semibold text-[#D2F801]">
+                  {rarityPrices[previewItem.rarity].toLocaleString()} coins
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                {social.unlockedCosmetics.includes(previewItem.id) ? (
+                  isEquipped(previewItem) ? (
+                    <span className="text-xs font-semibold text-[#D2F801]">Currently Equipped</span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        equipItem(previewItem);
+                        setPreviewItem(null);
+                      }}
+                      className="btn btn-outline !px-4 !py-1.5 text-xs font-semibold"
+                    >
+                      Equip Now
+                    </button>
+                  )
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      buyItem(previewItem);
+                      setPreviewItem(null);
+                    }}
+                    className="btn btn-primary !px-4 !py-1.5 text-xs font-semibold"
+                  >
+                    Buy & Equip
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setPreviewItem(null)}
+                  className="btn btn-secondary !px-3 !py-1.5 text-xs"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

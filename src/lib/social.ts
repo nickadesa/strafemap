@@ -240,10 +240,6 @@ export const GACHA_ITEMS: GachaItem[] = [
   { id: "name-lime", name: "Acid Lime Nickname", category: "nameColor", rarity: "Epic", value: "#D2F801", previewText: "Glowing Acid Lime display name", packId: "identity-pack" },
   { id: "name-blue", name: "Electric Blue Nickname", category: "nameColor", rarity: "Rare", value: "#3898FF", previewText: "Electric Blue display name", packId: "identity-pack" },
   { id: "name-gold", name: "Sovereign Gold Nickname", category: "nameColor", rarity: "Mythic", value: "#FFC82A", previewText: "Gold leaf display name", packId: "mythic-pack" },
-  { id: "title-meridian", name: "Title: Grand Meridian", category: "title", rarity: "Rare", value: "Grand Meridian", previewText: "Displayed beneath your profile & lobby name", packId: "identity-pack" },
-  { id: "title-sins", name: "Title: 7-Sin Conqueror", category: "title", rarity: "Epic", value: "7-Sin Conqueror", previewText: "Master of the 7 Deadly Sins mode", packId: "identity-pack" },
-  { id: "title-sovereign", name: "Title: World Sovereign", category: "title", rarity: "Mythic", value: "World Sovereign", previewText: "Ultimate global cartography title", packId: "mythic-pack" },
-  { id: "title-blind", name: "Title: Blindfold Oracle", category: "title", rarity: "Common", value: "Blindfold Oracle", previewText: "Unerring memory without map labels", packId: "identity-pack" },
 ];
 
 const BASE_PLAYERS: Omit<CommunityPlayer, "id">[] = [

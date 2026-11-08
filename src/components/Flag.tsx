@@ -197,11 +197,13 @@ export function Flag({
     );
   }
 
+  // Always prefer bundled local SVG flag files in /flags/ for instant 0ms offline rendering.
+  // Fall back to external flagcdn only if missing from local pack.
   const src =
-    code
-      ? `https://flagcdn.com/${code.toLowerCase()}.svg`
-      : file
-        ? `/flags/${file}.svg`
+    file
+      ? `/flags/${file}.svg`
+      : code
+        ? `https://flagcdn.com/${code.toLowerCase()}.svg`
         : null;
 
   if (!src || failed) {

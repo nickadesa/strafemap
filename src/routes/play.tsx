@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { t, type Lang } from "@/lib/i18n";
 import { computeStats, useRecords, useSettings } from "@/lib/game/storage";
 import { Sidebar } from "@/components/Sidebar";
@@ -16,7 +16,7 @@ import {
 } from "@/lib/game/engine";
 import { getRank, loadRank } from "@/lib/rank";
 import { RankBanner } from "@/components/RankVisuals";
-import { Calendar, Flame, Medal, Sparkles, Users, X } from "lucide-react";
+import { Calendar, ChevronLeft, ChevronRight, Flame, Medal, Sparkles, Users, X } from "lucide-react";
 import {
   Drawer,
   DrawerContent,
@@ -26,7 +26,7 @@ import {
   DrawerClose,
 } from "@/components/ui/drawer";
 
-const modeIds = Object.keys(MODES) as Mode[];
+const modeIds: Mode[] = (Object.keys(MODES) as Mode[]).filter((m) => m !== "quiz");
 
 export const Route = createFileRoute("/play")({
   head: () => ({
@@ -59,7 +59,6 @@ const pools: { id: Pool; label: string }[] = [
   { id: "attractions", label: "Tourist Attractions" },
 ];
 const diffs: Difficulty[] = ["easy", "medium", "hard", "expert", "hardcore"];
-const quizZones = ["Global", "Asia", "Europe", "Americas", "Africa", "Oceania"] as const;
 
 function Chip({
   on,
@@ -88,8 +87,18 @@ function PlayHub() {
   const [practice, setPractice] = useState(false);
   const [time, setTime] = useState<TimeLimit>(30);
   const [selectedSin, setSelectedSin] = useState<SinCardId>("pride");
-  const [quizZone, setQuizZone] = useState<string>("Global");
   const [moreModesOpen, setMoreModesOpen] = useState(false);
+
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const scrollCarousel = (direction: "left" | "right") => {
+    if (carouselRef.current) {
+      const scrollAmount = 240;
+      carouselRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
 
   const stats = computeStats(records ?? []);
   const rank = loadRank();
@@ -301,7 +310,7 @@ function PlayHub() {
                 </span>
                 <h2 className="font-display mt-2 text-2xl sm:text-3xl">More Game Modes</h2>
                 <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
-                  7 Deadly Sins, Country Quiz, Find the City, Closest Wins, Blind Map, Shrinking Zone, and Time Attack.
+                  7 Deadly Sins, Find the City, Closest Wins, Blind Map, Shrinking Zone, and Classic.
                 </p>
               </div>
               <button
@@ -327,6 +336,7 @@ function PlayHub() {
                 <DrawerClose asChild>
                   <button
                     type="button"
+                    aria-label="Close drawer"
                     className="rounded-full bg-muted p-1.5 text-muted-foreground hover:text-foreground"
                   >
                     <X className="h-4 w-4" />
@@ -334,37 +344,69 @@ function PlayHub() {
                 </DrawerClose>
               </DrawerHeader>
 
-              <div className="no-scrollbar mt-4 max-h-[68vh] overflow-y-auto space-y-5 pr-1">
-                {/* Mode Grid */}
-                <div className="grid gap-2.5 grid-cols-2 sm:grid-cols-4">
-                  {modeIds.map((m) => {
-                    const active = mode === m;
-                    return (
+              <div className="no-scrollbar mt-4 max-h-[70vh] overflow-y-auto space-y-5 pr-1">
+                {/* Mode Carousel with Navigation Arrows */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between px-0.5">
+                    <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                      Game Modes ({modeIds.length})
+                    </span>
+                    <div className="flex items-center gap-1.5">
                       <button
-                        key={m}
                         type="button"
-                        onClick={() => setMode(m)}
-                        className={`rounded-2xl border p-3.5 text-left transition-colors ${
-                          active
-                            ? "border-foreground/60 bg-[#D2F801]/10 ring-1 ring-foreground/40"
-                            : "border-border bg-card/60 hover:bg-muted"
-                        }`}
+                        onClick={() => scrollCarousel("left")}
+                        aria-label="Previous mode"
+                        className="h-8 w-8 rounded-full border border-border bg-card/80 hover:bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
                       >
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-medium text-muted-foreground">
-                            {t(lang, `${m}Tag`)}
-                          </span>
-                          {(m === "findCity" || m === "sins" || m === "quiz") && (
-                            <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold text-foreground">
-                              NEW
-                            </span>
-                          )}
-                        </div>
-                        <h4 className="font-display mt-1 text-base">{t(lang, m)}</h4>
-                        <p className="mt-1 line-clamp-2 text-[11px] text-muted-foreground">{t(lang, `${m}Blurb`)}</p>
+                        <ChevronLeft className="h-4 w-4" />
                       </button>
-                    );
-                  })}
+                      <button
+                        type="button"
+                        onClick={() => scrollCarousel("right")}
+                        aria-label="Next mode"
+                        className="h-8 w-8 rounded-full border border-border bg-card/80 hover:bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        <ChevronRight className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div
+                    ref={carouselRef}
+                    className="flex gap-3 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory py-1 px-0.5"
+                    style={{ scrollbarWidth: "none" }}
+                  >
+                    {modeIds.map((m) => {
+                      const active = mode === m;
+                      return (
+                        <button
+                          key={m}
+                          type="button"
+                          onClick={() => setMode(m)}
+                          className={`flex-none w-[205px] sm:w-[225px] snap-start rounded-2xl border p-4 text-left transition-all ${
+                            active
+                              ? "border-foreground/70 bg-[#D2F801]/10 ring-1 ring-foreground/40 shadow-sm"
+                              : "border-border bg-card/60 hover:bg-muted/80"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-semibold text-muted-foreground">
+                              {t(lang, `${m}Tag`)}
+                            </span>
+                            {(m === "findCity" || m === "sins") && (
+                              <span className="rounded-full bg-[#D2F801]/20 px-2 py-0.5 text-[10px] font-bold text-foreground">
+                                NEW
+                              </span>
+                            )}
+                          </div>
+                          <h4 className="font-display mt-2 text-base truncate">{t(lang, m)}</h4>
+                          <p className="mt-1 line-clamp-2 text-[11px] text-muted-foreground leading-snug">
+                            {t(lang, `${m}Blurb`)}
+                          </p>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 {/* Mode Configuration Card */}
@@ -411,34 +453,19 @@ function PlayHub() {
                     </div>
                   )}
 
-                  {/* Country Quiz Continent Zone Selector */}
-                  {mode === "quiz" ? (
-                    <div>
-                      <p className="mb-1.5 text-xs font-semibold text-muted-foreground">
-                        Continent Zone Filter
-                      </p>
-                      <div className="seg">
-                        {quizZones.map((z) => (
-                          <Chip key={z} on={quizZone === z} onClick={() => setQuizZone(z)}>
-                            {z}
-                          </Chip>
-                        ))}
-                      </div>
+                  {/* Category Selector */}
+                  <div>
+                    <p className="mb-1.5 text-xs font-semibold text-muted-foreground">
+                      {t(lang, "category")}
+                    </p>
+                    <div className="seg">
+                      {pools.map((p) => (
+                        <Chip key={p.id} on={pool === p.id} onClick={() => setPool(p.id)}>
+                          {t(lang, p.id)}
+                        </Chip>
+                      ))}
                     </div>
-                  ) : (
-                    <div>
-                      <p className="mb-1.5 text-xs font-semibold text-muted-foreground">
-                        {t(lang, "category")}
-                      </p>
-                      <div className="seg">
-                        {pools.map((p) => (
-                          <Chip key={p.id} on={pool === p.id} onClick={() => setPool(p.id)}>
-                            {t(lang, p.id)}
-                          </Chip>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                  </div>
 
                   {/* Difficulty Selector */}
                   <div>
@@ -490,7 +517,6 @@ function PlayHub() {
                     time,
                     ...(practice ? { practice: 1 as const } : {}),
                     ...(mode === "sins" ? { sin: selectedSin } : {}),
-                    ...(mode === "quiz" ? { zone: quizZone } : {}),
                   }}
                   className="btn btn-primary inline-flex px-8 py-2.5 text-center text-sm font-semibold"
                 >
