@@ -41,6 +41,7 @@ import {
 import { SlidingTabs } from "@/components/ui/SlidingTabs";
 import { ClanSystemTab } from "@/components/community/ClanSystemTab";
 import { SocialFeedTab } from "@/components/community/SocialFeedTab";
+import { toast } from "sonner";
 import {
   BarChart3,
   Check,
@@ -941,12 +942,14 @@ function CosmeticShopTab({
     } else if (item.category === "nameColor") {
       updateSocial({ nameColor: item.value });
     }
+    toast.success(`Equipped: ${item.name}`);
   };
 
   const buyItem = (item: GachaItem) => {
     const cost = rarityPrices[item.rarity];
     const currentCoins = social.coins ?? 10000;
     if (currentCoins < cost) {
+      toast.error(`Need ${(cost - currentCoins).toLocaleString()} more Coins`);
       return;
     }
     const nextUnlocked = Array.from(new Set([...social.unlockedCosmetics, item.id]));

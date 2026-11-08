@@ -1640,9 +1640,10 @@ img[draggable="false"] {
     transform: scale(0.97);
     opacity: 0.8;
   }
-  @media (prefers-reduced-motion: reduce) {}
-  @media (prefers-reduced-motion:active: reduce) {
-    transform: none;
+  @media (prefers-reduced-motion: reduce) {
+    &:active {
+      transform: none;
+    }
   }
 }
   [data-platform="ios"] {

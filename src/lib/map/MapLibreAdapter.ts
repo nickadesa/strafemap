@@ -26,6 +26,11 @@ function createGeoJSONCircle(center: LatLng, radiusKm: number, points = 64) {
   };
 }
 
+function isReducedMotion(): boolean {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
 export class MapLibreAdapter implements IMapAdapter {
   private ml: any = null; // maplibre-gl module
   private map: any = null; // maplibre-gl.Map
@@ -460,10 +465,11 @@ export class MapLibreAdapter implements IMapAdapter {
 
     this.apply3DState(enabled);
 
+    const reduced = isReducedMotion();
     this.map.easeTo({
       pitch: enabled ? 45 : 0,
       bearing: 0,
-      duration: 600,
+      duration: reduced ? 0 : 600,
     });
 
     this.on3DChange?.(enabled);
@@ -649,33 +655,36 @@ export class MapLibreAdapter implements IMapAdapter {
     if (points.length > 1) {
       const bounds = new this.ml.LngLatBounds(points[0], points[0]);
       for (const pt of points) bounds.extend(pt);
+      const reduced = isReducedMotion();
       this.map.fitBounds(bounds, {
         padding: { top: 70, bottom: 70, left: 60, right: 60 },
         maxZoom: 7,
-        duration: 900,
+        duration: reduced ? 0 : 900,
       });
     } else {
-      this.map.flyTo({ center: [target.lng, target.lat], zoom: 5, duration: 800 });
+      const reduced = isReducedMotion();
+      this.map.flyTo({ center: [target.lng, target.lat], zoom: 5, duration: reduced ? 0 : 800 });
     }
   }
 
   public resetView(countryFocusCenter?: LatLng | null): void {
     if (!this.map || !this.ml) return;
 
+    const reduced = isReducedMotion();
     if (countryFocusCenter) {
       const d = 11;
       const bounds = new this.ml.LngLatBounds(
         [countryFocusCenter.lng - d * 1.3, countryFocusCenter.lat - d],
         [countryFocusCenter.lng + d * 1.3, countryFocusCenter.lat + d],
       );
-      this.map.fitBounds(bounds, { maxZoom: 5, duration: 600 });
+      this.map.fitBounds(bounds, { maxZoom: 5, duration: reduced ? 0 : 600 });
     } else {
       this.map.flyTo({
         center: [0, 20],
         zoom: 1.8,
         pitch: 0,
         bearing: 0,
-        duration: 800,
+        duration: reduced ? 0 : 800,
       });
     }
   }

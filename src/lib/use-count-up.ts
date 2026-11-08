@@ -12,6 +12,13 @@ export function useCountUp(target: number, duration = 850, startFromZero = false
   const mountedRef = useRef(false);
 
   useEffect(() => {
+    // If prefers-reduced-motion is enabled, snap directly to target
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      fromRef.current = target;
+      setDisplay(target);
+      return;
+    }
+
     // If startFromZero is true and this is first mount, animate from 0 to target
     if (!mountedRef.current) {
       mountedRef.current = true;

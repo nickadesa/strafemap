@@ -43,3 +43,27 @@ describe("buzz (haptic feedback)", () => {
     expect(() => buzz(10)).not.toThrow();
   });
 });
+
+describe("Reduced Motion compliance", () => {
+  it("snaps useCountUp directly to target without animation under prefers-reduced-motion", async () => {
+    const { renderHook } = await import("@testing-library/react");
+    const { useCountUp } = await import("@/lib/use-count-up");
+
+    const originalMatchMedia = window.matchMedia;
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
+      matches: query === "(prefers-reduced-motion: reduce)",
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }));
+
+    const { result } = renderHook(() => useCountUp(5000, 850, true));
+    expect(result.current).toBe(5000);
+
+    window.matchMedia = originalMatchMedia;
+  });
+});

@@ -30,6 +30,7 @@ import { getRank, loadRank } from "@/lib/rank";
 import { AvatarFrame, ClanTagPill, RankBanner, VerifiedBadge, type VerifiedBadgeType } from "@/components/RankVisuals";
 import { COMMUNITY_PLAYERS, useSocialProfile } from "@/lib/social";
 import { t, type Lang } from "@/lib/i18n";
+import { toast } from "sonner";
 import {
   Check,
   ClipboardPaste,
@@ -562,6 +563,7 @@ function PartyPage() {
                           navigator.clipboard?.writeText(room);
                           setCopiedCode(true);
                           buzz(6);
+                          toast.success(`Copied room code: ${room.slice(0, 3)} ${room.slice(3)}`);
                           setTimeout(() => setCopiedCode(false), 1500);
                         }}
                         className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground hover:text-foreground"

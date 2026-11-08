@@ -38,7 +38,8 @@ import type { CardData, CardTemplate } from "@/lib/game/shareCard";
 import { t, type Lang } from "@/lib/i18n";
 import { applyMatchResult, loadRank, type RankStep } from "@/lib/rank";
 import { COMMUNITY_PLAYERS, addPlayerExp, awardCoins, useSocialProfile } from "@/lib/social";
-import { syncAchievements } from "@/lib/achievements";
+import { ACH_ALL, syncAchievements } from "@/lib/achievements";
+import { toast } from "sonner";
 import { Info } from "lucide-react";
 import { useMapStyle, useResolvedMapStyle } from "@/lib/theme";
 import type { OpenFreeMapStyleId } from "@/lib/map/types";
@@ -563,7 +564,18 @@ function GamePage() {
       setEloChange(change);
       setRankAfter(after);
     }
-    setNewAch(syncAchievements(loadRecords(), loadRank()));
+    const unlockedNow = syncAchievements(loadRecords(), loadRank());
+    setNewAch(unlockedNow);
+    if (unlockedNow.length > 0) {
+      unlockedNow.forEach((achId) => {
+        const item = ACH_ALL.find((a) => a.id === achId);
+        if (item) {
+          toast(`Achievement unlocked: ${item.name}`, {
+            description: item.requirement,
+          });
+        }
+      });
+    }
     addPlayerExp(Math.round(total / 10));
     awardCoins(Math.round(total / 50) + (ranked ? 75 : 30));
   }, [phase]); // eslint-disable-line react-hooks/exhaustive-deps

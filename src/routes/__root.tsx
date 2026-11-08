@@ -12,6 +12,7 @@ import { applyLocaleTypography, localeInitScript, useLocaleTypography } from "@/
 import { LiquidGlassDefs } from "@/components/LiquidGlassDefs";
 import { t, type Lang } from "@/lib/i18n";
 import { useSettings } from "@/lib/game/storage";
+import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 import maplibreCss from "maplibre-gl/dist/maplibre-gl.css?url";
 
@@ -77,6 +78,7 @@ function RootComponent() {
       <div key={pathname} className="t-page">
         <Outlet />
       </div>
+      <Toaster position="top-center" richColors theme="system" closeButton />
     </QueryClientProvider>
   );
 }
