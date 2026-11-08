@@ -43,7 +43,7 @@ export const SIN_CARDS: SinCardInfo[] = [
     skillName: "Dual Pin Gambit",
     accent: "#D2F801",
     boon: "Place a 2nd backup pin up to 2 times per game; closer pin scores automatically.",
-    tradeoff: "Rounds using the 2nd pin have their max score cap reduced by -12% (max 4,400 pts).",
+    tradeoff: "Rounds using the 2nd pin have their max score cap reduced by -6% (max 4,700 pts).",
   },
   {
     id: "wrath",
@@ -155,8 +155,8 @@ export function evaluateSinScore(params: {
     }
   } else if (sin === "greed") {
     if (usedSecondPin) {
-      pts = Math.min(4400, Math.round(pts * 0.88));
-      note = "Greed Dual Pin: 4,400 max cap (-12%)";
+      pts = Math.min(4700, Math.round(pts * 0.94));
+      note = "Greed Dual Pin: 4,700 max cap (-6%)";
     }
   } else if (sin === "wrath") {
     if (limit > 0 && elapsed <= limit * 0.4) {

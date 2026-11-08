@@ -115,7 +115,7 @@ describe("7 Deadly Sins & Country Quiz Engine", () => {
       prevRoundPoints: null,
       gluttonyStreak: 0,
     });
-    expect(greedDual.points).toBeLessThanOrEqual(4400);
+    expect(greedDual.points).toBeLessThanOrEqual(4700);
   });
 
   it("generates 4 unique country quiz choices including the target country", () => {

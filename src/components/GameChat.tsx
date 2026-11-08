@@ -63,7 +63,7 @@ const POLITE_REPLIES: Record<string, string[]> = {
 
 const TOXIC_PATTERNS = [
   /กาก/i, /ควาย/i, /เหี้ย/i, /เชี่ย/i, /สัส/i, /สัตว์/i, /มึง/i, /ควย/i, /ด๋อย/i, /อ่อน/i,
-  /โง่/i, /กระจอก/i, /ไก่/i, /สถุย/i, /ขยะ/i, /อีห่า/i, /ไอ้/i,
+  /โง่/i, /กระจอก/i, /ไก่/i, /สถุย/i, /ขยะ/i, /อีห่า/i, /ไอ้/i, /บอท/i, /ปัญญาอ่อน/i,
   /\bnoob\b/i, /\bez\b/i, /\btrash\b/i, /\bbot\b/i, /\bfuck\b/i, /\bfk\b/i, /\bbitch\b/i,
   /\bloser\b/i, /\bidiot\b/i, /\bstupid\b/i, /\bgit gud\b/i, /\bl2p\b/i, /\bdumb\b/i
 ];

@@ -42,6 +42,9 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
   "en": {
     "chat": "Chat",
     "chatPlaceholder": "Send a message...",
+    "send": "Send",
+    "notFound": "Page not found.",
+    "backHome": "Back to Home",
     "rankPoints": "Rank Points",
     "currentRank": "Current rank",
     "rpToNext": "{n} RP to {rank}",
@@ -224,6 +227,9 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
   "th": {
     "chat": "แชท",
     "chatPlaceholder": "ส่งข้อความ...",
+    "send": "ส่ง",
+    "notFound": "ไม่พบหน้าที่ต้องการ",
+    "backHome": "กลับสู่หน้าหลัก",
     "rankPoints": "แต้มแรงค์",
     "currentRank": "แรงค์ปัจจุบัน",
     "rpToNext": "อีก {n} RP ถึง {rank}",
@@ -406,6 +412,9 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
   "ko": {
     "chat": "채팅",
     "chatPlaceholder": "메시지 보내기...",
+    "send": "전송",
+    "notFound": "페이지를 찾을 수 없습니다.",
+    "backHome": "홈으로 돌아가기",
     "rankPoints": "랭크 포인트",
     "currentRank": "현재 랭크",
     "rpToNext": "{rank}까지 {n} RP",
@@ -588,6 +597,9 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
   "zh": {
     "chat": "聊天",
     "chatPlaceholder": "发送消息...",
+    "send": "发送",
+    "notFound": "未找到页面。",
+    "backHome": "返回首页",
     "rankPoints": "段位分",
     "currentRank": "当前段位",
     "rpToNext": "距 {rank} 还差 {n} RP",
@@ -770,6 +782,9 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
   "ja": {
     "chat": "チャット",
     "chatPlaceholder": "メッセージを送信...",
+    "send": "送信",
+    "notFound": "ページが見つかりません。",
+    "backHome": "ホームに戻る",
     "rankPoints": "ランクポイント",
     "currentRank": "現在のランク",
     "rpToNext": "{rank}まで {n} RP",
@@ -952,6 +967,9 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
   "es": {
     "chat": "Chat",
     "chatPlaceholder": "Enviar un mensaje...",
+    "send": "Enviar",
+    "notFound": "Página no encontrada.",
+    "backHome": "Volver al inicio",
     "rankPoints": "Puntos de rango",
     "currentRank": "Rango actual",
     "rpToNext": "{n} RP para {rank}",
@@ -1134,6 +1152,9 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
   "fr": {
     "chat": "Chat",
     "chatPlaceholder": "Envoyer un message...",
+    "send": "Envoyer",
+    "notFound": "Page non trouvée.",
+    "backHome": "Retour à l'accueil",
     "rankPoints": "Points de rang",
     "currentRank": "Rang actuel",
     "rpToNext": "{n} RP avant {rank}",
