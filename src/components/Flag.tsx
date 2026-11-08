@@ -1,6 +1,6 @@
 // Rounded SVG flag badge. Uses the bundled flag pack in /flags; countries missing
 // from the pack fall back to flagcdn, then a thin globe glyph.
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FLAG_FILES } from "@/lib/flag-files";
 
 /** Alternative country names → file name in the bundled pack. */
@@ -22,6 +22,29 @@ const ALIAS: Record<string, string> = {
   "turks & caicos islands": "turks-and-caicos-islands", "south georgia & south sandwich islands": "south-georgia-sandwich-islands",
   "u.s. virgin islands": "united-states-virgin-islands", "falkland islands (islas malvinas)": "falkland-islands",
   "palestinian territories": "palestine", "cabo verde": "cape-verde", "the bahamas": "bahamas", "the gambia": "gambia",
+  "sao tome and principe": "sao-tome-and-principe", "são tomé and príncipe": "sao-tome-and-principe",
+  "saint lucia": "saint-lucia", "st. lucia": "saint-lucia",
+  "marshall islands": "marshall-islands", "north macedonia": "north-macedonia",
+  "saudi arabia": "saudi-arabia", "san marino": "san-marino",
+};
+
+/** Direct mapping of common 2-letter ISO codes to bundle filenames */
+const ISO_TO_FILE: Record<string, string> = {
+  us: "united-states", gb: "united-kingdom", uk: "united-kingdom", th: "thailand",
+  fr: "france", es: "spain", de: "germany", it: "italy", jp: "japan", cn: "china",
+  kr: "south-korea", ca: "canada", au: "australia", br: "brazil", mx: "mexico",
+  in: "india", id: "indonesia", nl: "netherlands", se: "sweden", no: "norway",
+  fi: "finland", dk: "denmark", pl: "poland", ua: "ukraine", tr: "turkey",
+  gr: "greece", eg: "egypt", za: "south-africa", ar: "argentina", cl: "chile",
+  co: "colombia", pe: "peru", nz: "new-zealand", ph: "philippines", sg: "singapore",
+  vn: "vietnam", ch: "switzerland", at: "austria", be: "belgium", ie: "ireland",
+  pt: "portugal", is: "iceland", ru: "russia", rs: "serbia", lt: "lithuania",
+  mk: "north-macedonia", lu: "luxembourg", mt: "malta", sm: "san-marino",
+  my: "malaysia", kg: "kyrgyzstan", sa: "saudi-arabia", lb: "lebanon",
+  tz: "tanzania", sn: "senegal", bw: "botswana", mg: "madagascar", mu: "mauritius",
+  sc: "seychelles", ml: "mali", ne: "niger", so: "somalia", ls: "lesotho",
+  ws: "samoa", mh: "marshall-islands", nr: "nauru", lr: "liberia", mr: "mauritania",
+  st: "sao-tome-and-principe", lc: "saint-lucia",
 };
 
 const slug = (s: string) =>
@@ -49,14 +72,26 @@ function isoCode(name: string): string | null {
 /** File name in the bundled pack for a country name or ISO code. */
 export function flagFile(country: string): string | null {
   let key = (country.split("/")[0] ?? country).trim().toLowerCase();
-  if (/^[a-z]{2}$/.test(key)) key = (regionName(key) ?? key).toLowerCase();
-  const file = ALIAS[key] ?? slug(key);
-  return FLAG_FILES.has(file) ? file : null;
+  if (ISO_TO_FILE[key]) return ISO_TO_FILE[key];
+  if (ALIAS[key]) return ALIAS[key];
+  const s = slug(key);
+  if (FLAG_FILES.has(s)) return s;
+  if (/^[a-z]{2}$/.test(key)) {
+    const rName = regionName(key);
+    if (rName) {
+      const rSlug = slug(rName);
+      if (FLAG_FILES.has(rSlug)) return rSlug;
+    }
+  }
+  return null;
 }
 
 export function countryCode(country: string): string | null {
   const key = (country.split("/")[0] ?? country).trim().toLowerCase();
   if (/^[a-z]{2}$/.test(key)) return key;
+  for (const [code, f] of Object.entries(ISO_TO_FILE)) {
+    if (f === key || f === slug(key)) return code;
+  }
   return isoCode(key);
 }
 
@@ -174,7 +209,14 @@ export function Flag({
   className?: string;
   rectangular?: boolean;
 }) {
-  const [failed, setFailed] = useState(false);
+  const [failedLocal, setFailedLocal] = useState(false);
+  const [failedRemote, setFailedRemote] = useState(false);
+
+  useEffect(() => {
+    setFailedLocal(false);
+    setFailedRemote(false);
+  }, [country]);
+
   const normalizedKey = (country.split("/")[0] ?? country).trim().toLowerCase();
   const inlineCode = INLINE_ALIAS[normalizedKey] ?? (INLINE_FLAGS[normalizedKey] ? normalizedKey : null);
   const inlineRenderer = inlineCode ? INLINE_FLAGS[inlineCode] : null;
@@ -197,16 +239,18 @@ export function Flag({
     );
   }
 
-  // Always prefer bundled local SVG flag files in /flags/ for instant 0ms offline rendering.
-  // Fall back to external flagcdn only if missing from local pack.
-  const src =
-    file
-      ? `/flags/${file}.svg`
-      : code
-        ? `https://flagcdn.com/${code.toLowerCase()}.svg`
-        : null;
+  // Multi-tier reliable flag source:
+  // Tier 1: Local bundled SVG (/flags/<file>.svg) if known and hasn't failed
+  // Tier 2: FlagCDN fallback (https://flagcdn.com/<code>.svg) if local failed or file unknown
+  // Tier 3: SVG Globe vector
+  let src: string | null = null;
+  if (file && !failedLocal) {
+    src = `/flags/${file}.svg`;
+  } else if (code && !failedRemote) {
+    src = `https://flagcdn.com/${code.toLowerCase()}.svg`;
+  }
 
-  if (!src || failed) {
+  if (!src) {
     return (
       <span
         className={base}
@@ -214,12 +258,22 @@ export function Flag({
         aria-label={country}
         onContextMenu={(e) => e.preventDefault()}
       >
-        <svg width={h * 0.7} height={h * 0.7} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="opacity-60 pointer-events-none">
-          <circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18" />
+        <svg
+          width={h * 0.7}
+          height={h * 0.7}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          className="opacity-60 pointer-events-none"
+        >
+          <circle cx="12" cy="12" r="9" />
+          <path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18" />
         </svg>
       </span>
     );
   }
+
   return (
     <span
       className={base}
@@ -227,13 +281,21 @@ export function Flag({
       onContextMenu={(e) => e.preventDefault()}
     >
       <img
+        key={src}
         src={src}
         alt={`${country} flag`}
         width={size}
         height={h}
-        onError={() => setFailed(true)}
+        onError={() => {
+          if (file && !failedLocal) {
+            setFailedLocal(true);
+          } else {
+            setFailedRemote(true);
+          }
+        }}
         className="block h-full w-full object-cover pointer-events-none select-none"
         draggable={false}
+        loading="lazy"
       />
     </span>
   );

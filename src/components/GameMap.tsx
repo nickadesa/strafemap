@@ -110,7 +110,7 @@ export function GameMap({
           preferCanvas: false,
         }).setView([20, 0], 2);
         m.attributionControl.setPrefix(false);
-        m.zoomControl.setPosition("bottomleft");
+        m.zoomControl.setPosition("bottomright");
         m.on("click", (e: LT.LeafletMouseEvent) => {
           if (!cb.current.locked) cb.current.onPick({ lat: e.latlng.lat, lng: e.latlng.wrap().lng });
         });

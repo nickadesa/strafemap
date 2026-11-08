@@ -16,7 +16,7 @@ import {
 } from "@/lib/game/engine";
 import { getRank, loadRank } from "@/lib/rank";
 import { RankBanner } from "@/components/RankVisuals";
-import { Calendar, ChevronLeft, ChevronRight, Flame, Medal, Sparkles, Users, X } from "lucide-react";
+import { Calendar, ChevronLeft, ChevronRight, Flame, Info, Medal, Sparkles, Users, X } from "lucide-react";
 import {
   Drawer,
   DrawerContent,
@@ -87,6 +87,7 @@ function PlayHub() {
   const [practice, setPractice] = useState(false);
   const [time, setTime] = useState<TimeLimit>(30);
   const [selectedSin, setSelectedSin] = useState<SinCardId>("pride");
+  const [inspectedSin, setInspectedSin] = useState<typeof SIN_CARDS[number] | null>(null);
   const [moreModesOpen, setMoreModesOpen] = useState(false);
 
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -115,7 +116,7 @@ function PlayHub() {
   return (
     <div className="min-h-screen">
       <Sidebar />
-      <main className="rail-offset px-4 pb-12 pt-6 md:px-6 md:pt-8">
+      <main className="rail-offset px-4 pb-28 pt-6 md:px-6 md:pt-8">
         <div className="mx-auto max-w-6xl space-y-6">
           {/* Top Event / Announcement Banner */}
           <section className="plate relative overflow-hidden border-border p-5 md:p-6">
@@ -423,30 +424,44 @@ function PlayHub() {
                   {/* 7 Deadly Sins Card Selector */}
                   {mode === "sins" && (
                     <div>
-                      <p className="mb-2 text-xs font-semibold text-muted-foreground">
-                        Deadly Sin Skill Card
-                      </p>
+                      <div className="mb-2 flex items-center justify-between">
+                        <p className="text-xs font-semibold text-muted-foreground">
+                          Deadly Sin Skill Card (Tap (i) for skill details)
+                        </p>
+                      </div>
                       <div className="grid gap-2 grid-cols-2 sm:grid-cols-4">
                         {SIN_CARDS.map((card) => {
                           const on = selectedSin === card.id;
                           return (
-                            <button
+                            <div
                               key={card.id}
-                              type="button"
                               onClick={() => setSelectedSin(card.id)}
-                              className={`rounded-xl border p-2.5 text-left transition-colors ${
+                              className={`group relative flex items-center justify-between rounded-xl border p-2.5 cursor-pointer transition-all ${
                                 on
-                                  ? "border-foreground/60 bg-[#D2F801]/10 ring-1 ring-foreground/40"
+                                  ? "border-foreground/70 bg-[#D2F801]/10 ring-1 ring-foreground/40 shadow-sm"
                                   : "border-border bg-background/50 hover:bg-muted/50"
                               }`}
                             >
-                              <div className="flex items-center justify-between">
-                                <span className="font-display text-sm" style={{ color: card.accent }}>
+                              <div className="min-w-0 pr-1">
+                                <span className="font-display text-sm truncate block" style={{ color: card.accent }}>
                                   {card.sinName}
                                 </span>
+                                <span className="text-[10px] text-muted-foreground truncate block">
+                                  {card.skillName}
+                                </span>
                               </div>
-                              <p className="mt-1 line-clamp-1 text-[10px] text-positive">{card.boon}</p>
-                            </button>
+                              <button
+                                type="button"
+                                aria-label={`View info for ${card.sinName}`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setInspectedSin(card);
+                                }}
+                                className="h-6 w-6 shrink-0 rounded-full bg-muted/80 hover:bg-muted text-muted-foreground hover:text-foreground flex items-center justify-center transition-colors"
+                              >
+                                <Info className="h-3.5 w-3.5" />
+                              </button>
+                            </div>
                           );
                         })}
                       </div>
@@ -525,6 +540,71 @@ function PlayHub() {
               </div>
             </DrawerContent>
           </Drawer>
+          {/* Sin Card Info Modal */}
+          {inspectedSin && (
+            <div className="fixed inset-0 z-[120] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in">
+              <div className="plate max-w-sm w-full p-5 shadow-2xl space-y-4">
+                <div className="flex items-center justify-between border-b border-border/60 pb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="h-3 w-3 rounded-full" style={{ backgroundColor: inspectedSin.accent }} />
+                    <h3 className="font-display text-lg" style={{ color: inspectedSin.accent }}>
+                      {inspectedSin.sinName}
+                    </h3>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setInspectedSin(null)}
+                    className="grid h-7 w-7 place-items-center rounded-full bg-muted text-muted-foreground hover:text-foreground"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+
+                <div className="space-y-2.5 text-xs">
+                  <div className="rounded-xl border border-border/80 bg-background/60 p-3">
+                    <span className="text-[10px] font-semibold text-[#D2F801] uppercase tracking-wider block mb-1">
+                      Skill Name
+                    </span>
+                    <p className="font-semibold text-foreground text-sm">{inspectedSin.skillName}</p>
+                  </div>
+
+                  <div className="rounded-xl border border-positive/30 bg-positive/10 p-3">
+                    <span className="text-[10px] font-semibold text-positive uppercase tracking-wider block mb-1">
+                      Boon
+                    </span>
+                    <p className="text-foreground/90 leading-relaxed">{inspectedSin.boon}</p>
+                  </div>
+
+                  <div className="rounded-xl border border-warning/30 bg-warning/10 p-3">
+                    <span className="text-[10px] font-semibold text-warning uppercase tracking-wider block mb-1">
+                      Trade-off
+                    </span>
+                    <p className="text-foreground/90 leading-relaxed">{inspectedSin.tradeoff}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedSin(inspectedSin.id);
+                      setInspectedSin(null);
+                    }}
+                    className="btn btn-primary flex-1 !py-2.5 text-xs font-semibold rounded-full"
+                  >
+                    Select {inspectedSin.sinName.replace(/^\d+\.\s*/, "")}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setInspectedSin(null)}
+                    className="btn btn-outline !py-2.5 px-4 text-xs font-semibold rounded-full"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </div>

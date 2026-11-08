@@ -14,8 +14,22 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { REACTION_SETS, REACTION_SET_IDS, type ReactionSet } from "@/lib/reactions";
-import { ChevronDown, User, X } from "lucide-react";
+import { AvatarFrame, ClanTagPill, VerifiedBadge } from "@/components/RankVisuals";
+import { useSocialProfile } from "@/lib/social";
+import { getRank, loadRank } from "@/lib/rank";
+import {
+  ChevronDown,
+  ChevronRight,
+  Globe,
+  Volume2,
+  Gauge,
+  Smile,
+  Palette,
+  Sparkles,
+  Maximize2,
+  Clock,
+  X,
+} from "lucide-react";
 
 const tile = (u: string) =>
   u.replace("{z}", "2").replace("{y}", "1").replace("{x}", "2").replace("{s}", "a").replace("{r}", "");
@@ -24,7 +38,7 @@ const RICH_EMOJI_POOL = [
   "🔥", "🎯", "🤯", "👏", "💀", "🚀", "💯", "⚡", "🏆", "🌍", "🗺️", "📍", "🧭", "😂", "😭", "🤝", "👑", "💎",
   "😎", "🤩", "🥳", "😜", "🥶", "🤖", "🤡", "👽", "👾", "👀", "✨", "🎉", "🥇", "💣", "❤️", "💚", "🧠", "👋",
   "🙌", "💪", "🫡", "🙏", "🍕", "🍔", "☕", "🍺", "🏔️", "🏝️", "✈️", "🚗", "⛵", "🏎️", "⚽", "🏀", "🎮", "🎲",
-  "🧩", "🦄", "🦁", "🐧", "🐱", "🐶", "👍", "👎", "✌️", "🤞", "🤟", "🤘", "🤙", "👌", "🤌", "🤏", "👈", "👉"
+  "🧩", "🦄", "🦁", "🐧", "🐱", "🐶", "👍", "👎", "✌️", "🤞", "🤟", "🤘", "🤙", "👌", "🤌", "🤏", "👈", "👉",
 ];
 
 export const Route = createFileRoute("/settings")({
@@ -57,13 +71,13 @@ function ToggleSwitch({
       aria-checked={checked}
       aria-label={label}
       onClick={() => onChange(!checked)}
-      className={`relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full border border-border p-0.5 transition-colors ${
-        checked ? "bg-[#D2F801]" : "bg-muted"
+      className={`relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200 ease-in-out focus:outline-none ${
+        checked ? "bg-[#34C759] dark:bg-[#32D74B]" : "bg-muted-foreground/30"
       }`}
     >
       <span
-        className={`inline-block h-5 w-5 rounded-full transition-transform ${
-          checked ? "translate-x-5 bg-[#161616]" : "translate-x-0 bg-foreground"
+        className={`inline-block h-6 w-6 rounded-full bg-white shadow-md transition-transform duration-200 ease-in-out ${
+          checked ? "translate-x-5" : "translate-x-0"
         }`}
       />
     </button>
@@ -74,6 +88,9 @@ function SettingsPage() {
   const [s, update] = useSettings();
   const [theme, setTheme] = useTheme();
   const [mapStyle, setMapStyle] = useMapStyle();
+  const [social] = useSocialProfile();
+  const rank = loadRank();
+  const curRank = getRank(rank.rp, rank.championPosition);
   const lang = (s.language ?? "en") as Lang;
   const { glass, setGlass } = useAppearance();
   const currentLang = LANGS.find((l) => l.id === lang) ?? LANGS[0]!;
@@ -93,273 +110,270 @@ function SettingsPage() {
   return (
     <div className="min-h-screen">
       <Sidebar />
-      <main className="rail-offset px-4 pb-12 pt-8 md:px-6">
-        <div className="mx-auto max-w-2xl space-y-6">
-          <div className="flex items-center justify-between">
-            <h1 className="font-display text-4xl md:text-5xl">{t(lang, "settings")}</h1>
+      <main className="rail-offset px-4 pb-24 pt-8 md:px-8">
+        <div className="mx-auto max-w-2xl space-y-7">
+          {/* Page Title */}
+          <div>
+            <h1 className="font-display text-3xl tracking-tight md:text-4xl">{t(lang, "settings")}</h1>
           </div>
 
-          {/* 1. General Category */}
-          <section className="plate space-y-5 p-6">
-            <h2 className="text-xs font-semibold text-[#D2F801]">
+          {/* Apple ID Style Profile Row */}
+          <Link
+            to="/profile"
+            className="apple-group block transition-transform active:scale-[0.99]"
+          >
+            <div className="apple-row hover:bg-muted/40 cursor-pointer py-4">
+              <div className="flex items-center gap-3.5 min-w-0">
+                <AvatarFrame
+                  name={social.nickname}
+                  rp={rank.rp}
+                  championPosition={rank.championPosition}
+                  size={52}
+                />
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <p className="truncate font-semibold text-base">{social.nickname}</p>
+                    <VerifiedBadge type={social.verifiedBadge} size={14} />
+                    <ClanTagPill tag={social.clanTag} />
+                  </div>
+                  <p className="truncate text-xs text-muted-foreground mt-0.5">
+                    @{social.username} · {curRank.name} ({rank.rp.toLocaleString()} RP)
+                  </p>
+                </div>
+              </div>
+              <ChevronRight className="h-5 w-5 text-muted-foreground/60 shrink-0" />
+            </div>
+          </Link>
+
+          {/* 1. General Section */}
+          <section className="space-y-2">
+            <h2 className="px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               {t(lang, "general")}
             </h2>
-
-            {/* Language Selector with rectangular country flag */}
-            <div className="flex items-center justify-between gap-4 min-h-10">
-              <p className="text-sm font-semibold">{t(lang, "language")}</p>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="w-44 justify-between rounded-full px-3.5">
-                    <span className="flex items-center gap-2">
-                      <Flag country={currentLang.country} size={22} rectangular />
-                      <span>{currentLang.label}</span>
-                    </span>
-                    <ChevronDown className="h-4 w-4 opacity-60" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  {LANGS.map((l) => (
-                    <DropdownMenuItem
-                      key={l.id}
-                      onSelect={() => update({ language: l.id })}
-                      className="flex cursor-pointer items-center gap-2.5 py-2"
-                    >
-                      <Flag country={l.country} size={22} rectangular />
-                      <span className="font-medium">{l.label}</span>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-
-            {/* Distance Units */}
-            <div className="flex items-center justify-between gap-4 min-h-10">
-              <p className="text-sm font-semibold">{t(lang, "units")}</p>
-              <div className="seg">
-                {(["km", "mi"] as const).map((u) => (
-                  <button
-                    key={u}
-                    type="button"
-                    onClick={() => update({ unit: u })}
-                    data-on={s.unit === u}
-                    className="seg-item !px-4 !py-1.5 text-xs uppercase"
-                  >
-                    {u}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Sound Effects */}
-            <div className="flex items-center justify-between gap-4 min-h-10">
-              <p className="text-sm font-semibold">{t(lang, "sound")}</p>
-              <ToggleSwitch
-                label={t(lang, "sound")}
-                checked={s.sound}
-                onChange={(next) => {
-                  update({ sound: next });
-                  blip(next);
-                }}
-              />
-            </div>
-          </section>
-
-          {/* 2. Gameplay & HUD Category */}
-          <section className="plate space-y-5 p-6">
-            <h2 className="text-xs font-semibold text-[#D2F801]">
-              {t(lang, "gameplay")}
-            </h2>
-
-            {/* Hide Map Zoom Buttons */}
-            <div className="flex items-center justify-between gap-4 min-h-10">
-              <p className="text-sm font-semibold">{t(lang, "hideZoomButtons")}</p>
-              <ToggleSwitch
-                label={t(lang, "hideZoomButtons")}
-                checked={Boolean(s.hideZoomButtons)}
-                onChange={(next) => update({ hideZoomButtons: next })}
-              />
-            </div>
-
-            {/* SmartClue Auto-collapse */}
-            <div className="flex items-center justify-between gap-4 min-h-10">
-              <p className="text-sm font-semibold">{t(lang, "promptAutoCollapse")}</p>
-              <div className="seg">
-                {([
-                  [0, t(lang, "off")],
-                  [3, "3s"],
-                  [5, "5s"],
-                ] as const).map(([sec, lbl]) => (
-                  <button
-                    key={sec}
-                    type="button"
-                    onClick={() => update({ promptCollapseSeconds: sec })}
-                    data-on={s.promptCollapseSeconds === sec}
-                    className="seg-item !px-3.5 !py-1.5 text-xs"
-                  >
-                    {lbl}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Emoji Reactions Toggle */}
-            <div className="flex items-center justify-between gap-4 min-h-10">
-              <p className="text-sm font-semibold">{t(lang, "emojiReactions")}</p>
-              <ToggleSwitch
-                label={t(lang, "emojiReactions")}
-                checked={s.reactions !== false}
-                onChange={(next) => update({ reactions: next })}
-              />
-            </div>
-
-            {/* Quick Emoji Presets Customization */}
-            <div>
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <span className="text-sm font-semibold">{t(lang, "quickEmojiPresets")}</span>
-                  <p className="text-xs text-muted-foreground">Select up to 5 emojis for match reactions</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setEmojiDrawerOpen(true)}
-                  className="btn btn-primary !px-4 !py-2 text-xs font-semibold"
-                >
-                  Choose Emojis ({quickEmojis.length}/5)
-                </button>
-              </div>
-
-              <div className="mt-3 flex items-center gap-2">
-                {quickEmojis.map((emo) => (
-                  <span
-                    key={emo}
-                    className="grid h-10 w-10 place-items-center rounded-2xl border border-border bg-[#D2F801]/10 text-lg"
-                  >
-                    {emo}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* Emoji Selector Drawer */}
-          {emojiDrawerOpen && (
-            <div className="fixed inset-0 z-[100] flex items-end justify-center">
-              <div
-                className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
-                onClick={() => setEmojiDrawerOpen(false)}
-              />
-              <div className="glass-plate pop-in relative z-10 max-h-[85vh] w-full max-w-lg rounded-t-3xl border-t border-border p-5 shadow-2xl flex flex-col">
-                <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-muted-foreground/30" />
-                <div className="flex items-center justify-between pb-3 border-b border-border">
-                  <div>
-                    <h3 className="font-display text-lg">Customize Quick Emojis</h3>
-                    <p className="text-xs text-muted-foreground">Tap an emoji to toggle (Max 5)</p>
+            <div className="apple-group">
+              {/* Language Selector */}
+              <div className="apple-row">
+                <div className="flex items-center gap-3">
+                  <div className="grid h-7 w-7 place-items-center rounded-lg bg-blue-500/15 text-blue-500 dark:bg-blue-500/20 dark:text-blue-400">
+                    <Globe className="h-4 w-4" />
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => setEmojiDrawerOpen(false)}
-                    className="grid h-8 w-8 place-items-center rounded-full bg-muted text-foreground hover:bg-muted/80"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
+                  <span className="text-sm font-medium">{t(lang, "language")}</span>
                 </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="h-8 gap-2 rounded-full px-3 text-xs font-medium">
+                      <Flag country={currentLang.country} size={18} rectangular />
+                      <span>{currentLang.label}</span>
+                      <ChevronDown className="h-3.5 w-3.5 opacity-60" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48 rounded-2xl p-1.5 shadow-xl backdrop-blur-2xl">
+                    {LANGS.map((l) => (
+                      <DropdownMenuItem
+                        key={l.id}
+                        onSelect={() => update({ language: l.id })}
+                        className="flex cursor-pointer items-center gap-2.5 rounded-xl py-2 px-3 text-xs font-medium"
+                      >
+                        <Flag country={l.country} size={18} rectangular />
+                        <span>{l.label}</span>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
 
-                <div className="my-3 flex items-center justify-center gap-2 rounded-2xl bg-muted/40 p-2">
-                  <span className="text-xs font-semibold text-muted-foreground">Active ({quickEmojis.length}/5):</span>
-                  {quickEmojis.map((emo) => (
+              {/* Distance Units */}
+              <div className="apple-row">
+                <div className="flex items-center gap-3">
+                  <div className="grid h-7 w-7 place-items-center rounded-lg bg-orange-500/15 text-orange-500 dark:bg-orange-500/20 dark:text-orange-400">
+                    <Gauge className="h-4 w-4" />
+                  </div>
+                  <span className="text-sm font-medium">{t(lang, "units")}</span>
+                </div>
+                <div className="seg">
+                  {(["km", "mi"] as const).map((u) => (
                     <button
-                      key={emo}
+                      key={u}
                       type="button"
-                      onClick={() => toggleQuickEmoji(emo)}
-                      title="Tap to remove"
-                      className="grid h-9 w-9 place-items-center rounded-xl bg-[#D2F801] text-base text-[#161616] font-semibold shadow-sm"
+                      onClick={() => update({ unit: u })}
+                      data-on={s.unit === u}
+                      className="seg-item !px-3.5 !py-1 text-xs uppercase font-medium"
                     >
-                      {emo}
+                      {u}
                     </button>
                   ))}
                 </div>
+              </div>
 
-                <div className="no-scrollbar flex-1 overflow-y-auto p-1">
-                  <div className="grid grid-cols-6 gap-2 sm:grid-cols-8">
-                    {RICH_EMOJI_POOL.map((emo) => {
-                      const active = quickEmojis.includes(emo);
-                      return (
-                        <button
-                          key={emo}
-                          type="button"
-                          onClick={() => toggleQuickEmoji(emo)}
-                          className={`grid h-11 w-11 place-items-center rounded-2xl border text-xl transition-colors ${
-                            active
-                              ? "border-foreground/60 bg-[#D2F801]/15"
-                              : "border-border bg-card/70 hover:bg-muted"
-                          }`}
-                        >
-                          {emo}
-                        </button>
-                      );
-                    })}
+              {/* Sound Effects */}
+              <div className="apple-row">
+                <div className="flex items-center gap-3">
+                  <div className="grid h-7 w-7 place-items-center rounded-lg bg-pink-500/15 text-pink-500 dark:bg-pink-500/20 dark:text-pink-400">
+                    <Volume2 className="h-4 w-4" />
                   </div>
+                  <span className="text-sm font-medium">{t(lang, "sound")}</span>
                 </div>
+                <ToggleSwitch
+                  label={t(lang, "sound")}
+                  checked={s.sound}
+                  onChange={(next) => {
+                    update({ sound: next });
+                    blip(next);
+                  }}
+                />
+              </div>
+            </div>
+          </section>
 
-                <div className="mt-4 border-t border-border pt-3">
+          {/* 2. Gameplay & HUD Section */}
+          <section className="space-y-2">
+            <h2 className="px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              {t(lang, "gameplay")}
+            </h2>
+            <div className="apple-group">
+              {/* Hide Map Zoom Buttons */}
+              <div className="apple-row">
+                <div className="flex items-center gap-3">
+                  <div className="grid h-7 w-7 place-items-center rounded-lg bg-indigo-500/15 text-indigo-500 dark:bg-indigo-500/20 dark:text-indigo-400">
+                    <Maximize2 className="h-4 w-4" />
+                  </div>
+                  <span className="text-sm font-medium">{t(lang, "hideZoomButtons")}</span>
+                </div>
+                <ToggleSwitch
+                  label={t(lang, "hideZoomButtons")}
+                  checked={Boolean(s.hideZoomButtons)}
+                  onChange={(next) => update({ hideZoomButtons: next })}
+                />
+              </div>
+
+              {/* SmartClue Auto-collapse */}
+              <div className="apple-row">
+                <div className="flex items-center gap-3">
+                  <div className="grid h-7 w-7 place-items-center rounded-lg bg-amber-500/15 text-amber-500 dark:bg-amber-500/20 dark:text-amber-400">
+                    <Clock className="h-4 w-4" />
+                  </div>
+                  <span className="text-sm font-medium">{t(lang, "promptAutoCollapse")}</span>
+                </div>
+                <div className="seg">
+                  {([
+                    [0, t(lang, "off")],
+                    [3, "3s"],
+                    [5, "5s"],
+                  ] as const).map(([sec, lbl]) => (
+                    <button
+                      key={sec}
+                      type="button"
+                      onClick={() => update({ promptCollapseSeconds: sec })}
+                      data-on={s.promptCollapseSeconds === sec}
+                      className="seg-item !px-3 !py-1 text-xs font-medium"
+                    >
+                      {lbl}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Emoji Reactions Toggle */}
+              <div className="apple-row">
+                <div className="flex items-center gap-3">
+                  <div className="grid h-7 w-7 place-items-center rounded-lg bg-emerald-500/15 text-emerald-500 dark:bg-emerald-500/20 dark:text-emerald-400">
+                    <Smile className="h-4 w-4" />
+                  </div>
+                  <span className="text-sm font-medium">{t(lang, "emojiReactions")}</span>
+                </div>
+                <ToggleSwitch
+                  label={t(lang, "emojiReactions")}
+                  checked={s.reactions !== false}
+                  onChange={(next) => update({ reactions: next })}
+                />
+              </div>
+
+              {/* Quick Emoji Presets Customization */}
+              <div className="apple-row flex-col items-stretch gap-3 py-3.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">{t(lang, "quickEmojiPresets")}</span>
                   <button
                     type="button"
-                    onClick={() => setEmojiDrawerOpen(false)}
-                    className="btn btn-primary w-full !py-3 text-sm font-semibold"
+                    onClick={() => setEmojiDrawerOpen(true)}
+                    className="apple-pill bg-muted/80 text-foreground text-xs font-semibold px-3 py-1 hover:bg-muted"
                   >
-                    Done
+                    Customize ({quickEmojis.length}/5)
                   </button>
+                </div>
+                <div className="flex items-center gap-2">
+                  {quickEmojis.map((emo) => (
+                    <span
+                      key={emo}
+                      className="grid h-9 w-9 place-items-center rounded-xl border border-border/80 bg-background/80 text-base shadow-sm"
+                    >
+                      {emo}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
-          )}
+          </section>
 
-          {/* 3. Appearance & Map Style Category */}
-          <section className="plate space-y-5 p-6">
-            <h2 className="text-xs font-semibold text-muted-foreground">
+          {/* 3. Appearance Section */}
+          <section className="space-y-2">
+            <h2 className="px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               {t(lang, "appearance")}
             </h2>
+            <div className="apple-group">
+              {/* Theme */}
+              <div className="apple-row">
+                <div className="flex items-center gap-3">
+                  <div className="grid h-7 w-7 place-items-center rounded-lg bg-purple-500/15 text-purple-500 dark:bg-purple-500/20 dark:text-purple-400">
+                    <Palette className="h-4 w-4" />
+                  </div>
+                  <span className="text-sm font-medium">{t(lang, "theme")}</span>
+                </div>
+                <div className="seg">
+                  {(["dark", "light"] as const).map((th) => (
+                    <button
+                      key={th}
+                      type="button"
+                      onClick={() => setTheme(th)}
+                      data-on={theme === th}
+                      className="seg-item !px-3.5 !py-1 text-xs capitalize font-medium"
+                    >
+                      {t(lang, th)}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-            {/* Theme */}
-            <div className="flex items-center justify-between gap-4 min-h-10">
-              <p className="text-sm font-semibold">{t(lang, "theme")}</p>
-              <div className="seg">
-                {(["dark", "light"] as const).map((th) => (
-                  <button
-                    key={th}
-                    type="button"
-                    onClick={() => setTheme(th)}
-                    data-on={theme === th}
-                    className="seg-item !px-4 !py-1.5 text-xs"
-                  >
-                    {t(lang, th)}
-                  </button>
-                ))}
+              {/* Liquid Glass Preset */}
+              <div className="apple-row">
+                <div className="flex items-center gap-3">
+                  <div className="grid h-7 w-7 place-items-center rounded-lg bg-cyan-500/15 text-cyan-500 dark:bg-cyan-500/20 dark:text-cyan-400">
+                    <Sparkles className="h-4 w-4" />
+                  </div>
+                  <span className="text-sm font-medium">{t(lang, "liquidGlass")}</span>
+                </div>
+                <div className="seg">
+                  {GLASS_PRESETS.map((g) => (
+                    <button
+                      key={g}
+                      type="button"
+                      onClick={() => setGlass(g)}
+                      className="seg-item !px-2.5 !py-1 text-xs capitalize font-medium"
+                      data-on={glass === g}
+                    >
+                      {t(lang, g === "off" ? "glassOff" : g)}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
+          </section>
 
-            {/* Liquid Glass Preset */}
-            <div>
-              <span className="mb-2 block text-sm font-semibold">{t(lang, "liquidGlass")}</span>
-              <div className="seg">
-                {GLASS_PRESETS.map((g) => (
-                  <button
-                    key={g}
-                    type="button"
-                    onClick={() => setGlass(g)}
-                    className="seg-item !px-3.5 !py-1.5 text-xs"
-                    data-on={glass === g}
-                  >
-                    {t(lang, g === "off" ? "glassOff" : g)}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Map Style Grid */}
-            <div>
-              <span className="mb-3 block text-sm font-semibold">{t(lang, "mapStyle")}</span>
+          {/* 4. Map Style Section */}
+          <section className="space-y-2">
+            <h2 className="px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              {t(lang, "mapStyle")}
+            </h2>
+            <div className="apple-group p-4">
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {(
                   [
@@ -379,11 +393,13 @@ function SettingsPage() {
                       key={v}
                       type="button"
                       onClick={() => setMapStyle(v)}
-                      className={`overflow-hidden rounded-xl border-2 text-left transition-colors ${
-                        on ? "border-foreground/60 ring-2 ring-foreground/40" : "border-border/50 hover:border-muted"
+                      className={`overflow-hidden rounded-2xl border transition-all text-left ${
+                        on
+                          ? "border-[#D2F801] ring-2 ring-[#D2F801]/30 shadow-md scale-[1.02]"
+                          : "border-border/60 hover:border-border opacity-85 hover:opacity-100"
                       }`}
                     >
-                      <div className="relative aspect-square bg-muted">
+                      <div className="relative aspect-video bg-muted overflow-hidden">
                         <img
                           src={tile(TILES[k].base)}
                           alt=""
@@ -399,7 +415,7 @@ function SettingsPage() {
                       </div>
                       <div
                         className={`px-2.5 py-1.5 text-xs font-semibold ${
-                          on ? "bg-[#D2F801] text-[#161616]" : "bg-card"
+                          on ? "bg-[#D2F801] text-[#161616]" : "bg-card/90"
                         }`}
                       >
                         {["auto", "light", "dark", "satellite"].includes(v) ? t(lang, v) : l}
@@ -410,6 +426,79 @@ function SettingsPage() {
               </div>
             </div>
           </section>
+
+          {/* Emoji Selector Apple Bottom Sheet Drawer */}
+          {emojiDrawerOpen && (
+            <div className="fixed inset-0 z-[100] flex items-end justify-center">
+              <div
+                className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+                onClick={() => setEmojiDrawerOpen(false)}
+              />
+              <div className="glass-plate pop-in relative z-10 max-h-[85vh] w-full max-w-lg rounded-t-[32px] border-t border-border/80 p-5 shadow-2xl flex flex-col">
+                <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-muted-foreground/30" />
+                <div className="flex items-center justify-between pb-3 border-b border-border/40">
+                  <div>
+                    <h3 className="font-display text-lg">Customize Quick Emojis</h3>
+                    <p className="text-xs text-muted-foreground">Tap an emoji to toggle (Max 5)</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setEmojiDrawerOpen(false)}
+                    className="grid h-8 w-8 place-items-center rounded-full bg-muted text-foreground hover:bg-muted/80"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+
+                <div className="my-3 flex items-center justify-center gap-2 rounded-2xl bg-muted/40 p-2.5">
+                  <span className="text-xs font-medium text-muted-foreground">Active ({quickEmojis.length}/5):</span>
+                  {quickEmojis.map((emo) => (
+                    <button
+                      key={emo}
+                      type="button"
+                      onClick={() => toggleQuickEmoji(emo)}
+                      title="Tap to remove"
+                      className="grid h-9 w-9 place-items-center rounded-xl bg-[#D2F801] text-base text-[#161616] font-semibold shadow-sm transition-transform active:scale-90"
+                    >
+                      {emo}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="no-scrollbar flex-1 overflow-y-auto p-1">
+                  <div className="grid grid-cols-6 gap-2 sm:grid-cols-8">
+                    {RICH_EMOJI_POOL.map((emo) => {
+                      const active = quickEmojis.includes(emo);
+                      return (
+                        <button
+                          key={emo}
+                          type="button"
+                          onClick={() => toggleQuickEmoji(emo)}
+                          className={`grid h-11 w-11 place-items-center rounded-xl border text-xl transition-all ${
+                            active
+                              ? "border-[#D2F801] bg-[#D2F801]/15 scale-105"
+                              : "border-border/60 bg-card/60 hover:bg-muted/60"
+                          }`}
+                        >
+                          {emo}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="mt-4 border-t border-border/40 pt-3">
+                  <button
+                    type="button"
+                    onClick={() => setEmojiDrawerOpen(false)}
+                    className="btn btn-primary w-full !py-3 text-sm font-semibold rounded-full"
+                  >
+                    Done
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </div>

@@ -2,16 +2,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { Sidebar } from "@/components/Sidebar";
 import {
-  IconTarget,
   IconPin,
-  IconTimer,
-  IconFlag,
-  IconEye,
-  IconTrophy,
   IconCalendar,
-  IconFlame,
 } from "@/components/icons";
-import { MODES, todayKey, type Mode } from "@/lib/game/engine";
+import { todayKey } from "@/lib/game/engine";
 import { computeStats, useRecords, useSettings } from "@/lib/game/storage";
 import { getRank, loadRank } from "@/lib/rank";
 import { ACH_ALL, loadUnlocked, syncAchievements } from "@/lib/achievements";
@@ -19,7 +13,7 @@ import { AvatarFrame, ClanTagPill, RankBanner, VerifiedBadge } from "@/component
 import { Flag } from "@/components/Flag";
 import { computeLevelFromExp, useFeed, useSocialProfile, type StoryHighlight } from "@/lib/social";
 import { t, type Lang } from "@/lib/i18n";
-import { BarChart3, Compass, Flame, Plus, ShoppingBag, Sparkles, Trophy, Users, X } from "lucide-react";
+import { BarChart3, Flame, Plus, ShoppingBag, Sparkles, Users, X } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -34,16 +28,6 @@ export const Route = createFileRoute("/")({
   }),
   component: Home,
 });
-
-const MODE_ICONS: Record<Mode, typeof IconPin> = {
-  classic: IconPin,
-  shrink: IconTimer,
-  closest: IconFlag,
-  blind: IconEye,
-  findCity: IconTarget,
-  sins: IconFlame,
-  quiz: IconTrophy,
-};
 
 function Home() {
   const [records] = useRecords();
@@ -311,45 +295,6 @@ function Home() {
             </div>
           </section>
 
-          {/* Quick Modes Grid */}
-          <section>
-            <div className="mb-3 flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-muted-foreground">
-                {t(lang, "modes")} Hub
-              </h2>
-              <Link to="/play" className="text-xs font-semibold text-[#D2F801] hover:underline">
-                {t(lang, "viewAll")} (7 modes)
-              </Link>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {(["classic", "findCity", "sins", "quiz", "shrink", "blind"] as Mode[]).map((m) => {
-                const Icon = MODE_ICONS[m];
-                return (
-                  <Link
-                    key={m}
-                    to="/play"
-                    search={{ mode: m }}
-                    className="plate flex items-center gap-4 p-4 transition-colors hover:border-border hover:bg-muted/50"
-                  >
-                    <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-muted text-[#D2F801]">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2">
-                        <p className="truncate font-semibold">{t(lang, m)}</p>
-                        {(m === "findCity" || m === "sins" || m === "quiz") && (
-                          <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold text-foreground">
-                            NEW
-                          </span>
-                        )}
-                      </div>
-                      <p className="truncate text-xs text-muted-foreground">{t(lang, `${m}Tag`)}</p>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </section>
 
           {/* Achievements Showcase (Unlocked Sorted to the Top!) + Stats & Party Cards */}
           <div className="grid gap-4 lg:grid-cols-[1.5fr_1fr]">
@@ -399,65 +344,71 @@ function Home() {
               </div>
             </section>
 
-            {/* Quick Links to Stats, Party Voice & Gacha */}
-            <div className="grid gap-3">
+            {/* Quick Links in Apple Inset Grouped Style (Matching One Design System Spec) */}
+            <div className="apple-group">
               <Link
                 to="/stats"
-                className="plate flex items-center justify-between p-4 transition-colors hover:bg-muted/50"
+                className="apple-row transition-colors hover:bg-muted/50"
               >
-                <div className="flex items-center gap-3">
-                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-[#D2F801]/15 text-[#D2F801]">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#D2F801]/15 text-[#D2F801]">
                     <BarChart3 className="h-5 w-5" />
                   </div>
-                  <div>
-                    <p className="font-display text-xl">
+                  <div className="min-w-0">
+                    <p className="font-semibold text-sm truncate">
                       {stats.games} Games · {stats.bestScore.toLocaleString()} PB
                     </p>
-                    <p className="text-xs text-muted-foreground">
-                      Full accuracy breakdown & personal bests
+                    <p className="text-xs text-muted-foreground truncate">
+                      Accuracy & personal bests
                     </p>
                   </div>
                 </div>
-                <span aria-hidden className="text-lg leading-none text-muted-foreground">›</span>
+                <span className="apple-pill bg-muted/80 text-foreground text-xs font-semibold px-3 py-1 shrink-0">
+                  View
+                </span>
               </Link>
 
               <Link
                 to="/party"
-                className="plate flex items-center justify-between p-4 transition-colors hover:bg-muted/50"
+                className="apple-row transition-colors hover:bg-muted/50"
               >
-                <div className="flex items-center gap-3">
-                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-[#D2F801]/15 text-[#D2F801]">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#D2F801]/15 text-[#D2F801]">
                     <Users className="h-5 w-5" />
                   </div>
-                  <div>
-                    <p className="font-semibold">{t(lang, "party")} + Voice Chat</p>
-                    <p className="text-xs text-muted-foreground">
-                      2–16 players · Unlimited ∞ timer · Soundboard
+                  <div className="min-w-0">
+                    <p className="font-semibold text-sm truncate">{t(lang, "party")} + Voice Chat</p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      2–16 players · Unlimited ∞ timer
                     </p>
                   </div>
                 </div>
-                <span aria-hidden className="text-lg leading-none text-muted-foreground">›</span>
+                <span className="apple-pill bg-muted/80 text-foreground text-xs font-semibold px-3 py-1 shrink-0">
+                  Join
+                </span>
               </Link>
 
               <Link
                 to="/profile"
                 search={{ tab: "shop" } as any}
-                className="plate flex items-center justify-between p-4 transition-colors hover:bg-muted/50"
+                className="apple-row transition-colors hover:bg-muted/50"
               >
-                <div className="flex items-center gap-3">
-                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-[#D2F801]/15 text-[#D2F801]">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#D2F801]/15 text-[#D2F801]">
                     <ShoppingBag className="h-5 w-5" />
                   </div>
-                  <div>
-                    <p className="font-semibold">
+                  <div className="min-w-0">
+                    <p className="font-semibold text-sm truncate">
                       Cosmetic Shop ({social.coins?.toLocaleString() ?? "10,000"} Coins)
                     </p>
-                    <p className="text-xs text-muted-foreground">
-                      Direct buy Super Chat Auras, Pins & [TAG] colors
+                    <p className="text-xs text-muted-foreground truncate">
+                      Super Chat Auras, Pins & TAGs
                     </p>
                   </div>
                 </div>
-                <span aria-hidden className="text-lg leading-none text-muted-foreground">›</span>
+                <span className="apple-pill bg-[#D2F801] text-black text-xs font-bold px-3 py-1 shrink-0">
+                  Shop
+                </span>
               </Link>
             </div>
           </div>

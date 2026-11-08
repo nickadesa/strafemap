@@ -44,42 +44,43 @@
 }
 
 :root {
-  --font-latin: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-display-latin: "Inter Tight", "Inter", system-ui, -apple-system, sans-serif;
-  --font-mono: "Inter", ui-monospace, SFMono-Regular, monospace;
+  --font-latin: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "SF Pro", "Inter", system-ui, sans-serif;
+  --font-display-latin: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter Tight", system-ui, sans-serif;
+  --font-mono: -apple-system-monospaced, "SF Mono", ui-monospace, SFMono-Regular, monospace;
 
-  /* Default (en, es, fr) — Inter stays first in every stack */
+  /* Default (en, es, fr) — Apple system font stays first in every stack */
   --font-sans: var(--font-latin), "IBM Plex Sans Thai", sans-serif;
   --font-display: var(--font-display-latin), "IBM Plex Sans Thai", sans-serif;
-  --lh-body: 1.45;
-  --lh-heading: 1.12;
+  --lh-body: 1.48;
+  --lh-heading: 1.10;
 
   --radius: 1.5rem;
-  --background: #f6f6f2;
-  --foreground: #161616;
+  --radius-squircle: 1.75rem;
+  --background: #f2f2f7;
+  --foreground: #000000;
   --card: #ffffff;
-  --card-foreground: #161616;
+  --card-foreground: #000000;
   --popover: #ffffff;
-  --popover-foreground: #161616;
+  --popover-foreground: #000000;
   --primary: #d2f801;
-  --primary-foreground: #161616;
+  --primary-foreground: #000000;
   --primary-pale: #f2fcca;
   --primary-active: #dcff1a;
-  --ink-deep: #161616;
-  --secondary: #161616;
+  --ink-deep: #000000;
+  --secondary: #1c1c1e;
   --secondary-foreground: #ffffff;
-  --muted: #efefe9;
-  --muted-foreground: #6b6d68;
-  --accent: #efefe9;
-  --accent-foreground: #161616;
+  --muted: #e5e5ea;
+  --muted-foreground: #6c6c70;
+  --accent: #e5e5ea;
+  --accent-foreground: #000000;
   --destructive: oklch(0.56 0.19 25);
   --destructive-foreground: #ffffff;
   --warning: oklch(0.87 0.17 90);
   --positive: oklch(0.64 0.16 145);
-  --border: rgb(22 22 22 / 0.09);
-  --input: #d6d9d1;
+  --border: rgb(60 60 67 / 0.12);
+  --input: #d1d1d6;
   --ring: #d2f801;
-  --link: #161616;
+  --link: #000000;
 }
 
 /* Light theme accessibility: High-contrast green text & icons on light surfaces */
@@ -133,26 +134,26 @@
 }
 
 .dark {
-  --background: #161616;
+  --background: #000000;
   --foreground: #ffffff;
-  --card: #1e1e20;
+  --card: #1c1c1e;
   --card-foreground: #ffffff;
-  --popover: #1e1e20;
+  --popover: #1c1c1e;
   --popover-foreground: #ffffff;
   --primary: #d2f801;
-  --primary-foreground: #161616;
+  --primary-foreground: #000000;
   --primary-pale: #2a331c;
   --primary-active: #dcff1a;
   --ink-deep: #d2f801;
-  --secondary: #26282a;
+  --secondary: #2c2c2e;
   --secondary-foreground: #ffffff;
-  --muted: #242628;
-  --muted-foreground: #9a9d97;
-  --accent: #242628;
+  --muted: #2c2c2e;
+  --muted-foreground: #8e8e93;
+  --accent: #2c2c2e;
   --accent-foreground: #ffffff;
   --destructive: oklch(0.65 0.2 25);
   --destructive-foreground: #ffffff;
-  --border: rgb(255 255 255 / 0.08);
+  --border: rgb(255 255 255 / 0.12);
   --input: #3a3a3c;
   --ring: #d2f801;
   --link: #d2f801;
@@ -211,9 +212,10 @@
   justify-content: center;
   gap: 0.5rem;
   border-radius: 9999px;
-  padding: 0.75rem 1.5rem;
+  padding: 0.7rem 1.4rem;
   font-weight: 600;
-  transition: transform 380ms var(--ease-spring), background-color 150ms ease;
+  letter-spacing: -0.01em;
+  transition: transform 240ms var(--ease-spring), background-color 150ms ease, opacity 150ms ease;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
   user-select: none;
@@ -222,13 +224,14 @@
 }
 @utility btn-primary {
   background: #d2f801;
-  color: #161616;
-  &:hover { background: #dcff1a; }
+  color: #000000;
+  box-shadow: 0 4px 16px -2px rgba(210, 248, 1, 0.25);
+  &:hover { background: #dcff1a; box-shadow: 0 6px 20px -2px rgba(210, 248, 1, 0.35); }
 }
 @utility btn-ink {
   background: var(--color-secondary);
   color: var(--color-secondary-foreground);
-  &:hover { opacity: 0.9; }
+  &:hover { opacity: 0.92; }
 }
 @utility btn-outline {
   border: 1px solid var(--color-border);
@@ -239,36 +242,106 @@
 @utility plate {
   background: var(--color-card);
   color: var(--color-card-foreground);
-  border-radius: var(--radius);
+  border-radius: var(--radius-squircle, 1.75rem);
   border: 1px solid var(--color-border);
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+  box-shadow: 0 4px 20px -2px rgb(0 0 0 / 0.05);
+  transition: transform 300ms var(--ease-spring), box-shadow 300ms ease;
 }
 .dark .plate {
-  background: rgb(24 24 27 / 0.82);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgb(255 255 255 / 0.08);
+  background: rgb(28 28 30 / 0.78);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgb(255 255 255 / 0.11);
+  box-shadow: 0 8px 32px -4px rgb(0 0 0 / 0.5);
 }
 @utility plate-ink {
   background: var(--color-secondary);
   color: var(--color-secondary-foreground);
-  border-radius: var(--radius);
+  border-radius: var(--radius-squircle, 1.75rem);
   border: 1px solid var(--color-border);
 }
 .dark .plate-ink {
-  background: rgb(20 20 23 / 0.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgb(255 255 255 / 0.08);
+  background: rgb(22 22 24 / 0.88);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgb(255 255 255 / 0.11);
 }
 @utility plate-glass {
-  background: rgb(24 24 27 / 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgb(242 242 247 / 0.85);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
   color: var(--color-card-foreground);
-  border-radius: var(--radius);
-  border: 1px solid rgb(255 255 255 / 0.09);
-  box-shadow: 0 4px 24px -2px rgb(0 0 0 / 0.35);
+  border-radius: var(--radius-squircle, 1.75rem);
+  border: 1px solid rgb(0 0 0 / 0.08);
+  box-shadow: 0 4px 24px -2px rgb(0 0 0 / 0.08);
+}
+.dark .plate-glass {
+  background: rgb(28 28 30 / 0.75);
+  border: 1px solid rgb(255 255 255 / 0.12);
+  box-shadow: 0 8px 32px -4px rgb(0 0 0 / 0.5);
+}
+
+/* Apple Inset Grouped Lists (Matching One Design System Spec) */
+@utility apple-group {
+  border-radius: 1.5rem;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+}
+.dark .apple-group {
+  background: rgb(28 28 30 / 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-color: rgb(255 255 255 / 0.10);
+}
+@utility apple-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.875rem 1.125rem;
+  transition: background-color 150ms ease;
+  border-bottom: 1px solid var(--color-border);
+  &:last-child { border-bottom: none; }
+}
+.dark .apple-row {
+  border-bottom-color: rgb(255 255 255 / 0.07);
+}
+
+/* Apple Floating Bottom Tab Bar */
+@utility apple-tab-bar {
+  position: fixed;
+  bottom: max(1rem, env(safe-area-inset-bottom, 1rem));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  padding: 0.35rem 0.6rem;
+  background: rgb(255 255 255 / 0.88);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid rgb(0 0 0 / 0.10);
+  box-shadow: 0 12px 36px -4px rgb(0 0 0 / 0.18);
+}
+.dark .apple-tab-bar {
+  background: rgb(28 28 30 / 0.82);
+  border: 1px solid rgb(255 255 255 / 0.16);
+  box-shadow: 0 16px 48px -4px rgb(0 0 0 / 0.65);
+}
+@utility apple-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  transition: transform 200ms var(--ease-spring), opacity 150ms ease;
+  &:active { transform: scale(0.96); }
 }
 @utility clan-pill {
   display: inline-flex;
@@ -298,13 +371,13 @@
 .leaflet-container {
   font-family: var(--font-sans);
   background: var(--color-background);
-  border-radius: inherit;
   isolation: isolate;
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
   transform: translateZ(0);
 }
-/* Leave room for map credits and keep controls clear of the clue. */
-.leaflet-bottom.leaflet-left .leaflet-control-zoom { margin: 0 0 28px 10px; }
+/* Apple Maps Floating Controls on Right */
+.leaflet-bottom.leaflet-right .leaflet-control-zoom {
+  margin: 0 16px 105px 0 !important;
+}
 .hide-zoom-controls .leaflet-control-zoom { display: none !important; }
 @media (max-width: 639px) {
   .game-logo { gap: 5px; }
@@ -312,7 +385,7 @@
   .game-logo > span:last-child { font-size: 16px; letter-spacing: 0; }
   .game-hud:has(button) { grid-template-columns: minmax(0, max-content) auto auto auto; }
 }
-/* Native OS crosshair (Windows-style plus cursor) */
+/* Native OS crosshair */
 .leaflet-container.crosshair { cursor: crosshair; }
 .bot-label { background: var(--color-card); color: var(--color-foreground); border: 1px solid var(--color-border); border-radius: 9999px; font-weight: 600; font-size: 11px; padding: 2px 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.25); }
 
@@ -321,18 +394,53 @@
   stroke-linecap: round;
 }
 
-/* Round zoom buttons */
-.leaflet-touch .leaflet-bar, .leaflet-bar { border: none !important; box-shadow: none !important; background: transparent; display: flex; flex-direction: column; gap: 8px; }
-.leaflet-bar a, .leaflet-touch .leaflet-bar a {
-  width: 42px !important; height: 42px !important; line-height: 40px !important;
-  border-radius: 9999px !important; border: 1px solid var(--color-border) !important;
-  background: var(--color-card); color: var(--color-foreground); font-size: 18px; font-weight: 500;
-  transition: transform 380ms var(--ease-spring), background-color 150ms ease;
-  -webkit-tap-highlight-color: transparent;
+/* Apple Maps Vertical Floating Capsule Zoom Controls */
+.leaflet-touch .leaflet-bar, .leaflet-bar {
+  border: none !important;
+  box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.28) !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  border-radius: 9999px !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
 }
-.leaflet-bar a:hover { background: var(--color-primary); color: var(--color-primary-foreground); transform: scale(1.06); }
-.leaflet-bar a:active { transform: scale(0.92); transition-duration: 80ms; }
-.leaflet-bar a.leaflet-disabled { opacity: 0.4; }
+.dark .leaflet-touch .leaflet-bar, .dark .leaflet-bar {
+  background: rgba(28, 28, 30, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.6) !important;
+}
+.leaflet-bar a, .leaflet-touch .leaflet-bar a {
+  width: 44px !important;
+  height: 44px !important;
+  line-height: 44px !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--color-foreground) !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  transition: background-color 150ms ease, transform 200ms var(--ease-spring) !important;
+}
+.leaflet-bar a:first-child {
+  border-bottom: 1px solid rgba(120, 120, 128, 0.18) !important;
+}
+.leaflet-bar a:hover {
+  background: rgba(0, 0, 0, 0.06) !important;
+}
+.dark .leaflet-bar a:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+.leaflet-bar a:active {
+  transform: scale(0.92) !important;
+}
+.leaflet-bar a.leaflet-disabled {
+  opacity: 0.3 !important;
+  pointer-events: none !important;
+}
 
 /* Fluid motion */
 :root { --ease-spring: cubic-bezier(0.32, 0.72, 0, 1); }
@@ -462,7 +570,7 @@ html[data-glass="rim"] .glass-plate {
 @media (max-width: 767px) {
   .rail-offset {
     padding-top: calc(56px + env(safe-area-inset-top, 0px)) !important;
-    padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+    padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important;
   }
 }
 .reveal-on .leaflet-control-zoom { opacity: 0; pointer-events: none; }

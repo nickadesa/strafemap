@@ -855,13 +855,33 @@ function GamePage() {
   }
 
   return (
-    <div className="flex h-[100dvh] flex-col">
-      <header className="game-header grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2 px-3 pt-[max(0.6rem,env(safe-area-inset-top))] pb-2 sm:flex sm:justify-between sm:gap-3 sm:px-4 sm:py-3">
+    <div className="relative h-[100dvh] w-full overflow-hidden select-none bg-background">
+      {/* Full Canvas Edge-to-Edge Map (Apple Maps Style) */}
+      <div className={`absolute inset-0 z-0 h-full w-full ${phase === "reveal" ? "reveal-on" : ""}`}>
+        <GameMap
+          lang={lang}
+          blind={blind && phase === "guess"}
+          guess={guess}
+          guess2={guess2}
+          target={phase === "reveal" ? loc : null}
+          others={phase === "reveal" ? last?.bots?.map((b) => ({ ...b.guess, label: b.name })) ?? [] : []}
+          circle={mode === "shrink" && phase === "guess" && center ? { center, radiusKm: radius } : null}
+          locked={phase !== "guess" || mode === "quiz"}
+          onPick={pick}
+          resetKey={`${seed}-${idx}`}
+          hideZoomButtons={settings.hideZoomButtons}
+          maxZoomLimit={mode === "sins" && activeSin === "sloth" ? 5 : 12}
+          countryFocusCenter={mode === "findCity" && phase === "guess" ? { lat: loc.lat, lng: loc.lng } : null}
+        />
+      </div>
+
+      {/* Classic Apple Translucent Toolbar (Top Bar) */}
+      <header className="absolute top-0 inset-x-0 z-40 flex items-center justify-between gap-2 px-3 pt-[max(0.6rem,env(safe-area-inset-top))] pb-2.5 sm:px-5 sm:py-3 border-b border-black/8 dark:border-white/10 bg-white/80 dark:bg-[rgba(20,20,22,0.80)] backdrop-blur-2xl shadow-sm">
         <Logo className="game-logo shrink-0" onClick={handleLogoClick} />
         <div className="game-hud flex min-w-0 flex-wrap items-center justify-end gap-1.5 text-[11px] font-semibold sm:gap-2 sm:text-sm">
           {/* Ranked Opponent HUD Pill */}
           {ranked && (
-            <div className="flex items-center gap-1.5 rounded-full border border-border bg-card px-2.5 py-1">
+            <div className="flex items-center gap-1.5 rounded-full border border-border/80 bg-card/80 px-2.5 py-1 backdrop-blur-md">
               <span className="text-[10px] font-semibold text-muted-foreground">VS</span>
               <AvatarFrame name={opponent.nickname} rp={opponent.rp} size={22} />
               <ClanTagPill tag={opponent.clanTag} color={opponent.clanTagColor} />
@@ -882,7 +902,7 @@ function GamePage() {
           {/* Active Sin Card Pill */}
           {currentSinCard && (
             <span
-              className="rounded-full border border-border bg-card px-2.5 py-1 text-xs font-semibold"
+              className="rounded-full border border-border/80 bg-card/80 px-2.5 py-1 text-xs font-semibold backdrop-blur-md"
               style={{ color: currentSinCard.accent }}
             >
               {currentSinCard.sinName}
@@ -890,7 +910,7 @@ function GamePage() {
           )}
 
           <span
-            className="game-mode min-w-0 truncate rounded-full border border-border bg-card px-2.5 py-1 sm:px-3"
+            className="game-mode min-w-0 truncate rounded-full border border-border/80 bg-card/80 px-2.5 py-1 sm:px-3 backdrop-blur-md"
             title={`${tr(mode)}${daily ? ` · ${tr("daily")}` : ""}${ranked ? ` · ${tr("ranked")}` : ""}`}
           >
             {tr(mode)}
@@ -898,7 +918,7 @@ function GamePage() {
             {ranked && ` · ${tr("ranked")}`}
           </span>
           <span
-            className="shrink-0 whitespace-nowrap rounded-full border border-border bg-card px-2.5 py-1 sm:px-3"
+            className="shrink-0 whitespace-nowrap rounded-full border border-border/80 bg-card/80 px-2.5 py-1 sm:px-3 backdrop-blur-md"
             title={roundLabel}
           >
             <span className="hidden sm:inline">{roundLabel}</span>
@@ -907,7 +927,7 @@ function GamePage() {
             </span>
           </span>
           <span
-            className="readout shrink-0 whitespace-nowrap rounded-full bg-muted px-2.5 py-1 font-semibold text-muted-foreground sm:px-3"
+            className="readout shrink-0 whitespace-nowrap rounded-full bg-muted/80 px-2.5 py-1 font-semibold text-foreground sm:px-3 backdrop-blur-md"
             title={`${total.toLocaleString()} ${tr("points")}`}
           >
             {total.toLocaleString()} <span className="hidden sm:inline">{tr("points")}</span>
@@ -916,7 +936,7 @@ function GamePage() {
             <Button
               variant="ghost"
               onClick={() => setPhase("done")}
-              className="h-8 shrink-0 rounded-full bg-card px-2 text-[11px] sm:text-sm"
+              className="h-8 shrink-0 rounded-full bg-card/80 px-2.5 text-[11px] sm:text-sm backdrop-blur-md hover:bg-muted"
             >
               {tr("end")}
             </Button>
@@ -924,34 +944,9 @@ function GamePage() {
         </div>
       </header>
 
-      <div
-        className={`relative mx-2 mb-2 flex-1 overflow-hidden rounded-2xl md:mx-4 md:mb-4 border border-border shadow-sm isolate ${
-          phase === "reveal" ? "reveal-on" : ""
-        }`}
-        style={{
-          borderRadius: "1.5rem",
-          WebkitMaskImage: "-webkit-radial-gradient(white, black)",
-          transform: "translateZ(0)",
-        }}
-      >
-        <GameMap
-          lang={lang}
-          blind={blind && phase === "guess"}
-          guess={guess}
-          guess2={guess2}
-          target={phase === "reveal" ? loc : null}
-          others={phase === "reveal" ? last?.bots?.map((b) => ({ ...b.guess, label: b.name })) ?? [] : []}
-          circle={mode === "shrink" && phase === "guess" && center ? { center, radiusKm: radius } : null}
-          locked={phase !== "guess" || mode === "quiz"}
-          onPick={pick}
-          resetKey={`${seed}-${idx}`}
-          hideZoomButtons={settings.hideZoomButtons}
-          maxZoomLimit={mode === "sins" && activeSin === "sloth" ? 5 : 12}
-          countryFocusCenter={mode === "findCity" && phase === "guess" ? { lat: loc.lat, lng: loc.lng } : null}
-        />
-
-        <div className="pointer-events-none absolute inset-x-3 top-3 z-[500] flex justify-center">
-          <SmartClue
+      {/* Floating SmartClue below top toolbar */}
+      <div className="pointer-events-none absolute inset-x-3 top-[64px] sm:top-[72px] z-30 flex justify-center">
+        <SmartClue
             collapsed={promptCollapsed}
             onToggle={() => {
               setPromptCollapsed((c) => !c);
@@ -1026,13 +1021,13 @@ function GamePage() {
                 </div>
               </div>
             ) : (
-              <div className="flex flex-wrap items-center justify-center gap-2">
+              <div className="flex flex-wrap items-center justify-center gap-2.5">
                 {mode === "sins" && activeSin === "greed" && guess && !guess2 && greedChargesLeft > 0 && (
                   <button
                     type="button"
                     onClick={() => setPlacingSecondPin((v) => !v)}
-                    className={`btn text-xs font-semibold ${
-                      placingSecondPin ? "btn-primary" : "btn-outline"
+                    className={`btn text-xs font-semibold shadow-lg backdrop-blur-xl ${
+                      placingSecondPin ? "btn-primary" : "btn-outline bg-card/90"
                     }`}
                   >
                     {placingSecondPin
@@ -1040,32 +1035,35 @@ function GamePage() {
                       : `+ Place 2nd Pin (${greedChargesLeft} left)`}
                   </button>
                 )}
-                <Button
-                  onClick={() => submit()}
-                  disabled={!guess}
-                  className="game-confirm h-auto min-h-11 max-w-full flex-col gap-0.5 whitespace-normal rounded-full bg-[#D2F801] px-6 py-2.5 text-sm font-semibold text-[#161616] shadow-lg hover:bg-[#DCFF1A]"
-                >
-                  {guess ? (
-                    <>
-                      <span className="flex min-w-0 items-center justify-center gap-2">
-                        <span>{tr("confirmGuess")}</span>
-                        <kbd className="hidden rounded-full bg-[#161616]/15 px-2 py-0.5 text-xs md:inline">
-                          {tr("space")}
-                        </kbd>
-                      </span>
-                      <span className="readout whitespace-nowrap text-[10px] font-semibold opacity-75">
-                        {guess.lat.toFixed(4)}, {guess.lng.toFixed(4)}
-                      </span>
-                    </>
-                  ) : (
-                    tr("pinMap")
-                  )}
-                </Button>
+                {guess ? (
+                  <Button
+                    onClick={() => submit()}
+                    className="game-confirm h-auto min-h-12 max-w-full flex-col gap-0.5 whitespace-normal rounded-full bg-[#D2F801] px-8 py-2.5 text-sm font-semibold text-black shadow-[0_12px_32px_rgba(210,248,1,0.35)] hover:bg-[#DCFF1A] active:scale-[0.96] transition-transform duration-200"
+                  >
+                    <span className="flex min-w-0 items-center justify-center gap-2">
+                      <span>{tr("confirmGuess")}</span>
+                      <kbd className="hidden rounded-full bg-black/15 px-2 py-0.5 text-xs font-mono md:inline">
+                        {tr("space")}
+                      </kbd>
+                    </span>
+                    <span className="readout whitespace-nowrap text-[10px] font-semibold opacity-75">
+                      {guess.lat.toFixed(4)}, {guess.lng.toFixed(4)}
+                    </span>
+                  </Button>
+                ) : (
+                  <div className="flex items-center gap-2 rounded-full border border-black/10 dark:border-white/15 bg-white/85 dark:bg-[rgba(28,28,30,0.85)] px-6 py-2.5 text-xs font-medium text-muted-foreground shadow-lg backdrop-blur-2xl">
+                    <span className="h-2 w-2 rounded-full bg-[#D2F801] animate-pulse" />
+                    <span>{tr("pinMap")}</span>
+                  </div>
+                )}
               </div>
             )
           ) : (
             last && (
-              <div className="plate relative w-full max-w-lg p-5">
+              <div className="relative w-full max-w-lg rounded-[26px] p-5 sm:p-6 border border-black/10 dark:border-white/15 bg-white/92 dark:bg-[rgba(28,28,30,0.88)] backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
+                {/* Apple Sheet Grabber */}
+                <div className="mx-auto -mt-1 mb-3.5 h-1 w-10 rounded-full bg-muted-foreground/30" />
+
                 <div className="flex items-end justify-between gap-4">
                   <div>
                     <p className="text-xs font-semibold text-muted-foreground">
@@ -1092,7 +1090,7 @@ function GamePage() {
                   </div>
                 </div>
                 {last.bots && (
-                  <ol className="mt-3 space-y-1 text-sm">
+                  <ol className="mt-3.5 space-y-1 text-sm">
                     {[
                       {
                         name: social.nickname || settings.name || t(lang, "you"),
@@ -1105,14 +1103,14 @@ function GamePage() {
                       .map((p, i) => (
                         <li
                           key={p.name}
-                          className={`flex justify-between rounded-full px-3 py-1 ${
-                            i === 0 ? "bg-[#D2F801] font-semibold text-[#161616]" : "bg-muted/50"
+                          className={`flex justify-between rounded-full px-3.5 py-1.5 ${
+                            i === 0 ? "bg-[#D2F801] font-semibold text-black shadow-sm" : "bg-muted/50"
                           }`}
                         >
-                          <span>
+                          <span className="truncate">
                             {i + 1}. {p.name}
                           </span>
-                          <span>
+                          <span className="shrink-0 font-mono">
                             {Number.isFinite(p.km) ? formatDistance(p.km, settings.unit) : "—"} ·{" "}
                             {p.points.toLocaleString()}
                           </span>
@@ -1121,7 +1119,7 @@ function GamePage() {
                   </ol>
                 )}
                 {settings.reactions !== false && (
-                  <div className="mt-4 flex items-center gap-1.5" role="group" aria-label={tr("react")}>
+                  <div className="mt-4 flex items-center justify-center gap-2" role="group" aria-label={tr("react")}>
                     {(settings.quickEmojis?.length
                       ? settings.quickEmojis
                       : REACTION_SETS[settings.reactionSet] ?? REACTION_SETS.classic
@@ -1138,16 +1136,19 @@ function GamePage() {
                     ))}
                   </div>
                 )}
-                <button onClick={next} className="btn btn-ink relative mt-3 w-full overflow-hidden">
+                <button
+                  onClick={next}
+                  className="btn btn-primary relative mt-4 w-full overflow-hidden !py-3 text-sm font-semibold shadow-md active:scale-[0.98]"
+                >
                   <span
-                    className="absolute inset-y-0 left-0 bg-[#D2F801]/35"
+                    className="absolute inset-y-0 left-0 bg-black/15"
                     style={{ width: `${(1 - revealLeft / AUTO_NEXT_SECONDS) * 100}%` }}
                     aria-hidden="true"
                   />
                   <span className="relative">
                     {!practice && idx + 1 >= ROUNDS ? tr("seeResults") : tr("nextRound")}
                   </span>
-                  <span className="readout relative ml-2 text-xs opacity-70">{Math.ceil(revealLeft)}s</span>
+                  <span className="readout relative ml-2 text-xs font-mono opacity-80">{Math.ceil(revealLeft)}s</span>
                 </button>
                 <div className="pointer-events-none absolute inset-x-0 bottom-full h-40" aria-hidden="true">
                   {floaters.map((f) => (
@@ -1160,7 +1161,6 @@ function GamePage() {
             )
           )}
         </div>
-      </div>
 
       {/* 7 Deadly Sins Pre-Match Drawer with 30s countdown */}
       {mode === "sins" && !sinConfirmed && (
