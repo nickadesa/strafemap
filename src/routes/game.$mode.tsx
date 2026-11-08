@@ -876,118 +876,116 @@ function GamePage() {
       </div>
 
       {/* Floating Apple Island HUD (No full-width bar; 100% edge-to-edge map visible behind controls) */}
-      <div className="pointer-events-none absolute top-3 inset-x-3 z-40 flex items-start justify-between gap-2 sm:top-4 sm:inset-x-5">
-        {/* Top-Left: Floating Logo / Exit Capsule */}
-        <div className="pointer-events-auto flex items-center gap-2">
-          <button
-            type="button"
-            onClick={handleLogoClick}
-            aria-label="Exit or view game info"
-            className="glass-plate flex items-center gap-2 rounded-full py-1.5 pl-2 pr-3.5 shadow-md transition-all active:scale-95 hover:bg-muted/80"
+      {/* Top-Left: Floating Logo Capsule */}
+      <div className="pointer-events-auto absolute left-3 top-3 z-40 sm:left-4 sm:top-4">
+        <button
+          type="button"
+          onClick={handleLogoClick}
+          aria-label="Exit or view game info"
+          className="glass-plate flex items-center gap-2 rounded-full py-1.5 pl-2 pr-3.5 shadow-md transition-all active:scale-95 hover:bg-muted/80"
+        >
+          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#D2F801] text-xs font-bold text-[#000000]">
+            S
+          </span>
+          <span className="font-display text-sm tracking-tight hidden xs:inline sm:inline">STRAFE</span>
+        </button>
+      </div>
+
+      {/* Top-Right: Floating Stats & Opponent Capsule */}
+      <div className="pointer-events-auto absolute right-3 top-3 z-40 flex items-center gap-1.5 sm:right-4 sm:top-4">
+        {/* Ranked Opponent HUD Pill */}
+        {ranked && (
+          <div className="glass-plate flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xs shadow-md">
+            <span className="text-[10px] font-semibold text-muted-foreground">VS</span>
+            <AvatarFrame name={opponent.nickname} rp={opponent.rp} size={22} />
+            <ClanTagPill tag={opponent.clanTag} color={opponent.clanTagColor} />
+            <span className="max-w-20 truncate text-xs font-semibold hidden sm:inline">{opponent.nickname}</span>
+            <span
+              className={`h-2 w-2 rounded-full ${
+                elapsed > 4 ? "bg-[#D2F801]" : "bg-muted-foreground/60"
+              }`}
+              title={elapsed > 4 ? "Opponent pinned" : "Opponent thinking"}
+            />
+          </div>
+        )}
+
+        {/* Active Sin Card Pill */}
+        {currentSinCard && (
+          <span
+            className="glass-plate rounded-full px-2.5 py-1.5 text-xs font-semibold shadow-md hidden sm:inline"
+            style={{ color: currentSinCard.accent }}
           >
-            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#D2F801] text-xs font-bold text-[#000000]">
-              S
-            </span>
-            <span className="font-display text-sm tracking-tight hidden xs:inline sm:inline">STRAFE</span>
-          </button>
+            {currentSinCard.sinName}
+          </span>
+        )}
+
+        {/* Round & Total Score Combined Capsule */}
+        <div className="glass-plate flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold shadow-md">
+          <span className="text-muted-foreground">
+            {practice ? `∞ · ${idx + 1}` : `R${Math.min(idx + 1, ROUNDS)}/${ROUNDS}`}
+          </span>
+          <span className="h-3 w-px bg-border/60" />
+          <span className="readout text-[#D2F801]">
+            <AnimatedTotalScore total={total} />
+          </span>
         </div>
 
-        {/* Top-Center: Floating SmartClue Pill */}
-        <div className="pointer-events-auto flex justify-center max-w-[calc(100vw-180px)] sm:max-w-md">
-          <SmartClue
-            collapsed={promptCollapsed}
-            onToggle={() => {
-              setPromptCollapsed((c) => !c);
-              buzz(8);
-            }}
-            country={loc.country}
-            name={mode === "quiz" && phase === "guess" ? `Mystery Country #${idx + 1}` : loc.name}
-            isCountry={loc.category === "country" || mode === "quiz"}
-            lang={lang}
-            label={`${tr(loc.category === "country" ? "findCountry" : "pinLocation")}${
-              blind ? ` · ${tr("labelsHidden")}` : ""
-            }`}
-            seconds={phase === "guess" && !unlimitedTime ? Math.ceil(limit - elapsed) : null}
+        {practice && (
+          <Button
+            variant="ghost"
+            onClick={() => setPhase("done")}
+            className="glass-plate h-8 rounded-full px-3 text-xs shadow-md"
           >
-            {(loc.category !== "country" || phase === "guess") && (
-              <div>
-                <div className="overflow-hidden">
-                  <div className="border-t border-border pt-2.5">
-                    {mode === "sins" && activeSin === "lust" && (
-                      <p className="text-[11px] font-semibold text-[#D2F801]">
-                        Lust whisper: {compassWhisperFor(loc)}
-                      </p>
-                    )}
-                    {phase === "guess" && !unlimitedTime && (
-                      <div className="mt-1 h-[2px] overflow-hidden rounded-full bg-muted">
-                        <div
-                          className="h-full bg-[#D2F801] transition-[width] duration-100"
-                          style={{ width: `${100 - (elapsed / limit) * 100}%` }}
-                        />
-                      </div>
-                    )}
-                    {mode === "shrink" && phase === "guess" && (
-                      <p className="readout mt-2 text-[11px] text-muted-foreground">
-                        {tr("zone")} {Math.round(radius).toLocaleString()} km · {tr("bonus")} ×
-                        {timeMultiplier(elapsed, limit || 30).toFixed(2)}
-                      </p>
-                    )}
-                  </div>
+            {tr("end")}
+          </Button>
+        )}
+      </div>
+
+      {/* Top-Center: Floating SmartClue Pill */}
+      <div className="pointer-events-none absolute inset-x-3 top-14 z-30 flex justify-center sm:top-4 sm:z-40">
+        <SmartClue
+          collapsed={promptCollapsed}
+          onToggle={() => {
+            setPromptCollapsed((c) => !c);
+            buzz(8);
+          }}
+          country={loc.country}
+          name={mode === "quiz" && phase === "guess" ? `Mystery Country #${idx + 1}` : loc.name}
+          isCountry={loc.category === "country" || mode === "quiz"}
+          lang={lang}
+          label={`${tr(loc.category === "country" ? "findCountry" : "pinLocation")}${
+            blind ? ` · ${tr("labelsHidden")}` : ""
+          }`}
+          seconds={phase === "guess" && !unlimitedTime ? Math.ceil(limit - elapsed) : null}
+        >
+          {(loc.category !== "country" || phase === "guess") && (
+            <div>
+              <div className="overflow-hidden">
+                <div className="border-t border-border pt-2.5">
+                  {mode === "sins" && activeSin === "lust" && (
+                    <p className="text-[11px] font-semibold text-[#D2F801]">
+                      Lust whisper: {compassWhisperFor(loc)}
+                    </p>
+                  )}
+                  {phase === "guess" && !unlimitedTime && (
+                    <div className="mt-1 h-[2px] overflow-hidden rounded-full bg-muted">
+                      <div
+                        className="h-full bg-[#D2F801] transition-[width] duration-100"
+                        style={{ width: `${100 - (elapsed / limit) * 100}%` }}
+                      />
+                    </div>
+                  )}
+                  {mode === "shrink" && phase === "guess" && (
+                    <p className="readout mt-2 text-[11px] text-muted-foreground">
+                      {tr("zone")} {Math.round(radius).toLocaleString()} km · {tr("bonus")} ×
+                      {timeMultiplier(elapsed, limit || 30).toFixed(2)}
+                    </p>
+                  )}
                 </div>
               </div>
-            )}
-          </SmartClue>
-        </div>
-
-        {/* Top-Right: Floating Stats & Opponent Capsule */}
-        <div className="pointer-events-auto flex items-center gap-1.5">
-          {/* Ranked Opponent HUD Pill */}
-          {ranked && (
-            <div className="glass-plate flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xs shadow-md">
-              <span className="text-[10px] font-semibold text-muted-foreground">VS</span>
-              <AvatarFrame name={opponent.nickname} rp={opponent.rp} size={22} />
-              <ClanTagPill tag={opponent.clanTag} color={opponent.clanTagColor} />
-              <span className="max-w-20 truncate text-xs font-semibold hidden sm:inline">{opponent.nickname}</span>
-              <span
-                className={`h-2 w-2 rounded-full ${
-                  elapsed > 4 ? "bg-[#D2F801]" : "bg-muted-foreground/60"
-                }`}
-                title={elapsed > 4 ? "Opponent pinned" : "Opponent thinking"}
-              />
             </div>
           )}
-
-          {/* Active Sin Card Pill */}
-          {currentSinCard && (
-            <span
-              className="glass-plate rounded-full px-2.5 py-1.5 text-xs font-semibold shadow-md hidden sm:inline"
-              style={{ color: currentSinCard.accent }}
-            >
-              {currentSinCard.sinName}
-            </span>
-          )}
-
-          {/* Round & Total Score Combined Capsule */}
-          <div className="glass-plate flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold shadow-md">
-            <span className="text-muted-foreground">
-              {practice ? `∞ · ${idx + 1}` : `R${Math.min(idx + 1, ROUNDS)}/${ROUNDS}`}
-            </span>
-            <span className="h-3 w-px bg-border/60" />
-            <span className="readout text-[#D2F801]">
-              <AnimatedTotalScore total={total} />
-            </span>
-          </div>
-
-          {practice && (
-            <Button
-              variant="ghost"
-              onClick={() => setPhase("done")}
-              className="glass-plate h-8 rounded-full px-3 text-xs shadow-md"
-            >
-              {tr("end")}
-            </Button>
-          )}
-        </div>
+        </SmartClue>
       </div>
 
         {flash && (
