@@ -100,9 +100,9 @@ export function ContributionsHeatmap({
 
   const getColorClass = (count: number) => {
     if (count === 0) return "bg-[#222428] border-border/40";
-    if (count <= 2) return "bg-[#D2F801]/30 border-border";
-    if (count <= 5) return "bg-[#D2F801]/60 border-border";
-    return "bg-[#D2F801] border-foreground/60";
+    if (count <= 2) return "bg-accent-fill/30 border-border";
+    if (count <= 5) return "bg-accent-fill/60 border-border";
+    return "bg-accent-fill border-foreground/60";
   };
 
   return (
@@ -117,7 +117,7 @@ export function ContributionsHeatmap({
         </div>
         <div>
           <span className="text-[11px] font-medium text-muted-foreground">Current Streak</span>
-          <p className="font-mono text-xl font-semibold text-[#D2F801] tabular-nums">
+          <p className="font-mono text-xl font-semibold text-accent-text tabular-nums">
             {stats.currentStreak} Days
           </p>
         </div>
@@ -189,7 +189,7 @@ export function ContributionsHeatmap({
             <div className="h-5 flex items-center">
               {hovered ? (
                 <p className="font-mono text-[11px] text-foreground">
-                  <span className="font-semibold text-[#D2F801]">{hovered.count} games</span> on{" "}
+                  <span className="font-semibold text-accent-text">{hovered.count} games</span> on{" "}
                   {new Date(hovered.date).toLocaleDateString("en", {
                     month: "short",
                     day: "numeric",
@@ -204,9 +204,9 @@ export function ContributionsHeatmap({
             <div className="flex items-center gap-1.5 font-mono text-[10px]">
               <span>Less</span>
               <span className="h-2.5 w-2.5 rounded-[2px] bg-[#222428] border border-border/40" />
-              <span className="h-2.5 w-2.5 rounded-[2px] bg-[#D2F801]/30 border border-border" />
-              <span className="h-2.5 w-2.5 rounded-[2px] bg-[#D2F801]/60 border border-border" />
-              <span className="h-2.5 w-2.5 rounded-[2px] bg-[#D2F801] border border-foreground/60" />
+              <span className="h-2.5 w-2.5 rounded-[2px] bg-accent-fill/30 border border-border" />
+              <span className="h-2.5 w-2.5 rounded-[2px] bg-accent-fill/60 border border-border" />
+              <span className="h-2.5 w-2.5 rounded-[2px] bg-accent-fill border border-foreground/60" />
               <span>More</span>
             </div>
           </div>

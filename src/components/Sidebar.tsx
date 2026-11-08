@@ -93,7 +93,7 @@ export function Sidebar() {
       >
         <div className="mb-3 flex h-11 items-center justify-between px-1.5">
           <Link to="/" className="flex items-center gap-3 font-display text-xl" aria-label="STRAFE">
-            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[#D2F801] text-sm font-semibold text-[#161616]">
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-accent-fill text-sm font-semibold text-[#161616]">
               S
             </span>
             <span className="tracking-tight">STRAFE</span>
@@ -181,7 +181,7 @@ export function Sidebar() {
                     <span className="truncate text-sm font-semibold">{social.nickname}</span>
                     <VerifiedBadge type={social.verifiedBadge} size={14} />
                   </div>
-                  <p className="readout text-xs text-[#D2F801]">
+                  <p className="readout text-xs text-accent-text">
                     Level {lvlInfo.level} · {social.coins.toLocaleString()} Coins
                   </p>
                 </div>
@@ -269,7 +269,7 @@ export function Sidebar() {
       >
         <SymbolMenu className="h-5 w-5" />
         {unreadCount > 0 && (
-          <span className="absolute -right-0.5 -top-0.5 grid h-3.5 w-3.5 place-items-center rounded-full bg-[#D2F801] text-[10px] font-semibold text-[#000000]">
+          <span className="absolute -right-0.5 -top-0.5 grid h-3.5 w-3.5 place-items-center rounded-full bg-accent-fill text-[10px] font-semibold text-[#000000]">
             {unreadCount}
           </span>
         )}
@@ -304,7 +304,7 @@ export function Sidebar() {
                 className="flex items-center gap-2.5 font-display text-xl"
                 aria-label="STRAFE"
               >
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-2xl bg-[#D2F801] text-sm font-semibold text-[#000000]">
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-2xl bg-accent-fill text-sm font-semibold text-[#000000]">
                   S
                 </span>
                 <span className="tracking-tight">STRAFE</span>
@@ -346,7 +346,7 @@ export function Sidebar() {
                     <span className="truncate text-xs font-semibold">{social.nickname}</span>
                     <VerifiedBadge type={social.verifiedBadge} size={13} />
                   </div>
-                  <p className="readout text-[11px] text-[#D2F801]">
+                  <p className="readout text-[11px] text-accent-text">
                     Lv.{lvlInfo.level} · {rank.rp.toLocaleString()} RP
                   </p>
                 </div>
@@ -464,7 +464,7 @@ export function Sidebar() {
                       <span className="text-sm">Notifications</span>
                     </div>
                     {unreadCount > 0 && (
-                      <span className="grid h-5 min-w-5 place-items-center rounded-full bg-[#D2F801] px-1.5 text-[10px] font-bold text-black">
+                      <span className="grid h-5 min-w-5 place-items-center rounded-full bg-accent-fill px-1.5 text-[10px] font-bold text-black">
                         {unreadCount}
                       </span>
                     )}
@@ -526,7 +526,7 @@ export function Sidebar() {
               championPosition={rank.championPosition}
               size={34}
             />
-            <span className="readout text-[11px] font-semibold text-[#D2F801]">Lv.{lvlInfo.level}</span>
+            <span className="readout text-[11px] font-semibold text-accent-text">Lv.{lvlInfo.level}</span>
           </Link>
         </div>
       )}
@@ -541,7 +541,7 @@ export function Sidebar() {
               <button
                 type="button"
                 onClick={markAllRead}
-                className="text-xs font-semibold text-[#D2F801] hover:underline"
+                className="text-xs font-semibold text-accent-text hover:underline"
               >
                 Mark all read
               </button>

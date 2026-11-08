@@ -220,7 +220,7 @@ function PartyPage() {
               onClick={() => setSelectedMode(m)}
               className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
                 selectedMode === m
-                  ? "bg-[#D2F801] text-[#161616]"
+                  ? "bg-accent-fill text-[#161616]"
                   : "bg-muted text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -333,7 +333,7 @@ function PartyPage() {
               <div className="plate space-y-5 p-5 sm:p-6">
                 <div className="flex flex-wrap items-center justify-between border-b border-border pb-3 gap-2">
                   <div>
-                    <h2 className="font-display text-2xl">Host a Custom Party</h2>
+                    <h2 className="font-display text-2xl">{t(lang, "hostParty")}</h2>
                     <p className="text-xs text-muted-foreground">
                       Configure rules now — or tweak them anytime inside the waiting lobby
                     </p>
@@ -350,14 +350,14 @@ function PartyPage() {
                   onClick={createRoom}
                   className="btn btn-primary w-full py-3.5 text-base font-semibold"
                 >
-                  Create Party Room ({t(lang, selectedMode)} · {selectedTime === 0 ? "∞" : `${selectedTime}s`})
+                  {t(lang, "hostParty")} ({t(lang, selectedMode)} · {selectedTime === 0 ? "∞" : `${selectedTime}s`})
                 </button>
               </div>
 
               {/* Join Room by Code */}
               <div className="plate p-5 sm:p-6">
                 <div className="flex flex-col gap-1">
-                  <p className="font-display text-2xl">Join a Friend's Room</p>
+                  <p className="font-display text-2xl">{t(lang, "joinWithCode")}</p>
                   <p className="text-xs text-muted-foreground">
                     Enter the 6-character room code to join the lobby instantly
                   </p>
@@ -411,7 +411,7 @@ function PartyPage() {
                         Room Code
                       </span>
                       <div className="flex items-center gap-2">
-                        <p className="font-display text-3xl tracking-[0.2em] text-[#D2F801]">{room}</p>
+                        <p className="font-display text-3xl tracking-[0.2em] text-accent-text">{room}</p>
                         <button
                           type="button"
                           onClick={() => {
@@ -422,7 +422,7 @@ function PartyPage() {
                           className="rounded-full bg-muted p-1.5 text-muted-foreground hover:text-foreground"
                           title="Copy room code"
                         >
-                          {copiedCode ? <Check className="h-4 w-4 text-[#D2F801]" /> : <Copy className="h-4 w-4" />}
+                          {copiedCode ? <Check className="h-4 w-4 text-accent-text" /> : <Copy className="h-4 w-4" />}
                         </button>
                       </div>
                     </div>
@@ -448,7 +448,7 @@ function PartyPage() {
                         onClick={() => setShowHostSettings((v) => !v)}
                         className="btn btn-outline !px-3 !py-1.5 text-xs font-semibold flex items-center justify-center gap-1"
                       >
-                        <SlidersHorizontal className="h-3.5 w-3.5 text-[#D2F801]" />
+                        <SlidersHorizontal className="h-3.5 w-3.5 text-accent-text" />
                         Rules
                       </button>
                     )}
@@ -479,13 +479,13 @@ function PartyPage() {
                 {isHost && showHostSettings && (
                   <div className="mt-4 rounded-2xl border border-border bg-background/60 p-4">
                     <div className="mb-3 flex items-center justify-between">
-                      <span className="text-xs font-semibold text-[#D2F801]">
+                      <span className="text-xs font-semibold text-accent-text">
                         Host Room Settings (Live Update)
                       </span>
                       <button
                         type="button"
                         onClick={() => setShowHostSettings(false)}
-                        className="rounded-full bg-[#D2F801] px-3 py-1 text-xs font-semibold text-[#161616]"
+                        className="rounded-full bg-accent-fill px-3 py-1 text-xs font-semibold text-[#161616]"
                       >
                         Confirm Settings
                       </button>
@@ -558,7 +558,7 @@ function PartyPage() {
                           <span
                             className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${
                               p.ready
-                                ? "bg-[#D2F801] text-[#161616]"
+                                ? "bg-accent-fill text-[#161616]"
                                 : "bg-muted text-muted-foreground"
                             }`}
                           >
@@ -581,7 +581,7 @@ function PartyPage() {
                         onClick={() => setMicOn((m) => !m)}
                         className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ${
                           micOn
-                            ? "bg-[#D2F801] text-[#161616]"
+                            ? "bg-accent-fill text-[#161616]"
                             : "bg-destructive text-white"
                         }`}
                       >

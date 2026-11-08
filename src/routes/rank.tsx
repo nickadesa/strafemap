@@ -179,7 +179,7 @@ function PlayTab({
               {current.name}
             </h2>
             <p className="mt-0.5 text-base font-semibold sm:text-lg">
-              <span className="readout text-[#D2F801]">
+              <span className="readout text-accent-text">
                 <NumberPopIn value={rank.rp} />
               </span>{" "}
               <span className="text-xs text-muted-foreground">RP</span>
@@ -202,7 +202,7 @@ function PlayTab({
                 </p>
               </>
             ) : (
-              <div className="grid h-24 w-20 place-items-center rounded-2xl border border-dashed border-border text-[11px] text-[#D2F801]">
+              <div className="grid h-24 w-20 place-items-center rounded-2xl border border-dashed border-border text-[11px] text-accent-text">
                 #1 Apex
               </div>
             )}
@@ -232,7 +232,7 @@ function PlayTab({
               })}
             </p>
           ) : (
-            <p className="readout mt-1.5 text-xs text-[#D2F801]">
+            <p className="readout mt-1.5 text-xs text-accent-text">
               {current.rank === "champion"
                 ? `Champion Standing · #${current.championPosition}`
                 : "Master Tier · Reach Top 50 Leaderboard for Champion"}
@@ -296,7 +296,7 @@ function PlayTab({
                   key={rw.tier}
                   className={`flex flex-col justify-between rounded-2xl border p-4 transition-colors ${
                     unlocked
-                      ? "border-border bg-[#D2F801]/5"
+                      ? "border-border bg-accent-fill/5"
                       : "border-border bg-background/40 opacity-80"
                   }`}
                 >
@@ -325,7 +325,7 @@ function PlayTab({
                     </p>
                     <p className="flex justify-between">
                       <span className="text-muted-foreground">Packs:</span>
-                      <span className="font-semibold text-[#D2F801]">{rw.packsReward}</span>
+                      <span className="font-semibold text-accent-text">{rw.packsReward}</span>
                     </p>
                     <p className="flex justify-between">
                       <span className="text-muted-foreground">Chat Aura:</span>
@@ -344,7 +344,7 @@ function PlayTab({
         className="plate flex items-center justify-between p-4 transition-colors hover:bg-muted/50"
       >
         <span className="flex items-center gap-2 font-semibold">
-          <SymbolTrophy fill className="h-4 w-4 text-[#D2F801]" />
+          <SymbolTrophy fill className="h-4 w-4 text-accent-text" />
           {t(lang, "achievements")}
         </span>
         <span className="text-sm text-muted-foreground">{t(lang, "viewAll")}</span>
@@ -393,7 +393,7 @@ function GuideTab({
           <div
             className={`flex flex-col items-center rounded-2xl border p-3 text-center transition-colors ${
               mine.rank === "master"
-                ? "border-foreground/60 bg-[#D2F801]/10 ring-1 ring-foreground/40"
+                ? "border-foreground/60 bg-accent-fill/10 ring-1 ring-foreground/40"
                 : "border-border bg-background/40"
             }`}
           >
@@ -408,7 +408,7 @@ function GuideTab({
           <div
             className={`flex flex-col items-center rounded-2xl border p-3 text-center transition-colors ${
               mine.rank === "champion"
-                ? "border-foreground/60 bg-[#D2F801]/10 ring-1 ring-foreground/40"
+                ? "border-foreground/60 bg-accent-fill/10 ring-1 ring-foreground/40"
                 : "border-border bg-background/40"
             }`}
           >
@@ -416,7 +416,7 @@ function GuideTab({
               Champion · Top 50
             </span>
             <RankBanner bannerUrl="/ranks/banners/champion-01.svg" alt="Champion #1" width={68} />
-            <p className="readout mt-1.5 text-[11px] font-semibold text-[#D2F801]">7,000+ RP · #1–50</p>
+            <p className="readout mt-1.5 text-[11px] font-semibold text-accent-text">7,000+ RP · #1–50</p>
           </div>
         </div>
 
@@ -435,7 +435,7 @@ function GuideTab({
                 <div
                   key={s.name}
                   className={`flex flex-col items-center rounded-xl border p-2 text-center ${
-                    active ? "border-foreground/60 bg-[#D2F801]/10" : "border-border/60 bg-card/60"
+                    active ? "border-foreground/60 bg-accent-fill/10" : "border-border/60 bg-card/60"
                   }`}
                 >
                   <RankBanner bannerUrl={s.bannerUrl} alt={s.name} width={54} />
@@ -470,7 +470,7 @@ function GuideTab({
                     <div
                       key={s.name}
                       className={`flex flex-col items-center rounded-xl border p-1.5 text-center ${
-                        active ? "border-foreground/60 bg-[#D2F801]/10" : "border-border/60 bg-card/60"
+                        active ? "border-foreground/60 bg-accent-fill/10" : "border-border/60 bg-card/60"
                       }`}
                     >
                       <RankBanner bannerUrl={s.bannerUrl} alt={s.name} width={48} />
@@ -552,10 +552,10 @@ function LeaderboardPodium({ topThree }: { topThree: PodiumEntry[] }) {
       step: step1,
       avatarSize: 64,
       heightClass: "h-32 sm:h-42",
-      pedestalBorder: "border-t-2 border-x border-[#D2F801]/70",
-      pedestalBg: "bg-gradient-to-b from-[#D2F801]/15 via-card/95 to-card/60",
-      badgeBg: "bg-[#D2F801] text-[#161616]",
-      stepNumColor: "text-[#D2F801]/35",
+      pedestalBorder: "border-t-2 border-x border-accent-fill/70",
+      pedestalBg: "bg-gradient-to-b from-accent-fill/15 via-card/95 to-card/60",
+      badgeBg: "bg-accent-fill text-[#161616]",
+      stepNumColor: "text-accent-text/35",
     },
     {
       player: p3,
@@ -574,7 +574,7 @@ function LeaderboardPodium({ topThree }: { topThree: PodiumEntry[] }) {
   return (
     <div className="plate relative overflow-hidden p-4 sm:p-6 mb-4">
       {/* Background subtle radial glow behind 1st place */}
-      <div className="pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 h-32 w-64 rounded-full bg-[#D2F801]/5 blur-3xl" />
+      <div className="pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 h-32 w-64 rounded-full bg-accent-fill/5 blur-3xl" />
 
       {/* Podium Grid: 3 columns (Rank 2, Rank 1, Rank 3) */}
       <div className="relative grid grid-cols-3 items-end gap-2 sm:gap-4 max-w-xl mx-auto pt-5">
@@ -591,7 +591,7 @@ function LeaderboardPodium({ topThree }: { topThree: PodiumEntry[] }) {
               <div className="relative mb-2 flex flex-col items-center">
                 {pos === 1 && (
                   <div className="mb-1 flex items-center justify-center">
-                    <SymbolTrophy className="h-5 w-5 text-[#D2F801]" fill />
+                    <SymbolTrophy className="h-5 w-5 text-accent-text" fill />
                   </div>
                 )}
                 <div className="relative">
@@ -760,7 +760,7 @@ export function UnifiedLeaderboardView({
                 key={z}
                 onClick={() => setSelectedZone(z)}
                 className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
-                  selectedZone === z ? "bg-[#D2F801] text-[#161616]" : "bg-muted text-muted-foreground hover:text-foreground"
+                  selectedZone === z ? "bg-accent-fill text-[#161616]" : "bg-muted text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {z}
@@ -776,7 +776,7 @@ export function UnifiedLeaderboardView({
                 key={c}
                 onClick={() => setSelectedCountry(c)}
                 className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
-                  selectedCountry === c ? "bg-[#D2F801] text-[#161616]" : "bg-muted text-muted-foreground hover:text-foreground"
+                  selectedCountry === c ? "bg-accent-fill text-[#161616]" : "bg-muted text-muted-foreground hover:text-foreground"
                 }`}
               >
                 <Flag country={c} size={16} />
@@ -805,9 +805,9 @@ export function UnifiedLeaderboardView({
                 buzz(4);
                 document.getElementById("leaderboard-me")?.scrollIntoView({ behavior: "smooth", block: "center" });
               }}
-              className="inline-flex items-center gap-1 rounded-full bg-[#D2F801]/15 px-3 py-1 text-xs font-semibold text-[#D2F801] transition-colors hover:bg-[#D2F801]/25 active:scale-95"
+              className="inline-flex items-center gap-1 rounded-full bg-accent-fill/15 px-3 py-1 text-xs font-semibold text-accent-text transition-colors hover:bg-accent-fill/25 active:scale-95"
             >
-              <span>Jump to You</span>
+              <span>{t(lang, "jumpToYou")}</span>
             </button>
             <span className="hidden font-semibold sm:inline">RP / Zone</span>
           </div>
@@ -828,7 +828,7 @@ export function UnifiedLeaderboardView({
                 key={p.id}
                 id={p.me ? "leaderboard-me" : undefined}
                 className={`flex items-center gap-3 px-3.5 py-3 transition-colors sm:gap-4 sm:px-5 sm:py-3.5 ${
-                  p.me ? "bg-[#D2F801]/10 ring-1 ring-inset ring-foreground/40" : "hover:bg-muted/40"
+                  p.me ? "bg-accent-fill/10 ring-1 ring-inset ring-foreground/40" : "hover:bg-muted/40"
                 }`}
               >
                 {/* Rank Position Number */}
@@ -837,7 +837,7 @@ export function UnifiedLeaderboardView({
                     <span
                       className={`inline-grid h-7 w-7 place-items-center rounded-full text-xs font-semibold ${
                         pos === 1
-                          ? "bg-[#D2F801] text-[#161616]"
+                          ? "bg-accent-fill text-[#161616]"
                           : pos === 2
                             ? "bg-[#C5CCD8] text-[#161616]"
                             : "bg-[#CD7F32] text-white"

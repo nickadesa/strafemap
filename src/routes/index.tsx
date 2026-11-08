@@ -98,10 +98,10 @@ function Home() {
                   <VerifiedBadge type={social.verifiedBadge} size={14} />
                 </div>
                 <div className="mt-1 flex items-center gap-2">
-                  <span className="readout text-xs font-semibold text-[#D2F801]">Lv.{lvl.level}</span>
+                  <span className="readout text-xs font-semibold text-accent-text">Lv.{lvl.level}</span>
                   <div className="h-1.5 w-20 overflow-hidden rounded-full bg-muted">
                     <div
-                      className="h-full bg-[#D2F801]"
+                      className="h-full bg-accent-fill"
                       style={{ width: `${lvl.progressPct}%` }}
                     />
                   </div>
@@ -115,10 +115,10 @@ function Home() {
             <div className="relative grid gap-6 md:grid-cols-[1.35fr_1fr] md:items-center">
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-3 py-1 text-xs font-semibold">
-                  <Flame className="h-3.5 w-3.5 text-[#D2F801]" />
+                  <Flame className="h-3.5 w-3.5 text-accent-text" />
                   <span>
                     {t(lang, "dailyStreak")}:{" "}
-                    <strong className="readout text-[#D2F801]">{dailyStreak} Days</strong>
+                    <strong className="readout text-accent-text">{dailyStreak} Days</strong>
                   </span>
                   <span className="text-muted-foreground">· {todayKey()}</span>
                 </div>
@@ -173,7 +173,7 @@ function Home() {
                     <p className="font-display text-2xl" style={{ color: curRank.tier.accent }}>
                       {curRank.name}
                     </p>
-                    <p className="readout text-xs font-semibold text-[#D2F801]">
+                    <p className="readout text-xs font-semibold text-accent-text">
                       {rank.rp.toLocaleString()} RP
                     </p>
                   </div>
@@ -189,7 +189,7 @@ function Home() {
           <section>
             <div className="mb-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-[#D2F801]" />
+                <Sparkles className="h-4 w-4 text-accent-text" />
                 <h2 className="text-sm font-semibold text-muted-foreground">
                   {t(lang, "stories")}
                 </h2>
@@ -197,7 +197,7 @@ function Home() {
               <Link
                 to="/profile"
                 search={{ tab: "feed" } as any}
-                className="text-xs font-semibold text-[#D2F801] hover:underline"
+                className="text-xs font-semibold text-accent-text hover:underline"
               >
                 Open social feed
               </Link>
@@ -227,12 +227,12 @@ function Home() {
                 className="story-ring group relative aspect-[4/5] w-36 shrink-0 rounded-[18px] text-left transition-opacity hover:opacity-90 sm:w-40"
               >
                 <div className="flex h-full w-full flex-col justify-between rounded-[15.5px] bg-[#161616] p-3">
-                  <div className="grid h-9 w-9 place-items-center rounded-full bg-[#D2F801] text-[#161616]">
+                  <div className="grid h-9 w-9 place-items-center rounded-full bg-accent-fill text-[#161616]">
                     <Plus className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="font-display text-base text-white">Add Story</p>
-                    <p className="text-[11px] text-muted-foreground">Share your best round</p>
+                    <p className="font-display text-base text-white">{t(lang, "addStory")}</p>
+                    <p className="text-[11px] text-muted-foreground">{t(lang, "shareRound")}</p>
                   </div>
                 </div>
               </button>
@@ -278,7 +278,7 @@ function Home() {
                       </div>
 
                       <div>
-                        <p className="font-display text-2xl text-[#D2F801]">{st.score}</p>
+                        <p className="font-display text-2xl text-accent-text">{st.score}</p>
                         <p className="line-clamp-2 text-[11px] leading-snug text-white/90">
                           {st.caption}
                         </p>
@@ -320,7 +320,7 @@ function Home() {
                       to="/achievements"
                       className={`flex flex-col items-center rounded-2xl border p-2 text-center transition-colors ${
                         isUnlocked
-                          ? "border-border bg-[#D2F801]/10"
+                          ? "border-border bg-accent-fill/10"
                           : "border-border bg-background/40 opacity-60"
                       }`}
                     >
@@ -333,7 +333,7 @@ function Home() {
                       <span className="mt-1 line-clamp-1 text-[11px] font-semibold">{a.name}</span>
                       <span
                         className={`text-[10px] font-semibold ${
-                          isUnlocked ? "text-[#D2F801]" : "text-muted-foreground"
+                          isUnlocked ? "text-accent-text" : "text-muted-foreground"
                         }`}
                       >
                         {isUnlocked ? "Unlocked" : "Locked"}
@@ -351,7 +351,7 @@ function Home() {
                 className="apple-row transition-colors hover:bg-muted/50"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#D2F801]/15 text-[#D2F801]">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent-fill/15 text-accent-text">
                     <BarChart3 className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
@@ -373,7 +373,7 @@ function Home() {
                 className="apple-row transition-colors hover:bg-muted/50"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#D2F801]/15 text-[#D2F801]">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent-fill/15 text-accent-text">
                     <Users className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
@@ -394,7 +394,7 @@ function Home() {
                 className="apple-row transition-colors hover:bg-muted/50"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#D2F801]/15 text-[#D2F801]">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent-fill/15 text-accent-text">
                     <ShoppingBag className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
@@ -406,7 +406,7 @@ function Home() {
                     </p>
                   </div>
                 </div>
-                <span className="apple-pill bg-[#D2F801] text-black text-xs font-bold px-3 py-1 shrink-0">
+                <span className="apple-pill bg-accent-fill text-black text-xs font-bold px-3 py-1 shrink-0">
                   Shop
                 </span>
               </Link>
@@ -455,7 +455,7 @@ function Home() {
                     <span className="rounded-full bg-muted px-2.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
                       {activeStory.mode}
                     </span>
-                    <p className="font-display mt-2 text-4xl text-[#D2F801]">{activeStory.score}</p>
+                    <p className="font-display mt-2 text-4xl text-accent-text">{activeStory.score}</p>
                     <p className="mt-1 text-sm text-white/90">{activeStory.caption}</p>
                     <div className="mt-4 flex justify-between gap-2">
                       <Link
@@ -508,7 +508,7 @@ function Home() {
                   <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-foreground">
                     {activeStory.mode}
                   </span>
-                  <p className="font-display mt-4 text-6xl text-[#D2F801]">{activeStory.score}</p>
+                  <p className="font-display mt-4 text-6xl text-accent-text">{activeStory.score}</p>
                   <p className="mt-1 text-sm font-semibold text-white/80">
                     Accuracy: {activeStory.accuracy}
                   </p>
@@ -550,7 +550,7 @@ function Home() {
               </button>
             </div>
             <h3 className="font-display mt-3 text-3xl flex items-center gap-2">
-              <Flame className="h-7 w-7 text-[#D2F801]" /> {dailyStreak} Day Streak
+              <Flame className="h-7 w-7 text-accent-text" /> {dailyStreak} Day Streak
             </h3>
             <p className="mt-1 text-xs text-muted-foreground">
               Global Seed: {todayKey()} · Same 5 coordinates for every player worldwide.
@@ -565,13 +565,13 @@ function Home() {
                     key={d}
                     className={`rounded-xl border p-2 ${
                       done
-                        ? "border-foreground/60 bg-[#D2F801]/15 text-[#D2F801]"
+                        ? "border-foreground/60 bg-accent-fill/15 text-accent-text"
                         : "border-border bg-background/40 text-muted-foreground"
                     }`}
                   >
                     <p className="text-[10px] font-semibold">D{d}</p>
                     <p className="mt-1 flex items-center justify-center text-sm">
-                      {done ? <Flame className="h-4 w-4 text-[#D2F801]" /> : "·"}
+                      {done ? <Flame className="h-4 w-4 text-accent-text" /> : "·"}
                     </p>
                   </div>
                 );

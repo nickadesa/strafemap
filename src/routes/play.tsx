@@ -51,14 +51,14 @@ export const Route = createFileRoute("/play")({
   component: PlayHub,
 });
 
-const pools: { id: Pool; label: string }[] = [
-  { id: "world", label: "World" },
-  { id: "capitals", label: "Capitals" },
-  { id: "countries", label: "Countries" },
-  { id: "landmarks", label: "Landmarks & nature" },
-  { id: "stadiums", label: "Football Stadiums" },
-  { id: "wonders", label: "World Wonders" },
-  { id: "attractions", label: "Tourist Attractions" },
+const pools: { id: Pool; labelKey: string }[] = [
+  { id: "world", labelKey: "categoryWorld" },
+  { id: "capitals", labelKey: "categoryCapitals" },
+  { id: "countries", labelKey: "categoryCountries" },
+  { id: "landmarks", labelKey: "categoryLandmarks" },
+  { id: "stadiums", labelKey: "categoryStadiums" },
+  { id: "wonders", labelKey: "categoryWonders" },
+  { id: "attractions", labelKey: "categoryAttractions" },
 ];
 const diffs: Difficulty[] = ["easy", "medium", "hard", "expert", "hardcore"];
 
@@ -239,18 +239,19 @@ function PlayHub() {
                       <Calendar className="mr-1 inline h-3.5 w-3.5" />
                       {t(lang, "daily")} · {todayKey()}
                     </span>
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#D2F801]">
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-accent-text">
                       <Flame className="h-3.5 w-3.5" /> {dailyStreak}d Streak
                     </span>
                   </div>
-                  <h2 className="font-display mt-3 text-2xl">Global Daily Briefing</h2>
+                  <h2 className="font-display mt-3 text-2xl">{t(lang, "dailyBriefing")}</h2>
+                  <p className="mt-0.5 text-xs text-muted-foreground">{t(lang, "sameFivePlaces")}</p>
                   <div className="mt-2 grid grid-cols-7 gap-1 text-center">
                     {[1, 2, 3, 4, 5, 6, 7].map((d) => (
                       <div
                         key={d}
                         className={`rounded-lg border py-1 text-[10px] font-semibold ${
                           d <= dailyStreak
-                            ? "border-foreground/60 bg-[#D2F801]/15 text-[#D2F801]"
+                            ? "border-foreground/60 bg-accent-fill/15 text-accent-text"
                             : "border-border text-muted-foreground"
                         }`}
                       >
@@ -262,15 +263,15 @@ function PlayHub() {
 
                 {hasPlayedDailyToday ? (
                   <div className="mt-4 space-y-1.5">
-                    <div className="rounded-xl border border-border bg-[#D2F801]/10 px-3 py-1 text-center text-xs font-semibold text-[#D2F801]">
-                      Completed Today ({todayDailyRecord?.score?.toLocaleString()} pts)
+                    <div className="rounded-xl border border-border bg-accent-fill/10 px-3 py-1 text-center text-xs font-semibold text-accent-text">
+                      {t(lang, "todayScore", { n: (todayDailyRecord?.score ?? 0).toLocaleString() })}
                     </div>
                     <button
                       type="button"
                       disabled
                       className="btn btn-outline inline-flex px-4 py-1.5 text-xs font-semibold opacity-60 cursor-not-allowed"
                     >
-                      Played Today
+                      {t(lang, "viewResults")}
                     </button>
                   </div>
                 ) : (
@@ -281,7 +282,7 @@ function PlayHub() {
                       search={{ daily: 1 }}
                       className="btn btn-primary inline-flex px-6 py-2 text-xs font-semibold"
                     >
-                      Play Daily Seed
+                      {t(lang, "playDaily")}
                     </Link>
                   </div>
                 )}
@@ -294,18 +295,18 @@ function PlayHub() {
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="max-w-xl">
                 <span className="rounded-full bg-muted px-3 py-0.5 text-xs font-semibold text-muted-foreground">
-                  No map
+                  {t(lang, "quizTag")}
                 </span>
-                <h2 className="font-display mt-2 text-2xl sm:text-3xl">Country Guess Trivia</h2>
+                <h2 className="font-display mt-2 text-2xl sm:text-3xl">{t(lang, "countryGuessTrivia")}</h2>
                 <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
-                  10 quick questions on flags, capitals and population. No pin, just pick the country.
+                  {t(lang, "countryGuessBlurb")}
                 </p>
               </div>
               <Link
                 to="/country-guess"
                 className="btn btn-primary !px-6 !py-3 text-xs font-semibold flex items-center gap-2"
               >
-                Play Country Guess
+                {t(lang, "play")} {t(lang, "countryGuessTrivia")}
               </Link>
             </div>
           </section>
@@ -315,11 +316,11 @@ function PlayHub() {
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <span className="rounded-full bg-muted px-3 py-0.5 text-xs font-semibold text-foreground">
-                  Custom Rules & Special Variations
+                  {t(lang, "customRules")}
                 </span>
-                <h2 className="font-display mt-2 text-2xl sm:text-3xl">More Game Modes</h2>
+                <h2 className="font-display mt-2 text-2xl sm:text-3xl">{t(lang, "moreModesTitle")}</h2>
                 <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
-                  7 Deadly Sins, Find the City, Closest Wins, Blind Map, Shrinking Zone, and Classic.
+                  {t(lang, "moreModesBlurb")}
                 </p>
               </div>
               <button
@@ -394,7 +395,7 @@ function PlayHub() {
                           onClick={() => setMode(m)}
                           className={`flex-none w-[205px] sm:w-[225px] snap-start rounded-2xl border p-4 text-left transition-all ${
                             active
-                              ? "border-foreground/70 bg-[#D2F801]/10 ring-1 ring-foreground/40 shadow-sm"
+                              ? "border-foreground/70 bg-accent-fill/10 ring-1 ring-foreground/40 shadow-sm"
                               : "border-border bg-card/60 hover:bg-muted/80"
                           }`}
                         >
@@ -403,7 +404,7 @@ function PlayHub() {
                               {t(lang, `${m}Tag`)}
                             </span>
                             {(m === "findCity" || m === "sins") && (
-                              <span className="rounded-full bg-[#D2F801]/20 px-2 py-0.5 text-[10px] font-bold text-foreground">
+                              <span className="rounded-full bg-accent-fill/20 px-2 py-0.5 text-[10px] font-bold text-foreground">
                                 NEW
                               </span>
                             )}
@@ -446,7 +447,7 @@ function PlayHub() {
                               onClick={() => setSelectedSin(card.id)}
                               className={`group relative flex items-center justify-between rounded-xl border p-2.5 cursor-pointer transition-all ${
                                 on
-                                  ? "border-foreground/70 bg-[#D2F801]/10 ring-1 ring-foreground/40 shadow-sm"
+                                  ? "border-foreground/70 bg-accent-fill/10 ring-1 ring-foreground/40 shadow-sm"
                                   : "border-border bg-background/50 hover:bg-muted/50"
                               }`}
                             >
@@ -484,7 +485,7 @@ function PlayHub() {
                     <div className="seg">
                       {pools.map((p) => (
                         <Chip key={p.id} on={pool === p.id} onClick={() => setPool(p.id)}>
-                          {t(lang, p.id)}
+                          {t(lang, p.labelKey)}
                         </Chip>
                       ))}
                     </div>
@@ -524,7 +525,7 @@ function PlayHub() {
                       type="checkbox"
                       checked={practice}
                       onChange={(e) => setPractice(e.target.checked)}
-                      className="h-4 w-4 accent-[#D2F801]"
+                      className="h-4 w-4 accent-accent-fill"
                     />
                     {t(lang, "practiceNote")}
                   </label>
@@ -571,7 +572,7 @@ function PlayHub() {
 
                 <div className="space-y-2.5 text-xs">
                   <div className="rounded-xl border border-border/80 bg-background/60 p-3">
-                    <span className="text-[10px] font-semibold text-[#D2F801] uppercase tracking-wider block mb-1">
+                    <span className="text-[10px] font-semibold text-accent-text uppercase tracking-wider block mb-1">
                       Skill Name
                     </span>
                     <p className="font-semibold text-foreground text-sm">{inspectedSin.skillName}</p>

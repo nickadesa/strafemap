@@ -2,10 +2,11 @@ import { useEffect } from "react";
 import { loadSettings } from "@/lib/game/storage";
 import type { Lang } from "@/lib/i18n";
 
-const CJK_FONT_URLS: Partial<Record<Lang, string>> = {
+const LOCALE_FONT_URLS: Partial<Record<Lang, string>> = {
   ko: "https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&display=swap",
   zh: "https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&display=swap",
   ja: "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600&display=swap",
+  th: "https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap",
 };
 
 /** Synchronous head init script so `<html lang="...">` matches saved locale before first paint. */
@@ -16,14 +17,14 @@ export function applyLocaleTypography(lang?: Lang) {
   const activeLang: Lang = lang ?? loadSettings().language ?? "en";
   document.documentElement.lang = activeLang;
 
-  const cjkUrl = CJK_FONT_URLS[activeLang];
-  if (cjkUrl) {
-    const selector = `link[data-strafe-cjk="${activeLang}"]`;
+  const fontUrl = LOCALE_FONT_URLS[activeLang];
+  if (fontUrl) {
+    const selector = `link[data-strafe-font="${activeLang}"]`;
     if (!document.head.querySelector(selector)) {
       const link = document.createElement("link");
       link.rel = "stylesheet";
-      link.href = cjkUrl;
-      link.setAttribute("data-strafe-cjk", activeLang);
+      link.href = fontUrl;
+      link.setAttribute("data-strafe-font", activeLang);
       document.head.appendChild(link);
     }
   }

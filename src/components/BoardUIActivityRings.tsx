@@ -279,7 +279,7 @@ export function CartographerRadar({
               <span className="block text-[11px] font-semibold text-foreground whitespace-nowrap">
                 {d.metric}
               </span>
-              <span className="block font-mono text-[10px] text-[#D2F801] font-bold tabular-nums">
+              <span className="block font-mono text-[10px] text-accent-text font-bold tabular-nums">
                 {d.score}
               </span>
             </div>

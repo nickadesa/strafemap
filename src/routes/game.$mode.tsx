@@ -654,7 +654,7 @@ function GamePage() {
           </span>
           <h1 className="font-display text-3xl">Already Completed Today</h1>
           <p className="text-sm text-muted-foreground">
-            You achieved <strong className="text-[#D2F801]">{existingDailyRecord.score.toLocaleString()}</strong> / 25,000 points today. Daily challenge seeds are strictly one attempt per calendar day.
+            You achieved <strong className="text-accent-text">{existingDailyRecord.score.toLocaleString()}</strong> / 25,000 points today. Daily challenge seeds are strictly one attempt per calendar day.
           </p>
           <div className="pt-2 flex flex-col gap-2">
             <Link to="/play" className="btn btn-primary w-full !py-2.5 text-xs font-semibold">
@@ -703,7 +703,7 @@ function GamePage() {
                   {daily && ` · ${tr("daily")}`}
                   {ranked && ` · ${tr("ranked")}`} · {tr("final")}
                 </p>
-                <h1 className="font-display mt-2 text-[clamp(3.5rem,14vw,7rem)] text-foreground dark:text-[#D2F801]">
+                <h1 className="font-display mt-2 text-[clamp(3.5rem,14vw,7rem)] text-foreground dark:text-accent-text">
                   <AnimatedTotalScore total={total} />
                 </h1>
                 <p className="mt-1 font-semibold text-muted-foreground">
@@ -722,7 +722,7 @@ function GamePage() {
                     {eloChange !== null && (
                       <p
                         className={`readout text-base font-semibold ${
-                          eloChange >= 0 ? "text-foreground dark:text-[#D2F801]" : "text-destructive"
+                          eloChange >= 0 ? "text-foreground dark:text-accent-text" : "text-destructive"
                         }`}
                       >
                         {eloChange >= 0 ? "+" : ""}
@@ -783,7 +783,7 @@ function GamePage() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-display text-2xl text-foreground dark:text-[#D2F801]">{r.points.toLocaleString()}</p>
+                  <p className="font-display text-2xl text-foreground dark:text-accent-text">{r.points.toLocaleString()}</p>
                   <p className="text-xs text-muted-foreground">
                     {r.km === null ? tr("noGuess") : formatDistance(r.km, settings.unit)}
                   </p>
@@ -948,7 +948,7 @@ function GamePage() {
             <span className="max-w-20 truncate text-xs font-semibold hidden sm:inline">{opponent.nickname}</span>
             <span
               className={`h-2 w-2 rounded-full ${
-                elapsed > 4 ? "bg-[#D2F801]" : "bg-muted-foreground/60"
+                elapsed > 4 ? "bg-accent-fill" : "bg-muted-foreground/60"
               }`}
               title={elapsed > 4 ? "Opponent pinned" : "Opponent thinking"}
             />
@@ -971,7 +971,7 @@ function GamePage() {
             {practice ? `${idx + 1}` : `${Math.min(idx + 1, ROUNDS)}/${ROUNDS}`}
           </span>
           <span className="h-3 w-px bg-border/60" />
-          <span className="readout text-foreground dark:text-[#D2F801]">
+          <span className="readout text-foreground dark:text-accent-text">
             <AnimatedTotalScore total={total} compact />
           </span>
         </div>
@@ -1019,14 +1019,14 @@ function GamePage() {
               <div className="overflow-hidden">
                 <div className="pt-1">
                   {mode === "sins" && activeSin === "lust" && (
-                    <p className="text-[11px] font-semibold text-foreground dark:text-[#D2F801]">
+                    <p className="text-[11px] font-semibold text-foreground dark:text-accent-text">
                       Lust whisper: {compassWhisperFor(loc)}
                     </p>
                   )}
                   {phase === "guess" && !unlimitedTime && (
                     <div className="mt-1 h-[2px] overflow-hidden rounded-full bg-muted">
                       <div
-                        className="h-full bg-foreground dark:bg-[#D2F801] transition-[width] duration-100"
+                        className="h-full bg-foreground dark:bg-accent-fill transition-[width] duration-100"
                         style={{ width: `${100 - (elapsed / limit) * 100}%` }}
                       />
                     </div>
@@ -1045,7 +1045,7 @@ function GamePage() {
       </div>
 
         {flash && (
-          <div className="absolute left-1/2 top-40 z-[600] -translate-x-1/2 rounded-full bg-[#161616] px-4 py-2 text-sm font-semibold text-[#D2F801] shadow-lg">
+          <div className="absolute left-1/2 top-40 z-[600] -translate-x-1/2 rounded-full bg-[#161616] px-4 py-2 text-sm font-semibold text-accent-text shadow-lg">
             {flash}
           </div>
         )}
@@ -1066,7 +1066,7 @@ function GamePage() {
                         setQuizSelected(countryOpt);
                         submit({ lat: loc.lat, lng: loc.lng }, countryOpt);
                       }}
-                      className="flex items-center justify-center rounded-2xl border border-border bg-background/90 px-4 py-3.5 text-center text-sm font-semibold transition-colors hover:border-foreground/60 hover:bg-[#D2F801] hover:text-[#161616]"
+                      className="flex items-center justify-center rounded-2xl border border-border bg-background/90 px-4 py-3.5 text-center text-sm font-semibold transition-colors hover:border-foreground/60 hover:bg-accent-fill hover:text-[#161616]"
                     >
                       <span className="truncate">{countryOpt}</span>
                     </button>
@@ -1084,14 +1084,14 @@ function GamePage() {
                     }`}
                   >
                     {placingSecondPin
-                      ? "Tap Map for 2nd Pin…"
-                      : `+ Place 2nd Pin (${greedChargesLeft} left)`}
+                      ? tr("tapMapForSecondPin")
+                      : tr("placeSecondPin", { n: greedChargesLeft })}
                   </button>
                 )}
                 {guess ? (
                   <Button
                     onClick={() => submit()}
-                    className="game-confirm h-auto min-h-12 max-w-full flex-col gap-0.5 whitespace-normal rounded-full bg-[#D2F801] px-8 py-2.5 text-sm font-semibold text-black shadow-[0_12px_32px_rgba(210,248,1,0.35)] hover:bg-[#DCFF1A] active:scale-[0.96] transition-transform duration-200"
+                    className="game-confirm h-auto min-h-12 max-w-full flex-col gap-0.5 whitespace-normal rounded-full bg-accent-fill px-8 py-2.5 text-sm font-semibold text-black shadow-[0_12px_32px_rgba(210,248,1,0.35)] hover:bg-[#DCFF1A] active:scale-[0.96] transition-transform duration-200"
                   >
                     <span className="flex min-w-0 items-center justify-center gap-2">
                       <span>{tr("confirmGuess")}</span>
@@ -1105,7 +1105,7 @@ function GamePage() {
                   </Button>
                 ) : (
                   <div className="flex items-center gap-2 rounded-full border border-black/10 dark:border-white/15 bg-white/85 dark:bg-[rgba(28,28,30,0.85)] px-6 py-2.5 text-xs font-medium text-muted-foreground shadow-lg backdrop-blur-2xl">
-                    <span className="h-2 w-2 rounded-full bg-[#D2F801] animate-pulse" />
+                    <span className="h-2 w-2 rounded-full bg-accent-fill animate-pulse" />
                     <span>{tr("pinMap")}</span>
                   </div>
                 )}
@@ -1122,11 +1122,11 @@ function GamePage() {
                     <p className="text-xs font-semibold text-muted-foreground">
                       {last.loc.name}, {last.loc.country}
                     </p>
-                    <p className="font-display readout mt-1 text-5xl text-foreground dark:text-[#D2F801]">
+                    <p className="font-display readout mt-1 text-5xl text-foreground dark:text-accent-text">
                       +<AnimatedRoundPoints points={last.points} />
                     </p>
                     {last.sinNote && (
-                      <p className="mt-1 text-xs font-semibold text-foreground dark:text-[#D2F801]">{last.sinNote}</p>
+                      <p className="mt-1 text-xs font-semibold text-foreground dark:text-accent-text">{last.sinNote}</p>
                     )}
                   </div>
                   <div className="text-right text-sm font-semibold">
@@ -1157,7 +1157,7 @@ function GamePage() {
                         <li
                           key={p.name}
                           className={`flex justify-between rounded-full px-3.5 py-1.5 ${
-                            i === 0 ? "bg-[#D2F801] font-semibold text-black shadow-sm" : "bg-muted/50"
+                            i === 0 ? "bg-accent-fill font-semibold text-black shadow-sm" : "bg-muted/50"
                           }`}
                         >
                           <span className="truncate">
@@ -1229,7 +1229,7 @@ function GamePage() {
                 <h2 className="font-display mt-1 text-xl">Select Your Sin Card</h2>
               </div>
               <div className="flex items-center gap-2">
-                <span className="readout rounded-full border border-foreground/60 px-3 py-1 text-xs font-semibold text-[#D2F801]">
+                <span className="readout rounded-full border border-foreground/60 px-3 py-1 text-xs font-semibold text-accent-text">
                   {sinCountdown}s
                 </span>
                 <button
@@ -1251,7 +1251,7 @@ function GamePage() {
                     key={card.id}
                     className={`rounded-2xl border transition-all ${
                       selected
-                        ? "border-foreground/70 bg-[#D2F801]/10 ring-1 ring-foreground/40 shadow-sm"
+                        ? "border-foreground/70 bg-accent-fill/10 ring-1 ring-foreground/40 shadow-sm"
                         : "border-border bg-card/60 hover:bg-muted/70"
                     }`}
                   >
@@ -1273,7 +1273,7 @@ function GamePage() {
 
                       <div className="flex items-center gap-2 shrink-0">
                         {selected && (
-                          <span className="rounded-full bg-[#D2F801] px-2 py-0.5 text-[10px] font-bold text-black uppercase">
+                          <span className="rounded-full bg-accent-fill px-2 py-0.5 text-[10px] font-bold text-black uppercase">
                             Selected
                           </span>
                         )}
@@ -1349,7 +1349,7 @@ function GamePage() {
               >
                 <div className="flex items-center gap-2.5">
                   {settings.sound ? (
-                    <Volume2 className="h-4 w-4 text-foreground dark:text-[#D2F801]" />
+                    <Volume2 className="h-4 w-4 text-foreground dark:text-accent-text" />
                   ) : (
                     <VolumeX className="h-4 w-4 text-muted-foreground" />
                   )}
@@ -1368,7 +1368,7 @@ function GamePage() {
               >
                 <div className="flex items-center gap-2.5">
                   {blind ? (
-                    <EyeOff className="h-4 w-4 text-foreground dark:text-[#D2F801]" />
+                    <EyeOff className="h-4 w-4 text-foreground dark:text-accent-text" />
                   ) : (
                     <Eye className="h-4 w-4 text-muted-foreground" />
                   )}
@@ -1435,7 +1435,7 @@ function GamePage() {
                       onClick={() => setSettings({ language: l })}
                       className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition-colors ${
                         lang === l
-                          ? "bg-[#D2F801] text-black"
+                          ? "bg-accent-fill text-black"
                           : "bg-card text-muted-foreground hover:bg-card/80"
                       }`}
                     >
@@ -1620,7 +1620,7 @@ function ShareCardStudio({
     <section className="plate mt-6 p-5 md:p-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#D2F801]">
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent-text">
             <Sparkles className="h-3.5 w-3.5" /> Results Share Card Studio
           </span>
           <h2 className="font-display text-2xl">Live Card Preview & Export</h2>

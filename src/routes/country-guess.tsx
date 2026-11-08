@@ -166,7 +166,7 @@ function CountryGuessPage() {
                     onClick={() => setZone(z)}
                     className={`rounded-2xl border p-3 text-left transition-colors ${
                       zone === z
-                        ? "border-foreground/60 bg-[#D2F801]/15 text-[#D2F801] ring-1 ring-foreground/40"
+                        ? "border-foreground/60 bg-accent-fill/15 text-accent-text ring-1 ring-foreground/40"
                         : "border-border bg-card/60 hover:bg-muted"
                     }`}
                   >
@@ -192,7 +192,7 @@ function CountryGuessPage() {
                     onClick={() => setDifficulty(d)}
                     className={`rounded-2xl border p-3 text-center transition-colors ${
                       difficulty === d
-                        ? "border-foreground/60 bg-[#D2F801]/15 text-[#D2F801] ring-1 ring-foreground/40"
+                        ? "border-foreground/60 bg-accent-fill/15 text-accent-text ring-1 ring-foreground/40"
                         : "border-border bg-card/60 hover:bg-muted"
                     }`}
                   >
@@ -229,7 +229,7 @@ function CountryGuessPage() {
               Quiz Completed
             </span>
             <div>
-              <h1 className="font-display text-5xl md:text-6xl text-[#D2F801]">
+              <h1 className="font-display text-5xl md:text-6xl text-accent-text">
                 {animatedScore.toLocaleString()}
               </h1>
               <p className="mt-1 text-sm font-semibold text-muted-foreground">Total Points Scored</p>
@@ -242,7 +242,7 @@ function CountryGuessPage() {
               </div>
               <div>
                 <p className="text-xs text-muted-foreground font-semibold">Max Streak</p>
-                <p className="text-base font-semibold text-[#D2F801]">{bestStreak}</p>
+                <p className="text-base font-semibold text-accent-text">{bestStreak}</p>
               </div>
               <div>
                 <p className="text-xs text-muted-foreground font-semibold">Performance</p>
@@ -286,7 +286,7 @@ function CountryGuessPage() {
               <Flame className="h-3.5 w-3.5 fill-current" /> {streak} Streak
             </span>
           )}
-          <span className="readout rounded-full border border-border bg-card px-3 py-1 text-xs font-semibold text-[#D2F801]">
+          <span className="readout rounded-full border border-border bg-card px-3 py-1 text-xs font-semibold text-accent-text">
             {animatedScore.toLocaleString()} pts
           </span>
         </div>
@@ -299,13 +299,13 @@ function CountryGuessPage() {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between text-xs font-semibold">
               <span className="text-muted-foreground">{currentQ?.type.replace("-", " ")} question</span>
-              <span className={`font-mono ${timeLeft <= 3 ? "text-destructive font-semibold animate-pulse" : "text-[#D2F801]"}`}>
+              <span className={`font-mono ${timeLeft <= 3 ? "text-destructive font-semibold animate-pulse" : "text-accent-text"}`}>
                 {timeLeft}s
               </span>
             </div>
             <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
               <div
-                className={`h-full transition-[width] duration-1000 ease-linear ${timeLeft <= 3 ? "bg-destructive" : "bg-[#D2F801]"}`}
+                className={`h-full transition-[width] duration-1000 ease-linear ${timeLeft <= 3 ? "bg-destructive" : "bg-accent-fill"}`}
                 style={{ width: `${(timeLeft / SECONDS_PER_ROUND) * 100}%` }}
               />
             </div>
@@ -373,7 +373,7 @@ function CountryGuessPage() {
             <div className="rounded-2xl border border-border bg-background/70 p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
               <div>
                 <p className="text-xs font-semibold text-muted-foreground">Correct answer</p>
-                <p className="font-display text-lg text-[#D2F801]">
+                <p className="font-display text-lg text-accent-text">
                   {currentQ?.correctAnswer} ({currentQ?.target.subregion})
                 </p>
               </div>

@@ -447,7 +447,7 @@ function SettingsPage() {
                       type="button"
                       onClick={() => toggleQuickEmoji(emo)}
                       title="Tap to remove"
-                      className="grid h-9 w-9 place-items-center rounded-xl bg-[#D2F801] text-base text-[#161616] font-semibold shadow-sm transition-transform active:scale-90"
+                      className="grid h-9 w-9 place-items-center rounded-xl bg-accent-fill text-base text-[#161616] font-semibold shadow-sm transition-transform active:scale-90"
                     >
                       {emo}
                     </button>
@@ -465,7 +465,7 @@ function SettingsPage() {
                           onClick={() => toggleQuickEmoji(emo)}
                           className={`grid h-11 w-11 place-items-center rounded-xl border text-xl transition-all ${
                             active
-                              ? "border-[#D2F801] bg-[#D2F801]/15 scale-105"
+                              ? "border-accent-fill bg-accent-fill/15 scale-105"
                               : "border-border/60 bg-card/60 hover:bg-muted/60"
                           }`}
                         >

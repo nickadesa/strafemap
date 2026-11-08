@@ -150,7 +150,7 @@ function AdminsPage() {
       <main className="rail-offset px-4 pb-16 pt-8 md:px-6">
         <div className="mx-auto max-w-3xl space-y-6">
           <div className="flex items-center gap-3">
-            <span className="grid h-10 w-10 place-items-center rounded-2xl bg-[#D2F801] text-[#161616]">
+            <span className="grid h-10 w-10 place-items-center rounded-2xl bg-accent-fill text-[#161616]">
               <ShieldCheck className="h-6 w-6" />
             </span>
             <div>
@@ -166,7 +166,7 @@ function AdminsPage() {
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
               <div>
                 <h2 className="font-display text-xl flex items-center gap-2">
-                  <UserCheck className="h-5 w-5 text-[#D2F801]" />
+                  <UserCheck className="h-5 w-5 text-accent-text" />
                   Profile Presets Simulator
                 </h2>
                 <p className="text-xs text-muted-foreground mt-0.5">
@@ -174,7 +174,7 @@ function AdminsPage() {
                 </p>
               </div>
               {presetNotice && (
-                <span className="rounded-full bg-[#D2F801]/15 px-3 py-1 text-xs font-semibold text-[#D2F801] animate-in fade-in">
+                <span className="rounded-full bg-accent-fill/15 px-3 py-1 text-xs font-semibold text-accent-text animate-in fade-in">
                   ✓ {presetNotice}
                 </span>
               )}
@@ -198,7 +198,7 @@ function AdminsPage() {
                       <Flag country="Portugal" size={18} />
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      @cristiano · <span className="text-[#D2F801] font-semibold">Champion #1 (10,000 RP)</span>
+                      @cristiano · <span className="text-accent-text font-semibold">Champion #1 (10,000 RP)</span>
                     </p>
                     <p className="text-xs italic text-muted-foreground/80 mt-0.5">
                       "Siuuuuuu" · Clan: Portugal [POR]
@@ -212,7 +212,7 @@ function AdminsPage() {
                     <p className="text-[10px] text-muted-foreground">Games (100k)</p>
                   </div>
                   <div className="rounded-xl border border-border bg-background/50 px-3 py-1.5 text-center text-xs">
-                    <p className="font-mono font-semibold text-[#D2F801]">1,500,000</p>
+                    <p className="font-mono font-semibold text-accent-text">1,500,000</p>
                     <p className="text-[10px] text-muted-foreground">Pins (1.5M)</p>
                   </div>
                 </div>
@@ -220,7 +220,7 @@ function AdminsPage() {
 
               <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-3">
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Award className="h-3.5 w-3.5 text-[#D2F801]" />
+                  <Award className="h-3.5 w-3.5 text-accent-text" />
                   <span>Max Level 1,000 · Title: World Champion #1 · Country: Portugal</span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -250,7 +250,7 @@ function AdminsPage() {
             <div className="flex items-center justify-between border-b border-border pb-3">
               <div>
                 <h2 className="font-display text-xl flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-[#D2F801]" />
+                  <Sparkles className="h-4 w-4 text-accent-text" />
                   Verified Badge Preview Switcher
                 </h2>
                 <p className="text-xs text-muted-foreground mt-0.5">
@@ -286,7 +286,7 @@ function AdminsPage() {
                   onClick={() => updateSocial({ verifiedBadge: bType })}
                   className={`inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-xs font-semibold transition-colors ${
                     social.verifiedBadge === bType
-                      ? "border-foreground/60 bg-[#D2F801]/15 text-foreground ring-1 ring-foreground/40"
+                      ? "border-foreground/60 bg-accent-fill/15 text-foreground ring-1 ring-foreground/40"
                       : "border-border bg-card text-muted-foreground hover:text-foreground"
                   }`}
                 >
@@ -302,14 +302,14 @@ function AdminsPage() {
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
               <div>
                 <h2 className="font-display text-xl flex items-center gap-2">
-                  <Sliders className="h-4 w-4 text-[#D2F801]" />
+                  <Sliders className="h-4 w-4 text-accent-text" />
                   Level 1–1,000 & EXP Tester
                 </h2>
                 <p className="text-xs text-muted-foreground mt-0.5">
                   Adjust player profile level and experience points in real-time.
                 </p>
               </div>
-              <div className="rounded-full border border-border bg-[#D2F801]/10 px-3.5 py-1 text-xs font-semibold text-[#D2F801]">
+              <div className="rounded-full border border-border bg-accent-fill/10 px-3.5 py-1 text-xs font-semibold text-accent-text">
                 LVL {computeLevelFromExp(social.exp).level} ({social.exp.toLocaleString()} EXP)
               </div>
             </div>
@@ -317,7 +317,7 @@ function AdminsPage() {
             <div>
               <div className="flex items-center justify-between text-xs font-semibold">
                 <span className="text-muted-foreground">Adjust Level Slider:</span>
-                <span className="font-mono font-semibold text-[#D2F801]">
+                <span className="font-mono font-semibold text-accent-text">
                   Level {computeLevelFromExp(social.exp).level} / {LEVEL_MAX}
                 </span>
               </div>
@@ -330,7 +330,7 @@ function AdminsPage() {
                   const targetLvl = Number(e.target.value);
                   updateSocial({ exp: (targetLvl - 1) * EXP_PER_LEVEL });
                 }}
-                className="mt-2 w-full accent-[#D2F801]"
+                className="mt-2 w-full accent-accent-fill"
               />
             </div>
 

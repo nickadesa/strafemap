@@ -375,7 +375,7 @@ function XStyleProfileTab({
           {editing && (
             <div className="mt-4 space-y-3 rounded-2xl border border-border bg-background/70 p-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-[#D2F801]">
+                <span className="text-xs font-semibold text-accent-text">
                   Edit Profile Information
                 </span>
               </div>
@@ -394,7 +394,7 @@ function XStyleProfileTab({
                   <div className="flex-1 min-w-[140px]">
                     <span className="block text-xs font-semibold text-muted-foreground">Avatar Photo</span>
                     <label className="btn btn-outline mt-1 inline-flex cursor-pointer items-center gap-1.5 !px-3 !py-1 text-xs font-semibold">
-                      <Upload className="h-3.5 w-3.5 text-[#D2F801]" /> Upload Photo
+                      <Upload className="h-3.5 w-3.5 text-accent-text" /> Upload Photo
                       <input
                         type="file"
                         accept="image/*"
@@ -423,7 +423,7 @@ function XStyleProfileTab({
                     <span className="block text-xs font-semibold text-muted-foreground">Profile Banner</span>
                     <div className="flex items-center gap-2">
                       <label className="btn btn-outline inline-flex cursor-pointer items-center gap-1.5 !px-3 !py-1 text-xs font-semibold">
-                        <Upload className="h-3.5 w-3.5 text-[#D2F801]" /> Upload Banner
+                        <Upload className="h-3.5 w-3.5 text-accent-text" /> Upload Banner
                         <input
                           type="file"
                           accept="image/*"
@@ -532,7 +532,7 @@ function XStyleProfileTab({
           {/* Level 1–1,000 Progress Bar */}
           <div className="mt-5 rounded-2xl border border-border bg-background/40 p-4">
             <div className="flex items-center justify-between text-xs font-semibold">
-              <span className="text-[#D2F801]">
+              <span className="text-accent-text">
                 LEVEL {animatedLvl} / 1,000
               </span>
               <span className="readout text-muted-foreground">
@@ -541,7 +541,7 @@ function XStyleProfileTab({
             </div>
             <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-muted p-0.5">
               <div
-                className="h-full rounded-full transition-[width] duration-500 bg-[#D2F801]"
+                className="h-full rounded-full transition-[width] duration-500 bg-accent-fill"
                 style={{
                   width: `${lvl.progressPct}%`,
                 }}
@@ -560,7 +560,7 @@ function XStyleProfileTab({
               <p className="text-xs text-muted-foreground">Followers</p>
             </div>
             <div className="rounded-2xl border border-border bg-background/40 p-3.5 text-center">
-              <p className="font-display text-2xl text-[#D2F801]">{totalPinsCount.toLocaleString()}</p>
+              <p className="font-display text-2xl text-accent-text">{totalPinsCount.toLocaleString()}</p>
               <p className="text-xs text-muted-foreground">Total Pins Dropped</p>
             </div>
             <div className="rounded-2xl border border-border bg-background/40 p-3.5 text-center">
@@ -591,7 +591,7 @@ function XStyleProfileTab({
               {fivePinnedBadges.map((b) => (
                 <div
                   key={b.id}
-                  className="flex flex-col items-center rounded-2xl border border-border bg-[#D2F801]/5 p-2.5 text-center"
+                  className="flex flex-col items-center rounded-2xl border border-border bg-accent-fill/5 p-2.5 text-center"
                 >
                   <img
                     src={b.files.compact.unlocked}
@@ -765,7 +765,7 @@ function ClanSystemTab({
         <section className="plate p-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="grid h-16 w-16 place-items-center overflow-hidden rounded-2xl border border-border bg-[#D2F801]/10 font-display text-xl text-[#D2F801]">
+              <div className="grid h-16 w-16 place-items-center overflow-hidden rounded-2xl border border-border bg-accent-fill/10 font-display text-xl text-accent-text">
                 {myClan.iconUrl ? (
                   <img src={myClan.iconUrl} alt={myClan.name} className="h-full w-full object-cover" />
                 ) : (
@@ -781,7 +781,7 @@ function ClanSystemTab({
                   </span>
                 </div>
                 <p className="mt-1 text-xs text-muted-foreground">{myClan.description}</p>
-                <p className="readout mt-1 text-xs font-semibold text-[#D2F801]">
+                <p className="readout mt-1 text-xs font-semibold text-accent-text">
                   Members: {myClan.members.length} / {myClan.maxMembers} · Party Clan Bonus: +15% Clan Points
                 </p>
               </div>
@@ -814,7 +814,7 @@ function ClanSystemTab({
           {/* Clan Leader Edit Form */}
           {editingClan && (
             <div className="mt-4 space-y-3 rounded-2xl border border-border bg-background/60 p-4">
-              <span className="text-xs font-semibold text-[#D2F801]">
+              <span className="text-xs font-semibold text-accent-text">
                 Leader Management: Edit Clan Name & Tag
               </span>
               <div className="grid gap-3 sm:grid-cols-2">
@@ -842,7 +842,7 @@ function ClanSystemTab({
                       <img src={editClanIcon} alt="Clan Icon" className="h-10 w-10 rounded-xl object-cover border border-border" />
                     )}
                     <label className="btn btn-outline inline-flex cursor-pointer items-center gap-1.5 !px-3 !py-1 text-xs font-semibold">
-                      <Upload className="h-3.5 w-3.5 text-[#D2F801]" /> Upload Clan Avatar
+                      <Upload className="h-3.5 w-3.5 text-accent-text" /> Upload Clan Avatar
                       <input
                         type="file"
                         accept="image/*"
@@ -886,13 +886,13 @@ function ClanSystemTab({
           <div className="mt-5 rounded-2xl border border-border bg-background/50 p-4">
             <div className="flex items-center justify-between text-xs font-semibold">
               <span>Weekly Clan Mission: Win 50 Party or Ranked Rounds Together</span>
-              <span className="readout text-[#D2F801]">
+              <span className="readout text-accent-text">
                 {myClan.weeklyMissionProgress} / {myClan.weeklyMissionTarget}
               </span>
             </div>
             <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
               <div
-                className="h-full bg-[#D2F801]"
+                className="h-full bg-accent-fill"
                 style={{
                   width: `${Math.min(100, (myClan.weeklyMissionProgress / myClan.weeklyMissionTarget) * 100)}%`,
                 }}
@@ -919,7 +919,7 @@ function ClanSystemTab({
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="readout text-xs font-semibold text-[#D2F801]">{m.rp.toLocaleString()} RP</p>
+                    <p className="readout text-xs font-semibold text-accent-text">{m.rp.toLocaleString()} RP</p>
                     <p className="text-[10px] text-muted-foreground">
                       +{m.weeklyContribution.toLocaleString()} Weekly XP
                     </p>
@@ -1067,7 +1067,7 @@ function CosmeticLivePreview({
   if (item.category === "trail") {
     const trailColors: Record<string, string> = {
       blue: "from-cyan-400 via-sky-500 to-blue-600",
-      rainbow: "from-pink-500 via-[#D2F801] to-cyan-400",
+      rainbow: "from-pink-500 via-accent-fill to-cyan-400",
       solar: "from-amber-400 via-yellow-500 to-orange-500",
     };
     return (
@@ -1076,7 +1076,7 @@ function CosmeticLivePreview({
         <div className="relative h-20 w-full rounded-xl border border-border/60 bg-[#161618] flex items-center justify-between px-6 overflow-hidden">
           <div className="h-3 w-3 rounded-full bg-foreground shadow-sm" />
           <div className={`h-0.5 flex-1 mx-2 bg-gradient-to-r ${trailColors[item.value] ?? "from-primary to-muted"} border-dashed`} />
-          <div className="h-3 w-3 rounded-full bg-[#D2F801] shadow-sm" />
+          <div className="h-3 w-3 rounded-full bg-accent-fill shadow-sm" />
         </div>
       </div>
     );
@@ -1226,7 +1226,7 @@ function CosmeticShopTab({
               onClick={() => setCategoryFilter(c.id)}
               className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors ${
                 categoryFilter === c.id
-                  ? "bg-[#D2F801] text-[#161616]"
+                  ? "bg-accent-fill text-[#161616]"
                   : "border border-border bg-background/60 text-muted-foreground hover:bg-muted"
               }`}
             >
@@ -1259,7 +1259,7 @@ function CosmeticShopTab({
                 key={item.id}
                 className={`flex flex-col justify-between rounded-2xl border p-4 transition-colors ${
                   equipped
-                    ? "border-foreground/60 bg-[#D2F801]/5"
+                    ? "border-foreground/60 bg-accent-fill/5"
                     : owned
                     ? "border-border bg-background/50"
                     : "border-border/60 bg-background/30"
@@ -1300,7 +1300,7 @@ function CosmeticShopTab({
 
                 <div className="mt-4 pt-3 border-t border-border/50">
                   {equipped ? (
-                    <div className="flex items-center justify-center gap-1.5 rounded-xl border border-foreground/60 bg-[#D2F801]/10 py-2 text-xs font-semibold text-[#D2F801]">
+                    <div className="flex items-center justify-center gap-1.5 rounded-xl border border-foreground/60 bg-accent-fill/10 py-2 text-xs font-semibold text-accent-text">
                       <Check className="h-4 w-4" /> Equipped
                     </div>
                   ) : owned ? (
@@ -1313,7 +1313,7 @@ function CosmeticShopTab({
                     </button>
                   ) : (
                     <div className="flex items-center justify-between gap-2">
-                      <span className="readout text-xs font-semibold text-[#D2F801]">
+                      <span className="readout text-xs font-semibold text-accent-text">
                         {price.toLocaleString()} coins
                       </span>
                       <button
@@ -1360,14 +1360,14 @@ function CosmeticShopTab({
             <div className="flex items-center justify-between border-t border-border pt-4">
               <div className="text-xs text-muted-foreground">
                 Price:{" "}
-                <span className="font-mono font-semibold text-[#D2F801]">
+                <span className="font-mono font-semibold text-accent-text">
                   {rarityPrices[previewItem.rarity].toLocaleString()} coins
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 {social.unlockedCosmetics.includes(previewItem.id) ? (
                   isEquipped(previewItem) ? (
-                    <span className="text-xs font-semibold text-[#D2F801]">Currently Equipped</span>
+                    <span className="text-xs font-semibold text-accent-text">Currently Equipped</span>
                   ) : (
                     <button
                       type="button"
@@ -1511,10 +1511,10 @@ function SocialFeedTab({
               onChange={handleUploadStory}
             />
             <div className="flex h-full w-full flex-col items-center justify-center rounded-[15.5px] bg-card p-2 text-foreground">
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-[#D2F801] text-[#161616]">
+              <div className="grid h-10 w-10 place-items-center rounded-full bg-accent-fill text-[#161616]">
                 <Plus className="h-5 w-5" />
               </div>
-              <span className="mt-2 text-xs font-semibold text-[#D2F801]">+ Add Story</span>
+              <span className="mt-2 text-xs font-semibold text-accent-text">+ Add Story</span>
               <span className="text-[10px] text-muted-foreground">Upload photo</span>
             </div>
           </label>
@@ -1553,7 +1553,7 @@ function SocialFeedTab({
                     size={28}
                   />
                   <div>
-                    <p className="font-display text-lg text-[#D2F801]">{st.score}</p>
+                    <p className="font-display text-lg text-accent-text">{st.score}</p>
                     <p className="truncate text-[10px] font-semibold">{st.authorName}</p>
                   </div>
                 </div>
@@ -1587,7 +1587,7 @@ function SocialFeedTab({
                   type="checkbox"
                   checked={attachResultCard}
                   onChange={(e) => setAttachResultCard(e.target.checked)}
-                  className="h-4 w-4 accent-[#D2F801]"
+                  className="h-4 w-4 accent-accent-fill"
                 />
                 Attach Latest Match Results Card
               </label>
@@ -1639,7 +1639,7 @@ function SocialFeedTab({
                   <span className="rounded-full bg-muted px-2.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
                     {post.resultCard.mode}
                   </span>
-                  <p className="font-display mt-2 text-3xl text-[#D2F801]">
+                  <p className="font-display mt-2 text-3xl text-accent-text">
                     {post.resultCard.score.toLocaleString()}{" "}
                     <span className="text-xs text-white/60">
                       / {post.resultCard.maxScore.toLocaleString()} pts
@@ -1649,7 +1649,7 @@ function SocialFeedTab({
                     Accuracy: {post.resultCard.accuracy} · Avg Error: {post.resultCard.avgError}
                   </p>
                 </div>
-                <div className="font-display text-5xl text-[#D2F801]">
+                <div className="font-display text-5xl text-accent-text">
                   {post.resultCard.grade}
                 </div>
               </div>
@@ -1661,7 +1661,7 @@ function SocialFeedTab({
                 type="button"
                 onClick={() => toggleLike(post.id)}
                 className={`inline-flex items-center gap-1.5 ${
-                  post.likedByMe ? "text-[#D2F801]" : "text-muted-foreground hover:text-foreground"
+                  post.likedByMe ? "text-accent-text" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 <Heart className="h-4 w-4" fill={post.likedByMe ? "#D2F801" : "none"} />
@@ -1703,7 +1703,7 @@ function SocialFeedTab({
               <button
                 type="button"
                 onClick={() => submitComment(post.id)}
-                className="rounded-full bg-[#D2F801] px-3.5 py-1.5 text-xs font-semibold text-[#161616]"
+                className="rounded-full bg-accent-fill px-3.5 py-1.5 text-xs font-semibold text-[#161616]"
               >
                 Reply
               </button>
@@ -1731,7 +1731,7 @@ function SocialFeedTab({
                     </button>
                   </div>
                   <div>
-                    <p className="font-display text-4xl text-[#D2F801]">{activeStory.score}</p>
+                    <p className="font-display text-4xl text-accent-text">{activeStory.score}</p>
                     <p className="mt-2 text-sm text-white/90">{activeStory.caption}</p>
                     <button
                       type="button"
@@ -1759,7 +1759,7 @@ function SocialFeedTab({
                   </button>
                 </div>
                 <div className="text-center">
-                  <p className="font-display text-5xl text-[#D2F801]">{activeStory.score}</p>
+                  <p className="font-display text-5xl text-accent-text">{activeStory.score}</p>
                   <p className="mt-2 text-sm">{activeStory.caption}</p>
                 </div>
                 <button

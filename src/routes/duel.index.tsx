@@ -11,6 +11,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { t, type Lang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/duel/")({
   beforeLoad: () => {
@@ -35,6 +36,7 @@ const makeCode = () => Array.from({ length: 4 }, () => LETTERS[Math.floor(Math.r
 function DuelLobby() {
   const user = useUser();
   const [settings] = useSettings();
+  const lang = (settings.language ?? "en") as Lang;
   const nav = useNavigate();
   const [code, setCode] = useState("");
   const [err, setErr] = useState<string | null>(null);
@@ -67,14 +69,14 @@ function DuelLobby() {
       <Sidebar />
       <main className="rail-offset mx-auto max-w-4xl px-4 pt-6 md:px-6 md:pt-8">
         <p className="text-sm font-semibold text-muted-foreground">Multiplayer · 1v1</p>
-        <h1 className="font-display mt-2 text-[clamp(3rem,8vw,5rem)]">Live Duel</h1>
+        <h1 className="font-display mt-2 text-[clamp(3rem,8vw,5rem)]">{t(lang, "liveDuel")}</h1>
         <p className="mt-3 max-w-xl text-sm md:text-base text-muted-foreground">
           Same place, 15 seconds each round. The further pin loses health equal to the points gap. First to zero loses.
         </p>
 
         {user === null ? (
           <div className="plate mt-8 p-6">
-            <p className="font-semibold">Sign in to play duels.</p>
+            <p className="font-semibold">{t(lang, "signInToDuel")}</p>
             <Link to="/auth" className="btn btn-primary mt-4">Sign in</Link>
           </div>
         ) : (

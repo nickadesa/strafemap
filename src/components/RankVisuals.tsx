@@ -83,7 +83,7 @@ export function AvatarFrame({
         />
       ) : (
         <div
-          className="grid h-full w-full place-items-center font-display font-semibold bg-[#1C1D1F] text-[#D2F801]"
+          className="grid h-full w-full place-items-center font-display font-semibold bg-[#1C1D1F] text-accent-text"
           style={{
             fontSize: Math.max(10, Math.round(size * 0.44)),
           }}
