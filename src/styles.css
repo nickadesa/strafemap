@@ -352,8 +352,8 @@
   --lh-body: 1.48;
   --lh-heading: 1.10;
 
-  --accent-fill: #d2f801;
-  --accent-text: #0367fc;
+  --accent-fill: #00adff;
+  --accent-text: #0077cc;
 
   --radius: 0.625rem;
   --radius-squircle: 1.75rem;
@@ -783,9 +783,9 @@
   --primary-foreground: var(--white);
   --primary-pale: #2a331c;
   --primary-active: #dcff1a;
-  --ink-deep: #d2f801;
-  --accent-fill: #d2f801;
-  --accent-text: #d2f801;
+  --ink-deep: #00adff;
+  --accent-fill: #00adff;
+  --accent-text: #00adff;
   --secondary: var(--fill-3);
   --secondary-foreground: var(--label);
   --muted: var(--background-2);
