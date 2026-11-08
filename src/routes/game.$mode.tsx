@@ -875,78 +875,26 @@ function GamePage() {
         />
       </div>
 
-      {/* Classic Apple Translucent Toolbar (Top Bar) */}
-      <header className="absolute top-0 inset-x-0 z-40 flex items-center justify-between gap-2 px-3 pt-[max(0.6rem,env(safe-area-inset-top))] pb-2.5 sm:px-5 sm:py-3 border-b border-black/8 dark:border-white/10 bg-white/80 dark:bg-[rgba(20,20,22,0.80)] backdrop-blur-2xl shadow-sm">
-        <Logo className="game-logo shrink-0" onClick={handleLogoClick} />
-        <div className="game-hud flex min-w-0 flex-wrap items-center justify-end gap-1.5 text-[11px] font-semibold sm:gap-2 sm:text-sm">
-          {/* Ranked Opponent HUD Pill */}
-          {ranked && (
-            <div className="flex items-center gap-1.5 rounded-full border border-border/80 bg-card/80 px-2.5 py-1 backdrop-blur-md">
-              <span className="text-[10px] font-semibold text-muted-foreground">VS</span>
-              <AvatarFrame name={opponent.nickname} rp={opponent.rp} size={22} />
-              <ClanTagPill tag={opponent.clanTag} color={opponent.clanTagColor} />
-              <span className="max-w-20 truncate text-xs font-semibold">{opponent.nickname}</span>
-              <VerifiedBadge type={opponent.verifiedBadge} size={12} />
-              <span className="readout hidden text-[10px] text-[#D2F801] md:inline">
-                {opponent.rp.toLocaleString()} RP
-              </span>
-              <span
-                className={`h-2 w-2 rounded-full ${
-                  elapsed > 4 ? "bg-[#D2F801]" : "bg-muted-foreground/60"
-                }`}
-                title={elapsed > 4 ? "Opponent pinned" : "Opponent thinking"}
-              />
-            </div>
-          )}
-
-          {/* Active Sin Card Pill */}
-          {currentSinCard && (
-            <span
-              className="rounded-full border border-border/80 bg-card/80 px-2.5 py-1 text-xs font-semibold backdrop-blur-md"
-              style={{ color: currentSinCard.accent }}
-            >
-              {currentSinCard.sinName}
+      {/* Floating Apple Island HUD (No full-width bar; 100% edge-to-edge map visible behind controls) */}
+      <div className="pointer-events-none absolute top-3 inset-x-3 z-40 flex items-start justify-between gap-2 sm:top-4 sm:inset-x-5">
+        {/* Top-Left: Floating Logo / Exit Capsule */}
+        <div className="pointer-events-auto flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleLogoClick}
+            aria-label="Exit or view game info"
+            className="glass-plate flex items-center gap-2 rounded-full py-1.5 pl-2 pr-3.5 shadow-md transition-all active:scale-95 hover:bg-muted/80"
+          >
+            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#D2F801] text-xs font-bold text-[#000000]">
+              S
             </span>
-          )}
-
-          <span
-            className="game-mode min-w-0 truncate rounded-full border border-border/80 bg-card/80 px-2.5 py-1 sm:px-3 backdrop-blur-md"
-            title={`${tr(mode)}${daily ? ` · ${tr("daily")}` : ""}${ranked ? ` · ${tr("ranked")}` : ""}`}
-          >
-            {tr(mode)}
-            {daily && ` · ${tr("daily")}`}
-            {ranked && ` · ${tr("ranked")}`}
-          </span>
-          <span
-            className="shrink-0 whitespace-nowrap rounded-full border border-border/80 bg-card/80 px-2.5 py-1 sm:px-3 backdrop-blur-md"
-            title={roundLabel}
-          >
-            <span className="hidden sm:inline">{roundLabel}</span>
-            <span className="readout sm:hidden">
-              {practice ? `∞ · ${idx + 1}` : `${Math.min(idx + 1, ROUNDS)}/${ROUNDS}`}
-            </span>
-          </span>
-          <span
-            className="readout shrink-0 whitespace-nowrap rounded-full bg-muted/80 px-2.5 py-1 font-semibold text-foreground sm:px-3 backdrop-blur-md"
-            title={`${total.toLocaleString()} ${tr("points")}`}
-          >
-            {total.toLocaleString()} <span className="hidden sm:inline">{tr("points")}</span>
-          </span>
-          {practice && (
-            <Button
-              variant="ghost"
-              onClick={() => setPhase("done")}
-              className="h-8 shrink-0 rounded-full bg-card/80 px-2.5 text-[11px] sm:text-sm backdrop-blur-md hover:bg-muted"
-            >
-              {tr("end")}
-            </Button>
-          )}
+            <span className="font-display text-sm tracking-tight hidden xs:inline sm:inline">STRAFE</span>
+          </button>
         </div>
-      </header>
 
-      {/* Floating SmartClue below top toolbar */}
-      <div className="pointer-events-none absolute inset-x-3 top-[64px] sm:top-[72px] z-30 flex justify-center">
-        <SmartClue
+        {/* Top-Center: Floating SmartClue Pill */}
+        <div className="pointer-events-auto flex justify-center max-w-[calc(100vw-180px)] sm:max-w-md">
+          <SmartClue
             collapsed={promptCollapsed}
             onToggle={() => {
               setPromptCollapsed((c) => !c);
@@ -990,6 +938,57 @@ function GamePage() {
             )}
           </SmartClue>
         </div>
+
+        {/* Top-Right: Floating Stats & Opponent Capsule */}
+        <div className="pointer-events-auto flex items-center gap-1.5">
+          {/* Ranked Opponent HUD Pill */}
+          {ranked && (
+            <div className="glass-plate flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xs shadow-md">
+              <span className="text-[10px] font-semibold text-muted-foreground">VS</span>
+              <AvatarFrame name={opponent.nickname} rp={opponent.rp} size={22} />
+              <ClanTagPill tag={opponent.clanTag} color={opponent.clanTagColor} />
+              <span className="max-w-20 truncate text-xs font-semibold hidden sm:inline">{opponent.nickname}</span>
+              <span
+                className={`h-2 w-2 rounded-full ${
+                  elapsed > 4 ? "bg-[#D2F801]" : "bg-muted-foreground/60"
+                }`}
+                title={elapsed > 4 ? "Opponent pinned" : "Opponent thinking"}
+              />
+            </div>
+          )}
+
+          {/* Active Sin Card Pill */}
+          {currentSinCard && (
+            <span
+              className="glass-plate rounded-full px-2.5 py-1.5 text-xs font-semibold shadow-md hidden sm:inline"
+              style={{ color: currentSinCard.accent }}
+            >
+              {currentSinCard.sinName}
+            </span>
+          )}
+
+          {/* Round & Total Score Combined Capsule */}
+          <div className="glass-plate flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold shadow-md">
+            <span className="text-muted-foreground">
+              {practice ? `∞ · ${idx + 1}` : `R${Math.min(idx + 1, ROUNDS)}/${ROUNDS}`}
+            </span>
+            <span className="h-3 w-px bg-border/60" />
+            <span className="readout text-[#D2F801]">
+              <AnimatedTotalScore total={total} />
+            </span>
+          </div>
+
+          {practice && (
+            <Button
+              variant="ghost"
+              onClick={() => setPhase("done")}
+              className="glass-plate h-8 rounded-full px-3 text-xs shadow-md"
+            >
+              {tr("end")}
+            </Button>
+          )}
+        </div>
+      </div>
 
         {flash && (
           <div className="absolute left-1/2 top-40 z-[600] -translate-x-1/2 rounded-full bg-[#161616] px-4 py-2 text-sm font-semibold text-[#D2F801] shadow-lg">

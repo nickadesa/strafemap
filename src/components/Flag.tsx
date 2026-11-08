@@ -223,8 +223,13 @@ export function Flag({
 
   const file = flagFile(country);
   const code = countryCode(country);
-  const h = Math.round(size * 0.67);
-  const base = `inline-grid shrink-0 place-items-center overflow-hidden border border-border/50 shadow-xs select-none ${className}`;
+  const isLocalPack = Boolean(file && !failedLocal);
+  const h = rectangular
+    ? Math.round(size * 0.67)
+    : isLocalPack
+      ? size
+      : Math.round(size * 0.7);
+  const base = `inline-grid shrink-0 place-items-center rounded-lg select-none ${className}`;
 
   if (inlineRenderer) {
     return (
@@ -259,8 +264,8 @@ export function Flag({
         onContextMenu={(e) => e.preventDefault()}
       >
         <svg
-          width={h * 0.7}
-          height={h * 0.7}
+          width={Math.round(h * 0.7)}
+          height={Math.round(h * 0.7)}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -293,7 +298,7 @@ export function Flag({
             setFailedRemote(true);
           }
         }}
-        className="block h-full w-full object-cover pointer-events-none select-none"
+        className="block h-full w-full object-contain pointer-events-none select-none"
         draggable={false}
         loading="lazy"
       />

@@ -116,7 +116,7 @@ function PlayHub() {
   return (
     <div className="min-h-screen">
       <Sidebar />
-      <main className="rail-offset px-4 pb-28 pt-6 md:px-6 md:pt-8">
+      <main className="rail-offset px-4 pb-12 pt-6 md:px-6 md:pt-8">
         <div className="mx-auto max-w-6xl space-y-6">
           {/* Top Event / Announcement Banner */}
           <section className="plate relative overflow-hidden border-border p-5 md:p-6">

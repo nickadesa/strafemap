@@ -257,56 +257,23 @@ export function Sidebar() {
         </div>
       </aside>
 
-      {/* iOS Floating Bottom Tab Bar (Mobile) */}
-      <nav
-        aria-label="Mobile Bottom Navigation"
-        className="fixed bottom-3 inset-x-3 z-40 flex items-center justify-around rounded-full border border-black/10 bg-white/85 p-1.5 shadow-[0_12px_36px_rgba(0,0,0,0.18)] backdrop-blur-2xl dark:border-white/15 dark:bg-[rgba(28,28,30,0.85)] dark:shadow-[0_16px_48px_rgba(0,0,0,0.65)] md:hidden max-w-md mx-auto"
-        style={{ marginBottom: "env(safe-area-inset-bottom, 0px)" }}
+      {/* Mobile Top-Left Hamburger Menu Button */}
+      <button
+        type="button"
+        onClick={() => {
+          buzz(6);
+          setMobileOpen(true);
+        }}
+        aria-label="Open navigation menu"
+        className="glass-plate fixed left-3 top-3 z-50 grid h-10 w-10 place-items-center rounded-2xl text-foreground shadow-md transition-colors active:scale-90 hover:bg-muted md:hidden"
       >
-        {[
-          { to: "/", key: "home", label: t(lang, "home"), icon: SymbolHouse, exact: true },
-          { to: "/play", key: "modes", label: t(lang, "modes"), icon: SymbolGameController },
-          { to: "/rank", key: "rank", label: t(lang, "rank"), icon: SymbolTrophy },
-          { to: "/party", key: "party", label: t(lang, "party"), icon: SymbolPerson2 },
-          { to: "/profile", key: "profile", label: t(lang, "profile"), icon: SymbolPerson },
-        ].map(({ to, key, label, icon: Icon, exact }) => {
-          const active = exact ? location.pathname === "/" : location.pathname.startsWith(to);
-          return (
-            <Link
-              key={key}
-              to={to}
-              onClick={() => buzz(6)}
-              className={`flex flex-1 flex-col items-center justify-center py-1.5 px-2 rounded-full transition-all duration-200 active:scale-90 ${
-                active
-                  ? "text-[#000000] dark:text-[#D2F801] font-semibold"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <div className="relative">
-                <Icon fill={active} className="h-5 w-5 transition-transform duration-200" />
-                {key === "profile" && unreadCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-[#D2F801]" />
-                )}
-              </div>
-              <span className="mt-0.5 text-[10px] tracking-tight">{label}</span>
-            </Link>
-          );
-        })}
-
-        {/* Quick More menu trigger */}
-        <button
-          type="button"
-          onClick={() => {
-            buzz(6);
-            setMobileOpen(true);
-          }}
-          aria-label="More options"
-          className="flex flex-col items-center justify-center py-1.5 px-2 rounded-full text-muted-foreground hover:text-foreground active:scale-90"
-        >
-          <SymbolMenu className="h-5 w-5" />
-          <span className="mt-0.5 text-[10px] tracking-tight">More</span>
-        </button>
-      </nav>
+        <SymbolMenu className="h-5 w-5" />
+        {unreadCount > 0 && (
+          <span className="absolute -right-0.5 -top-0.5 grid h-3.5 w-3.5 place-items-center rounded-full bg-[#D2F801] text-[10px] font-semibold text-[#000000]">
+            {unreadCount}
+          </span>
+        )}
+      </button>
 
       {/* Mobile Slide-over Drawer Menu (Apple Inset Grouped Style) */}
       {mobileOpen && (

@@ -110,7 +110,7 @@ function SettingsPage() {
   return (
     <div className="min-h-screen">
       <Sidebar />
-      <main className="rail-offset px-4 pb-24 pt-8 md:px-8">
+      <main className="rail-offset px-4 pb-12 pt-8 md:px-8">
         <div className="mx-auto max-w-2xl space-y-7">
           {/* Page Title */}
           <div>
