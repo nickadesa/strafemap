@@ -67,11 +67,26 @@ export class MapLibreAdapter implements IMapAdapter {
         zoom: 1.8,
         minZoom: 1.2,
         maxZoom: opts.maxZoomLimit ?? 12,
+        bearing: 0,
         pitch: is3D ? 35 : 0,
-        maxPitch: is3D ? 60 : 0,
+        maxPitch: is3D ? 50 : 0,
         attributionControl: false,
-        dragRotate: is3D,
-        touchPitch: is3D,
+        dragRotate: false,
+        pitchWithRotate: false,
+        touchPitch: false,
+      });
+
+      // Strictly lock zoom to in/out only — prevent rotating or flipping upside down
+      m.touchZoomRotate?.disableRotation();
+      m.dragRotate?.disable();
+      m.touchPitch?.disable();
+      m.keyboard?.disableRotation();
+
+      // Guard to enforce bearing is always North-up (0)
+      m.on("rotate", () => {
+        if (m.getBearing() !== 0) {
+          m.setBearing(0);
+        }
       });
 
       this.map = m;
@@ -280,18 +295,19 @@ export class MapLibreAdapter implements IMapAdapter {
     // Save camera before switching style
     const center = this.map.getCenter();
     const zoom = this.map.getZoom();
-    const bearing = this.map.getBearing();
-    const pitch = is3D ? Math.max(30, this.map.getPitch()) : 0;
+    const pitch = is3D ? 35 : 0;
 
-    this.map.setMaxPitch(is3D ? 60 : 0);
-    this.map.dragRotate[is3D ? "enable" : "disable"]();
-    this.map.touchPitch[is3D ? "enable" : "disable"]();
+    this.map.setMaxPitch(is3D ? 50 : 0);
+    this.map.dragRotate?.disable();
+    this.map.touchPitch?.disable();
+    this.map.touchZoomRotate?.disableRotation();
+    this.map.keyboard?.disableRotation();
 
     // Change style URL without destroying map instance
     this.map.setStyle(styleDef.url);
 
     this.map.once("style.load", () => {
-      this.map.jumpTo({ center, zoom, bearing, pitch });
+      this.map.jumpTo({ center, zoom, bearing: 0, pitch });
       this.applyBlindLayers();
       this.setupGeoJSONSources();
       this.reapplyDrawings();

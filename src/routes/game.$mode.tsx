@@ -704,7 +704,7 @@ function GamePage() {
                   {daily && ` · ${tr("daily")}`}
                   {ranked && ` · ${tr("ranked")}`} · {tr("final")}
                 </p>
-                <h1 className="font-display mt-2 text-[clamp(3.5rem,14vw,7rem)] text-[#D2F801]">
+                <h1 className="font-display mt-2 text-[clamp(3.5rem,14vw,7rem)] text-foreground dark:text-[#D2F801]">
                   <AnimatedTotalScore total={total} />
                 </h1>
                 <p className="mt-1 font-semibold text-muted-foreground">
@@ -723,7 +723,7 @@ function GamePage() {
                     {eloChange !== null && (
                       <p
                         className={`readout text-base font-semibold ${
-                          eloChange >= 0 ? "text-[#D2F801]" : "text-destructive"
+                          eloChange >= 0 ? "text-foreground dark:text-[#D2F801]" : "text-destructive"
                         }`}
                       >
                         {eloChange >= 0 ? "+" : ""}
@@ -784,7 +784,7 @@ function GamePage() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-display text-2xl text-[#D2F801]">{r.points.toLocaleString()}</p>
+                  <p className="font-display text-2xl text-foreground dark:text-[#D2F801]">{r.points.toLocaleString()}</p>
                   <p className="text-xs text-muted-foreground">
                     {r.km === null ? tr("noGuess") : formatDistance(r.km, settings.unit)}
                   </p>
@@ -972,7 +972,7 @@ function GamePage() {
             {practice ? `${idx + 1}` : `${Math.min(idx + 1, ROUNDS)}/${ROUNDS}`}
           </span>
           <span className="h-3 w-px bg-border/60" />
-          <span className="readout text-[#D2F801]">
+          <span className="readout text-foreground dark:text-[#D2F801]">
             <AnimatedTotalScore total={total} compact />
           </span>
         </div>
@@ -1020,14 +1020,14 @@ function GamePage() {
               <div className="overflow-hidden">
                 <div className="pt-1">
                   {mode === "sins" && activeSin === "lust" && (
-                    <p className="text-[11px] font-semibold text-[#D2F801]">
+                    <p className="text-[11px] font-semibold text-foreground dark:text-[#D2F801]">
                       Lust whisper: {compassWhisperFor(loc)}
                     </p>
                   )}
                   {phase === "guess" && !unlimitedTime && (
                     <div className="mt-1 h-[2px] overflow-hidden rounded-full bg-muted">
                       <div
-                        className="h-full bg-[#D2F801] transition-[width] duration-100"
+                        className="h-full bg-foreground dark:bg-[#D2F801] transition-[width] duration-100"
                         style={{ width: `${100 - (elapsed / limit) * 100}%` }}
                       />
                     </div>
@@ -1123,11 +1123,11 @@ function GamePage() {
                     <p className="text-xs font-semibold text-muted-foreground">
                       {last.loc.name}, {last.loc.country}
                     </p>
-                    <p className="font-display readout mt-1 text-5xl text-[#D2F801]">
+                    <p className="font-display readout mt-1 text-5xl text-foreground dark:text-[#D2F801]">
                       +<AnimatedRoundPoints points={last.points} />
                     </p>
                     {last.sinNote && (
-                      <p className="mt-1 text-xs font-semibold text-[#D2F801]">{last.sinNote}</p>
+                      <p className="mt-1 text-xs font-semibold text-foreground dark:text-[#D2F801]">{last.sinNote}</p>
                     )}
                   </div>
                   <div className="text-right text-sm font-semibold">
@@ -1350,7 +1350,7 @@ function GamePage() {
               >
                 <div className="flex items-center gap-2.5">
                   {settings.sound ? (
-                    <Volume2 className="h-4 w-4 text-[#D2F801]" />
+                    <Volume2 className="h-4 w-4 text-foreground dark:text-[#D2F801]" />
                   ) : (
                     <VolumeX className="h-4 w-4 text-muted-foreground" />
                   )}
@@ -1369,7 +1369,7 @@ function GamePage() {
               >
                 <div className="flex items-center gap-2.5">
                   {blind ? (
-                    <EyeOff className="h-4 w-4 text-[#D2F801]" />
+                    <EyeOff className="h-4 w-4 text-foreground dark:text-[#D2F801]" />
                   ) : (
                     <Eye className="h-4 w-4 text-muted-foreground" />
                   )}

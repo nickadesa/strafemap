@@ -125,7 +125,7 @@ export function SmartClue({
 
         <div className={collapsed ? "shrink-0 flex items-center" : "flex min-w-14 items-center justify-start"}>
           <div ref={flag} className="clue-badge">
-            <Flag country={country} size={collapsed ? 32 : 56} />
+            <Flag country={country} size={collapsed ? 22 : 56} />
           </div>
         </div>
 

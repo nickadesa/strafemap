@@ -83,19 +83,20 @@
   --link: #000000;
 }
 
-/* Light theme accessibility: High-contrast green text & icons on light surfaces */
+/* Light theme: Dark neutral text & badges on light surfaces (no green text) */
 :root:not(.dark) .text-\[\#D2F801\] {
-  color: #15803d !important;
+  color: var(--color-foreground, #000000) !important;
 }
 :root:not(.dark) svg.text-\[\#D2F801\],
 :root:not(.dark) [class*="text-[#D2F801]"] svg {
-  color: #15803d !important;
+  color: var(--color-foreground, #000000) !important;
 }
 :root:not(.dark) .bg-\[\#D2F801\]\/10,
 :root:not(.dark) .bg-\[\#D2F801\]\/15,
-:root:not(.dark) .bg-\[\#D2F801\]\/20 {
-  background-color: rgba(21, 128, 61, 0.12) !important;
-  color: #15803d !important;
+:root:not(.dark) .bg-\[\#D2F801\]\/20,
+:root:not(.dark) .bg-\[\#D2F801\]\/25 {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+  color: var(--color-foreground, #000000) !important;
 }
 
 /* Thai: Extra vertical breathing room for upper/lower vowel & tone marks */
