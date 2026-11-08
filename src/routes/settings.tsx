@@ -5,7 +5,7 @@ import { useSettings } from "@/lib/game/storage";
 import { blip } from "@/lib/game/sound";
 import { GLASS_PRESETS, useAppearance, useMapStyle, useTheme, type MapStyle } from "@/lib/theme";
 import { LANGS, t, type Lang } from "@/lib/i18n";
-import { TILES } from "@/components/GameMap";
+import { OPENFREEMAP_STYLES, STYLE_ORDER } from "@/lib/map/styles";
 import { Flag } from "@/components/Flag";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,9 +30,6 @@ import {
   Clock,
   X,
 } from "lucide-react";
-
-const tile = (u: string) =>
-  u.replace("{z}", "2").replace("{y}", "1").replace("{x}", "2").replace("{s}", "a").replace("{r}", "");
 
 const RICH_EMOJI_POOL = [
   "🔥", "🎯", "🤯", "👏", "💀", "🚀", "💯", "⚡", "🏆", "🌍", "🗺️", "📍", "🧭", "😂", "😭", "🤝", "👑", "💎",
@@ -370,55 +367,72 @@ function SettingsPage() {
 
           {/* 4. Map Style Section */}
           <section className="space-y-2">
-            <h2 className="px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              {t(lang, "mapStyle")}
-            </h2>
+            <div className="flex items-center justify-between px-3">
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                {t(lang, "mapStyle")}
+              </h2>
+              <span className="text-[11px] text-muted-foreground">
+                Powered by OpenFreeMap & OSM
+              </span>
+            </div>
             <div className="apple-group p-4">
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                {(
-                  [
-                    ["auto", "Auto"],
-                    ["light", "Light"],
-                    ["dark", "Dark"],
-                    ["voyager", "Voyager"],
-                    ["positron", "Positron"],
-                    ["darkmatter", "Dark Matter"],
-                    ["satellite", "Satellite"],
-                  ] as [MapStyle, string][]
-                ).map(([v, l]) => {
-                  const k = v === "auto" ? (theme === "dark" ? "darkmatter" : "voyager") : v;
-                  const on = mapStyle === v;
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+                {/* Auto Mode Option */}
+                <button
+                  type="button"
+                  onClick={() => setMapStyle("auto")}
+                  className={`overflow-hidden rounded-2xl border transition-all text-left flex flex-col justify-between ${
+                    mapStyle === "auto"
+                      ? "border-[#D2F801] ring-2 ring-[#D2F801]/30 shadow-md scale-[1.02]"
+                      : "border-border/60 hover:border-border opacity-85 hover:opacity-100 bg-card"
+                  }`}
+                >
+                  <div className="relative aspect-video bg-gradient-to-br from-indigo-500/20 via-purple-500/20 to-pink-500/20 overflow-hidden flex items-center justify-center p-3">
+                    <span className="rounded-full bg-card/80 px-2.5 py-1 text-xs font-semibold shadow-xs">
+                      {theme === "dark" ? "Auto (Dark)" : "Auto (Liberty)"}
+                    </span>
+                  </div>
+                  <div
+                    className={`px-3 py-2 text-xs font-semibold ${
+                      mapStyle === "auto" ? "bg-[#D2F801] text-[#161616]" : "bg-card/90"
+                    }`}
+                  >
+                    <span>Auto ({t(lang, "theme")})</span>
+                  </div>
+                </button>
+
+                {/* 6 Official OpenFreeMap Styles */}
+                {STYLE_ORDER.map((id) => {
+                  const opt = OPENFREEMAP_STYLES[id];
+                  const on = mapStyle === id;
                   return (
                     <button
-                      key={v}
+                      key={id}
                       type="button"
-                      onClick={() => setMapStyle(v)}
-                      className={`overflow-hidden rounded-2xl border transition-all text-left ${
+                      onClick={() => setMapStyle(id)}
+                      className={`overflow-hidden rounded-2xl border transition-all text-left flex flex-col justify-between ${
                         on
                           ? "border-[#D2F801] ring-2 ring-[#D2F801]/30 shadow-md scale-[1.02]"
-                          : "border-border/60 hover:border-border opacity-85 hover:opacity-100"
+                          : "border-border/60 hover:border-border opacity-85 hover:opacity-100 bg-card"
                       }`}
                     >
-                      <div className="relative aspect-video bg-muted overflow-hidden">
-                        <img
-                          src={tile(TILES[k].base)}
-                          alt=""
-                          className="absolute inset-0 h-full w-full object-cover"
-                          loading="lazy"
-                        />
-                        <img
-                          src={tile(TILES[k].labels)}
-                          alt=""
-                          className="absolute inset-0 h-full w-full object-cover"
-                          loading="lazy"
-                        />
+                      <div
+                        className="relative aspect-video overflow-hidden flex items-center justify-center p-2"
+                        style={{ background: opt.gradient }}
+                      >
+                        {opt.is3D && (
+                          <span className="rounded-full bg-black/60 px-2 py-0.5 text-[10px] font-bold text-white shadow-xs">
+                            3D
+                          </span>
+                        )}
                       </div>
                       <div
-                        className={`px-2.5 py-1.5 text-xs font-semibold ${
+                        className={`px-3 py-2 text-xs font-semibold flex items-center justify-between ${
                           on ? "bg-[#D2F801] text-[#161616]" : "bg-card/90"
                         }`}
                       >
-                        {["auto", "light", "dark", "satellite"].includes(v) ? t(lang, v) : l}
+                        <span>{lang === "th" ? opt.nameTh : opt.name}</span>
+                        {opt.is3D && <span className="text-[10px] opacity-75">3D</span>}
                       </div>
                     </button>
                   );

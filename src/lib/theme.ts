@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
+import type { OpenFreeMapStyleId } from "@/lib/map/types";
+import { OPENFREEMAP_STYLES, resolveDefaultMapStyle } from "@/lib/map/styles";
 
 export type Theme = "light" | "dark";
-export type MapStyle = "auto" | "light" | "dark" | "voyager" | "positron" | "darkmatter" | "satellite";
+export type MapStyle = "auto" | OpenFreeMapStyleId;
 const TKEY = "strafe-theme";
 const MKEY = "strafe-map";
 const EVT = "strafe-theme-change";
@@ -16,7 +18,13 @@ function readTheme(): Theme {
 function readMap(): MapStyle {
   if (typeof localStorage === "undefined") return "auto";
   const v = localStorage.getItem(MKEY);
-  return v === "light" || v === "dark" || v === "voyager" || v === "positron" || v === "darkmatter" || v === "satellite" ? v : "auto";
+  if (v === "auto") return "auto";
+  if (v && v in OPENFREEMAP_STYLES) return v as OpenFreeMapStyleId;
+  // Fallbacks for legacy values
+  if (v === "darkmatter") return "dark";
+  if (v === "voyager") return "liberty";
+  if (v === "light") return "positron";
+  return "auto";
 }
 
 export function useTheme() {
@@ -54,11 +62,14 @@ export function useMapStyle() {
   return [style, setStyle] as const;
 }
 
-/** Resolved tile style: auto follows the app theme. */
-export function useResolvedMapStyle(): "light" | "dark" | "voyager" | "positron" | "darkmatter" | "satellite" {
+/** Resolved tile style: auto follows the app theme (Dark in dark mode, Liberty in light mode). */
+export function useResolvedMapStyle(): OpenFreeMapStyleId {
   const [theme] = useTheme();
   const [style] = useMapStyle();
-  return style === "auto" ? (theme === "dark" ? "darkmatter" : "voyager") : style;
+  if (style === "auto") {
+    return resolveDefaultMapStyle(theme === "dark");
+  }
+  return style;
 }
 
 /* ---------- Core Brand Palette + Liquid Glass ---------- */

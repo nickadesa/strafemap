@@ -368,17 +368,12 @@
 .pin-guess { background: #d2f801; box-shadow: 0 0 0 2px #161616; }
 .pin-guess-2 { background: #a855f7; box-shadow: 0 0 0 2px #ffffff; }
 .pin-target { background: #d2f801; box-shadow: 0 0 0 2px #161616; }
-.leaflet-container {
+.maplibregl-map {
   font-family: var(--font-sans);
   background: var(--color-background);
   isolation: isolate;
   transform: translateZ(0);
 }
-/* Apple Maps Floating Controls on Right */
-.leaflet-bottom.leaflet-right .leaflet-control-zoom {
-  margin: 0 16px 72px 0 !important;
-}
-.hide-zoom-controls .leaflet-control-zoom { display: none !important; }
 @media (max-width: 639px) {
   .game-logo { gap: 5px; }
   .game-logo > span:first-child { width: 24px; height: 24px; flex-shrink: 0; }
@@ -386,61 +381,10 @@
   .game-hud:has(button) { grid-template-columns: minmax(0, max-content) auto auto auto; }
 }
 /* Native OS crosshair */
-.leaflet-container.crosshair { cursor: crosshair; }
+.maplibregl-map.crosshair, .maplibregl-map.crosshair .maplibregl-canvas { cursor: crosshair; }
 .bot-label { background: var(--color-card); color: var(--color-foreground); border: 1px solid var(--color-border); border-radius: 9999px; font-weight: 600; font-size: 11px; padding: 2px 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.25); }
 
 /* Static clean trajectory line on reveal (no flashing animation) */
-.leaflet-interactive.trajectory-line {
-  stroke-linecap: round;
-}
-
-/* Apple Maps Vertical Floating Capsule Zoom Controls */
-.leaflet-touch .leaflet-bar, .leaflet-bar {
-  border: none !important;
-  box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.28) !important;
-  background: rgba(255, 255, 255, 0.88) !important;
-  backdrop-filter: blur(28px) saturate(190%) !important;
-  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
-  border: 1px solid rgba(0, 0, 0, 0.12) !important;
-  border-radius: 9999px !important;
-  overflow: hidden !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0 !important;
-}
-.dark .leaflet-touch .leaflet-bar, .dark .leaflet-bar {
-  background: rgba(28, 28, 30, 0.85) !important;
-  border: 1px solid rgba(255, 255, 255, 0.16) !important;
-  box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.6) !important;
-}
-.leaflet-bar a, .leaflet-touch .leaflet-bar a {
-  width: 44px !important;
-  height: 44px !important;
-  line-height: 44px !important;
-  border: none !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  color: var(--color-foreground) !important;
-  font-size: 20px !important;
-  font-weight: 500 !important;
-  transition: background-color 150ms ease, transform 200ms var(--ease-spring) !important;
-}
-.leaflet-bar a:first-child {
-  border-bottom: 1px solid rgba(120, 120, 128, 0.18) !important;
-}
-.leaflet-bar a:hover {
-  background: rgba(0, 0, 0, 0.06) !important;
-}
-.dark .leaflet-bar a:hover {
-  background: rgba(255, 255, 255, 0.1) !important;
-}
-.leaflet-bar a:active {
-  transform: scale(0.92) !important;
-}
-.leaflet-bar a.leaflet-disabled {
-  opacity: 0.3 !important;
-  pointer-events: none !important;
-}
 
 /* Fluid motion */
 :root { --ease-spring: cubic-bezier(0.32, 0.72, 0, 1); }
@@ -455,7 +399,7 @@ button:not(.btn), [role="button"] { transition: transform 380ms var(--ease-sprin
 .rise-in { animation: rise-in 480ms var(--ease-spring) both; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; }
-  .btn:active, button:active, .leaflet-bar a:active { transform: none !important; }
+  .btn:active, button:active { transform: none !important; }
 }
 
 /* Pin drop + compact attribution */
@@ -463,11 +407,6 @@ button:not(.btn), [role="button"] { transition: transform 380ms var(--ease-sprin
 .pin-wrap .pin { display: block; width: 18px; height: 18px; }
 @keyframes pin-drop { 0% { transform: translateY(-28px) scale(0.6); opacity: 0; } 55% { transform: translateY(0) scale(1.15, 0.85); opacity: 1; } 75% { transform: translateY(-5px) scale(0.95, 1.05); } 100% { transform: none; } }
 .pin-drop { animation: pin-drop 420ms var(--ease-spring) both; }
-.leaflet-control-attribution { font-size: 9px !important; line-height: 1.4; padding: 1px 6px !important; border-radius: 9999px 0 0 0; background: color-mix(in oklab, var(--color-card) 70%, transparent) !important; color: var(--color-muted-foreground) !important; }
-.leaflet-control-attribution a { color: inherit !important; }
-@media (max-width: 640px) {
-  .leaflet-control-attribution { max-width: calc(100vw - 32px); white-space: normal; font-size: 7px !important; border-radius: 4px !important; margin: 0 4px 4px 0 !important; }
-}
 
 /* Unslop: sunken segmented control + quiet chip + mono readout */
 @utility seg {
@@ -516,10 +455,15 @@ button:not(.btn), [role="button"] { transition: transform 380ms var(--ease-sprin
 .clue-pill:active { transform: none !important; }
 .clue-body {
   box-sizing: border-box; max-width: 100%;
-  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; column-gap: 8px;
 }
-.clue-full { width: min(350px, calc(100vw - 24px)); padding: 12px 14px 14px; column-gap: 12px; }
-.clue-compact { width: max-content; min-width: 170px; padding: 3px 10px 3px 3px; min-height: 38px; }
+.clue-full {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; column-gap: 12px;
+  width: min(350px, calc(100vw - 24px)); padding: 12px 14px 14px;
+}
+.clue-compact {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: auto; max-width: 100%; padding: 3px 10px 3px 4px; min-height: 38px;
+}
 .clue-top-label {
   grid-column: 1 / -1;
   text-align: center;
@@ -533,10 +477,9 @@ button:not(.btn), [role="button"] { transition: transform 380ms var(--ease-sprin
 .clue-details { grid-column: 1 / -1; margin-top: 6px; text-align: center; }
 .clue-name {
   min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  text-align: center; justify-self: center; width: 100%; padding: 0 4px;
-  font-size: 14px; font-weight: 600; line-height: 20px;
+  text-align: center; font-size: 14px; font-weight: 600; line-height: 20px;
 }
-.clue-controls { display: inline-flex; align-items: center; justify-content: flex-end; gap: 6px; flex: none; justify-self: end; }
+.clue-controls { display: inline-flex; align-items: center; justify-content: flex-end; gap: 6px; flex: none; }
 .clue-timer { min-width: 32px; padding: 0 5px; text-align: center; font-size: 10px; line-height: 20px; border: 1px solid var(--color-border); border-radius: 999px; background: var(--color-muted); }
 .clue-chevron { display: inline-grid; place-items: center; width: 18px; height: 18px; flex-shrink: 0; }
 .clue-badge { display: grid; place-items: center; align-self: center; line-height: 0; transform-origin: left top; }
@@ -573,7 +516,6 @@ html[data-glass="rim"] .glass-plate {
     padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)) !important;
   }
 }
-.reveal-on .leaflet-control-zoom { opacity: 0; pointer-events: none; }
 
 /* Prevent right-click save, dragging, and long-press callout on icons, svgs, and flags */
 img, svg, .select-none {

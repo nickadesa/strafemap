@@ -63,7 +63,11 @@ export function SmartClue({
     lastFlag.current = newFlag;
     const changing = previous.current !== null && previous.current !== collapsed;
     previous.current = collapsed;
-    if (!changing || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!changing || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      card.style.width = "";
+      card.style.height = "";
+      return;
+    }
 
     const cardAnimation = card.animate(
       [
@@ -72,6 +76,10 @@ export function SmartClue({
       ],
       { duration: DURATION, easing: EASE },
     );
+    cardAnimation.onfinish = () => {
+      card.style.width = "";
+      card.style.height = "";
+    };
     const dx = oldFlag.left - newFlag.left;
     const dy = oldFlag.top - newFlag.top;
     const flagAnimation = badge.animate(
@@ -115,14 +123,14 @@ export function SmartClue({
           </div>
         )}
 
-        <div className={`flex items-center justify-start ${collapsed ? "min-w-8" : "min-w-14"}`}>
+        <div className={collapsed ? "shrink-0 flex items-center" : "flex min-w-14 items-center justify-start"}>
           <div ref={flag} className="clue-badge">
             <Flag country={country} size={collapsed ? 32 : 56} />
           </div>
         </div>
 
         {collapsed ? (
-          <span className="clue-name" title={name}>
+          <span className="clue-name px-1 text-sm font-semibold max-w-[170px] truncate text-center" title={name}>
             {name}
           </span>
         ) : (
@@ -134,7 +142,7 @@ export function SmartClue({
           </div>
         )}
 
-        <span className={`clue-controls ${collapsed ? "" : "min-w-14"}`}>
+        <span className={`clue-controls ${collapsed ? "shrink-0" : "min-w-14"}`}>
           {seconds !== null && <span className="readout clue-timer">{seconds}s</span>}
           <span className="clue-chevron">
             <svg

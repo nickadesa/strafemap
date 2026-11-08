@@ -12,7 +12,7 @@ import { LiquidGlassDefs } from "@/components/LiquidGlassDefs";
 import { t, type Lang } from "@/lib/i18n";
 import { useSettings } from "@/lib/game/storage";
 import appCss from "../styles.css?url";
-import leafletCss from "leaflet/dist/leaflet.css?url";
+import maplibreCss from "maplibre-gl/dist/maplibre-gl.css?url";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
@@ -24,12 +24,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "stylesheet", href: leafletCss },
+      { rel: "stylesheet", href: maplibreCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Inter:wght@400;500;600&family=Inter+Tight:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
       },
       { rel: "icon", href: "/favicon.ico" },
     ],

@@ -68,6 +68,7 @@ import {
   Globe,
   LogOut,
   X,
+  Layers,
 } from "lucide-react";
 import {
   Drawer,
@@ -77,6 +78,10 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { useCountUp } from "@/lib/use-count-up";
+import { MapStyleSelector } from "@/components/MapStyleSelector";
+import { useMapStyle, useResolvedMapStyle } from "@/lib/theme";
+import { STYLE_ORDER } from "@/lib/map/styles";
+import type { OpenFreeMapStyleId } from "@/lib/map/types";
 
 function AnimatedRoundPoints({ points }: { points: number }) {
   const animated = useCountUp(points, 750, true);
@@ -192,6 +197,13 @@ function GamePage() {
   const rawLimit: number = search.time !== undefined ? search.time : isHardcore ? 15 : 30;
   const unlimitedTime = rawLimit === 0 && mode !== "shrink";
   const limit = unlimitedTime ? 0 : rawLimit || 30;
+  const [, setMapStylePref] = useMapStyle();
+  const resolvedStyle = useResolvedMapStyle();
+  const [activeMapStyle, setActiveMapStyle] = useState<OpenFreeMapStyleId>(resolvedStyle);
+
+  useEffect(() => {
+    setActiveMapStyle(resolvedStyle);
+  }, [resolvedStyle]);
 
   // 7 Deadly Sins state
   const [activeSin, setActiveSin] = useState<SinCardId>(search.sin ?? "pride");
@@ -909,6 +921,7 @@ function GamePage() {
           hideZoomButtons={settings.hideZoomButtons}
           maxZoomLimit={mode === "sins" && activeSin === "sloth" ? 5 : 12}
           countryFocusCenter={mode === "findCity" && phase === "guess" ? { lat: loc.lat, lng: loc.lng } : null}
+          activeStyle={activeMapStyle}
         />
       </div>
 
@@ -973,6 +986,16 @@ function GamePage() {
             {tr("end")}
           </Button>
         )}
+
+        {/* Floating OpenFreeMap Style Selector Button */}
+        <MapStyleSelector
+          lang={lang}
+          currentStyle={activeMapStyle}
+          onSelectStyle={(s) => {
+            setActiveMapStyle(s);
+            setMapStylePref(s);
+          }}
+        />
       </div>
 
       {/* Top-Center: Floating SmartClue Pill */}
@@ -1028,7 +1051,7 @@ function GamePage() {
           </div>
         )}
 
-        <div className="absolute inset-x-3 bottom-6 z-[500] flex justify-center">
+        <div className={`absolute inset-x-3 bottom-6 z-[500] flex justify-center ${gameMenuOpen ? "opacity-0 pointer-events-none" : "transition-opacity duration-200"}`}>
           {phase === "guess" ? (
             mode === "quiz" ? (
               <div className="plate w-full max-w-xl p-4">
@@ -1371,6 +1394,33 @@ function GamePage() {
                   {!settings.hideZoomButtons ? t(lang, "on") : t(lang, "off")}
                 </span>
               </button>
+
+              {/* Map Style Selector Row */}
+              <div className="flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-medium">
+                <div className="flex items-center gap-2.5">
+                  <Layers className="h-4 w-4 text-muted-foreground" />
+                  <span>{t(lang, "mapStyle") || "Map Style"}</span>
+                </div>
+                <div className="flex items-center gap-1 overflow-x-auto max-w-[210px] no-scrollbar">
+                  {STYLE_ORDER.map((id) => (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => {
+                        setActiveMapStyle(id);
+                        setMapStylePref(id);
+                      }}
+                      className={`rounded-lg px-2 py-1 text-[11px] font-semibold transition-colors shrink-0 ${
+                        activeMapStyle === id
+                          ? "bg-[#D2F801] text-black"
+                          : "bg-card text-muted-foreground hover:bg-card/80"
+                      }`}
+                    >
+                      {id === "3d" ? "3D" : id.slice(0, 4)}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
               {/* Language Switch */}
               <div className="flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-medium">
