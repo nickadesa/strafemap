@@ -1410,13 +1410,13 @@ function GamePage() {
                         setActiveMapStyle(id);
                         setMapStylePref(id);
                       }}
-                      className={`rounded-lg px-2 py-1 text-[11px] font-semibold transition-colors shrink-0 ${
+                      className={`rounded-lg px-2.5 py-1 text-[11px] font-semibold transition-colors shrink-0 ${
                         activeMapStyle === id
-                          ? "bg-[#D2F801] text-black"
+                          ? "bg-foreground text-background"
                           : "bg-card text-muted-foreground hover:bg-card/80"
                       }`}
                     >
-                      {id === "3d" ? "3D" : id.slice(0, 4)}
+                      {id === "apple-light" ? "Apple L" : id === "apple-dark" ? "Apple D" : id.slice(0, 4)}
                     </button>
                   ))}
                 </div>

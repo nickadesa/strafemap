@@ -33,6 +33,8 @@ export class MapLibreAdapter implements IMapAdapter {
   private isBlind: boolean;
   private onPick: (p: LatLng) => void;
   private isLocked = false;
+  private is3D = false;
+  private on3DChange?: ((is3D: boolean) => void) | undefined;
   private guessPos: LatLng | null = null;
   private guess2Pos: LatLng | null = null;
   private targetPos: LatLng | null = null;
@@ -48,7 +50,9 @@ export class MapLibreAdapter implements IMapAdapter {
   constructor(opts: MapAdapterInitOptions) {
     this.currentStyleId = opts.initialStyle;
     this.isBlind = opts.blind;
+    this.is3D = Boolean(opts.initial3D);
     this.onPick = opts.onPick;
+    this.on3DChange = opts.on3DChange;
     this.init(opts);
   }
 
@@ -57,8 +61,7 @@ export class MapLibreAdapter implements IMapAdapter {
       const mod = await import("maplibre-gl");
       this.ml = mod.default ?? mod;
 
-      const styleDef = OPENFREEMAP_STYLES[this.currentStyleId] ?? OPENFREEMAP_STYLES.dark;
-      const is3D = Boolean(styleDef.is3D);
+      const styleDef = OPENFREEMAP_STYLES[this.currentStyleId] ?? OPENFREEMAP_STYLES["apple-light"];
 
       const m = new this.ml.Map({
         container: opts.container,
@@ -68,8 +71,8 @@ export class MapLibreAdapter implements IMapAdapter {
         minZoom: 1.2,
         maxZoom: opts.maxZoomLimit ?? 12,
         bearing: 0,
-        pitch: is3D ? 35 : 0,
-        maxPitch: is3D ? 50 : 0,
+        pitch: this.is3D ? 45 : 0,
+        maxPitch: 50,
         attributionControl: false,
         dragRotate: false,
         pitchWithRotate: false,
@@ -92,14 +95,24 @@ export class MapLibreAdapter implements IMapAdapter {
       this.map = m;
 
       m.on("load", () => {
+        this.applyApplePaletteOverrides();
         this.applyBlindLayers();
         this.setupGeoJSONSources();
+        this.setup3DBuildingLayer();
+        if (this.is3D) {
+          this.apply3DState(true);
+        }
         opts.onReady?.();
       });
 
       m.on("style.load", () => {
+        this.applyApplePaletteOverrides();
         this.applyBlindLayers();
         this.setupGeoJSONSources();
+        this.setup3DBuildingLayer();
+        if (this.is3D) {
+          this.apply3DState(true);
+        }
         this.reapplyDrawings();
       });
 
@@ -196,6 +209,125 @@ export class MapLibreAdapter implements IMapAdapter {
     }
   }
 
+  private applyApplePaletteOverrides() {
+    if (!this.map) return;
+    const style = this.map.getStyle();
+    if (!style || !style.layers) return;
+
+    const isAppleLight = this.currentStyleId === "apple-light";
+    const isAppleDark = this.currentStyleId === "apple-dark";
+
+    if (!isAppleLight && !isAppleDark) return;
+
+    for (const layer of style.layers) {
+      const id = layer.id;
+      try {
+        if (isAppleLight) {
+          // Apple Maps Light Palette
+          if (id === "background") {
+            this.map.setPaintProperty(id, "background-color", "#F4F3F0");
+          } else if (id.includes("water") && !id.includes("label")) {
+            if (layer.type === "fill") {
+              this.map.setPaintProperty(id, "fill-color", "#AADAFF");
+            } else if (layer.type === "line") {
+              this.map.setPaintProperty(id, "line-color", "#AADAFF");
+            }
+          } else if (id.includes("park") || id.includes("wood") || id.includes("green")) {
+            if (layer.type === "fill") {
+              this.map.setPaintProperty(id, "fill-color", "#DDF0DB");
+              this.map.setPaintProperty(id, "fill-opacity", 0.7);
+            }
+          } else if (id.includes("building") && id !== "building-3d") {
+            if (layer.type === "fill") {
+              this.map.setPaintProperty(id, "fill-color", "#EBE9E4");
+            }
+          } else if (id.includes("highway") || id.includes("road")) {
+            if (layer.type === "line") {
+              this.map.setPaintProperty(id, "line-color", "#FFFFFF");
+            }
+          }
+        } else if (isAppleDark) {
+          // Apple Maps Dark Palette
+          if (id === "background") {
+            this.map.setPaintProperty(id, "background-color", "#24252B");
+          } else if (id.includes("water") && !id.includes("label")) {
+            if (layer.type === "fill") {
+              this.map.setPaintProperty(id, "fill-color", "#192634");
+            } else if (layer.type === "line") {
+              this.map.setPaintProperty(id, "line-color", "#192634");
+            }
+          } else if (id.includes("park") || id.includes("wood") || id.includes("green")) {
+            if (layer.type === "fill") {
+              this.map.setPaintProperty(id, "fill-color", "#273A2B");
+              this.map.setPaintProperty(id, "fill-opacity", 0.75);
+            }
+          } else if (id.includes("building") && id !== "building-3d") {
+            if (layer.type === "fill") {
+              this.map.setPaintProperty(id, "fill-color", "#2F3138");
+            }
+          } else if (id.includes("highway") || id.includes("road")) {
+            if (layer.type === "line") {
+              this.map.setPaintProperty(id, "line-color", "#3B3D45");
+            }
+          }
+        }
+      } catch {}
+    }
+  }
+
+  private setup3DBuildingLayer() {
+    if (!this.map) return;
+    if (this.map.getLayer("building-3d")) return;
+
+    const isDark = this.currentStyleId === "apple-dark" || this.currentStyleId === "dark" || this.currentStyleId === "fiord";
+    const buildingColor = isDark ? "#2C2E35" : "#E2DFD9";
+
+    // Add fill-extrusion layer if source "openmaptiles" exists
+    if (this.map.getSource("openmaptiles")) {
+      try {
+        this.map.addLayer({
+          id: "building-3d",
+          type: "fill-extrusion",
+          source: "openmaptiles",
+          "source-layer": "building",
+          minzoom: 13,
+          paint: {
+            "fill-extrusion-color": buildingColor,
+            "fill-extrusion-height": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              13,
+              0,
+              14.5,
+              ["coalesce", ["get", "render_height"], ["get", "height"], 15],
+            ],
+            "fill-extrusion-base": ["coalesce", ["get", "render_min_height"], ["get", "min_height"], 0],
+            "fill-extrusion-opacity": this.is3D ? 0.88 : 0,
+          },
+        });
+      } catch (err) {
+        console.warn("[MapLibre] Could not create building-3d layer:", err);
+      }
+    }
+  }
+
+  private apply3DState(enabled: boolean) {
+    if (!this.map) return;
+
+    if (this.map.getLayer("building-3d")) {
+      this.map.setPaintProperty("building-3d", "fill-extrusion-opacity", enabled ? 0.88 : 0);
+    }
+
+    try {
+      if (enabled) {
+        this.map.setProjection({ type: "globe" });
+      } else {
+        this.map.setProjection({ type: "mercator" });
+      }
+    } catch {}
+  }
+
   private applyBlindLayers() {
     if (!this.map) return;
     const style = this.map.getStyle();
@@ -289,15 +421,14 @@ export class MapLibreAdapter implements IMapAdapter {
     if (this.currentStyleId === styleId) return;
 
     this.currentStyleId = styleId;
-    const styleDef = OPENFREEMAP_STYLES[styleId] ?? OPENFREEMAP_STYLES.dark;
-    const is3D = Boolean(styleDef.is3D);
+    const styleDef = OPENFREEMAP_STYLES[styleId] ?? OPENFREEMAP_STYLES["apple-light"];
 
     // Save camera before switching style
     const center = this.map.getCenter();
     const zoom = this.map.getZoom();
-    const pitch = is3D ? 35 : 0;
+    const pitch = this.is3D ? 45 : 0;
 
-    this.map.setMaxPitch(is3D ? 50 : 0);
+    this.map.setMaxPitch(50);
     this.map.dragRotate?.disable();
     this.map.touchPitch?.disable();
     this.map.touchZoomRotate?.disableRotation();
@@ -308,10 +439,38 @@ export class MapLibreAdapter implements IMapAdapter {
 
     this.map.once("style.load", () => {
       this.map.jumpTo({ center, zoom, bearing: 0, pitch });
+      this.applyApplePaletteOverrides();
       this.applyBlindLayers();
       this.setupGeoJSONSources();
+      this.setup3DBuildingLayer();
+      this.apply3DState(this.is3D);
       this.reapplyDrawings();
     });
+  }
+
+  public toggle3D(): boolean {
+    const next = !this.is3D;
+    this.set3D(next);
+    return next;
+  }
+
+  public set3D(enabled: boolean): void {
+    this.is3D = enabled;
+    if (!this.map) return;
+
+    this.apply3DState(enabled);
+
+    this.map.easeTo({
+      pitch: enabled ? 45 : 0,
+      bearing: 0,
+      duration: 600,
+    });
+
+    this.on3DChange?.(enabled);
+  }
+
+  public getIs3D(): boolean {
+    return this.is3D;
   }
 
   public setBlind(blind: boolean): void {

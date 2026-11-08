@@ -383,25 +383,25 @@ function SettingsPage() {
                   onClick={() => setMapStyle("auto")}
                   className={`overflow-hidden rounded-2xl border transition-all text-left flex flex-col justify-between ${
                     mapStyle === "auto"
-                      ? "border-[#D2F801] ring-2 ring-[#D2F801]/30 shadow-md scale-[1.02]"
+                      ? "border-foreground ring-2 ring-foreground/20 shadow-md scale-[1.02]"
                       : "border-border/60 hover:border-border opacity-85 hover:opacity-100 bg-card"
                   }`}
                 >
-                  <div className="relative aspect-video bg-gradient-to-br from-indigo-500/20 via-purple-500/20 to-pink-500/20 overflow-hidden flex items-center justify-center p-3">
+                  <div className="relative aspect-video bg-gradient-to-br from-blue-500/20 via-sky-500/20 to-indigo-500/20 overflow-hidden flex items-center justify-center p-3">
                     <span className="rounded-full bg-card/80 px-2.5 py-1 text-xs font-semibold shadow-xs">
-                      {theme === "dark" ? "Auto (Dark)" : "Auto (Liberty)"}
+                      {theme === "dark" ? "Auto (Apple Dark)" : "Auto (Apple Light)"}
                     </span>
                   </div>
                   <div
                     className={`px-3 py-2 text-xs font-semibold ${
-                      mapStyle === "auto" ? "bg-[#D2F801] text-[#161616]" : "bg-card/90"
+                      mapStyle === "auto" ? "bg-foreground text-background" : "bg-card/90"
                     }`}
                   >
                     <span>Auto ({t(lang, "theme")})</span>
                   </div>
                 </button>
 
-                {/* 6 Official OpenFreeMap Styles */}
+                {/* Available Styles */}
                 {STYLE_ORDER.map((id) => {
                   const opt = OPENFREEMAP_STYLES[id];
                   const on = mapStyle === id;
@@ -412,27 +412,20 @@ function SettingsPage() {
                       onClick={() => setMapStyle(id)}
                       className={`overflow-hidden rounded-2xl border transition-all text-left flex flex-col justify-between ${
                         on
-                          ? "border-[#D2F801] ring-2 ring-[#D2F801]/30 shadow-md scale-[1.02]"
+                          ? "border-foreground ring-2 ring-foreground/20 shadow-md scale-[1.02]"
                           : "border-border/60 hover:border-border opacity-85 hover:opacity-100 bg-card"
                       }`}
                     >
                       <div
                         className="relative aspect-video overflow-hidden flex items-center justify-center p-2"
                         style={{ background: opt.gradient }}
-                      >
-                        {opt.is3D && (
-                          <span className="rounded-full bg-black/60 px-2 py-0.5 text-[10px] font-bold text-white shadow-xs">
-                            3D
-                          </span>
-                        )}
-                      </div>
+                      />
                       <div
                         className={`px-3 py-2 text-xs font-semibold flex items-center justify-between ${
-                          on ? "bg-[#D2F801] text-[#161616]" : "bg-card/90"
+                          on ? "bg-foreground text-background" : "bg-card/90"
                         }`}
                       >
                         <span>{lang === "th" ? opt.nameTh : opt.name}</span>
-                        {opt.is3D && <span className="text-[10px] opacity-75">3D</span>}
                       </div>
                     </button>
                   );

@@ -1,12 +1,13 @@
 import type { LatLng } from "@/lib/game/engine";
 
 export type OpenFreeMapStyleId =
-  | "dark"
+  | "apple-light"
+  | "apple-dark"
   | "liberty"
   | "positron"
+  | "dark"
   | "bright"
-  | "fiord"
-  | "3d";
+  | "fiord";
 
 export interface MapOther extends LatLng {
   label: string;
@@ -29,7 +30,9 @@ export interface MapAdapterInitOptions {
   initialStyle: OpenFreeMapStyleId;
   blind: boolean;
   maxZoomLimit?: number;
+  initial3D?: boolean;
   onPick: (p: LatLng) => void;
+  on3DChange?: (is3D: boolean) => void;
   onReady?: () => void;
   onError?: (err: unknown) => void;
 }
@@ -52,5 +55,8 @@ export interface IMapAdapter {
   resetView(countryFocusCenter?: LatLng | null): void;
   zoomIn(): void;
   zoomOut(): void;
+  toggle3D(): boolean;
+  set3D(enabled: boolean): void;
+  getIs3D(): boolean;
   destroy(): void;
 }

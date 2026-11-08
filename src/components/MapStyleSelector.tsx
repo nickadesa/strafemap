@@ -50,7 +50,7 @@ export function MapStyleSelector({
           <DrawerHeader className="p-0 text-left">
             <div className="flex items-center justify-between pb-3 border-b border-border">
               <div className="flex items-center gap-2">
-                <div className="grid h-7 w-7 place-items-center rounded-full bg-[#D2F801] text-black">
+                <div className="grid h-7 w-7 place-items-center rounded-full bg-foreground text-background">
                   <Layers className="h-4 w-4" />
                 </div>
                 <div>
@@ -81,12 +81,12 @@ export function MapStyleSelector({
                   onClick={() => handleSelect(id)}
                   className={`relative flex flex-col justify-between overflow-hidden rounded-2xl border p-3 text-left transition-all active:scale-[0.98] ${
                     isActive
-                      ? "border-[#D2F801] ring-2 ring-[#D2F801]/30 shadow-md"
+                      ? "border-foreground ring-2 ring-foreground/20 shadow-md"
                       : "border-border/70 hover:border-border hover:bg-muted/30"
                   }`}
                   style={{
                     background: isActive
-                      ? "color-mix(in oklab, var(--color-card) 92%, var(--color-primary))"
+                      ? "color-mix(in oklab, var(--color-card) 94%, var(--color-foreground))"
                       : "var(--color-card)",
                   }}
                 >
@@ -95,14 +95,8 @@ export function MapStyleSelector({
                     className="relative mb-2 h-16 w-full rounded-xl overflow-hidden border border-black/10 dark:border-white/10 shadow-inner flex items-center justify-center"
                     style={{ background: opt.gradient }}
                   >
-                    {opt.is3D && (
-                      <span className="flex items-center gap-1 rounded-full bg-black/60 backdrop-blur-sm px-2 py-0.5 text-[10px] font-bold text-white shadow">
-                        <Box className="h-3 w-3 text-[#f59e0b]" />
-                        3D Tilt
-                      </span>
-                    )}
                     {isActive && (
-                      <div className="absolute right-2 top-2 grid h-5 w-5 place-items-center rounded-full bg-[#D2F801] text-black shadow-sm">
+                      <div className="absolute right-2 top-2 grid h-5 w-5 place-items-center rounded-full bg-foreground text-background shadow-sm">
                         <Check className="h-3 w-3 stroke-[3]" />
                       </div>
                     )}

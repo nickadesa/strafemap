@@ -224,10 +224,10 @@
   &:disabled { opacity: 0.4; pointer-events: none; }
 }
 @utility btn-primary {
-  background: #d2f801;
-  color: #000000;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
-  &:hover { background: #dcff1a; box-shadow: 0 2px 4px rgb(0 0 0 / 0.12); }
+  background: var(--color-foreground);
+  color: var(--color-background);
+  box-shadow: 0 2px 8px -1px rgb(0 0 0 / 0.16);
+  &:hover { opacity: 0.92; box-shadow: 0 4px 12px -2px rgb(0 0 0 / 0.22); }
 }
 @utility btn-ink {
   background: var(--color-secondary);
@@ -245,7 +245,7 @@
   color: var(--color-card-foreground);
   border-radius: var(--radius-squircle, 1.75rem);
   border: 1px solid var(--color-border);
-  box-shadow: 0 4px 20px -2px rgb(0 0 0 / 0.05);
+  box-shadow: 0 4px 24px -4px rgb(0 0 0 / 0.08);
   transition: transform 300ms var(--ease-spring), box-shadow 300ms ease;
 }
 .dark .plate {

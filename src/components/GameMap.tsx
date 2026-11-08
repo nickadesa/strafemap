@@ -56,6 +56,7 @@ export function GameMap({
   const cb = useRef({ onPick, locked, guess });
   cb.current = { onPick, locked, guess };
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const [is3DActive, setIs3DActive] = useState(false);
 
   const resolvedStyle = useResolvedMapStyle();
   const currentStyleId = activeStyle ?? resolvedStyle;
@@ -69,7 +70,9 @@ export function GameMap({
       initialStyle: currentStyleId,
       blind,
       maxZoomLimit,
+      initial3D: false,
       onPick: (p) => cb.current.onPick(p),
+      on3DChange: (active) => setIs3DActive(active),
       onReady: () => setStatus("ready"),
       onError: () => setStatus("error"),
     });
@@ -141,25 +144,41 @@ export function GameMap({
     <div className="relative h-full w-full overflow-hidden select-none">
       <div ref={el} className="h-full w-full" />
 
-      {/* Floating Apple-Style Zoom Controls on Right */}
+      {/* Floating Apple Maps 3D/2D and Zoom Controls on Right */}
       {!hideZoomButtons && status === "ready" && (
-        <div className="absolute right-4 bottom-18 z-20 flex flex-col overflow-hidden rounded-full glass-plate shadow-lg border border-border/80">
+        <div className="absolute right-4 bottom-18 z-20 flex flex-col items-center gap-2">
+          {/* Apple 3D Toggle Capsule */}
           <button
             type="button"
-            onClick={() => adapter.current?.zoomIn()}
-            aria-label="Zoom in"
-            className="grid h-10 w-10 place-items-center text-foreground hover:bg-muted/80 active:scale-95 transition-all border-b border-border/40"
+            onClick={() => adapter.current?.toggle3D()}
+            aria-label={is3DActive ? "Switch to 2D flat view" : "Switch to 3D perspective & globe view"}
+            title={is3DActive ? "2D View" : "3D View"}
+            className={`flex h-10 w-10 items-center justify-center rounded-full glass-plate shadow-lg border border-border/80 text-xs font-bold transition-all active:scale-95 ${
+              is3DActive ? "bg-foreground text-background font-extrabold" : "text-foreground hover:bg-muted/80"
+            }`}
           >
-            <Plus className="h-4 w-4" />
+            {is3DActive ? "2D" : "3D"}
           </button>
-          <button
-            type="button"
-            onClick={() => adapter.current?.zoomOut()}
-            aria-label="Zoom out"
-            className="grid h-10 w-10 place-items-center text-foreground hover:bg-muted/80 active:scale-95 transition-all"
-          >
-            <Minus className="h-4 w-4" />
-          </button>
+
+          {/* Zoom In / Zoom Out Capsule */}
+          <div className="flex flex-col overflow-hidden rounded-full glass-plate shadow-lg border border-border/80">
+            <button
+              type="button"
+              onClick={() => adapter.current?.zoomIn()}
+              aria-label="Zoom in"
+              className="grid h-10 w-10 place-items-center text-foreground hover:bg-muted/80 active:scale-95 transition-all border-b border-border/40"
+            >
+              <Plus className="h-4 w-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => adapter.current?.zoomOut()}
+              aria-label="Zoom out"
+              className="grid h-10 w-10 place-items-center text-foreground hover:bg-muted/80 active:scale-95 transition-all"
+            >
+              <Minus className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       )}
 

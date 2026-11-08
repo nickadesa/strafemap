@@ -1,15 +1,25 @@
 import type { MapStyleOption, OpenFreeMapStyleId } from "./types";
 
 export const OPENFREEMAP_STYLES: Record<OpenFreeMapStyleId, MapStyleOption> = {
-  dark: {
-    id: "dark",
-    name: "Dark",
-    nameTh: "โหมดมืด (Dark)",
+  "apple-light": {
+    id: "apple-light",
+    name: "Apple Light",
+    nameTh: "แอปเปิ้ล ไลท์ (Apple Light)",
+    url: "https://tiles.openfreemap.org/styles/positron",
+    accent: "#0071E3",
+    gradient: "linear-gradient(135deg, #aadaff 0%, #d8ecf8 40%, #f4f3f0 100%)",
+    description: "Official Apple Maps light palette with sky-blue waters, sandy land, and crisp typography.",
+    descriptionTh: "สไตล์ Apple Maps โทนสว่าง สีน้ำทะเลฟ้าสดใส แผ่นดินสีเบจนวลตา และเส้นถนนคมชัด",
+  },
+  "apple-dark": {
+    id: "apple-dark",
+    name: "Apple Dark",
+    nameTh: "แอปเปิ้ล ดาร์ก (Apple Dark)",
     url: "https://tiles.openfreemap.org/styles/dark",
-    accent: "#D2F801",
-    gradient: "linear-gradient(135deg, #111113 0%, #1c1c20 50%, #282830 100%)",
-    description: "Sleek dark basemap designed for neon pins and night navigation.",
-    descriptionTh: "แผนที่โทนมืดสนิท สบายตา เหมาะสำหรับหมุดสีนีออนและแสงสลัว",
+    accent: "#0A84FF",
+    gradient: "linear-gradient(135deg, #192634 0%, #20222a 50%, #292a32 100%)",
+    description: "Official Apple Maps dark mode with midnight deep-blue oceans and charcoal land.",
+    descriptionTh: "สไตล์ Apple Maps โหมดมืด น้ำทะเลสีกรมท่าลึก แผ่นดินสีถ่านชาร์โคล เรียบหรู",
   },
   liberty: {
     id: "liberty",
@@ -31,6 +41,16 @@ export const OPENFREEMAP_STYLES: Record<OpenFreeMapStyleId, MapStyleOption> = {
     description: "Minimalist grayscale light map emphasizing geometry and pins.",
     descriptionTh: "แผนที่โทนขาวเทาสะอาดตา ไร้สิ่งรบกวน เน้นเห็นหมุดปักอย่างเด่นชัด",
   },
+  dark: {
+    id: "dark",
+    name: "Dark Minimal",
+    nameTh: "ดาร์ก มินิมอล (Dark)",
+    url: "https://tiles.openfreemap.org/styles/dark",
+    accent: "#D2F801",
+    gradient: "linear-gradient(135deg, #111113 0%, #1c1c20 50%, #282830 100%)",
+    description: "Sleek dark basemap designed for neon pins and night navigation.",
+    descriptionTh: "แผนที่โทนมืดสนิท สบายตา เหมาะสำหรับหมุดสีนีออนและแสงสลัว",
+  },
   bright: {
     id: "bright",
     name: "Bright",
@@ -51,31 +71,21 @@ export const OPENFREEMAP_STYLES: Record<OpenFreeMapStyleId, MapStyleOption> = {
     description: "Cool Nordic deep slate tones with crisp contrast.",
     descriptionTh: "แผนที่โทนสีน้ำเงินคราม-หินชนวนสไตล์นอร์ดิก คมชัดและทันสมัย",
   },
-  "3d": {
-    id: "3d",
-    name: "3D Buildings",
-    nameTh: "สามมิติ (3D Buildings)",
-    url: "https://tiles.openfreemap.org/styles/3d",
-    accent: "#f59e0b",
-    gradient: "linear-gradient(135deg, #374151 0%, #1f2937 50%, #111827 100%)",
-    description: "3D architectural building extrusions with tilt and perspective view.",
-    descriptionTh: "แสดงอาคารและสิ่งก่อสร้างแบบ 3 มิติ รองรับการเอียงปรับมุมมองได้อิสระ",
-    is3D: true,
-  },
 };
 
 export const STYLE_ORDER: OpenFreeMapStyleId[] = [
-  "dark",
+  "apple-light",
+  "apple-dark",
   "liberty",
   "positron",
+  "dark",
   "bright",
   "fiord",
-  "3d",
 ];
 
 export const MAP_ATTRIBUTION =
   '<a href="https://openfreemap.org" target="_blank" rel="noopener noreferrer">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>';
 
 export function resolveDefaultMapStyle(isDark: boolean): OpenFreeMapStyleId {
-  return isDark ? "dark" : "liberty";
+  return isDark ? "apple-dark" : "apple-light";
 }
