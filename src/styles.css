@@ -76,11 +76,71 @@
   --destructive: oklch(0.56 0.19 25);
   --destructive-foreground: #ffffff;
   --warning: oklch(0.87 0.17 90);
-  --positive: oklch(0.64 0.16 145);
   --border: rgb(60 60 67 / 0.12);
   --input: #d1d1d6;
   --ring: #d2f801;
   --link: #000000;
+
+  /* ── Transitions.dev Motion Tokens Scale ────────────────────────── */
+  --duration-stagger: 40ms;
+  --duration-micro: 80ms;
+  --duration-quick: 150ms;
+  --duration-fast: 250ms;
+  --duration-medium: 350ms;
+  --duration-slow: 400ms;
+  --duration-very-slow: 500ms;
+
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: ease-in-out;
+  --ease-out: ease-out;
+  --ease-linear: linear;
+  --ease-bounce: cubic-bezier(0.34, 1.36, 0.64, 1);
+  --ease-bounce-strong: cubic-bezier(0.34, 3.85, 0.64, 1);
+
+  --distance-micro: 4px;
+  --distance-small: 6px;
+  --distance-base: 8px;
+  --distance-medium: 12px;
+  --distance-large: 30px;
+
+  --scale-large: 0.96;
+  --scale-medium: 0.97;
+  --scale-small: 0.98;
+  --scale-tiny: 0.99;
+
+  --blur-small: 2px;
+  --blur-medium: 3px;
+  --blur-large: 8px;
+
+  /* Transitions.dev Specific Pattern Tokens */
+  --page-slide-dur: var(--duration-fast);
+  --page-fade-dur: var(--duration-fast);
+  --page-slide-distance: var(--distance-base);
+  --page-blur: var(--blur-medium);
+  --page-slide-ease: var(--ease-smooth-out);
+  --page-fade-ease: var(--ease-smooth-out);
+
+  --tabs-dur: var(--duration-fast);
+  --tabs-ease: var(--ease-smooth-out);
+
+  --digit-dur: 600ms;
+  --digit-exit-dur: 155ms;
+  --digit-distance: 24px;
+  --digit-exit-distance: 18px;
+  --digit-start-scale: 0.85;
+  --digit-peak: 1.12;
+  --digit-lift: -3px;
+  --digit-blur: 2px;
+  --digit-stagger: 35ms;
+
+  --tilt-perspective: 1000px;
+  --tilt-return: 1000ms;
+  --tilt-return-ease: var(--ease-smooth-out);
+  --tilt-follow: 400ms;
+  --tilt-follow-ease: var(--ease-smooth-out);
+  --tilt-glare-opacity: 0.32;
+  --tilt-glare-fade: 300ms;
+  --tilt-glare-ease: var(--ease-smooth-out);
 }
 
 /* Light theme: Dark neutral text & badges on light surfaces (no green text) */
@@ -527,4 +587,181 @@ img, svg, .select-none {
 img[draggable="false"] {
   -webkit-user-drag: none;
   user-drag: none;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Transitions.dev — Production CSS Patterns
+   ──────────────────────────────────────────────────────────────── */
+
+/* 1. Page Slide & Cross-Blur (08-page-side-by-side) */
+.t-page-slide {
+  position: relative;
+  width: 100%;
+}
+.t-page-slide .t-page {
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(var(--page-slide-distance, 8px));
+  filter: blur(var(--page-blur, 3px));
+  transition:
+    opacity var(--page-fade-dur, 250ms) var(--page-fade-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    transform var(--page-slide-dur, 250ms) var(--page-slide-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    filter var(--page-slide-dur, 250ms) var(--page-slide-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  will-change: opacity, transform, filter;
+}
+.t-page-slide .t-page.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* 2. Sliding Tabs Segmented Control (16-tabs-sliding) */
+.t-tabs {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 9999px;
+  background: var(--color-muted);
+  border: 1px solid var(--color-border);
+}
+.dark .t-tabs {
+  background: rgb(24 24 27 / 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgb(255 255 255 / 0.08);
+}
+.t-tab {
+  position: relative;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  height: 32px;
+  padding: 4px 14px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-muted-foreground);
+  cursor: pointer;
+  border-radius: 9999px;
+  z-index: 1;
+  transition: color var(--tabs-dur, 250ms) var(--tabs-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  user-select: none;
+  white-space: nowrap;
+}
+.t-tab:not([aria-selected="true"]):hover,
+.t-tab[aria-selected="true"] {
+  color: var(--color-foreground);
+}
+.t-tabs-pill {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: 32px;
+  width: 0;
+  background: var(--color-card);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+  border-radius: 9999px;
+  transform: translateX(0);
+  transition:
+    transform var(--tabs-dur, 250ms) var(--tabs-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    width var(--tabs-dur, 250ms) var(--tabs-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  will-change: transform, width;
+  z-index: 0;
+  pointer-events: none;
+}
+.dark .t-tabs-pill {
+  background: rgb(44 44 46);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* 3. Number Pop-in Drum Roll (02-number-pop-in) */
+.t-digit-group {
+  display: inline-flex;
+  align-items: baseline;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.t-digit-slot {
+  position: relative;
+  display: inline-block;
+  overflow: visible;
+}
+.t-digit {
+  display: inline-block;
+}
+.t-digit-old {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+.t-digit-group.is-animating .t-digit:not([data-same]) {
+  animation: t-digit-in var(--digit-dur, 600ms) cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.t-digit-group.is-animating .t-digit-old {
+  animation: t-digit-out var(--digit-exit-dur, 155ms) cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.t-digit-slot[data-stagger="1"] .t-digit { animation-delay: var(--digit-stagger, 35ms); }
+.t-digit-slot[data-stagger="2"] .t-digit { animation-delay: calc(var(--digit-stagger, 35ms) * 2); }
+
+@keyframes t-digit-in {
+  0% { transform: translateY(var(--digit-distance, 24px)) scale(var(--digit-start-scale, 0.85)); opacity: 0; filter: blur(var(--digit-blur, 2px)); }
+  35% { transform: translateY(var(--digit-lift, -3px)) scale(var(--digit-peak, 1.12)); opacity: 1; filter: blur(0); }
+  65% { transform: translateY(1px) scale(0.98); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
+}
+@keyframes t-digit-out {
+  0% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
+  100% { transform: translateY(calc(var(--digit-exit-distance, 18px) * -1)) scale(var(--digit-start-scale, 0.85)); opacity: 0; filter: blur(var(--digit-blur, 2px)); }
+}
+
+/* 4. 3D Card Hover Tilt (19-card-tilt) */
+.t-tilt {
+  touch-action: manipulation;
+}
+.t-tilt-card {
+  position: relative;
+  transform:
+    perspective(var(--tilt-perspective, 1000px))
+    rotateX(var(--tilt-rx, 0deg))
+    rotateY(var(--tilt-ry, 0deg));
+  transform-style: preserve-3d;
+  transition: transform var(--tilt-return, 1000ms) var(--tilt-return-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  will-change: transform;
+}
+.t-tilt-card.is-tilting {
+  transition: transform var(--tilt-follow, 400ms) var(--tilt-follow-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+.t-tilt-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle 120px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
+      rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.05) 52%, rgba(255, 255, 255, 0) 84%);
+  transition: opacity var(--tilt-glare-fade, 300ms) var(--tilt-glare-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+.t-tilt.is-hover .t-tilt-glare {
+  opacity: var(--tilt-glare-opacity, 0.32);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-page-slide .t-page,
+  .t-tabs-pill,
+  .t-tab,
+  .t-digit-group .t-digit,
+  .t-digit-group .t-digit-old,
+  .t-tilt-card,
+  .t-tilt-glare {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
 }

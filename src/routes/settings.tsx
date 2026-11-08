@@ -8,6 +8,7 @@ import { LANGS, t, type Lang } from "@/lib/i18n";
 import { OPENFREEMAP_STYLES, STYLE_ORDER } from "@/lib/map/styles";
 import { Flag } from "@/components/Flag";
 import { Button } from "@/components/ui/button";
+import { SlidingTabs } from "@/components/ui/SlidingTabs";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -187,19 +188,15 @@ function SettingsPage() {
                   </div>
                   <span className="text-sm font-medium">{t(lang, "units")}</span>
                 </div>
-                <div className="seg">
-                  {(["km", "mi"] as const).map((u) => (
-                    <button
-                      key={u}
-                      type="button"
-                      onClick={() => update({ unit: u })}
-                      data-on={s.unit === u}
-                      className="seg-item !px-3.5 !py-1 text-xs uppercase font-medium"
-                    >
-                      {u}
-                    </button>
-                  ))}
-                </div>
+                <SlidingTabs
+                  tabs={[
+                    { id: "km", label: "KM" },
+                    { id: "mi", label: "MI" },
+                  ]}
+                  activeId={s.unit}
+                  onChange={(u) => update({ unit: u as "km" | "mi" })}
+                  className="scale-90 origin-right"
+                />
               </div>
 
               {/* Sound Effects */}
@@ -251,23 +248,16 @@ function SettingsPage() {
                   </div>
                   <span className="text-sm font-medium">{t(lang, "promptAutoCollapse")}</span>
                 </div>
-                <div className="seg">
-                  {([
-                    [0, t(lang, "off")],
-                    [3, "3s"],
-                    [5, "5s"],
-                  ] as const).map(([sec, lbl]) => (
-                    <button
-                      key={sec}
-                      type="button"
-                      onClick={() => update({ promptCollapseSeconds: sec })}
-                      data-on={s.promptCollapseSeconds === sec}
-                      className="seg-item !px-3 !py-1 text-xs font-medium"
-                    >
-                      {lbl}
-                    </button>
-                  ))}
-                </div>
+                <SlidingTabs
+                  tabs={[
+                    { id: 0, label: t(lang, "off") },
+                    { id: 3, label: "3s" },
+                    { id: 5, label: "5s" },
+                  ]}
+                  activeId={s.promptCollapseSeconds}
+                  onChange={(sec) => update({ promptCollapseSeconds: sec as 0 | 3 | 5 })}
+                  className="scale-90 origin-right"
+                />
               </div>
 
               {/* Emoji Reactions Toggle */}
@@ -325,19 +315,15 @@ function SettingsPage() {
                   </div>
                   <span className="text-sm font-medium">{t(lang, "theme")}</span>
                 </div>
-                <div className="seg">
-                  {(["dark", "light"] as const).map((th) => (
-                    <button
-                      key={th}
-                      type="button"
-                      onClick={() => setTheme(th)}
-                      data-on={theme === th}
-                      className="seg-item !px-3.5 !py-1 text-xs capitalize font-medium"
-                    >
-                      {t(lang, th)}
-                    </button>
-                  ))}
-                </div>
+                <SlidingTabs
+                  tabs={[
+                    { id: "dark", label: t(lang, "dark") },
+                    { id: "light", label: t(lang, "light") },
+                  ]}
+                  activeId={theme}
+                  onChange={(th) => setTheme(th as "dark" | "light")}
+                  className="scale-90 origin-right"
+                />
               </div>
 
               {/* Liquid Glass Preset */}
@@ -348,19 +334,15 @@ function SettingsPage() {
                   </div>
                   <span className="text-sm font-medium">{t(lang, "liquidGlass")}</span>
                 </div>
-                <div className="seg">
-                  {GLASS_PRESETS.map((g) => (
-                    <button
-                      key={g}
-                      type="button"
-                      onClick={() => setGlass(g)}
-                      className="seg-item !px-2.5 !py-1 text-xs capitalize font-medium"
-                      data-on={glass === g}
-                    >
-                      {t(lang, g === "off" ? "glassOff" : g)}
-                    </button>
-                  ))}
-                </div>
+                <SlidingTabs
+                  tabs={GLASS_PRESETS.map((g) => ({
+                    id: g,
+                    label: t(lang, g === "off" ? "glassOff" : g),
+                  }))}
+                  activeId={glass}
+                  onChange={(g) => setGlass(g as typeof glass)}
+                  className="scale-90 origin-right"
+                />
               </div>
             </div>
           </section>

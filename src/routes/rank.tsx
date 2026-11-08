@@ -31,6 +31,9 @@ import {
 } from "@/components/ui/drawer";
 import { useCountUp } from "@/lib/use-count-up";
 import { ScrollFade, useScrollFade } from "@/components/ScrollFade";
+import { SlidingTabs } from "@/components/ui/SlidingTabs";
+import { NumberPopIn } from "@/components/ui/NumberPopIn";
+import { TiltCard } from "@/components/ui/TiltCard";
 
 type RankTab = "play" | "leaderboard" | "guide";
 
@@ -78,38 +81,18 @@ function RankPage() {
       <main className="rail-offset flex min-h-screen items-start justify-center px-3 pt-6 pb-12 md:px-6 md:py-10">
         <div className="w-full max-w-4xl">
           <div className="mb-6 flex justify-center">
-            <div className="seg">
-              <button
-                onClick={() => {
-                  buzz(6);
-                  setTab("play");
-                }}
-                data-on={tab === "play"}
-                className="seg-item"
-              >
-                {t(lang, "play")}
-              </button>
-              <button
-                onClick={() => {
-                  buzz(6);
-                  setTab("leaderboard");
-                }}
-                data-on={tab === "leaderboard"}
-                className="seg-item"
-              >
-                {t(lang, "leaderboard")}
-              </button>
-              <button
-                onClick={() => {
-                  buzz(6);
-                  setTab("guide");
-                }}
-                data-on={tab === "guide"}
-                className="seg-item"
-              >
-                {t(lang, "guide")}
-              </button>
-            </div>
+            <SlidingTabs
+              tabs={[
+                { id: "play", label: t(lang, "play") },
+                { id: "leaderboard", label: t(lang, "leaderboard") },
+                { id: "guide", label: t(lang, "guide") },
+              ]}
+              activeId={tab}
+              onChange={(nextTab) => {
+                buzz(6);
+                setTab(nextTab as RankTab);
+              }}
+            />
           </div>
 
           {tab === "play" && (
@@ -196,7 +179,9 @@ function PlayTab({
               {current.name}
             </h2>
             <p className="mt-0.5 text-base font-semibold sm:text-lg">
-              <span className="readout text-[#D2F801]">{animatedRp.toLocaleString()}</span>{" "}
+              <span className="readout text-[#D2F801]">
+                <NumberPopIn value={rank.rp} />
+              </span>{" "}
               <span className="text-xs text-muted-foreground">RP</span>
             </p>
           </div>

@@ -37,6 +37,7 @@ import {
   SymbolChartBar,
   SymbolPerson,
 } from "@/components/SFSymbols";
+import { SlidingTabs } from "@/components/ui/SlidingTabs";
 import {
   BarChart3,
   Check,
@@ -108,56 +109,51 @@ function ProfileHubPage() {
         <div className="mx-auto max-w-4xl space-y-6">
           {/* Top Navigation Segmented Bar */}
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="seg">
-              <button
-                type="button"
-                onClick={() => {
-                  buzz(6);
-                  setTab("overview");
-                }}
-                data-on={tab === "overview"}
-                className="seg-item flex items-center gap-1.5"
-              >
-                <SymbolPerson fill={tab === "overview"} className="h-4 w-4" />
-                {t(lang, "profile")}
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  buzz(6);
-                  setTab("feed");
-                }}
-                data-on={tab === "feed"}
-                className="seg-item flex items-center gap-1.5"
-              >
-                <SymbolCompass fill={tab === "feed"} className="h-4 w-4" />
-                {t(lang, "feedAndClan").split("&")[0]?.trim() || "Feed"}
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  buzz(6);
-                  setTab("clan");
-                }}
-                data-on={tab === "clan"}
-                className="seg-item flex items-center gap-1.5"
-              >
-                <SymbolShield fill={tab === "clan"} className="h-4 w-4" />
-                {t(lang, "clan")}
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  buzz(6);
-                  setTab("shop");
-                }}
-                data-on={tab === "shop" || tab === "gacha"}
-                className="seg-item flex items-center gap-1.5"
-              >
-                <SymbolBag fill={tab === "shop" || tab === "gacha"} className="h-4 w-4" />
-                Shop
-              </button>
-            </div>
+            <SlidingTabs
+              tabs={[
+                {
+                  id: "overview",
+                  label: (
+                    <span className="flex items-center gap-1.5">
+                      <SymbolPerson fill={tab === "overview"} className="h-4 w-4" />
+                      {t(lang, "profile")}
+                    </span>
+                  ),
+                },
+                {
+                  id: "feed",
+                  label: (
+                    <span className="flex items-center gap-1.5">
+                      <SymbolCompass fill={tab === "feed"} className="h-4 w-4" />
+                      {t(lang, "feedAndClan").split("&")[0]?.trim() || "Feed"}
+                    </span>
+                  ),
+                },
+                {
+                  id: "clan",
+                  label: (
+                    <span className="flex items-center gap-1.5">
+                      <SymbolShield fill={tab === "clan"} className="h-4 w-4" />
+                      {t(lang, "clan")}
+                    </span>
+                  ),
+                },
+                {
+                  id: "shop",
+                  label: (
+                    <span className="flex items-center gap-1.5">
+                      <SymbolBag fill={tab === "shop" || tab === "gacha"} className="h-4 w-4" />
+                      Shop
+                    </span>
+                  ),
+                },
+              ]}
+              activeId={tab === "gacha" ? "shop" : tab}
+              onChange={(nextTab) => {
+                buzz(6);
+                setTab(nextTab as typeof tab);
+              }}
+            />
           </div>
 
           {tab === "overview" && (

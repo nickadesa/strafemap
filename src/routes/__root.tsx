@@ -3,6 +3,7 @@ import {
   Outlet,
   Scripts,
   createRootRouteWithContext,
+  useRouterState,
 } from "@tanstack/react-router";
 import { QueryClientProvider, type QueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -59,6 +60,7 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const [settings] = useSettings();
   const lang = (settings.language ?? "en") as Lang;
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   useLocaleTypography();
 
@@ -72,7 +74,9 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <div key={pathname} className="t-page">
+        <Outlet />
+      </div>
     </QueryClientProvider>
   );
 }

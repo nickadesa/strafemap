@@ -82,10 +82,11 @@ import { MapStyleSelector } from "@/components/MapStyleSelector";
 import { useMapStyle, useResolvedMapStyle } from "@/lib/theme";
 import { STYLE_ORDER } from "@/lib/map/styles";
 import type { OpenFreeMapStyleId } from "@/lib/map/types";
+import { NumberPopIn } from "@/components/ui/NumberPopIn";
 
 function AnimatedRoundPoints({ points }: { points: number }) {
   const animated = useCountUp(points, 750, true);
-  return <>{animated.toLocaleString()}</>;
+  return <NumberPopIn value={animated.toLocaleString()} />;
 }
 
 function formatCompactScore(score: number): string {
@@ -98,10 +99,8 @@ function formatCompactScore(score: number): string {
 
 function AnimatedTotalScore({ total, compact = false }: { total: number; compact?: boolean }) {
   const animated = useCountUp(total, 950, true);
-  if (compact && animated >= 10000) {
-    return <>{formatCompactScore(animated)}</>;
-  }
-  return <>{animated.toLocaleString()}</>;
+  const formatted = compact && animated >= 10000 ? formatCompactScore(animated) : animated.toLocaleString();
+  return <NumberPopIn value={formatted} />;
 }
 
 const AUTO_NEXT_SECONDS = 5;

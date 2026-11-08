@@ -25,6 +25,8 @@ import {
   DrawerDescription,
   DrawerClose,
 } from "@/components/ui/drawer";
+import { TiltCard } from "@/components/ui/TiltCard";
+import { SlidingTabs } from "@/components/ui/SlidingTabs";
 
 const modeIds: Mode[] = (Object.keys(MODES) as Mode[]).filter((m) => m !== "quiz");
 
@@ -160,125 +162,131 @@ function PlayHub() {
           {/* Core Match Modes: Ranked Mode, Party Mode, Daily Challenge */}
           <section className="grid gap-4 lg:grid-cols-3">
             {/* Ranked Mode Card */}
-            <div className="plate flex flex-col justify-between p-5">
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="rounded-full bg-muted px-3 py-0.5 text-xs font-semibold text-foreground">
-                    <Medal className="mr-1 inline h-3.5 w-3.5" />
-                    {t(lang, "rankedTag")}
-                  </span>
-                  <span className="readout text-xs font-semibold text-muted-foreground">
-                    {rank.rp.toLocaleString()} RP
-                  </span>
-                </div>
-                <div className="mt-3 flex items-center gap-3">
-                  <RankBanner rp={rank.rp} championPosition={rank.championPosition} width={58} />
-                  <div>
-                    <h2 className="font-display text-2xl">{t(lang, "playRanked")}</h2>
-                    <p className="text-xs font-semibold" style={{ color: curRank.tier.accent }}>
-                      {curRank.name}
-                    </p>
+            <TiltCard className="h-full">
+              <div className="plate flex h-full flex-col justify-between p-5">
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="rounded-full bg-muted px-3 py-0.5 text-xs font-semibold text-foreground">
+                      <Medal className="mr-1 inline h-3.5 w-3.5" />
+                      {t(lang, "rankedTag")}
+                    </span>
+                    <span className="readout text-xs font-semibold text-muted-foreground">
+                      {rank.rp.toLocaleString()} RP
+                    </span>
                   </div>
-                </div>
-                <p className="mt-2 text-xs text-muted-foreground">{t(lang, "rankedModeBlurb")}</p>
-              </div>
-              <div className="mt-4 flex flex-wrap items-center gap-2">
-                <Link
-                  to="/game/$mode"
-                  params={{ mode: "classic" }}
-                  search={{ ranked: 1 }}
-                  className="btn btn-primary inline-flex px-5 py-2 text-xs font-semibold"
-                >
-                  {t(lang, "playRanked")}
-                </Link>
-                <Link to="/rank" className="btn btn-outline inline-flex px-4 py-2 text-xs">
-                  Ladder
-                </Link>
-              </div>
-            </div>
-
-            {/* Party Mode Card */}
-            <div className="plate flex flex-col justify-between p-5">
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="rounded-full bg-muted px-3 py-0.5 text-xs font-semibold text-foreground">
-                    <Users className="mr-1 inline h-3.5 w-3.5" />
-                    {t(lang, "partyTag")} · 2–16 Players
-                  </span>
-                  <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold">
-                    Voice Chat
-                  </span>
-                </div>
-                <h2 className="font-display mt-3 text-2xl">{t(lang, "party")} Lobby</h2>
-                <p className="mt-1.5 text-xs text-muted-foreground">
-                  Host custom rooms for 2–16 players with Unlimited ∞ timer, More Modes selection, Invite Friends & Voice Chat.
-                </p>
-              </div>
-              <div className="mt-4">
-                <Link
-                  to="/party"
-                  className="btn btn-primary inline-flex px-6 py-2 text-xs font-semibold"
-                >
-                  {t(lang, "openParty")}
-                </Link>
-              </div>
-            </div>
-
-            {/* Daily Challenge & Streak Card */}
-            <div className="plate flex flex-col justify-between p-5">
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="rounded-full bg-muted px-3 py-0.5 text-xs font-semibold text-muted-foreground">
-                    <Calendar className="mr-1 inline h-3.5 w-3.5" />
-                    {t(lang, "daily")} · {todayKey()}
-                  </span>
-                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#D2F801]">
-                    <Flame className="h-3.5 w-3.5" /> {dailyStreak}d Streak
-                  </span>
-                </div>
-                <h2 className="font-display mt-3 text-2xl">Global Daily Briefing</h2>
-                <div className="mt-2 grid grid-cols-7 gap-1 text-center">
-                  {[1, 2, 3, 4, 5, 6, 7].map((d) => (
-                    <div
-                      key={d}
-                      className={`rounded-lg border py-1 text-[10px] font-semibold ${
-                        d <= dailyStreak
-                          ? "border-foreground/60 bg-[#D2F801]/15 text-[#D2F801]"
-                          : "border-border text-muted-foreground"
-                      }`}
-                    >
-                      D{d}
+                  <div className="mt-3 flex items-center gap-3">
+                    <RankBanner rp={rank.rp} championPosition={rank.championPosition} width={58} />
+                    <div>
+                      <h2 className="font-display text-2xl">{t(lang, "playRanked")}</h2>
+                      <p className="text-xs font-semibold" style={{ color: curRank.tier.accent }}>
+                        {curRank.name}
+                      </p>
                     </div>
-                  ))}
-                </div>
-              </div>
-
-              {hasPlayedDailyToday ? (
-                <div className="mt-4 space-y-1.5">
-                  <div className="rounded-xl border border-border bg-[#D2F801]/10 px-3 py-1 text-center text-xs font-semibold text-[#D2F801]">
-                    Completed Today ({todayDailyRecord?.score?.toLocaleString()} pts)
                   </div>
-                  <button
-                    type="button"
-                    disabled
-                    className="btn btn-outline inline-flex px-4 py-1.5 text-xs font-semibold opacity-60 cursor-not-allowed"
-                  >
-                    Played Today
-                  </button>
+                  <p className="mt-2 text-xs text-muted-foreground">{t(lang, "rankedModeBlurb")}</p>
                 </div>
-              ) : (
-                <div className="mt-4">
+                <div className="mt-4 flex flex-wrap items-center gap-2">
                   <Link
                     to="/game/$mode"
                     params={{ mode: "classic" }}
-                    search={{ daily: 1 }}
-                    className="btn btn-primary inline-flex px-6 py-2 text-xs font-semibold"
+                    search={{ ranked: 1 }}
+                    className="btn btn-primary inline-flex px-5 py-2 text-xs font-semibold"
                   >
-                    Play Daily Seed
+                    {t(lang, "playRanked")}
+                  </Link>
+                  <Link to="/rank" className="btn btn-outline inline-flex px-4 py-2 text-xs">
+                    Ladder
                   </Link>
                 </div>
-              )}
-            </div>
+              </div>
+            </TiltCard>
+
+            {/* Party Mode Card */}
+            <TiltCard className="h-full">
+              <div className="plate flex h-full flex-col justify-between p-5">
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="rounded-full bg-muted px-3 py-0.5 text-xs font-semibold text-foreground">
+                      <Users className="mr-1 inline h-3.5 w-3.5" />
+                      {t(lang, "partyTag")} · 2–16 Players
+                    </span>
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold">
+                      Voice Chat
+                    </span>
+                  </div>
+                  <h2 className="font-display mt-3 text-2xl">{t(lang, "party")} Lobby</h2>
+                  <p className="mt-1.5 text-xs text-muted-foreground">
+                    Host custom rooms for 2–16 players with Unlimited ∞ timer, More Modes selection, Invite Friends & Voice Chat.
+                  </p>
+                </div>
+                <div className="mt-4">
+                  <Link
+                    to="/party"
+                    className="btn btn-primary inline-flex px-6 py-2 text-xs font-semibold"
+                  >
+                    {t(lang, "openParty")}
+                  </Link>
+                </div>
+              </div>
+            </TiltCard>
+
+            {/* Daily Challenge & Streak Card */}
+            <TiltCard className="h-full">
+              <div className="plate flex h-full flex-col justify-between p-5">
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="rounded-full bg-muted px-3 py-0.5 text-xs font-semibold text-muted-foreground">
+                      <Calendar className="mr-1 inline h-3.5 w-3.5" />
+                      {t(lang, "daily")} · {todayKey()}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#D2F801]">
+                      <Flame className="h-3.5 w-3.5" /> {dailyStreak}d Streak
+                    </span>
+                  </div>
+                  <h2 className="font-display mt-3 text-2xl">Global Daily Briefing</h2>
+                  <div className="mt-2 grid grid-cols-7 gap-1 text-center">
+                    {[1, 2, 3, 4, 5, 6, 7].map((d) => (
+                      <div
+                        key={d}
+                        className={`rounded-lg border py-1 text-[10px] font-semibold ${
+                          d <= dailyStreak
+                            ? "border-foreground/60 bg-[#D2F801]/15 text-[#D2F801]"
+                            : "border-border text-muted-foreground"
+                        }`}
+                      >
+                        D{d}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {hasPlayedDailyToday ? (
+                  <div className="mt-4 space-y-1.5">
+                    <div className="rounded-xl border border-border bg-[#D2F801]/10 px-3 py-1 text-center text-xs font-semibold text-[#D2F801]">
+                      Completed Today ({todayDailyRecord?.score?.toLocaleString()} pts)
+                    </div>
+                    <button
+                      type="button"
+                      disabled
+                      className="btn btn-outline inline-flex px-4 py-1.5 text-xs font-semibold opacity-60 cursor-not-allowed"
+                    >
+                      Played Today
+                    </button>
+                  </div>
+                ) : (
+                  <div className="mt-4">
+                    <Link
+                      to="/game/$mode"
+                      params={{ mode: "classic" }}
+                      search={{ daily: 1 }}
+                      className="btn btn-primary inline-flex px-6 py-2 text-xs font-semibold"
+                    >
+                      Play Daily Seed
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </TiltCard>
           </section>
 
           {/* Standalone Country Guess Trivia Banner */}
@@ -487,13 +495,12 @@ function PlayHub() {
                     <p className="mb-1.5 text-xs font-semibold text-muted-foreground">
                       {t(lang, "difficulty")}
                     </p>
-                    <div className="seg">
-                      {diffs.map((d) => (
-                        <Chip key={d} on={difficulty === d} onClick={() => setDiff(d)}>
-                          {t(lang, d)}
-                        </Chip>
-                      ))}
-                    </div>
+                    <SlidingTabs
+                      tabs={diffs.map((d) => ({ id: d, label: t(lang, d) }))}
+                      activeId={difficulty}
+                      onChange={(d) => setDiff(d as Difficulty)}
+                      className="scale-90 origin-left"
+                    />
                   </div>
 
                   {/* Time Per Round */}
@@ -501,13 +508,15 @@ function PlayHub() {
                     <p className="mb-1.5 text-xs font-semibold text-muted-foreground">
                       {t(lang, "timePerRound")}
                     </p>
-                    <div className="seg">
-                      {TIME_OPTIONS.map((tOpt) => (
-                        <Chip key={tOpt} on={time === tOpt} onClick={() => setTime(tOpt)}>
-                          {tOpt === 0 ? t(lang, "unlimited") : `${tOpt}s`}
-                        </Chip>
-                      ))}
-                    </div>
+                    <SlidingTabs
+                      tabs={TIME_OPTIONS.map((tOpt) => ({
+                        id: tOpt,
+                        label: tOpt === 0 ? t(lang, "unlimited") : `${tOpt}s`,
+                      }))}
+                      activeId={time}
+                      onChange={(tOpt) => setTime(tOpt as TimeLimit)}
+                      className="scale-90 origin-left"
+                    />
                   </div>
 
                   <label className="flex items-center gap-2 text-xs font-semibold">
