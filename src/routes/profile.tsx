@@ -59,25 +59,26 @@ import {
   Upload,
   UserPlus,
   Users,
+  Settings,
   X,
 } from "lucide-react";
 
-type ProfileTab = "overview" | "feed" | "clan" | "shop" | "gacha";
+type ProfileTab = "overview" | "achievements" | "stats" | "shop" | "gacha" | "feed" | "clan";
 
 export const Route = createFileRoute("/profile")({
   head: () => ({
     meta: [
-      { title: "Profile, Clan, Shop & Feed — STRAFE" },
-      { name: "description", content: "Your X-style STRAFE profile, Clan hub, Cosmetic Shop, and Social Feed." },
-      { property: "og:title", content: "Profile, Clan, Shop & Feed — STRAFE" },
-      { property: "og:description", content: "Your X-style STRAFE profile, Clan hub, Cosmetic Shop, and Social Feed." },
+      { title: "Profile, Shop, Achievements & Stats — STRAFE" },
+      { name: "description", content: "Your STRAFE profile, achievements progress, game stats, and cosmetic shop." },
+      { property: "og:title", content: "Profile, Shop, Achievements & Stats — STRAFE" },
+      { property: "og:description", content: "Your STRAFE profile, achievements progress, game stats, and cosmetic shop." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   validateSearch: (s: Record<string, unknown>): { tab?: ProfileTab } => {
     const tab = s["tab"];
-    if (tab === "overview" || tab === "feed" || tab === "clan" || tab === "shop" || tab === "gacha") return { tab };
+    if (tab === "overview" || tab === "achievements" || tab === "stats" || tab === "shop" || tab === "gacha" || tab === "feed" || tab === "clan") return { tab };
     return {};
   },
   component: ProfileHubPage,
@@ -108,7 +109,7 @@ function ProfileHubPage() {
   return (
     <div className="min-h-screen">
       <Sidebar />
-      <main className="rail-offset px-4 pb-12 pt-6 md:px-6 md:pt-8">
+      <main className="rail-offset px-4 pb-16 pt-6 md:px-6 md:pt-8">
         <div className="mx-auto max-w-4xl space-y-6">
           {/* Top Navigation Segmented Bar */}
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -119,7 +120,25 @@ function ProfileHubPage() {
                   label: (
                     <span className="flex items-center gap-1.5">
                       <SymbolPerson fill={tab === "overview"} className="h-4 w-4" />
-                      {t(lang, "profile")}
+                      {t(lang, "overview")}
+                    </span>
+                  ),
+                },
+                {
+                  id: "achievements",
+                  label: (
+                    <span className="flex items-center gap-1.5">
+                      <SymbolMedal fill={tab === "achievements"} className="h-4 w-4" />
+                      {t(lang, "achievements")}
+                    </span>
+                  ),
+                },
+                {
+                  id: "stats",
+                  label: (
+                    <span className="flex items-center gap-1.5">
+                      <SymbolChartBar fill={tab === "stats"} className="h-4 w-4" />
+                      {t(lang, "stats")}
                     </span>
                   ),
                 },
@@ -128,7 +147,7 @@ function ProfileHubPage() {
                   label: (
                     <span className="flex items-center gap-1.5">
                       <SymbolBag fill={tab === "shop" || tab === "gacha"} className="h-4 w-4" />
-                      Shop
+                      {t(lang, "shop")}
                     </span>
                   ),
                 },
@@ -136,31 +155,24 @@ function ProfileHubPage() {
               activeId={tab === "gacha" ? "shop" : tab === "clan" || tab === "feed" ? "overview" : tab}
               onChange={(nextTab) => {
                 buzz(6);
-                setTab(nextTab as typeof tab);
+                setTab(nextTab as ProfileTab);
               }}
             />
 
-            <div className="flex items-center gap-2 text-xs">
+            <div className="flex items-center gap-2">
               <Link
                 to="/community"
-                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 font-medium text-muted-foreground transition-colors hover:text-foreground active:scale-95"
+                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground active:scale-95"
               >
                 <SymbolCompass className="h-3.5 w-3.5" />
                 {t(lang, "community")}
               </Link>
               <Link
-                to="/stats"
-                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 font-medium text-muted-foreground transition-colors hover:text-foreground active:scale-95"
+                to="/settings"
+                className="inline-grid h-8 w-8 place-items-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:text-foreground active:scale-95"
+                title={t(lang, "settings")}
               >
-                <SymbolChartBar className="h-3.5 w-3.5" />
-                {t(lang, "stats")}
-              </Link>
-              <Link
-                to="/achievements"
-                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 font-medium text-muted-foreground transition-colors hover:text-foreground active:scale-95"
-              >
-                <SymbolMedal className="h-3.5 w-3.5" />
-                {t(lang, "achievements")}
+                <Settings className="h-4 w-4" />
               </Link>
             </div>
           </div>
@@ -187,6 +199,102 @@ function ProfileHubPage() {
             />
           )}
 
+          {tab === "achievements" && (
+            <div className="plate p-6 space-y-5">
+              <div className="flex items-center justify-between border-b border-border pb-4">
+                <div>
+                  <h2 className="text-xl font-bold text-foreground sm:text-2xl">{t(lang, "achievements")}</h2>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    {t(lang, "achUnlocked", { n: Object.keys(unlockedMap).length, total: ACH_ALL.length })}
+                  </p>
+                </div>
+                <Link to="/achievements" className="btn btn-primary text-xs font-semibold">
+                  Browse All 250 →
+                </Link>
+              </div>
+
+              <div className="h-2 overflow-hidden rounded-full bg-muted p-0.5">
+                <div
+                  className="h-full rounded-full transition-[width] duration-500"
+                  style={{
+                    width: `${(Object.keys(unlockedMap).length / ACH_ALL.length) * 100}%`,
+                    backgroundColor: "#D2F801",
+                  }}
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-6 sm:gap-3">
+                {ACH_ALL.slice(0, 12).map((a) => {
+                  const on = Boolean(unlockedMap[a.id]);
+                  return (
+                    <div
+                      key={a.id}
+                      className={`flex flex-col items-center gap-1.5 rounded-2xl border border-border/50 p-2.5 text-center transition-all ${
+                        on ? "bg-card/80" : "bg-card/25 opacity-50"
+                      }`}
+                    >
+                      <img
+                        src={on ? a.files.compact.unlocked : a.files.compact.locked}
+                        alt=""
+                        loading="lazy"
+                        className="aspect-[288/280] w-full"
+                      />
+                      <span className="line-clamp-1 text-[11px] font-medium text-foreground">{a.name}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {tab === "stats" && (
+            <div className="space-y-4">
+              <div className="plate p-6">
+                <div className="flex items-center justify-between border-b border-border pb-4 mb-5">
+                  <div>
+                    <h2 className="text-xl font-bold text-foreground sm:text-2xl">{t(lang, "stats")}</h2>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Review your performance, accuracy, and concentric velocity metrics.
+                    </p>
+                  </div>
+                  <Link to="/stats" className="btn btn-primary text-xs font-semibold">
+                    Detailed Stats →
+                  </Link>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4 mb-6">
+                  <div className="rounded-2xl border border-border bg-background/50 p-4">
+                    <p className="readout text-2xl font-bold text-foreground">{stats.games.toLocaleString()}</p>
+                    <p className="text-xs text-muted-foreground">{t(lang, "gamesLabel") || "Games"}</p>
+                  </div>
+                  <div className="rounded-2xl border border-border bg-background/50 p-4">
+                    <p className="readout text-2xl font-bold text-foreground">{stats.bestScore.toLocaleString()}</p>
+                    <p className="text-xs text-muted-foreground">{t(lang, "bestScore") || "Best score"}</p>
+                  </div>
+                  <div className="rounded-2xl border border-border bg-background/50 p-4">
+                    <p className="readout text-2xl font-bold text-foreground">{Math.round(stats.accuracy * 100)}%</p>
+                    <p className="text-xs text-muted-foreground">{t(lang, "accuracy") || "Accuracy"}</p>
+                  </div>
+                  <div className="rounded-2xl border border-border bg-background/50 p-4">
+                    <p className="readout text-2xl font-bold text-foreground">{stats.currentStreak}</p>
+                    <p className="text-xs text-muted-foreground">{t(lang, "currentStreak") || "Streak"}</p>
+                  </div>
+                </div>
+
+                <div className="flex justify-center py-2">
+                  <ActivityRings
+                    rounds={stats.rounds || 4}
+                    roundsTarget={10}
+                    accuracy={Math.round((stats.accuracy || 0.84) * 100)}
+                    streak={stats.currentStreak || 7}
+                    streakTarget={14}
+                    size={220}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
           {tab === "feed" && (
             <SocialFeedTab social={social} rank={rank} stats={stats} lang={lang} />
           )}
@@ -196,7 +304,7 @@ function ProfileHubPage() {
           )}
 
           {(tab === "shop" || tab === "gacha") && (
-            <CosmeticShopTab social={social} updateSocial={updateSocial} />
+            <CosmeticShopTab social={social} updateSocial={updateSocial} lang={lang} />
           )}
         </div>
       </main>
@@ -351,7 +459,7 @@ function XStyleProfileTab({
                 className="btn btn-outline !px-4 !py-2 text-xs font-semibold"
               >
                 <Edit3 className="h-3.5 w-3.5" />
-                {editing ? "Cancel" : "Edit Profile"}
+                {editing ? (t(lang, "cancel") || "Cancel") : t(lang, "editProfile")}
               </button>
             </div>
           </div>
@@ -775,9 +883,11 @@ function CosmeticLivePreview({
 function CosmeticShopTab({
   social,
   updateSocial,
+  lang,
 }: {
   social: ReturnType<typeof useSocialProfile>[0];
   updateSocial: ReturnType<typeof useSocialProfile>[1];
+  lang: Lang;
 }) {
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [previewItem, setPreviewItem] = useState<GachaItem | null>(null);
@@ -797,11 +907,11 @@ function CosmeticShopTab({
   };
 
   const categories = [
-    { id: "all", label: "All Items" },
-    { id: "aura", label: "Chat Auras" },
-    { id: "pin", label: "Map Pins" },
+    { id: "all", label: t(lang, "all") || "All Items" },
+    { id: "pin", label: t(lang, "pins") || "Map Pins" },
+    { id: "aura", label: t(lang, "auras") || "Chat Auras" },
+    { id: "tagColor", label: t(lang, "tags") || "TAG Colors" },
     { id: "trail", label: "Trails" },
-    { id: "tagColor", label: "TAG Colors" },
     { id: "nameColor", label: "Name Colors" },
   ];
 
@@ -837,7 +947,6 @@ function CosmeticShopTab({
     const cost = rarityPrices[item.rarity];
     const currentCoins = social.coins ?? 10000;
     if (currentCoins < cost) {
-      alert(`Not enough Coins! This item costs ${cost.toLocaleString()} Coins (You have ${currentCoins.toLocaleString()} Coins).`);
       return;
     }
     const nextUnlocked = Array.from(new Set([...social.unlockedCosmetics, item.id]));
@@ -855,9 +964,9 @@ function CosmeticShopTab({
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <span className="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-0.5 text-xs font-semibold text-muted-foreground">
-              <ShoppingBag className="h-3.5 w-3.5" /> Cosmetic Shop
+              <ShoppingBag className="h-3.5 w-3.5" /> {t(lang, "shop")}
             </span>
-            <h2 className="font-display mt-2 text-3xl">Direct Cosmetic Store</h2>
+            <h2 className="font-display mt-2 text-3xl">{t(lang, "shop")}</h2>
             <p className="text-xs text-muted-foreground">
               Purchase Chat Auras, Custom Map Pins, Trajectory Trails, Clan TAG Colors & Nickname Colors directly with Coins. (Titles are earned via Achievements).
             </p>
@@ -885,7 +994,7 @@ function CosmeticShopTab({
               onClick={() => setCategoryFilter(c.id)}
               className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors ${
                 categoryFilter === c.id
-                  ? "bg-accent-fill text-[#161616]"
+                  ? "bg-foreground text-background"
                   : "border border-border bg-background/60 text-muted-foreground hover:bg-muted"
               }`}
             >
@@ -912,13 +1021,15 @@ function CosmeticShopTab({
             const equipped = isEquipped(item);
             const price = rarityPrices[item.rarity];
             const color = rarityColor[item.rarity];
+            const currentCoins = social.coins ?? 10000;
+            const canAfford = currentCoins >= price;
 
             return (
               <div
                 key={item.id}
                 className={`flex flex-col justify-between rounded-2xl border p-4 transition-colors ${
                   equipped
-                    ? "border-foreground/60 bg-accent-fill/5"
+                    ? "border-foreground/60 bg-muted/30"
                     : owned
                     ? "border-border bg-background/50"
                     : "border-border/60 bg-background/30"
@@ -959,8 +1070,8 @@ function CosmeticShopTab({
 
                 <div className="mt-4 pt-3 border-t border-border/50">
                   {equipped ? (
-                    <div className="flex items-center justify-center gap-1.5 rounded-xl border border-foreground/60 bg-accent-fill/10 py-2 text-xs font-semibold text-accent-text">
-                      <Check className="h-4 w-4" /> Equipped
+                    <div className="flex items-center justify-center gap-1.5 rounded-xl border border-emerald-500/20 bg-emerald-500/10 py-2 text-xs font-semibold text-emerald-500">
+                      <Check className="h-4 w-4" /> {t(lang, "equipped")}
                     </div>
                   ) : owned ? (
                     <button
@@ -968,11 +1079,11 @@ function CosmeticShopTab({
                       onClick={() => equipItem(item)}
                       className="btn btn-outline w-full !py-2 text-xs font-semibold"
                     >
-                      Equip
+                      {t(lang, "equip")}
                     </button>
-                  ) : (
+                  ) : canAfford ? (
                     <div className="flex items-center justify-between gap-2">
-                      <span className="readout text-xs font-semibold text-accent-text">
+                      <span className="readout text-xs font-semibold text-foreground">
                         {price.toLocaleString()} coins
                       </span>
                       <button
@@ -980,7 +1091,20 @@ function CosmeticShopTab({
                         onClick={() => buyItem(item)}
                         className="btn btn-primary !px-4 !py-1.5 text-xs font-semibold"
                       >
-                        Buy Now
+                        Buy
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="readout text-xs font-semibold text-muted-foreground">
+                        {price.toLocaleString()} coins
+                      </span>
+                      <button
+                        type="button"
+                        disabled
+                        className="rounded-full bg-muted px-3 py-1.5 text-[11px] font-semibold text-muted-foreground opacity-60 cursor-not-allowed"
+                      >
+                        Need {(price - currentCoins).toLocaleString()} more
                       </button>
                     </div>
                   )}
@@ -1019,14 +1143,16 @@ function CosmeticShopTab({
             <div className="flex items-center justify-between border-t border-border pt-4">
               <div className="text-xs text-muted-foreground">
                 Price:{" "}
-                <span className="font-mono font-semibold text-accent-text">
+                <span className="font-mono font-semibold text-foreground">
                   {rarityPrices[previewItem.rarity].toLocaleString()} coins
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 {social.unlockedCosmetics.includes(previewItem.id) ? (
                   isEquipped(previewItem) ? (
-                    <span className="text-xs font-semibold text-accent-text">Currently Equipped</span>
+                    <span className="text-xs font-semibold text-emerald-500 flex items-center gap-1">
+                      <Check className="h-3.5 w-3.5" /> {t(lang, "equipped")}
+                    </span>
                   ) : (
                     <button
                       type="button"
@@ -1036,19 +1162,22 @@ function CosmeticShopTab({
                       }}
                       className="btn btn-outline !px-4 !py-1.5 text-xs font-semibold"
                     >
-                      Equip Now
+                      {t(lang, "equip")}
                     </button>
                   )
                 ) : (
                   <button
                     type="button"
+                    disabled={(social.coins ?? 10000) < rarityPrices[previewItem.rarity]}
                     onClick={() => {
                       buyItem(previewItem);
                       setPreviewItem(null);
                     }}
-                    className="btn btn-primary !px-4 !py-1.5 text-xs font-semibold"
+                    className="btn btn-primary !px-4 !py-1.5 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Buy & Equip
+                    {(social.coins ?? 10000) >= rarityPrices[previewItem.rarity]
+                      ? "Buy & Equip"
+                      : `Need ${(rarityPrices[previewItem.rarity] - (social.coins ?? 10000)).toLocaleString()} more`}
                   </button>
                 )}
                 <button

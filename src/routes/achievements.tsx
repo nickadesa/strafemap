@@ -7,15 +7,19 @@ import { ACH_ALL, ACH_GROUPS, RARITY_COLORS, SECRET_BADGE, loadUnlocked, syncAch
 import { t, type Lang } from "@/lib/i18n";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
+import { SlidingTabs } from "@/components/ui/SlidingTabs";
+
 export const Route = createFileRoute("/achievements")({
-  head: () => ({ meta: [
-    { title: "Achievements — STRAFE" },
-    { name: "description", content: "Browse all 250 STRAFE achievement badges and track which ones you have unlocked." },
-    { property: "og:title", content: "Achievements — STRAFE" },
-    { property: "og:description", content: "Browse all 250 STRAFE achievement badges and track which ones you have unlocked." },
-    { property: "og:type", content: "website" },
-    { name: "twitter:card", content: "summary_large_image" },
-  ] }),
+  head: () => ({
+    meta: [
+      { title: "Achievements — STRAFE" },
+      { name: "description", content: "Browse all 250 STRAFE achievement badges and track which ones you have unlocked." },
+      { property: "og:title", content: "Achievements — STRAFE" },
+      { property: "og:description", content: "Browse all 250 STRAFE achievement badges and track which ones you have unlocked." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: AchievementsPage,
 });
 
@@ -30,7 +34,10 @@ function AchievementsPage() {
   const [filter, setFilter] = useState<"all" | "on" | "off">("all");
   const [open, setOpen] = useState<Item | null>(null);
 
-  useEffect(() => { syncAchievements(records ?? [], loadRank()); setUnlocked(loadUnlocked()); }, [records]);
+  useEffect(() => {
+    syncAchievements(records ?? [], loadRank());
+    setUnlocked(loadUnlocked());
+  }, [records]);
 
   const list = useMemo(
     () =>
@@ -46,41 +53,95 @@ function AchievementsPage() {
   return (
     <div className="min-h-screen">
       <Sidebar />
-      <main className="rail-offset px-5 pb-10 pt-8">
-        <div className="mx-auto max-w-5xl">
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+      <main className="rail-offset px-4 pb-16 pt-8 md:px-6">
+        <div className="mx-auto max-w-5xl space-y-6">
+          {/* Apple Large Title Header */}
+          <header className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
             <div>
-              <h1 className="font-display text-4xl md:text-5xl">{t(lang, "achievements")}</h1>
-              <p className="readout mt-1 text-sm text-muted-foreground">{t(lang, "achUnlocked", { n: count, total: ACH_ALL.length })}</p>
+              <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                {t(lang, "achievements")}
+              </h1>
+              <p className="readout mt-1 text-sm text-muted-foreground">
+                {t(lang, "achUnlocked", { n: count, total: ACH_ALL.length })}
+              </p>
             </div>
-            <div className="seg">
-              {(["all", "on", "off"] as const).map((f) => (
-                <button key={f} className="seg-item" data-on={filter === f} onClick={() => setFilter(f)}>
-                  {t(lang, f === "all" ? "all" : f === "on" ? "unlockedOnly" : "lockedOnly")}
-                </button>
-              ))}
+            <div className="flex justify-start sm:justify-end">
+              <SlidingTabs
+                tabs={[
+                  { id: "all", label: t(lang, "all") },
+                  { id: "on", label: t(lang, "unlockedOnly") },
+                  { id: "off", label: t(lang, "lockedOnly") },
+                ]}
+                activeId={filter}
+                onChange={(next) => setFilter(next as "all" | "on" | "off")}
+              />
             </div>
+          </header>
+
+          {/* Progress Bar */}
+          <div className="h-2 overflow-hidden rounded-full bg-muted p-0.5">
+            <div
+              className="h-full rounded-full transition-[width] duration-500"
+              style={{
+                width: `${(count / ACH_ALL.length) * 100}%`,
+                backgroundColor: "#D2F801",
+              }}
+            />
           </div>
-          <div className="mb-3 h-1 overflow-hidden rounded-full bg-muted">
-            <div className="h-full bg-primary transition-[width] duration-500" style={{ width: `${(count / ACH_ALL.length) * 100}%` }} />
-          </div>
-          <div className="seg mb-6">
-            <button className="seg-item" data-on={group === "all"} onClick={() => setGroup("all")}>{t(lang, "all")}</button>
+
+          {/* Category Group Filter */}
+          <div className="flex flex-wrap gap-1.5">
+            <button
+              type="button"
+              className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ${
+                group === "all"
+                  ? "bg-accent-fill text-[#161616]"
+                  : "bg-muted text-muted-foreground hover:text-foreground"
+              }`}
+              onClick={() => setGroup("all")}
+            >
+              {t(lang, "all")}
+            </button>
             {ACH_GROUPS.map((g) => (
-              <button key={g.key} className="seg-item" data-on={group === g.key} onClick={() => setGroup(g.key)}>{g.name}</button>
+              <button
+                key={g.key}
+                type="button"
+                className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ${
+                  group === g.key
+                    ? "bg-accent-fill text-[#161616]"
+                    : "bg-muted text-muted-foreground hover:text-foreground"
+                }`}
+                onClick={() => setGroup(g.key)}
+              >
+                {g.name}
+              </button>
             ))}
           </div>
 
-          <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-6">
+          {/* Badge Grid */}
+          <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-4 md:grid-cols-6 sm:gap-3.5">
             {list.map((a) => {
               const on = Boolean(unlocked[a.id]);
               const hidden = a.secret && !on;
               return (
-                <button key={a.id} onClick={() => setOpen(a)}
-                  className="group flex flex-col items-center gap-1 rounded-2xl p-2 text-center transition-colors hover:bg-muted">
-                  <img src={hidden ? SECRET_BADGE : on ? a.files.compact.unlocked : a.files.compact.locked} alt="" loading="lazy"
-                    className={`aspect-[288/280] w-full transition-opacity duration-200 ${on ? "group-hover:opacity-90" : "opacity-70"}`} />
-                  <span className="line-clamp-1 text-xs font-medium">{hidden ? "???" : a.name}</span>
+                <button
+                  key={a.id}
+                  onClick={() => setOpen(a)}
+                  className={`group flex flex-col items-center gap-1.5 rounded-2xl border border-border/60 p-2.5 text-center transition-all hover:bg-muted/50 active:scale-95 ${
+                    on ? "bg-card/80" : "bg-card/30 opacity-60 hover:opacity-85"
+                  }`}
+                >
+                  <img
+                    src={hidden ? SECRET_BADGE : on ? a.files.compact.unlocked : a.files.compact.locked}
+                    alt=""
+                    loading="lazy"
+                    className={`aspect-[288/280] w-full transition-transform duration-200 group-hover:scale-105 ${
+                      on ? "" : "grayscale-[40%]"
+                    }`}
+                  />
+                  <span className="line-clamp-1 text-xs font-medium text-foreground">
+                    {hidden ? "???" : a.name}
+                  </span>
                 </button>
               );
             })}

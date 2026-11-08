@@ -110,10 +110,12 @@ function SettingsPage() {
       <Sidebar />
       <main className="rail-offset px-4 pb-12 pt-8 md:px-8">
         <div className="mx-auto max-w-2xl space-y-7">
-          {/* Page Title */}
-          <div>
-            <h1 className="font-display text-3xl tracking-tight md:text-4xl">{t(lang, "settings")}</h1>
-          </div>
+          {/* Apple Large Title */}
+          <header className="mb-2">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              {t(lang, "settings")}
+            </h1>
+          </header>
 
           {/* Apple ID Style Profile Row */}
           <Link
@@ -427,7 +429,7 @@ function SettingsPage() {
                 <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-muted-foreground/30" />
                 <div className="flex items-center justify-between pb-3 border-b border-border/40">
                   <div>
-                    <h3 className="font-display text-lg">Customize Quick Emojis</h3>
+                    <h3 className="font-semibold text-lg text-foreground">{t(lang, "customizeEmojis")}</h3>
                     <p className="text-xs text-muted-foreground">Tap an emoji to toggle (Max 5)</p>
                   </div>
                   <button

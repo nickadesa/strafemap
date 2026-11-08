@@ -278,7 +278,21 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "placementDesc": "Play 5 placement matches to get your rank.",
     "seasonCountdown": "Season 1 · 24 days left",
     "waitingForHost": "Waiting for host…",
-    "leavePartyConfirm": "Are you sure you want to leave this party?" 
+    "leavePartyConfirm": "Are you sure you want to leave this party?" ,
+    "today": "Today",
+    "skills": "Skills",
+    "activity": "Activity",
+    "bestScores": "Best Scores",
+    "noStatsYet": "Play a round to see your stats.",
+    "overview": "Overview",
+    "shop": "Shop",
+    "pins": "Pins",
+    "auras": "Auras",
+    "tags": "Tags",
+    "equip": "Equip",
+    "equipped": "Equipped",
+    "editProfile": "Edit Profile"
+
   },
   "th": {
     "chat": "แชท",
@@ -519,7 +533,21 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "placementDesc": "เล่น 5 แมตช์เพื่อรับการจัดแรงค์ของคุณ",
     "seasonCountdown": "ซีซั่น 1 · เหลือ 24 วัน",
     "waitingForHost": "กำลังรอหัวหน้าห้อง…",
-    "leavePartyConfirm": "คุณแน่ใจหรือไม่ว่าต้องการออกจากปาร์ตี้นี้?" 
+    "leavePartyConfirm": "คุณแน่ใจหรือไม่ว่าต้องการออกจากปาร์ตี้นี้?" ,
+    "today": "วันนี้",
+    "skills": "ทักษะ",
+    "activity": "กิจกรรม",
+    "bestScores": "คะแนนที่ดีที่สุด",
+    "noStatsYet": "เล่นสักรอบเพื่อดูสถิติของคุณ",
+    "overview": "ภาพรวม",
+    "shop": "ร้านค้า",
+    "pins": "หมุด",
+    "auras": "ออร่า",
+    "tags": "แท็ก",
+    "equip": "สวมใส่",
+    "equipped": "สวมใส่อยู่",
+    "editProfile": "แก้ไขโปรไฟล์"
+
   },
   "ko": {
     "chat": "채팅",
@@ -760,7 +788,21 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "placementDesc": "랭크를 받으려면 배치 경기 5판을 플레이하세요.",
     "seasonCountdown": "시즌 1 · 24일 남음",
     "waitingForHost": "방장 대기 중…",
-    "leavePartyConfirm": "정말 이 파티에서 나가시겠습니까?" 
+    "leavePartyConfirm": "정말 이 파티에서 나가시겠습니까?" ,
+    "today": "오늘",
+    "skills": "스킬",
+    "activity": "활동",
+    "bestScores": "최고 기록",
+    "noStatsYet": "통계를 보려면 라운드를 플레이하세요.",
+    "overview": "개요",
+    "shop": "상점",
+    "pins": "핀",
+    "auras": "오라",
+    "tags": "태그",
+    "equip": "장착",
+    "equipped": "장착됨",
+    "editProfile": "프로필 수정"
+
   },
   "zh": {
     "chat": "聊天",
@@ -1001,7 +1043,21 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "placementDesc": "进行 5 场定位赛以获得你的段位。",
     "seasonCountdown": "第 1 赛季 · 剩余 24 天",
     "waitingForHost": "等待房主…",
-    "leavePartyConfirm": "确定要离开此队伍吗？" 
+    "leavePartyConfirm": "确定要离开此队伍吗？" ,
+    "today": "今日",
+    "skills": "技能",
+    "activity": "动态",
+    "bestScores": "最佳成绩",
+    "noStatsYet": "进行一场游戏以查看您的统计数据。",
+    "overview": "总览",
+    "shop": "商店",
+    "pins": "图钉",
+    "auras": "光环",
+    "tags": "标签",
+    "equip": "装备",
+    "equipped": "已装备",
+    "editProfile": "编辑个人资料"
+
   },
   "ja": {
     "chat": "チャット",
@@ -1242,7 +1298,21 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "placementDesc": "ランクを獲得するにはプレースメントマッチを5回プレイしてください。",
     "seasonCountdown": "シーズン 1 · 残り 24日",
     "waitingForHost": "ホストを待機中…",
-    "leavePartyConfirm": "このパーティから退出してもよろしいですか？" 
+    "leavePartyConfirm": "このパーティから退出してもよろしいですか？" ,
+    "today": "今日",
+    "skills": "スキル",
+    "activity": "アクティビティ",
+    "bestScores": "ベストスコア",
+    "noStatsYet": "統計を表示するにはラウンドをプレイしてください。",
+    "overview": "概要",
+    "shop": "ショップ",
+    "pins": "ピン",
+    "auras": "オーラ",
+    "tags": "タグ",
+    "equip": "装備",
+    "equipped": "装備中",
+    "editProfile": "プロフィールを編集"
+
   },
   "es": {
     "chat": "Chat",
@@ -1483,7 +1553,21 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "placementDesc": "Juega 5 partidas de posicionamiento para obtener tu rango.",
     "seasonCountdown": "Temporada 1 · Quedan 24 días",
     "waitingForHost": "Esperando al anfitrión…",
-    "leavePartyConfirm": "¿Seguro que quieres salir de este grupo?" 
+    "leavePartyConfirm": "¿Seguro que quieres salir de este grupo?" ,
+    "today": "Hoy",
+    "skills": "Habilidades",
+    "activity": "Actividad",
+    "bestScores": "Mejores puntuaciones",
+    "noStatsYet": "Juega una ronda para ver tus estadísticas.",
+    "overview": "Resumen",
+    "shop": "Tienda",
+    "pins": "Pines",
+    "auras": "Auras",
+    "tags": "Etiquetas",
+    "equip": "Equipar",
+    "equipped": "Equipado",
+    "editProfile": "Editar perfil"
+
   },
   "fr": {
     "chat": "Chat",
@@ -1724,7 +1808,21 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "placementDesc": "Jouez 5 matchs de placement pour obtenir votre rang.",
     "seasonCountdown": "Saison 1 · 24 jours restants",
     "waitingForHost": "En attente de l'hôte…",
-    "leavePartyConfirm": "Voulez-vous vraiment quitter ce groupe ?" 
+    "leavePartyConfirm": "Voulez-vous vraiment quitter ce groupe ?" ,
+    "today": "Aujourd’hui",
+    "skills": "Compétences",
+    "activity": "Activité",
+    "bestScores": "Meilleurs scores",
+    "noStatsYet": "Jouez une manche pour voir vos statistiques.",
+    "overview": "Aperçu",
+    "shop": "Boutique",
+    "pins": "Épingles",
+    "auras": "Auras",
+    "tags": "Tags",
+    "equip": "Équiper",
+    "equipped": "Équipé",
+    "editProfile": "Modifier le profil"
+
   }
 };
 
