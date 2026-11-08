@@ -52,7 +52,30 @@ import { COMMUNITY_PLAYERS, addPlayerExp, awardCoins, useFeed, useSocialProfile 
 import { REACTION_SETS } from "@/lib/reactions";
 import { ACH_ALL, syncAchievements } from "@/lib/achievements";
 import { GameChat } from "@/components/GameChat";
-import { Download, Share2, Sparkles, Check, Send, AlertTriangle, Info } from "lucide-react";
+import {
+  Download,
+  Share2,
+  Sparkles,
+  Check,
+  Send,
+  AlertTriangle,
+  Info,
+  Menu,
+  Volume2,
+  VolumeX,
+  Eye,
+  EyeOff,
+  Globe,
+  LogOut,
+  X,
+} from "lucide-react";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
 import { useCountUp } from "@/lib/use-count-up";
 
 function AnimatedRoundPoints({ points }: { points: number }) {
@@ -60,8 +83,19 @@ function AnimatedRoundPoints({ points }: { points: number }) {
   return <>{animated.toLocaleString()}</>;
 }
 
-function AnimatedTotalScore({ total }: { total: number }) {
+function formatCompactScore(score: number): string {
+  if (score >= 10000) {
+    const k = (score / 1000).toFixed(1).replace(/\.0$/, "");
+    return `${k}k`;
+  }
+  return score.toLocaleString();
+}
+
+function AnimatedTotalScore({ total, compact = false }: { total: number; compact?: boolean }) {
   const animated = useCountUp(total, 950, true);
+  if (compact && animated >= 10000) {
+    return <>{formatCompactScore(animated)}</>;
+  }
   return <>{animated.toLocaleString()}</>;
 }
 
@@ -142,7 +176,7 @@ function GamePage() {
   const { mode: modeParam } = Route.useParams();
   const mode = modeParam as Mode;
   const search = Route.useSearch();
-  const [settings] = useSettings();
+  const [settings, setSettings] = useSettings();
   const [social] = useSocialProfile();
   const lang = settings.language;
   const tr = (key: string, values: Record<string, string | number> = {}) => t(lang, key, values);
@@ -152,7 +186,9 @@ function GamePage() {
   const practice = !!search.practice && !daily;
   const ranked = !!search.ranked;
   const isHardcore = difficulty === "hardcore";
-  const blind = mode === "blind" || mode === "findCity" || isHardcore;
+  const [customBlind, setCustomBlind] = useState<boolean | null>(null);
+  const defaultBlind = mode === "blind" || mode === "findCity" || isHardcore;
+  const blind = customBlind !== null ? customBlind : defaultBlind;
   const rawLimit: number = search.time !== undefined ? search.time : isHardcore ? 15 : 30;
   const unlimitedTime = rawLimit === 0 && mode !== "shrink";
   const limit = unlimitedTime ? 0 : rawLimit || 30;
@@ -212,6 +248,7 @@ function GamePage() {
   const saved = useRef(false);
   const navigate = useNavigate();
   const [quitModalOpen, setQuitModalOpen] = useState(false);
+  const [gameMenuOpen, setGameMenuOpen] = useState(false);
   const [expandedSinId, setExpandedSinId] = useState<SinCardId | null>(null);
 
   // Ranked Opponent Rival
@@ -876,18 +913,15 @@ function GamePage() {
       </div>
 
       {/* Floating Apple Island HUD (No full-width bar; 100% edge-to-edge map visible behind controls) */}
-      {/* Top-Left: Floating Logo Capsule */}
+      {/* Top-Left: Floating Menu Hamburger */}
       <div className="pointer-events-auto absolute left-3 top-3 z-40 sm:left-4 sm:top-4">
         <button
           type="button"
-          onClick={handleLogoClick}
-          aria-label="Exit or view game info"
-          className="glass-plate flex items-center gap-2 rounded-full py-1.5 pl-2 pr-3.5 shadow-md transition-all active:scale-95 hover:bg-muted/80"
+          onClick={() => setGameMenuOpen(true)}
+          aria-label="Game Menu & Settings"
+          className="glass-plate grid h-9 w-9 place-items-center rounded-full shadow-sm transition-all active:scale-95 hover:bg-muted/80"
         >
-          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#D2F801] text-xs font-bold text-[#000000]">
-            S
-          </span>
-          <span className="font-display text-sm tracking-tight hidden xs:inline sm:inline">STRAFE</span>
+          <Menu className="h-4 w-4 text-foreground" />
         </button>
       </div>
 
@@ -920,13 +954,13 @@ function GamePage() {
         )}
 
         {/* Round & Total Score Combined Capsule */}
-        <div className="glass-plate flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold shadow-md">
+        <div className="glass-plate flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold shadow-sm">
           <span className="text-muted-foreground">
-            {practice ? `∞ · ${idx + 1}` : `R${Math.min(idx + 1, ROUNDS)}/${ROUNDS}`}
+            {practice ? `${idx + 1}` : `${Math.min(idx + 1, ROUNDS)}/${ROUNDS}`}
           </span>
           <span className="h-3 w-px bg-border/60" />
           <span className="readout text-[#D2F801]">
-            <AnimatedTotalScore total={total} />
+            <AnimatedTotalScore total={total} compact />
           </span>
         </div>
 
@@ -961,7 +995,7 @@ function GamePage() {
           {(loc.category !== "country" || phase === "guess") && (
             <div>
               <div className="overflow-hidden">
-                <div className="border-t border-border pt-2.5">
+                <div className="pt-1">
                   {mode === "sins" && activeSin === "lust" && (
                     <p className="text-[11px] font-semibold text-[#D2F801]">
                       Lust whisper: {compassWhisperFor(loc)}
@@ -1267,6 +1301,117 @@ function GamePage() {
           </div>
         </div>
       )}
+
+      {/* Apple In-Game ActionSheet / Settings Drawer */}
+      <Drawer open={gameMenuOpen} onOpenChange={setGameMenuOpen}>
+        <DrawerContent className="mx-auto max-w-md p-5 sm:p-6">
+          <DrawerHeader className="p-0 text-left">
+            <div className="flex items-center justify-between pb-3 border-b border-border">
+              <DrawerTitle className="text-base font-bold text-foreground">
+                {t(lang, "settings")}
+              </DrawerTitle>
+              <DrawerClose className="rounded-full p-1.5 hover:bg-muted transition-colors">
+                <X className="h-4 w-4 text-muted-foreground" />
+              </DrawerClose>
+            </div>
+          </DrawerHeader>
+
+          <div className="mt-4 space-y-4">
+            {/* Quick Settings Group */}
+            <div className="rounded-2xl border border-border bg-muted/40 p-1 space-y-1">
+              {/* Sound Toggle */}
+              <button
+                type="button"
+                onClick={() => setSettings({ sound: !settings.sound })}
+                className="flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors hover:bg-card"
+              >
+                <div className="flex items-center gap-2.5">
+                  {settings.sound ? (
+                    <Volume2 className="h-4 w-4 text-[#D2F801]" />
+                  ) : (
+                    <VolumeX className="h-4 w-4 text-muted-foreground" />
+                  )}
+                  <span>{t(lang, "sound")}</span>
+                </div>
+                <span className="text-xs font-semibold text-muted-foreground">
+                  {settings.sound ? t(lang, "on") : t(lang, "off")}
+                </span>
+              </button>
+
+              {/* Map Labels Toggle (Blind Mode) */}
+              <button
+                type="button"
+                onClick={() => setCustomBlind((prev) => !(prev ?? defaultBlind))}
+                className="flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors hover:bg-card"
+              >
+                <div className="flex items-center gap-2.5">
+                  {blind ? (
+                    <EyeOff className="h-4 w-4 text-[#D2F801]" />
+                  ) : (
+                    <Eye className="h-4 w-4 text-muted-foreground" />
+                  )}
+                  <span>{tr("labelsHidden")}</span>
+                </div>
+                <span className="text-xs font-semibold text-muted-foreground">
+                  {blind ? t(lang, "on") : t(lang, "off")}
+                </span>
+              </button>
+
+              {/* Map Zoom Controls Toggle */}
+              <button
+                type="button"
+                onClick={() => setSettings({ hideZoomButtons: !settings.hideZoomButtons })}
+                className="flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors hover:bg-card"
+              >
+                <div className="flex items-center gap-2.5">
+                  <span className="text-xs font-bold text-muted-foreground">[+/-]</span>
+                  <span>{t(lang, "zoomControls") || "Zoom Buttons"}</span>
+                </div>
+                <span className="text-xs font-semibold text-muted-foreground">
+                  {!settings.hideZoomButtons ? t(lang, "on") : t(lang, "off")}
+                </span>
+              </button>
+
+              {/* Language Switch */}
+              <div className="flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-medium">
+                <div className="flex items-center gap-2.5">
+                  <Globe className="h-4 w-4 text-muted-foreground" />
+                  <span>{t(lang, "language")}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  {(["en", "th"] as const).map((l) => (
+                    <button
+                      key={l}
+                      type="button"
+                      onClick={() => setSettings({ language: l })}
+                      className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition-colors ${
+                        lang === l
+                          ? "bg-[#D2F801] text-black"
+                          : "bg-card text-muted-foreground hover:bg-card/80"
+                      }`}
+                    >
+                      {l.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Exit Game Button */}
+            <button
+              type="button"
+              onClick={() => {
+                setGameMenuOpen(false);
+                setQuitModalOpen(true);
+              }}
+              className="flex w-full items-center justify-center gap-2 rounded-2xl border border-destructive/30 bg-destructive/10 py-3 text-sm font-semibold text-destructive transition-colors hover:bg-destructive/20"
+            >
+              <LogOut className="h-4 w-4" />
+              <span>{daily || ranked ? tr("forfeit") : tr("end")}</span>
+            </button>
+          </div>
+        </DrawerContent>
+      </Drawer>
 
       {/* iOS-Style Game Exit Confirmation Modal */}
       {quitModalOpen && (

@@ -44,13 +44,13 @@
 }
 
 :root {
-  --font-latin: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "SF Pro", "Inter", system-ui, sans-serif;
-  --font-display-latin: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter Tight", system-ui, sans-serif;
+  --font-latin: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Sukhumvit Set", "Thonburi", system-ui, sans-serif;
+  --font-display-latin: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Sukhumvit Set", "Thonburi", system-ui, sans-serif;
   --font-mono: -apple-system-monospaced, "SF Mono", ui-monospace, SFMono-Regular, monospace;
 
-  /* Default (en, es, fr) — Apple system font stays first in every stack */
-  --font-sans: var(--font-latin), "IBM Plex Sans Thai", sans-serif;
-  --font-display: var(--font-display-latin), "IBM Plex Sans Thai", sans-serif;
+  /* Default — strictly Inter and device system fonts */
+  --font-sans: var(--font-latin);
+  --font-display: var(--font-display-latin);
   --lh-body: 1.48;
   --lh-heading: 1.10;
 
@@ -100,8 +100,8 @@
 
 /* Thai: Extra vertical breathing room for upper/lower vowel & tone marks */
 :root:lang(th) {
-  --font-sans: var(--font-latin), "IBM Plex Sans Thai", "Noto Sans Thai", "Sukhumvit Set", "Thonburi", "Leelawadee UI", sans-serif;
-  --font-display: var(--font-display-latin), "IBM Plex Sans Thai", "Noto Sans Thai", sans-serif;
+  --font-sans: var(--font-latin);
+  --font-display: var(--font-display-latin);
   --lh-body: 1.65;
   --lh-heading: 1.28;
   letter-spacing: 0em;
@@ -225,8 +225,8 @@
 @utility btn-primary {
   background: #d2f801;
   color: #000000;
-  box-shadow: 0 4px 16px -2px rgba(210, 248, 1, 0.25);
-  &:hover { background: #dcff1a; box-shadow: 0 6px 20px -2px rgba(210, 248, 1, 0.35); }
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+  &:hover { background: #dcff1a; box-shadow: 0 2px 4px rgb(0 0 0 / 0.12); }
 }
 @utility btn-ink {
   background: var(--color-secondary);
@@ -376,7 +376,7 @@
 }
 /* Apple Maps Floating Controls on Right */
 .leaflet-bottom.leaflet-right .leaflet-control-zoom {
-  margin: 0 16px 105px 0 !important;
+  margin: 0 16px 72px 0 !important;
 }
 .hide-zoom-controls .leaflet-control-zoom { display: none !important; }
 @media (max-width: 639px) {
@@ -516,10 +516,10 @@ button:not(.btn), [role="button"] { transition: transform 380ms var(--ease-sprin
 .clue-pill:active { transform: none !important; }
 .clue-body {
   box-sizing: border-box; max-width: 100%;
-  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; column-gap: 12px;
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; column-gap: 8px;
 }
-.clue-full { width: min(350px, calc(100vw - 24px)); padding: 12px 14px 14px; }
-.clue-compact { width: max-content; min-width: 220px; padding: 7px 12px 7px 10px; min-height: 44px; }
+.clue-full { width: min(350px, calc(100vw - 24px)); padding: 12px 14px 14px; column-gap: 12px; }
+.clue-compact { width: max-content; min-width: 170px; padding: 3px 10px 3px 3px; min-height: 38px; }
 .clue-top-label {
   grid-column: 1 / -1;
   text-align: center;
@@ -530,15 +530,15 @@ button:not(.btn), [role="button"] { transition: transform 380ms var(--ease-sprin
   margin-bottom: 6px;
 }
 .clue-heading { text-align: center; min-width: 0; justify-self: center; width: 100%; }
-.clue-details { grid-column: 1 / -1; margin-top: 10px; text-align: center; }
+.clue-details { grid-column: 1 / -1; margin-top: 6px; text-align: center; }
 .clue-name {
   min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  text-align: center; justify-self: center; width: 100%; padding: 0 6px;
-  font-size: 15px; font-weight: 600; line-height: 24px;
+  text-align: center; justify-self: center; width: 100%; padding: 0 4px;
+  font-size: 14px; font-weight: 600; line-height: 20px;
 }
 .clue-controls { display: inline-flex; align-items: center; justify-content: flex-end; gap: 6px; flex: none; justify-self: end; }
-.clue-timer { min-width: 38px; padding: 0 6px; text-align: center; font-size: 11px; line-height: 22px; border: 1px solid var(--color-border); border-radius: 999px; background: var(--color-muted); }
-.clue-chevron { display: inline-grid; place-items: center; width: 20px; height: 20px; flex-shrink: 0; }
+.clue-timer { min-width: 32px; padding: 0 5px; text-align: center; font-size: 10px; line-height: 20px; border: 1px solid var(--color-border); border-radius: 999px; background: var(--color-muted); }
+.clue-chevron { display: inline-grid; place-items: center; width: 18px; height: 18px; flex-shrink: 0; }
 .clue-badge { display: grid; place-items: center; align-self: center; line-height: 0; transform-origin: left top; }
 @media (prefers-reduced-motion: reduce) { .clue-pill, .clue-badge, .clue-body { animation: none; transition: none; } }
 
