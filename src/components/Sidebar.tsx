@@ -10,8 +10,6 @@ import {
   SymbolChartBar,
   SymbolGearshape,
   SymbolBell,
-  SymbolCross,
-  SymbolMenu,
   SymbolBag,
   SymbolShield,
   SymbolPerson,
@@ -26,19 +24,16 @@ import { t, type Lang } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { buzz } from "@/lib/game/sound";
 
-const desktopItems: {
+const navItems: {
   to: string;
   key: string;
   icon: React.ComponentType<SymbolProps>;
-  search?: Record<string, string>;
 }[] = [
   { to: "/", key: "home", icon: SymbolHouse },
-  { to: "/play", key: "modes", icon: SymbolGameController },
-  { to: "/rank", key: "rank", icon: SymbolTrophy },
+  { to: "/play", key: "play", icon: SymbolGameController },
+  { to: "/rank", key: "ranked", icon: SymbolTrophy },
   { to: "/party", key: "party", icon: SymbolPerson2 },
-  { to: "/profile", key: "feedAndClan", icon: SymbolCompass, search: { tab: "feed" } },
-  { to: "/achievements", key: "achievements", icon: SymbolMedal },
-  { to: "/stats", key: "stats", icon: SymbolChartBar },
+  { to: "/community", key: "community", icon: SymbolCompass },
 ];
 
 export function Sidebar() {
@@ -47,10 +42,8 @@ export function Sidebar() {
   const { notifs, markAllRead, unreadCount } = useNotifications();
   const lang = (s.language ?? "en") as Lang;
   const location = useLocation();
-  const isHome = location.pathname === "/";
   const [userPopoverOpen, setUserPopoverOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   const rank = loadRank();
   const lvlInfo = computeLevelFromExp(social.exp);
@@ -59,48 +52,46 @@ export function Sidebar() {
     document.documentElement.style.setProperty("--rail-w", "240px");
   }, []);
 
-  // Lock body scroll when mobile drawer is open
-  useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [mobileOpen]);
-
-  // Close drawer on escape key
+  // Close popovers on escape key
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMobileOpen(false);
+      if (e.key === "Escape") {
+        setUserPopoverOpen(false);
+        setNotifOpen(false);
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Close drawer on route change
+  // Close popovers on route change
   useEffect(() => {
-    setMobileOpen(false);
+    setUserPopoverOpen(false);
+    setNotifOpen(false);
   }, [location.pathname]);
 
   return (
     <>
-      {/* Desktop: Fixed 240px sidebar (no collapse toggle) */}
+      {/* Desktop: Fixed 240px macOS glass sidebar */}
       <aside
         className="glass-plate fixed left-0 top-0 z-50 hidden h-screen w-60 flex-col gap-1 border-y-0 border-l-0 p-3 md:flex"
       >
         <div className="mb-3 flex h-11 items-center justify-between px-1.5">
-          <Link to="/" className="flex items-center gap-3 font-display text-xl" aria-label="STRAFE">
+          <Link
+            to="/"
+            onClick={() => buzz(6)}
+            className="flex items-center gap-3 font-display text-xl tracking-tight"
+            aria-label="STRAFE"
+          >
             <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-accent-fill text-sm font-semibold text-[#161616]">
               S
             </span>
-            <span className="tracking-tight">STRAFE</span>
+            <span className="tracking-tight text-foreground">STRAFE</span>
           </Link>
           <button
             type="button"
             onClick={() => {
+              buzz(6);
               setNotifOpen((v) => !v);
               setUserPopoverOpen(false);
             }}
@@ -109,21 +100,20 @@ export function Sidebar() {
           >
             <SymbolBell className="h-4 w-4" fill={unreadCount > 0} />
             {unreadCount > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 grid h-4 w-4 place-items-center rounded-full bg-muted text-[10px] font-semibold text-muted-foreground">
+              <span className="absolute -right-0.5 -top-0.5 grid h-4 w-4 place-items-center rounded-full bg-accent-fill text-[10px] font-bold text-black">
                 {unreadCount}
               </span>
             )}
           </button>
         </div>
 
-        <nav className="flex flex-1 flex-col gap-1">
-          {desktopItems.map(({ to, key, icon: Icon, search }) => {
+        <nav className="flex flex-1 flex-col gap-1" aria-label="Desktop navigation">
+          {navItems.map(({ to, key, icon: Icon }) => {
             const active = to === "/" ? location.pathname === "/" : location.pathname.startsWith(to);
             return (
               <Link
                 key={key}
                 to={to}
-                search={search as any}
                 onClick={() => buzz(6)}
                 aria-label={t(lang, key)}
                 className="group flex h-10 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:scale-[0.98]"
@@ -198,6 +188,16 @@ export function Sidebar() {
                     <SymbolPerson fill className="h-4 w-4 text-muted-foreground" /> {t(lang, "profile")}
                   </Link>
                   <Link
+                    to="/achievements"
+                    onClick={() => {
+                      buzz(6);
+                      setUserPopoverOpen(false);
+                    }}
+                    className="flex items-center gap-2.5 rounded-xl px-3 py-2 font-medium hover:bg-muted"
+                  >
+                    <SymbolMedal fill className="h-4 w-4 text-muted-foreground" /> {t(lang, "achievements")}
+                  </Link>
+                  <Link
                     to="/stats"
                     onClick={() => {
                       buzz(6);
@@ -208,7 +208,7 @@ export function Sidebar() {
                     <SymbolChartBar fill className="h-4 w-4 text-muted-foreground" /> {t(lang, "stats")}
                   </Link>
                   <Link
-                    to="/profile"
+                    to="/community"
                     search={{ tab: "clan" } as any}
                     onClick={() => {
                       buzz(6);
@@ -257,245 +257,21 @@ export function Sidebar() {
         </div>
       </aside>
 
-      {/* Mobile Top-Left Hamburger Menu Button */}
-      <button
-        type="button"
-        onClick={() => {
-          buzz(6);
-          setMobileOpen(true);
-        }}
-        aria-label="Open navigation menu"
-        className="glass-plate fixed left-3 top-3 z-50 grid h-10 w-10 place-items-center rounded-2xl text-foreground shadow-md transition-colors active:scale-90 hover:bg-muted md:hidden"
-      >
-        <SymbolMenu className="h-5 w-5" />
-        {unreadCount > 0 && (
-          <span className="absolute -right-0.5 -top-0.5 grid h-3.5 w-3.5 place-items-center rounded-full bg-accent-fill text-[10px] font-semibold text-[#000000]">
-            {unreadCount}
+      {/* Mobile: Apple HIG Top Navigation Bar */}
+      <header className="glass-plate fixed left-0 right-0 top-0 z-40 flex h-14 items-center justify-between border-x-0 border-t-0 px-4 md:hidden">
+        <Link
+          to="/"
+          onClick={() => buzz(6)}
+          className="flex items-center gap-2.5 font-display text-lg tracking-tight"
+          aria-label="STRAFE"
+        >
+          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-xl bg-accent-fill text-xs font-bold text-[#161616]">
+            S
           </span>
-        )}
-      </button>
+          <span className="tracking-tight text-foreground font-semibold">STRAFE</span>
+        </Link>
 
-      {/* Mobile Slide-over Drawer Menu (Apple Inset Grouped Style) */}
-      {mobileOpen && (
-        <div className="fixed inset-0 z-[100] md:hidden">
-          {/* Backdrop */}
-          <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-md transition-opacity animate-in fade-in duration-200"
-            onClick={() => {
-              buzz(6);
-              setMobileOpen(false);
-            }}
-            aria-hidden="true"
-          />
-
-          {/* Drawer Sheet */}
-          <aside
-            className="fixed inset-y-0 left-0 z-10 flex w-72 max-w-[85vw] flex-col border-r border-border bg-card/95 p-4 shadow-2xl backdrop-blur-2xl dark:border-white/10 dark:bg-[rgba(28,28,30,0.92)] animate-in slide-in-from-left duration-250"
-            style={{ paddingBottom: "calc(16px + env(safe-area-inset-bottom))" }}
-          >
-            {/* Header: Brand + Close */}
-            <div className="flex h-11 items-center justify-between border-b border-border/80 pb-3">
-              <Link
-                to="/"
-                onClick={() => {
-                  buzz(6);
-                  setMobileOpen(false);
-                }}
-                className="flex items-center gap-2.5 font-display text-xl"
-                aria-label="STRAFE"
-              >
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-2xl bg-accent-fill text-sm font-semibold text-[#000000]">
-                  S
-                </span>
-                <span className="tracking-tight">STRAFE</span>
-              </Link>
-              <button
-                type="button"
-                onClick={() => {
-                  buzz(6);
-                  setMobileOpen(false);
-                }}
-                aria-label="Close navigation menu"
-                className="grid h-8 w-8 place-items-center rounded-full bg-muted text-muted-foreground transition-colors active:scale-90 hover:bg-muted/80 hover:text-foreground"
-              >
-                <SymbolCross className="h-4 w-4" />
-              </button>
-            </div>
-
-            {/* User Profile Mini Banner */}
-            <div className="border-b border-border/80 py-3">
-              <Link
-                to="/profile"
-                search={{ tab: "overview" } as any}
-                onClick={() => {
-                  buzz(6);
-                  setMobileOpen(false);
-                }}
-                className="flex items-center gap-2.5 rounded-2xl p-2 transition-colors hover:bg-muted/70 active:scale-[0.98]"
-              >
-                <AvatarFrame
-                  src={social.avatarUrl}
-                  name={social.nickname}
-                  rp={rank.rp}
-                  championPosition={rank.championPosition}
-                  size={42}
-                />
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-1">
-                    <ClanTagPill tag={social.clanTag} color={social.clanTagColor} />
-                    <span className="truncate text-xs font-semibold">{social.nickname}</span>
-                    <VerifiedBadge type={social.verifiedBadge} size={13} />
-                  </div>
-                  <p className="readout text-[11px] text-accent-text">
-                    Lv.{lvlInfo.level} · {rank.rp.toLocaleString()} RP
-                  </p>
-                </div>
-              </Link>
-            </div>
-
-            {/* Apple Inset Grouped Navigation Links */}
-            <div className="no-scrollbar mt-3 flex-1 overflow-y-auto space-y-4">
-              <div>
-                <p className="mb-1.5 px-2 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
-                  Menu
-                </p>
-                <div className="apple-group">
-                  {desktopItems.map(({ to, key, icon: Icon, search }) => {
-                    const active = to === "/" ? location.pathname === "/" : location.pathname.startsWith(to);
-                    return (
-                      <Link
-                        key={key}
-                        to={to}
-                        search={search as any}
-                        onClick={() => {
-                          buzz(6);
-                          setMobileOpen(false);
-                        }}
-                        aria-label={t(lang, key)}
-                        className={`apple-row ${active ? "bg-muted font-semibold text-foreground" : "text-muted-foreground"}`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="grid h-7 w-7 place-items-center rounded-lg bg-muted text-foreground">
-                            <Icon fill={active} className="h-4 w-4" />
-                          </div>
-                          <span className="text-sm">{t(lang, key)}</span>
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div>
-                <p className="mb-1.5 px-2 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
-                  Community & Rewards
-                </p>
-                <div className="apple-group">
-                  <Link
-                    to="/profile"
-                    search={{ tab: "clan" } as any}
-                    onClick={() => {
-                      buzz(6);
-                      setMobileOpen(false);
-                    }}
-                    className="apple-row text-muted-foreground"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="grid h-7 w-7 place-items-center rounded-lg bg-muted text-foreground">
-                        <SymbolShield fill className="h-4 w-4" />
-                      </div>
-                      <span className="text-sm">{t(lang, "clan")}</span>
-                    </div>
-                  </Link>
-
-                  <Link
-                    to="/profile"
-                    search={{ tab: "shop" } as any}
-                    onClick={() => {
-                      buzz(6);
-                      setMobileOpen(false);
-                    }}
-                    className="apple-row text-muted-foreground"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="grid h-7 w-7 place-items-center rounded-lg bg-muted text-foreground">
-                        <SymbolBag fill className="h-4 w-4" />
-                      </div>
-                      <span className="text-sm">Cosmetic Shop</span>
-                    </div>
-                  </Link>
-                </div>
-              </div>
-
-              <div>
-                <p className="mb-1.5 px-2 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
-                  System
-                </p>
-                <div className="apple-group">
-                  <Link
-                    to="/settings"
-                    onClick={() => {
-                      buzz(6);
-                      setMobileOpen(false);
-                    }}
-                    className="apple-row text-muted-foreground"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="grid h-7 w-7 place-items-center rounded-lg bg-muted text-foreground">
-                        <SymbolGearshape className="h-4 w-4" />
-                      </div>
-                      <span className="text-sm">{t(lang, "settings")}</span>
-                    </div>
-                  </Link>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      buzz(6);
-                      setMobileOpen(false);
-                      setNotifOpen(true);
-                    }}
-                    className="apple-row w-full text-left text-muted-foreground"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="grid h-7 w-7 place-items-center rounded-lg bg-muted text-foreground">
-                        <SymbolBell className="h-4 w-4" fill={unreadCount > 0} />
-                      </div>
-                      <span className="text-sm">Notifications</span>
-                    </div>
-                    {unreadCount > 0 && (
-                      <span className="grid h-5 min-w-5 place-items-center rounded-full bg-accent-fill px-1.5 text-[10px] font-bold text-black">
-                        {unreadCount}
-                      </span>
-                    )}
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      buzz(8);
-                      setMobileOpen(false);
-                      supabase.auth.signOut();
-                    }}
-                    className="apple-row w-full text-left text-destructive"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="grid h-7 w-7 place-items-center rounded-lg bg-destructive/15 text-destructive">
-                        <SymbolLogOut className="h-4 w-4" />
-                      </div>
-                      <span className="text-sm font-medium">{t(lang, "signOut")}</span>
-                    </div>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </aside>
-        </div>
-      )}
-
-      {/* Mobile Top-Right Bar: Render ONLY on Home page ("/") */}
-      {isHome && (
-        <div className="fixed right-3 top-3 z-50 flex items-center gap-2 md:hidden">
+        <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => {
@@ -504,11 +280,11 @@ export function Sidebar() {
               setUserPopoverOpen(false);
             }}
             aria-label="Notifications"
-            className="glass-plate relative grid h-10 w-10 place-items-center rounded-full text-foreground shadow-md transition-colors active:scale-90"
+            className="relative grid h-9 w-9 place-items-center rounded-full bg-muted text-foreground transition-colors active:scale-95"
           >
             <SymbolBell className="h-4 w-4" fill={unreadCount > 0} />
             {unreadCount > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 grid h-4 w-4 place-items-center rounded-full bg-muted text-[10px] font-semibold text-muted-foreground">
+              <span className="absolute -right-0.5 -top-0.5 grid h-4 w-4 place-items-center rounded-full bg-accent-fill text-[10px] font-bold text-black">
                 {unreadCount}
               </span>
             )}
@@ -516,26 +292,60 @@ export function Sidebar() {
 
           <Link
             to="/profile"
+            onClick={() => buzz(6)}
             aria-label={t(lang, "profile")}
-            className="glass-plate flex items-center gap-1.5 rounded-full py-0.5 pl-1 pr-2.5 shadow-md"
+            className="flex items-center gap-1.5 rounded-full bg-muted py-0.5 pl-0.5 pr-2.5 transition-colors active:scale-95"
           >
             <AvatarFrame
               src={social.avatarUrl}
               name={social.nickname}
               rp={rank.rp}
               championPosition={rank.championPosition}
-              size={34}
+              size={30}
             />
-            <span className="readout text-[11px] font-semibold text-accent-text">Lv.{lvlInfo.level}</span>
+            <span className="readout text-[11px] font-semibold text-accent-text">
+              Lv.{lvlInfo.level}
+            </span>
           </Link>
         </div>
-      )}
+      </header>
+
+      {/* Mobile: Apple HIG 5-Tab Bar (Floating pill at bottom) */}
+      <nav
+        className="apple-tab-bar md:hidden"
+        role="navigation"
+        aria-label="Mobile navigation"
+      >
+        {navItems.map(({ to, key, icon: Icon }) => {
+          const active = to === "/" ? location.pathname === "/" : location.pathname.startsWith(to);
+          return (
+            <Link
+              key={key}
+              to={to}
+              onClick={() => buzz(6)}
+              aria-label={t(lang, key)}
+              className={`flex min-h-[44px] min-w-[54px] flex-col items-center justify-center rounded-2xl px-2 py-1 transition-transform active:scale-90 ${
+                active
+                  ? "text-accent-text font-semibold"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              activeOptions={{ exact: to === "/" }}
+            >
+              <Icon
+                fill={active}
+                className={`h-5 w-5 transition-transform duration-200 ${active ? "scale-105" : ""}`}
+              />
+              <span className="mt-0.5 text-[10px] tracking-tight">{t(lang, key)}</span>
+            </Link>
+          );
+        })}
+      </nav>
 
       {/* Notification Popover (Desktop & Mobile) */}
       {notifOpen && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setNotifOpen(false)} />
-          <div className="plate pop-in fixed right-3 top-14 z-50 w-80 p-4 shadow-2xl md:left-64 md:right-auto md:top-4">
+          <div className="plate pop-in fixed right-3 top-16 z-50 w-80 p-4 shadow-2xl md:left-64 md:right-auto md:top-4">
             <div className="mb-2.5 flex items-center justify-between">
               <span className="font-display text-lg">Notifications</span>
               <button

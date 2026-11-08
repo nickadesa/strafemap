@@ -36,8 +36,11 @@ import {
   SymbolBag,
   SymbolChartBar,
   SymbolPerson,
+  SymbolMedal,
 } from "@/components/SFSymbols";
 import { SlidingTabs } from "@/components/ui/SlidingTabs";
+import { ClanSystemTab } from "@/components/community/ClanSystemTab";
+import { SocialFeedTab } from "@/components/community/SocialFeedTab";
 import {
   BarChart3,
   Check,
@@ -121,24 +124,6 @@ function ProfileHubPage() {
                   ),
                 },
                 {
-                  id: "feed",
-                  label: (
-                    <span className="flex items-center gap-1.5">
-                      <SymbolCompass fill={tab === "feed"} className="h-4 w-4" />
-                      {t(lang, "feedAndClan").split("&")[0]?.trim() || "Feed"}
-                    </span>
-                  ),
-                },
-                {
-                  id: "clan",
-                  label: (
-                    <span className="flex items-center gap-1.5">
-                      <SymbolShield fill={tab === "clan"} className="h-4 w-4" />
-                      {t(lang, "clan")}
-                    </span>
-                  ),
-                },
-                {
                   id: "shop",
                   label: (
                     <span className="flex items-center gap-1.5">
@@ -148,13 +133,46 @@ function ProfileHubPage() {
                   ),
                 },
               ]}
-              activeId={tab === "gacha" ? "shop" : tab}
+              activeId={tab === "gacha" ? "shop" : tab === "clan" || tab === "feed" ? "overview" : tab}
               onChange={(nextTab) => {
                 buzz(6);
                 setTab(nextTab as typeof tab);
               }}
             />
+
+            <div className="flex items-center gap-2 text-xs">
+              <Link
+                to="/community"
+                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 font-medium text-muted-foreground transition-colors hover:text-foreground active:scale-95"
+              >
+                <SymbolCompass className="h-3.5 w-3.5" />
+                {t(lang, "community")}
+              </Link>
+              <Link
+                to="/stats"
+                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 font-medium text-muted-foreground transition-colors hover:text-foreground active:scale-95"
+              >
+                <SymbolChartBar className="h-3.5 w-3.5" />
+                {t(lang, "stats")}
+              </Link>
+              <Link
+                to="/achievements"
+                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 font-medium text-muted-foreground transition-colors hover:text-foreground active:scale-95"
+              >
+                <SymbolMedal className="h-3.5 w-3.5" />
+                {t(lang, "achievements")}
+              </Link>
+            </div>
           </div>
+
+          {(tab === "feed" || tab === "clan") && (
+            <div className="flex items-center justify-between rounded-2xl border border-accent-fill/30 bg-accent-fill/10 p-3 text-xs">
+              <span>Clan & Feed have moved to the new Community hub.</span>
+              <Link to="/community" search={{ tab }} className="btn btn-primary !px-3 !py-1 text-xs font-semibold">
+                Go to Community
+              </Link>
+            </div>
+          )}
 
           {tab === "overview" && (
             <XStyleProfileTab
@@ -646,366 +664,7 @@ function XStyleProfileTab({
 }
 
 /* ============================================================================
- * 2. CLAN SYSTEM TAB (Max 50 Members, Level 1–10, Clan Leaderboard)
- * ========================================================================== */
-function ClanSystemTab({
-  social,
-  updateSocial,
-  rank,
-}: {
-  social: ReturnType<typeof useSocialProfile>[0];
-  updateSocial: ReturnType<typeof useSocialProfile>[1];
-  rank: ReturnType<typeof loadRank>;
-}) {
-  const [clans, saveClans] = useClans();
-  const [tagInput, setTagInput] = useState("");
-  const [nameInput, setNameInput] = useState("");
-  const [descInput, setDescInput] = useState("");
-  const [iconUrlInput, setIconUrlInput] = useState<string | null>(null);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  const myClan = clans.find((c) => c.id === social.clanId) ?? null;
-  const isLeader = myClan
-    ? myClan.members.some((m) => m.id === "me" && m.role === "Leader") || myClan.tag === social.clanTag
-    : false;
-  const [editingClan, setEditingClan] = useState(false);
-  const [editClanName, setEditClanName] = useState(myClan?.name ?? "");
-  const [editClanTag, setEditClanTag] = useState(myClan?.tag ?? "");
-  const [editClanIcon, setEditClanIcon] = useState<string | null>(myClan?.iconUrl ?? null);
-
-  const handleSaveClanEdits = () => {
-    if (!myClan) return;
-    const cleanTag = editClanTag.trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
-    const cleanName = editClanName.trim();
-    if (cleanTag.length < 2 || cleanTag.length > 5) {
-      alert("Clan TAG must be 2 to 5 characters.");
-      return;
-    }
-    if (cleanName.length < 3) {
-      alert("Clan name must be at least 3 characters.");
-      return;
-    }
-    const updated = clans.map((c) => (c.id === myClan.id ? { ...c, name: cleanName, tag: cleanTag, iconUrl: editClanIcon ?? c.iconUrl } : c));
-    saveClans(updated);
-    updateSocial({ clanTag: cleanTag });
-    setEditingClan(false);
-  };
-
-  const handleCreateClan = () => {
-    const cleanTag = tagInput.trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
-    const cleanName = nameInput.trim();
-    if (cleanTag.length < 2 || cleanTag.length > 5) {
-      setErrorMsg("Clan TAG must be 2 to 5 characters.");
-      return;
-    }
-    if (cleanName.length < 3) {
-      setErrorMsg("Clan full name must be at least 3 characters.");
-      return;
-    }
-    if (clans.some((c) => c.name.toLowerCase() === cleanName.toLowerCase() || c.tag === cleanTag)) {
-      setErrorMsg("Clan name or tag is already taken");
-      return;
-    }
-
-    const isGoldOrHigher = rank.rp >= 2000;
-    if (!isGoldOrHigher) {
-      setErrorMsg("Requires Rank Gold IV (2,000+ RP) or higher to found a Clan.");
-      return;
-    }
-    if ((social.coins ?? 10000) < 2000) {
-      setErrorMsg(`Requires 2,000 Coins to found a Clan (Current: ${(social.coins ?? 10000).toLocaleString()} Coins).`);
-      return;
-    }
-
-    const created = {
-      id: `clan-${Date.now()}`,
-      tag: cleanTag,
-      name: cleanName,
-      iconUrl: iconUrlInput,
-      description: descInput.trim() || "Competitive STRAFE Cartography Clan",
-      level: 1,
-      xp: 500,
-      maxMembers: 50,
-      totalPoints: rank.rp * 10,
-      weeklyMissionProgress: 5,
-      weeklyMissionTarget: 50,
-      members: [
-        {
-          id: "me",
-          nickname: social.nickname,
-          username: social.username,
-          rp: rank.rp,
-          role: "Leader" as const,
-          weeklyContribution: 1200,
-        },
-      ],
-    };
-    saveClans([created, ...clans]);
-    updateSocial({
-      clanId: created.id,
-      clanTag: created.tag,
-      coins: Math.max(0, (social.coins ?? 10000) - 2000),
-    });
-    setTagInput("");
-    setNameInput("");
-    setDescInput("");
-    setErrorMsg(null);
-  };
-
-  const handleJoinClan = (clanId: string) => {
-    const target = clans.find((c) => c.id === clanId);
-    if (!target || target.members.length >= target.maxMembers) return;
-    updateSocial({ clanId: target.id, clanTag: target.tag });
-  };
-
-  return (
-    <div className="space-y-6">
-      {/* Current Clan Banner */}
-      {myClan ? (
-        <section className="plate p-6">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="grid h-16 w-16 place-items-center overflow-hidden rounded-2xl border border-border bg-accent-fill/10 font-display text-xl text-accent-text">
-                {myClan.iconUrl ? (
-                  <img src={myClan.iconUrl} alt={myClan.name} className="h-full w-full object-cover" />
-                ) : (
-                  myClan.tag
-                )}
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <ClanTagPill tag={myClan.tag} color={social.clanTagColor} />
-                  <h2 className="font-display text-2xl sm:text-3xl">{myClan.name}</h2>
-                  <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-semibold text-muted-foreground">
-                    Clan Lv.{myClan.level} / 10
-                  </span>
-                </div>
-                <p className="mt-1 text-xs text-muted-foreground">{myClan.description}</p>
-                <p className="readout mt-1 text-xs font-semibold text-accent-text">
-                  Members: {myClan.members.length} / {myClan.maxMembers} · Party Clan Bonus: +15% Clan Points
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              {isLeader && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setEditClanName(myClan.name);
-                    setEditClanTag(myClan.tag);
-                    setEditingClan((v) => !v);
-                  }}
-                  className="btn btn-outline !px-3 !py-1.5 text-xs font-semibold"
-                >
-                  <Edit3 className="mr-1 inline h-3.5 w-3.5" />
-                  {editingClan ? "Cancel" : "Edit Clan"}
-                </button>
-              )}
-              <button
-                type="button"
-                onClick={() => updateSocial({ clanId: null, clanTag: null })}
-                className="btn btn-outline !px-4 !py-1.5 text-xs"
-              >
-                Leave Clan
-              </button>
-            </div>
-          </div>
-
-          {/* Clan Leader Edit Form */}
-          {editingClan && (
-            <div className="mt-4 space-y-3 rounded-2xl border border-border bg-background/60 p-4">
-              <span className="text-xs font-semibold text-accent-text">
-                Leader Management: Edit Clan Name & Tag
-              </span>
-              <div className="grid gap-3 sm:grid-cols-2">
-                <label className="block text-xs">
-                  <span className="font-semibold text-muted-foreground">Clan Name</span>
-                  <input
-                    value={editClanName}
-                    onChange={(e) => setEditClanName(e.target.value)}
-                    className="mt-1 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm font-semibold"
-                  />
-                </label>
-                <label className="block text-xs">
-                  <span className="font-semibold text-muted-foreground">Clan TAG (2–5 Chars)</span>
-                  <input
-                    value={editClanTag}
-                    maxLength={5}
-                    onChange={(e) => setEditClanTag(e.target.value.toUpperCase())}
-                    className="mt-1 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm font-display"
-                  />
-                </label>
-                <label className="block text-xs sm:col-span-2">
-                  <span className="font-semibold text-muted-foreground">Clan Profile / Avatar Photo</span>
-                  <div className="mt-1 flex items-center gap-3">
-                    {editClanIcon && (
-                      <img src={editClanIcon} alt="Clan Icon" className="h-10 w-10 rounded-xl object-cover border border-border" />
-                    )}
-                    <label className="btn btn-outline inline-flex cursor-pointer items-center gap-1.5 !px-3 !py-1 text-xs font-semibold">
-                      <Upload className="h-3.5 w-3.5 text-accent-text" /> Upload Clan Avatar
-                      <input
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) {
-                            const reader = new FileReader();
-                            reader.onload = (ev) => {
-                              const res = ev.target?.result as string;
-                              if (res) setEditClanIcon(res);
-                            };
-                            reader.readAsDataURL(file);
-                          }
-                        }}
-                      />
-                    </label>
-                    {editClanIcon && (
-                      <button
-                        type="button"
-                        onClick={() => setEditClanIcon(null)}
-                        className="text-xs text-muted-foreground hover:underline"
-                      >
-                        Remove
-                      </button>
-                    )}
-                  </div>
-                </label>
-              </div>
-              <button
-                type="button"
-                onClick={handleSaveClanEdits}
-                className="btn btn-primary !px-5 !py-2 text-xs font-semibold"
-              >
-                Save Clan Changes
-              </button>
-            </div>
-          )}
-
-          {/* Weekly Clan Mission Bar */}
-          <div className="mt-5 rounded-2xl border border-border bg-background/50 p-4">
-            <div className="flex items-center justify-between text-xs font-semibold">
-              <span>Weekly Clan Mission: Win 50 Party or Ranked Rounds Together</span>
-              <span className="readout text-accent-text">
-                {myClan.weeklyMissionProgress} / {myClan.weeklyMissionTarget}
-              </span>
-            </div>
-            <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
-              <div
-                className="h-full bg-accent-fill"
-                style={{
-                  width: `${Math.min(100, (myClan.weeklyMissionProgress / myClan.weeklyMissionTarget) * 100)}%`,
-                }}
-              />
-            </div>
-          </div>
-
-          {/* Clan Roster */}
-          <div className="mt-5">
-            <h3 className="mb-2.5 text-xs font-semibold text-muted-foreground">
-              Clan Roster ({myClan.members.length}/{myClan.maxMembers})
-            </h3>
-            <div className="divide-y divide-border rounded-2xl border border-border bg-background/30">
-              {myClan.members.map((m) => (
-                <div key={m.id} className="flex items-center justify-between px-4 py-2.5 text-sm">
-                  <div className="flex items-center gap-2.5">
-                    <AvatarFrame name={m.nickname} rp={m.rp} size={36} />
-                    <div className="flex items-center gap-1.5">
-                      <ClanTagPill tag={myClan.tag} />
-                      <span className="font-semibold">{m.nickname}</span>
-                      <span className="ml-1 rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold">
-                        {m.role}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="readout text-xs font-semibold text-accent-text">{m.rp.toLocaleString()} RP</p>
-                    <p className="text-[10px] text-muted-foreground">
-                      +{m.weeklyContribution.toLocaleString()} Weekly XP
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      ) : (
-        /* Create a Clan Card */
-        <section className="plate space-y-4 p-6">
-          <h2 className="font-display text-2xl">Create a New Clan (Max 50 Members · Lv.1–10)</h2>
-          {errorMsg && (
-            <p className="rounded-xl bg-destructive/15 px-3 py-2 text-xs font-semibold text-destructive">
-              {errorMsg}
-            </p>
-          )}
-          <div className="grid gap-3 sm:grid-cols-3">
-            <label className="block text-xs">
-              <span className="font-semibold text-muted-foreground">Clan [TAG] (2–5 chars)</span>
-              <input
-                value={tagInput}
-                maxLength={5}
-                placeholder="STRF"
-                onChange={(e) => setTagInput(e.target.value.toUpperCase())}
-                className="mt-1 w-full rounded-xl border border-border bg-background px-3 py-2 font-mono text-sm font-semibold uppercase"
-              />
-            </label>
-            <label className="block text-xs sm:col-span-2">
-              <span className="font-semibold text-muted-foreground">Unique Clan Full Name</span>
-              <input
-                value={nameInput}
-                maxLength={36}
-                placeholder="STRAFE Horizon Vanguard"
-                onChange={(e) => setNameInput(e.target.value)}
-                className="mt-1 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm font-semibold"
-              />
-            </label>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <label className="block text-xs">
-              <span className="font-semibold text-muted-foreground">Clan Motto / Description</span>
-              <input
-                value={descInput}
-                maxLength={100}
-                placeholder="Global Ranked & Party Voice grinders"
-                onChange={(e) => setDescInput(e.target.value)}
-                className="mt-1 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm"
-              />
-            </label>
-            <label className="block text-xs">
-              <span className="font-semibold text-muted-foreground">Upload Clan Avatar (Optional)</span>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (ev) => {
-                      const res = ev.target?.result as string;
-                      if (res) setIconUrlInput(res);
-                    };
-                    reader.readAsDataURL(file);
-                  }
-                }}
-                className="mt-1 w-full text-xs text-muted-foreground"
-              />
-            </label>
-          </div>
-          <button
-            type="button"
-            onClick={handleCreateClan}
-            className="btn btn-primary !px-6 !py-2.5 text-xs font-semibold"
-          >
-            Create Clan
-          </button>
-        </section>
-      )}
-    </div>
-  );
-}
-
-/* ============================================================================
- * 3. COSMETIC SHOP TAB (Direct Buy with Coins, Live Preview & 5 Categories)
+ * 2. COSMETIC SHOP TAB
  * ========================================================================== */
 function CosmeticLivePreview({
   item,
@@ -1067,7 +726,7 @@ function CosmeticLivePreview({
   if (item.category === "trail") {
     const trailColors: Record<string, string> = {
       blue: "from-cyan-400 via-sky-500 to-blue-600",
-      rainbow: "from-pink-500 via-accent-fill to-cyan-400",
+      rainbow: "from-pink-500 via-[#D2F801] to-cyan-400",
       solar: "from-amber-400 via-yellow-500 to-orange-500",
     };
     return (
@@ -1076,7 +735,7 @@ function CosmeticLivePreview({
         <div className="relative h-20 w-full rounded-xl border border-border/60 bg-[#161618] flex items-center justify-between px-6 overflow-hidden">
           <div className="h-3 w-3 rounded-full bg-foreground shadow-sm" />
           <div className={`h-0.5 flex-1 mx-2 bg-gradient-to-r ${trailColors[item.value] ?? "from-primary to-muted"} border-dashed`} />
-          <div className="h-3 w-3 rounded-full bg-accent-fill shadow-sm" />
+          <div className="h-3 w-3 rounded-full bg-[#D2F801] shadow-sm" />
         </div>
       </div>
     );
@@ -1401,376 +1060,6 @@ function CosmeticShopTab({
                 </button>
               </div>
             </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-/* ============================================================================
- * 4. SOCIAL FEED & 4:5 STORIES TAB
- * ========================================================================== */
-function SocialFeedTab({
-  social,
-  rank,
-  stats,
-  lang,
-}: {
-  social: ReturnType<typeof useSocialProfile>[0];
-  rank: ReturnType<typeof loadRank>;
-  stats: ReturnType<typeof computeStats>;
-  lang: Lang;
-}) {
-  const { posts, stories, addPost, toggleLike, addComment, addStory } = useFeed();
-  const [postText, setPostText] = useState("");
-  const [attachResultCard, setAttachResultCard] = useState(true);
-  const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
-  const [activeStory, setActiveStory] = useState<StoryHighlight | null>(null);
-
-  const handleUploadStory = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const imgUrl = reader.result as string;
-      addStory({
-        authorId: "me",
-        authorName: social.nickname,
-        authorUsername: social.username,
-        authorClanTag: social.clanTag,
-        authorVerified: social.verifiedBadge,
-        authorRp: rank.rp,
-        authorChampPos: rank.championPosition,
-        country: social.country,
-        mode: "Photo Story",
-        score: "Story",
-        accuracy: "100%",
-        caption: "Shared a new photo story",
-        gradient: "linear-gradient(160deg, #161616 0%, #262626 100%)",
-        imageUrl: imgUrl,
-      });
-    };
-    reader.readAsDataURL(file);
-    e.target.value = "";
-  };
-
-  const publishPost = () => {
-    if (!postText.trim() && !attachResultCard) return;
-    addPost({
-      authorId: "me",
-      authorName: social.nickname,
-      authorUsername: social.username,
-      authorClanTag: social.clanTag,
-      authorVerified: social.verifiedBadge,
-      authorRp: rank.rp,
-      authorChampPos: rank.championPosition,
-      country: social.country,
-      content: postText.trim() || "My latest STRAFE session card",
-      resultCard: attachResultCard
-        ? {
-            mode: "Ranked 1v1 · Season 1",
-            score: Math.max(22450, stats.bestScore),
-            maxScore: 25000,
-            accuracy: "94%",
-            avgError: "32.4 km",
-            grade: "S",
-          }
-        : null,
-    });
-    setPostText("");
-  };
-
-  const submitComment = (postId: string) => {
-    const txt = (commentInputs[postId] ?? "").trim();
-    if (!txt) return;
-    addComment(postId, {
-      authorName: social.nickname,
-      authorUsername: social.username,
-      authorClanTag: social.clanTag,
-      authorVerified: social.verifiedBadge,
-      text: txt,
-    });
-    setCommentInputs((prev) => ({ ...prev, [postId]: "" }));
-  };
-
-  return (
-    <div className="space-y-6">
-      {/* Story Strip */}
-      <section>
-        <h2 className="mb-2.5 text-xs font-semibold text-muted-foreground">
-          {t(lang, "stories")}
-        </h2>
-        <div className="no-scrollbar flex gap-3 overflow-x-auto pb-1">
-          {/* + Add Story Button */}
-          <label className="story-ring relative aspect-[4/5] w-28 shrink-0 cursor-pointer rounded-[18px] text-center transition-opacity hover:opacity-90">
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleUploadStory}
-            />
-            <div className="flex h-full w-full flex-col items-center justify-center rounded-[15.5px] bg-card p-2 text-foreground">
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-accent-fill text-[#161616]">
-                <Plus className="h-5 w-5" />
-              </div>
-              <span className="mt-2 text-xs font-semibold text-accent-text">+ Add Story</span>
-              <span className="text-[10px] text-muted-foreground">Upload photo</span>
-            </div>
-          </label>
-
-          {stories.map((st) => (
-            <button
-              key={st.id}
-              type="button"
-              onClick={() => setActiveStory(st)}
-              className="story-ring relative aspect-[4/5] w-28 shrink-0 overflow-hidden rounded-[18px] text-left transition-opacity hover:opacity-90"
-            >
-              {st.imageUrl ? (
-                <div className="relative h-full w-full rounded-[15.5px] overflow-hidden">
-                  <img src={st.imageUrl} alt={st.caption} className="h-full w-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 p-2.5 flex flex-col justify-between text-white">
-                    <AvatarFrame
-                      name={st.authorName}
-                      rp={st.authorRp}
-                      championPosition={st.authorChampPos}
-                      size={28}
-                    />
-                    <div>
-                      <p className="truncate text-xs font-semibold text-white">{st.authorName}</p>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div
-                  className="flex h-full w-full flex-col justify-between rounded-[15.5px] p-2.5 text-white"
-                  style={{ background: st.gradient }}
-                >
-                  <AvatarFrame
-                    name={st.authorName}
-                    rp={st.authorRp}
-                    championPosition={st.authorChampPos}
-                    size={28}
-                  />
-                  <div>
-                    <p className="font-display text-lg text-accent-text">{st.score}</p>
-                    <p className="truncate text-[10px] font-semibold">{st.authorName}</p>
-                  </div>
-                </div>
-              )}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* Post Composer (Supports Free-Form Text & Result Card Attachment) */}
-      <section className="plate p-5">
-        <div className="flex gap-3">
-          <AvatarFrame
-            src={social.avatarUrl}
-            name={social.nickname}
-            rp={rank.rp}
-            championPosition={rank.championPosition}
-            size={46}
-          />
-          <div className="flex-1">
-            <textarea
-              rows={2}
-              value={postText}
-              onChange={(e) => setPostText(e.target.value)}
-              placeholder="Share a geography tip, invite players to a Party lobby, or post your Results Card…"
-              className="w-full rounded-2xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-foreground/60"
-            />
-            <div className="mt-2.5 flex flex-wrap items-center justify-between gap-2">
-              <label className="flex items-center gap-2 text-xs font-semibold text-muted-foreground">
-                <input
-                  type="checkbox"
-                  checked={attachResultCard}
-                  onChange={(e) => setAttachResultCard(e.target.checked)}
-                  className="h-4 w-4 accent-accent-fill"
-                />
-                Attach Latest Match Results Card
-              </label>
-              <button
-                type="button"
-                onClick={publishPost}
-                className="btn btn-primary !px-5 !py-2 text-xs font-semibold"
-              >
-                <Send className="h-3.5 w-3.5" />
-                Post to Feed
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Feed Posts List */}
-      <div className="space-y-4">
-        {posts.map((post) => (
-          <article key={post.id} className="plate p-5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <AvatarFrame
-                  name={post.authorName}
-                  rp={post.authorRp}
-                  championPosition={post.authorChampPos}
-                  size={44}
-                />
-                <div>
-                  <div className="flex items-center gap-1.5">
-                    <ClanTagPill tag={post.authorClanTag} />
-                    <span className="font-semibold">{post.authorName}</span>
-                    <VerifiedBadge type={post.authorVerified} size={14} />
-                    <Flag country={post.country} size={16} />
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    @{post.authorUsername} · {post.timestamp}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <p className="mt-3 text-sm leading-relaxed">{post.content}</p>
-
-            {/* Attached Results Card */}
-            {post.resultCard && (
-              <div className="mt-3 flex items-center justify-between rounded-2xl border border-border bg-[#161616] p-4 text-white">
-                <div>
-                  <span className="rounded-full bg-muted px-2.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
-                    {post.resultCard.mode}
-                  </span>
-                  <p className="font-display mt-2 text-3xl text-accent-text">
-                    {post.resultCard.score.toLocaleString()}{" "}
-                    <span className="text-xs text-white/60">
-                      / {post.resultCard.maxScore.toLocaleString()} pts
-                    </span>
-                  </p>
-                  <p className="mt-0.5 text-xs text-white/75">
-                    Accuracy: {post.resultCard.accuracy} · Avg Error: {post.resultCard.avgError}
-                  </p>
-                </div>
-                <div className="font-display text-5xl text-accent-text">
-                  {post.resultCard.grade}
-                </div>
-              </div>
-            )}
-
-            {/* Like & Comment Bar */}
-            <div className="mt-4 flex items-center gap-4 border-t border-border pt-3 text-xs font-semibold">
-              <button
-                type="button"
-                onClick={() => toggleLike(post.id)}
-                className={`inline-flex items-center gap-1.5 ${
-                  post.likedByMe ? "text-accent-text" : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                <Heart className="h-4 w-4" fill={post.likedByMe ? "#D2F801" : "none"} />
-                {post.likes} Likes
-              </button>
-              <span className="inline-flex items-center gap-1.5 text-muted-foreground">
-                <MessageCircle className="h-4 w-4" />
-                {post.comments.length} Comments
-              </span>
-            </div>
-
-            {/* Comments List + Input */}
-            {post.comments.length > 0 && (
-              <div className="mt-3 space-y-2 rounded-2xl bg-background/40 p-3">
-                {post.comments.map((c) => (
-                  <div key={c.id} className="text-xs">
-                    <div className="flex items-center gap-1">
-                      <ClanTagPill tag={c.authorClanTag} />
-                      <span className="font-semibold">{c.authorName}</span>
-                      <VerifiedBadge type={c.authorVerified ?? "none"} size={12} />
-                      <span className="text-muted-foreground">· {c.timestamp}</span>
-                    </div>
-                    <p className="mt-0.5 text-foreground/90">{c.text}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <div className="mt-3 flex gap-2">
-              <input
-                value={commentInputs[post.id] ?? ""}
-                onChange={(e) =>
-                  setCommentInputs((prev) => ({ ...prev, [post.id]: e.target.value }))
-                }
-                onKeyDown={(e) => e.key === "Enter" && submitComment(post.id)}
-                placeholder="Write a comment…"
-                className="flex-1 rounded-full border border-border bg-background px-3.5 py-1.5 text-xs outline-none focus:border-foreground/60"
-              />
-              <button
-                type="button"
-                onClick={() => submitComment(post.id)}
-                className="rounded-full bg-accent-fill px-3.5 py-1.5 text-xs font-semibold text-[#161616]"
-              >
-                Reply
-              </button>
-            </div>
-          </article>
-        ))}
-      </div>
-
-      {/* Story Modal */}
-      {activeStory && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-black/80 p-4 backdrop-blur-md">
-          <div className="story-ring relative aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[24px]">
-            {activeStory.imageUrl ? (
-              <div className="relative h-full w-full rounded-[21px] overflow-hidden">
-                <img src={activeStory.imageUrl} alt={activeStory.caption} className="h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/60 p-6 flex flex-col justify-between text-white">
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold text-lg">{activeStory.authorName}</span>
-                    <button
-                      type="button"
-                      onClick={() => setActiveStory(null)}
-                      className="grid h-8 w-8 place-items-center rounded-full bg-black/60"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  </div>
-                  <div>
-                    <p className="font-display text-4xl text-accent-text">{activeStory.score}</p>
-                    <p className="mt-2 text-sm text-white/90">{activeStory.caption}</p>
-                    <button
-                      type="button"
-                      onClick={() => setActiveStory(null)}
-                      className="btn btn-primary mt-4 w-full py-2.5 text-xs font-semibold"
-                    >
-                      Close Story
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div
-                className="flex h-full w-full flex-col justify-between rounded-[21px] p-6 text-white"
-                style={{ background: activeStory.gradient }}
-              >
-                <div className="flex items-center justify-between">
-                  <span className="font-semibold">{activeStory.authorName}</span>
-                  <button
-                    type="button"
-                    onClick={() => setActiveStory(null)}
-                    className="grid h-8 w-8 place-items-center rounded-full bg-black/50"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-                <div className="text-center">
-                  <p className="font-display text-5xl text-accent-text">{activeStory.score}</p>
-                  <p className="mt-2 text-sm">{activeStory.caption}</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setActiveStory(null)}
-                  className="btn btn-primary w-full py-2.5 text-xs font-semibold"
-                >
-                  Close Story
-                </button>
-              </div>
-            )}
           </div>
         </div>
       )}

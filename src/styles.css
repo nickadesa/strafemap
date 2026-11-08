@@ -1219,7 +1219,7 @@ html[data-glass="rim"] .glass-plate {
 @media (max-width: 767px) {
   .rail-offset {
     padding-top: calc(56px + env(safe-area-inset-top, 0px)) !important;
-    padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+    padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important;
   }
 }
 

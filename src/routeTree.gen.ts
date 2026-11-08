@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AchievementsRouteImport } from './routes/achievements'
 import { Route as AdminsRouteImport } from './routes/admins'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CommunityRouteImport } from './routes/community'
 import { Route as CountryGuessRouteImport } from './routes/country-guess'
 import { Route as LeaderboardRouteImport } from './routes/leaderboard'
 import { Route as PartyRouteImport } from './routes/party'
@@ -43,6 +44,11 @@ const AdminsRoute = AdminsRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunityRoute = CommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CountryGuessRoute = CountryGuessRouteImport.update({
@@ -106,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/achievements': typeof AchievementsRoute
   '/admins': typeof AdminsRoute
   '/auth': typeof AuthRoute
+  '/community': typeof CommunityRoute
   '/country-guess': typeof CountryGuessRoute
   '/leaderboard': typeof LeaderboardRoute
   '/party': typeof PartyRoute
@@ -123,6 +130,7 @@ export interface FileRoutesByTo {
   '/achievements': typeof AchievementsRoute
   '/admins': typeof AdminsRoute
   '/auth': typeof AuthRoute
+  '/community': typeof CommunityRoute
   '/country-guess': typeof CountryGuessRoute
   '/leaderboard': typeof LeaderboardRoute
   '/party': typeof PartyRoute
@@ -141,6 +149,7 @@ export interface FileRoutesById {
   '/achievements': typeof AchievementsRoute
   '/admins': typeof AdminsRoute
   '/auth': typeof AuthRoute
+  '/community': typeof CommunityRoute
   '/country-guess': typeof CountryGuessRoute
   '/leaderboard': typeof LeaderboardRoute
   '/party': typeof PartyRoute
@@ -160,6 +169,7 @@ export interface FileRouteTypes {
     | '/achievements'
     | '/admins'
     | '/auth'
+    | '/community'
     | '/country-guess'
     | '/leaderboard'
     | '/party'
@@ -177,6 +187,7 @@ export interface FileRouteTypes {
     | '/achievements'
     | '/admins'
     | '/auth'
+    | '/community'
     | '/country-guess'
     | '/leaderboard'
     | '/party'
@@ -194,6 +205,7 @@ export interface FileRouteTypes {
     | '/achievements'
     | '/admins'
     | '/auth'
+    | '/community'
     | '/country-guess'
     | '/leaderboard'
     | '/party'
@@ -212,6 +224,7 @@ export interface RootRouteChildren {
   AchievementsRoute: typeof AchievementsRoute
   AdminsRoute: typeof AdminsRoute
   AuthRoute: typeof AuthRoute
+  CommunityRoute: typeof CommunityRoute
   CountryGuessRoute: typeof CountryGuessRoute
   LeaderboardRoute: typeof LeaderboardRoute
   PartyRoute: typeof PartyRoute
@@ -253,6 +266,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/community': {
+      id: '/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof CommunityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/country-guess': {
@@ -340,6 +360,7 @@ const rootRouteChildren: RootRouteChildren = {
   AchievementsRoute: AchievementsRoute,
   AdminsRoute: AdminsRoute,
   AuthRoute: AuthRoute,
+  CommunityRoute: CommunityRoute,
   CountryGuessRoute: CountryGuessRoute,
   LeaderboardRoute: LeaderboardRoute,
   PartyRoute: PartyRoute,
