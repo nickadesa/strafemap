@@ -268,7 +268,17 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "leave": "Leave",
     "connectionLost": "Connection lost. Reconnecting…",
     "opponentLeft": "Your opponent left. You win this match.",
-    "todayScore": "Today’s score: {n}"
+    "todayScore": "Today’s score: {n}",
+    "findMatch": "Find match",
+    "findingMatch": "Finding a match…",
+    "cancelMatch": "Cancel",
+    "ladder": "Ladder",
+    "matchHistory": "Match History",
+    "placements": "Placement Matches",
+    "placementDesc": "Play 5 placement matches to get your rank.",
+    "seasonCountdown": "Season 1 · 24 days left",
+    "waitingForHost": "Waiting for host…",
+    "leavePartyConfirm": "Are you sure you want to leave this party?" 
   },
   "th": {
     "chat": "แชท",
@@ -499,7 +509,17 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "leave": "ออก",
     "connectionLost": "การเชื่อมต่อขัดข้อง กำลังเชื่อมต่อใหม่…",
     "opponentLeft": "คู่ต่อสู้ออกจากเกม คุณเป็นฝ่ายชนะ",
-    "todayScore": "คะแนนวันนี้: {n}"
+    "todayScore": "คะแนนวันนี้: {n}",
+    "findMatch": "ค้นหาแมตช์",
+    "findingMatch": "กำลังค้นหาแมตช์…",
+    "cancelMatch": "ยกเลิก",
+    "ladder": "เส้นทางแรงค์",
+    "matchHistory": "ประวัติการแข่ง",
+    "placements": "แมตช์จัดอันดับ",
+    "placementDesc": "เล่น 5 แมตช์เพื่อรับการจัดแรงค์ของคุณ",
+    "seasonCountdown": "ซีซั่น 1 · เหลือ 24 วัน",
+    "waitingForHost": "กำลังรอหัวหน้าห้อง…",
+    "leavePartyConfirm": "คุณแน่ใจหรือไม่ว่าต้องการออกจากปาร์ตี้นี้?" 
   },
   "ko": {
     "chat": "채팅",
@@ -730,7 +750,17 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "leave": "나가기",
     "connectionLost": "연결이 끊어졌습니다. 재연결 중…",
     "opponentLeft": "상대방이 나갔습니다. 승리하셨습니다.",
-    "todayScore": "오늘의 점수: {n}"
+    "todayScore": "오늘의 점수: {n}",
+    "findMatch": "매치 찾기",
+    "findingMatch": "매치 찾는 중…",
+    "cancelMatch": "취소",
+    "ladder": "랭크 사다리",
+    "matchHistory": "전적 기록",
+    "placements": "배치 경기",
+    "placementDesc": "랭크를 받으려면 배치 경기 5판을 플레이하세요.",
+    "seasonCountdown": "시즌 1 · 24일 남음",
+    "waitingForHost": "방장 대기 중…",
+    "leavePartyConfirm": "정말 이 파티에서 나가시겠습니까?" 
   },
   "zh": {
     "chat": "聊天",
@@ -961,7 +991,17 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "leave": "离开",
     "connectionLost": "连接断开，正在重新连接…",
     "opponentLeft": "对方已离开，你赢得了比赛。",
-    "todayScore": "今日得分：{n}"
+    "todayScore": "今日得分：{n}",
+    "findMatch": "寻找对局",
+    "findingMatch": "正在寻找对局…",
+    "cancelMatch": "取消",
+    "ladder": "段位天梯",
+    "matchHistory": "对局历史",
+    "placements": "定位赛",
+    "placementDesc": "进行 5 场定位赛以获得你的段位。",
+    "seasonCountdown": "第 1 赛季 · 剩余 24 天",
+    "waitingForHost": "等待房主…",
+    "leavePartyConfirm": "确定要离开此队伍吗？" 
   },
   "ja": {
     "chat": "チャット",
@@ -1192,7 +1232,17 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "leave": "退出",
     "connectionLost": "接続が切断されました。再接続中…",
     "opponentLeft": "対戦相手が退出しました。あなたの勝利です。",
-    "todayScore": "今日のスコア: {n}"
+    "todayScore": "今日のスコア: {n}",
+    "findMatch": "マッチを探す",
+    "findingMatch": "マッチを検索中…",
+    "cancelMatch": "キャンセル",
+    "ladder": "ランク街道",
+    "matchHistory": "対戦履歴",
+    "placements": "プレースメントマッチ",
+    "placementDesc": "ランクを獲得するにはプレースメントマッチを5回プレイしてください。",
+    "seasonCountdown": "シーズン 1 · 残り 24日",
+    "waitingForHost": "ホストを待機中…",
+    "leavePartyConfirm": "このパーティから退出してもよろしいですか？" 
   },
   "es": {
     "chat": "Chat",
@@ -1423,7 +1473,17 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "leave": "Salir",
     "connectionLost": "Conexión perdida. Reconectando…",
     "opponentLeft": "Tu oponente se ha ido. Ganas esta partida.",
-    "todayScore": "Puntuación de hoy: {n}"
+    "todayScore": "Puntuación de hoy: {n}",
+    "findMatch": "Buscar partida",
+    "findingMatch": "Buscando partida…",
+    "cancelMatch": "Cancelar",
+    "ladder": "Escala",
+    "matchHistory": "Historial de partidas",
+    "placements": "Partidas de posicionamiento",
+    "placementDesc": "Juega 5 partidas de posicionamiento para obtener tu rango.",
+    "seasonCountdown": "Temporada 1 · Quedan 24 días",
+    "waitingForHost": "Esperando al anfitrión…",
+    "leavePartyConfirm": "¿Seguro que quieres salir de este grupo?" 
   },
   "fr": {
     "chat": "Chat",
@@ -1654,7 +1714,17 @@ export const dictionaries: Record<Lang, Record<string, string>> = {
     "leave": "Quitter",
     "connectionLost": "Connexion perdue. Reconnexion en cours…",
     "opponentLeft": "Votre adversaire est parti. Vous remportez la victoire.",
-    "todayScore": "Score du jour : {n}"
+    "todayScore": "Score du jour : {n}",
+    "findMatch": "Trouver un match",
+    "findingMatch": "Recherche d'un match…",
+    "cancelMatch": "Annuler",
+    "ladder": "Échelle",
+    "matchHistory": "Historique des parties",
+    "placements": "Matchs de placement",
+    "placementDesc": "Jouez 5 matchs de placement pour obtenir votre rang.",
+    "seasonCountdown": "Saison 1 · 24 jours restants",
+    "waitingForHost": "En attente de l'hôte…",
+    "leavePartyConfirm": "Voulez-vous vraiment quitter ce groupe ?" 
   }
 };
 

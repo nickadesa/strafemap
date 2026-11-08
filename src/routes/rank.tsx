@@ -1,8 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState, useEffect, useMemo } from "react";
 import { Sidebar } from "@/components/Sidebar";
-import { useSettings } from "@/lib/game/storage";
-import { buzz } from "@/lib/game/sound";
+import { useSettings, loadRecords } from "@/lib/game/storage";
+import { buzz, blip } from "@/lib/game/sound";
 import {
   loadRank,
   saveRank,
@@ -21,7 +21,7 @@ import {
 } from "@/lib/social";
 import { t, type Lang } from "@/lib/i18n";
 import { SymbolCompass, SymbolTrophy, SymbolShield } from "@/components/SFSymbols";
-import { Flag as FlagIcon, Gift, Globe, Sparkles, SlidersHorizontal } from "lucide-react";
+import { Flag as FlagIcon, Gift, Globe, Sparkles, SlidersHorizontal, Trophy, History } from "lucide-react";
 import {
   Drawer,
   DrawerContent,
@@ -35,7 +35,7 @@ import { SlidingTabs } from "@/components/ui/SlidingTabs";
 import { NumberPopIn } from "@/components/ui/NumberPopIn";
 import { TiltCard } from "@/components/ui/TiltCard";
 
-type RankTab = "play" | "leaderboard" | "guide";
+type RankTab = "ladder" | "leaderboard" | "history";
 
 export const Route = createFileRoute("/rank")({
   head: () => ({
@@ -50,7 +50,10 @@ export const Route = createFileRoute("/rank")({
   }),
   validateSearch: (s: Record<string, unknown>): { tab?: RankTab } => {
     const tab = s["tab"];
-    if (tab === "play" || tab === "leaderboard" || tab === "guide") return { tab };
+    if (tab === "ladder" || tab === "leaderboard" || tab === "history" || tab === "play" || tab === "guide") {
+      const normalized: RankTab = tab === "play" || tab === "guide" ? "ladder" : (tab as RankTab);
+      return { tab: normalized };
+    }
     return {};
   },
   component: RankPage,
@@ -58,75 +61,55 @@ export const Route = createFileRoute("/rank")({
 
 function RankPage() {
   const search = Route.useSearch();
+  const nav = useNavigate();
   const [s] = useSettings();
   const [social] = useSocialProfile();
   const lang = (s.language ?? "en") as Lang;
-  const [tab, setTab] = useState<RankTab>(search.tab ?? "play");
+  const [tab, setTab] = useState<RankTab>(search.tab ?? "ladder");
   const [rank, setRankState] = useState<RankedProfile>(() => loadRank());
+  const [showRewards, setShowRewards] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchElapsed, setSearchElapsed] = useState(0);
 
-  const updateRankPreview = (rp: number, championPosition: number | null) => {
-    const updated: RankedProfile = {
-      ...rank,
-      rp: Math.max(0, rp),
-      peakRp: Math.max(rank.peakRp, rp),
-      championPosition,
-    };
-    saveRank(updated);
-    setRankState(updated);
-  };
-
-  return (
-    <div className="min-h-screen">
-      <Sidebar />
-      <main className="rail-offset flex min-h-screen items-start justify-center px-3 pt-6 pb-12 md:px-6 md:py-10">
-        <div className="w-full max-w-4xl">
-          <div className="mb-6 flex justify-center">
-            <SlidingTabs
-              tabs={[
-                { id: "play", label: t(lang, "play") },
-                { id: "leaderboard", label: t(lang, "leaderboard") },
-                { id: "guide", label: t(lang, "guide") },
-              ]}
-              activeId={tab}
-              onChange={(nextTab) => {
-                buzz(6);
-                setTab(nextTab as RankTab);
-              }}
-            />
-          </div>
-
-          {tab === "play" && (
-            <PlayTab
-              rank={rank}
-              lang={lang}
-              onPreviewChange={updateRankPreview}
-            />
-          )}
-          {tab === "leaderboard" && (
-            <UnifiedLeaderboardView rank={rank} social={social} lang={lang} />
-          )}
-          {tab === "guide" && (
-            <GuideTab lang={lang} rp={rank.rp} championPosition={rank.championPosition} />
-          )}
-        </div>
-      </main>
-    </div>
-  );
-}
-
-function PlayTab({
-  rank,
-  lang,
-  onPreviewChange,
-}: {
-  rank: RankedProfile;
-  lang: Lang;
-  onPreviewChange: (rp: number, pos: number | null) => void;
-}) {
   const { prev, current, next } = getAdjacentRanks(rank.rp, rank.championPosition);
   const progress = Math.round(current.progressRatio * 100);
-  const [showRewards, setShowRewards] = useState(false);
-  const animatedRp = useCountUp(rank.rp, 850, true);
+
+  // Matchmaking simulation
+  useEffect(() => {
+    if (!isSearching) return;
+    const interval = setInterval(() => {
+      setSearchElapsed((prev) => prev + 1);
+    }, 1000);
+
+    const timer = setTimeout(() => {
+      buzz(15);
+      blip(s.sound, 880, 120);
+      setIsSearching(false);
+      nav({
+        to: "/game/$mode",
+        params: { mode: "classic" },
+        search: { ranked: 1 },
+      });
+    }, 2500);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timer);
+    };
+  }, [isSearching, nav, s.sound]);
+
+  const handleStartMatchmaking = () => {
+    buzz(10);
+    blip(s.sound, 660, 60);
+    setSearchElapsed(0);
+    setIsSearching(true);
+  };
+
+  const handleCancelMatchmaking = () => {
+    buzz(6);
+    setIsSearching(false);
+    setSearchElapsed(0);
+  };
 
   const stats = [
     [rank.wins, t(lang, "winsLabel")],
@@ -136,219 +119,390 @@ function PlayTab({
   ] as const;
 
   return (
-    <div className="space-y-4">
-      <div className="plate relative overflow-hidden p-5 text-center md:p-9">
+    <div className="min-h-screen">
+      <Sidebar />
+      <main className="rail-offset flex min-h-screen items-start justify-center px-3 pt-6 pb-16 md:px-6 md:py-10">
+        <div className="w-full max-w-4xl space-y-6">
+          {/* Apple Large Title Header */}
+          <header className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                {t(lang, "ranked")}
+              </h1>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {t(lang, "seasonCountdown", { days: 24 })}
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-semibold text-foreground backdrop-blur-md">
+                <Sparkles className="h-3 w-3 text-accent-text" />
+                Season 1
+              </span>
+              <button
+                type="button"
+                onClick={() => setShowRewards(true)}
+                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-semibold text-foreground transition-colors hover:bg-muted active:scale-95"
+              >
+                <Gift className="h-3 w-3 text-accent-text" />
+                {t(lang, "seasonRewards")}
+              </button>
+            </div>
+          </header>
 
-        {/* 3-Column Rank Showcase: Previous (left ~65%) - Current (center 100%) - Next (right ~65%) */}
-        <div className="relative mx-auto grid max-w-2xl grid-cols-3 items-center gap-2 sm:gap-6">
-          {/* Previous Rank */}
-          <div className="flex flex-col items-center opacity-65 transition-opacity hover:opacity-95">
-            <span className="mb-1.5 text-xs font-medium text-muted-foreground">
-              {t(lang, "previousRank")}
-            </span>
-            {prev ? (
-              <>
-                <RankBanner bannerUrl={prev.bannerUrl} alt={prev.name} width={86} className="sm:scale-105" />
-                <p className="mt-1.5 text-xs font-semibold" style={{ color: prev.tier.accent }}>
-                  {prev.name}
+          {/* Hero Card: Prominent Rank Emblem & Matchmaking */}
+          <div className="plate relative overflow-hidden p-6 text-center md:p-8">
+            {/* Center Emblem */}
+            <div className="flex flex-col items-center">
+              <RankBanner
+                rp={rank.rp}
+                championPosition={rank.championPosition}
+                width={132}
+                className="my-1 sm:scale-105"
+              />
+              <h2
+                className="font-display mt-2 text-2xl sm:text-3xl"
+                style={{ color: current.tier.accent }}
+              >
+                {current.name}
+              </h2>
+              <p className="mt-0.5 text-base font-semibold sm:text-lg">
+                <span className="readout text-accent-text font-bold">
+                  <NumberPopIn value={rank.rp} />
+                </span>{" "}
+                <span className="text-xs text-muted-foreground">RP</span>
+              </p>
+            </div>
+
+            {/* Division Progress Bar */}
+            <div className="mx-auto mt-5 w-full max-w-md">
+              <div className="mb-1.5 flex justify-between text-xs font-semibold text-muted-foreground">
+                <span>{current.name}</span>
+                <span>{next?.name ?? t(lang, "topRank")}</span>
+              </div>
+              <div className="h-2 overflow-hidden rounded-full bg-muted p-0.5">
+                <div
+                  className="h-full rounded-full transition-[width] duration-500"
+                  style={{
+                    width: `${progress}%`,
+                    backgroundColor: "#D2F801",
+                  }}
+                />
+              </div>
+              {current.nextDivisionRp !== null ? (
+                <p className="readout mt-1.5 text-xs text-muted-foreground">
+                  {t(lang, "rpToNext", {
+                    n: Math.max(0, current.nextDivisionRp - rank.rp),
+                    rank: next?.name ?? "Next",
+                  })}
                 </p>
-                <p className="readout text-[10px] text-muted-foreground">{prev.min.toLocaleString()} RP</p>
-              </>
-            ) : (
-              <div className="grid h-24 w-20 place-items-center rounded-2xl border border-dashed border-border text-[11px] text-muted-foreground">
-                Start
+              ) : (
+                <p className="readout mt-1.5 text-xs text-accent-text">
+                  {current.rank === "champion"
+                    ? `Champion Standing · #${current.championPosition}`
+                    : "Master Tier · Reach Top 50 Leaderboard for Champion"}
+                </p>
+              )}
+            </div>
+
+            {/* Placement Match Notice (if < 5 games) */}
+            {rank.games < 5 && (
+              <div className="mx-auto mt-5 max-w-md rounded-2xl border border-border/80 bg-background/50 p-3.5 text-left">
+                <div className="flex items-center justify-between text-xs font-semibold">
+                  <span className="text-foreground">{t(lang, "placements")}</span>
+                  <span className="readout text-accent-text">{rank.games} / 5</span>
+                </div>
+                <p className="mt-1 text-xs text-muted-foreground">{t(lang, "placementDesc")}</p>
+                <div className="mt-2.5 flex items-center gap-1.5">
+                  {[1, 2, 3, 4, 5].map((idx) => (
+                    <div
+                      key={idx}
+                      className={`h-2 flex-1 rounded-full transition-colors ${
+                        idx <= rank.games ? "bg-accent-fill" : "bg-muted"
+                      }`}
+                    />
+                  ))}
+                </div>
               </div>
             )}
+
+            {/* Matchmaking Action Button */}
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+              {!isSearching ? (
+                <button
+                  type="button"
+                  onClick={handleStartMatchmaking}
+                  className="btn btn-primary px-8 py-3.5 text-base font-semibold shadow-lg"
+                >
+                  {t(lang, "findMatch")}
+                </button>
+              ) : (
+                <div className="inline-flex items-center gap-3 rounded-2xl border border-accent-fill/40 bg-accent-fill/10 px-6 py-3">
+                  <span className="relative flex h-3 w-3">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-fill opacity-75" />
+                    <span className="relative inline-flex h-3 w-3 rounded-full bg-accent-fill" />
+                  </span>
+                  <span className="readout text-sm font-semibold text-foreground">
+                    {t(lang, "findingMatch")} (0:0{searchElapsed})
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handleCancelMatchmaking}
+                    className="ml-2 rounded-lg bg-background/80 px-2.5 py-1 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {t(lang, "cancelMatch")}
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Stats Row */}
+            <div className="mx-auto mt-6 grid w-full max-w-lg grid-cols-4 divide-x divide-border rounded-2xl border border-border bg-background/40">
+              {stats.map(([v, l]) => (
+                <div key={l} className="px-2 py-3">
+                  <p className="readout text-lg sm:text-xl font-semibold">{v}</p>
+                  <p className="text-[11px] text-muted-foreground">{l}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Current Rank (Center Hero) */}
-          <div className="flex flex-col items-center">
-            <span className="mb-1 inline-flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-0.5 text-xs font-semibold text-foreground">
-              <Sparkles className="h-3 w-3" /> {t(lang, "currentRank")}
-            </span>
-            <RankBanner
-              rp={rank.rp}
-              championPosition={rank.championPosition}
-              width={142}
-              className="my-1 sm:scale-110"
-            />
-            <h2
-              className="font-display mt-2 text-2xl sm:text-4xl"
-              style={{ color: current.tier.accent }}
-            >
-              {current.name}
-            </h2>
-            <p className="mt-0.5 text-base font-semibold sm:text-lg">
-              <span className="readout text-accent-text">
-                <NumberPopIn value={rank.rp} />
-              </span>{" "}
-              <span className="text-xs text-muted-foreground">RP</span>
-            </p>
-          </div>
-
-          {/* Next Rank */}
-          <div className="flex flex-col items-center opacity-65 transition-opacity hover:opacity-95">
-            <span className="mb-1.5 text-xs font-medium text-muted-foreground">
-              {t(lang, "nextRank")}
-            </span>
-            {next ? (
-              <>
-                <RankBanner bannerUrl={next.bannerUrl} alt={next.name} width={86} className="sm:scale-105" />
-                <p className="mt-1.5 text-xs font-semibold" style={{ color: next.tier.accent }}>
-                  {next.name}
-                </p>
-                <p className="readout text-[10px] text-muted-foreground">
-                  {next.rank === "champion" ? "Top 50" : `${next.min.toLocaleString()} RP`}
-                </p>
-              </>
-            ) : (
-              <div className="grid h-24 w-20 place-items-center rounded-2xl border border-dashed border-border text-[11px] text-accent-text">
-                #1 Apex
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Division Progress Bar */}
-        <div className="mx-auto mt-6 w-full max-w-md">
-          <div className="mb-1.5 flex justify-between text-xs font-semibold text-muted-foreground">
-            <span>{current.name}</span>
-            <span>{next?.name ?? t(lang, "topRank")}</span>
-          </div>
-          <div className="h-2.5 overflow-hidden rounded-full bg-muted p-0.5">
-            <div
-              className="h-full rounded-full transition-[width] duration-500"
-              style={{
-                width: `${progress}%`,
-                backgroundColor: "#D2F801",
+          {/* Sliding Tabs */}
+          <div className="flex justify-center">
+            <SlidingTabs
+              tabs={[
+                { id: "ladder", label: t(lang, "ladder") },
+                { id: "leaderboard", label: t(lang, "leaderboard") },
+                { id: "history", label: t(lang, "matchHistory") },
+              ]}
+              activeId={tab}
+              onChange={(nextTab) => {
+                buzz(6);
+                setTab(nextTab as RankTab);
               }}
             />
           </div>
-          {current.nextDivisionRp !== null ? (
-            <p className="readout mt-1.5 text-xs text-muted-foreground">
-              {t(lang, "rpToNext", {
-                n: Math.max(0, current.nextDivisionRp - rank.rp),
-                rank: next?.name ?? "Next",
-              })}
-            </p>
-          ) : (
-            <p className="readout mt-1.5 text-xs text-accent-text">
-              {current.rank === "champion"
-                ? `Champion Standing · #${current.championPosition}`
-                : "Master Tier · Reach Top 50 Leaderboard for Champion"}
-            </p>
+
+          {/* Tab Views */}
+          {tab === "ladder" && (
+            <GuideTab
+              lang={lang}
+              rp={rank.rp}
+              championPosition={rank.championPosition}
+              onOpenRewards={() => setShowRewards(true)}
+            />
           )}
-        </div>
+          {tab === "leaderboard" && (
+            <UnifiedLeaderboardView rank={rank} social={social} lang={lang} />
+          )}
+          {tab === "history" && (
+            <MatchHistoryView history={rank.history} lang={lang} />
+          )}
 
-        {/* Stats Row */}
-        <div className="mx-auto mt-6 grid w-full max-w-lg grid-cols-4 divide-x divide-border rounded-2xl border border-border bg-background/40">
-          {stats.map(([v, l]) => (
-            <div key={l} className="px-2 py-3">
-              <p className="readout text-xl font-semibold">{v}</p>
-              <p className="text-[11px] text-muted-foreground">{l}</p>
-            </div>
-          ))}
+          {/* Season Rewards Drawer */}
+          <Drawer open={showRewards} onOpenChange={setShowRewards}>
+            <DrawerContent className="mx-auto max-w-4xl p-5 sm:p-6">
+              <DrawerHeader className="flex flex-row items-center justify-between border-b border-border px-0 pb-4 pt-1">
+                <div>
+                  <DrawerTitle>{t(lang, "seasonRewards")}</DrawerTitle>
+                  <DrawerDescription className="mt-1">
+                    Unlock exclusive Avatar Frames, Titles, Gacha Packs & Super Chat Auras at your peak season tier
+                  </DrawerDescription>
+                </div>
+                <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-foreground">
+                  Season 1
+                </span>
+              </DrawerHeader>
+              <div className="mt-4 grid max-h-[70vh] gap-3 overflow-y-auto pr-1 sm:grid-cols-2 lg:grid-cols-3">
+                {SEASON_REWARDS.map((rw) => {
+                  const unlocked =
+                    rw.tier === "champion"
+                      ? rank.rp >= 7000 && (rank.championPosition ?? 999) <= 50
+                      : rank.peakRp >= rw.minRp || rank.rp >= rw.minRp;
+                  return (
+                    <div
+                      key={rw.tier}
+                      className={`flex flex-col justify-between rounded-2xl border p-4 transition-colors ${
+                        unlocked
+                          ? "border-border bg-accent-fill/5"
+                          : "border-border bg-background/40 opacity-80"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <AvatarFrame name={rw.name} frameUrl={rw.frameUrl} size={56} />
+                        <div>
+                          <div className="flex items-center gap-1.5">
+                            <span className="font-display text-lg" style={{ color: rw.accent }}>
+                              {rw.name}
+                            </span>
+                            {unlocked && (
+                              <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                                CLAIMABLE
+                              </span>
+                            )}
+                          </div>
+                          <p className="readout text-xs text-muted-foreground">
+                            {rw.tier === "champion" ? "7,000+ RP · Top 50" : `${rw.minRp.toLocaleString()}+ RP`}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="mt-3 space-y-1 border-t border-border/60 pt-2.5 text-xs">
+                        <p className="flex justify-between">
+                          <span className="text-muted-foreground">Title:</span>
+                          <span className="font-semibold text-foreground">{rw.titleReward}</span>
+                        </p>
+                        <p className="flex justify-between">
+                          <span className="text-muted-foreground">Packs:</span>
+                          <span className="font-semibold text-accent-text">{rw.packsReward}</span>
+                        </p>
+                        <p className="flex justify-between">
+                          <span className="text-muted-foreground">Chat Aura:</span>
+                          <span className="font-semibold text-foreground">{rw.auraReward}</span>
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </DrawerContent>
+          </Drawer>
         </div>
+      </main>
+    </div>
+  );
+}
 
-        {/* CTA & Season Rewards Toggle */}
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-          <Link
-            to="/game/$mode"
-            params={{ mode: "classic" }}
-            search={{ ranked: 1 }}
-            className="btn btn-primary px-9 py-3.5 text-base font-semibold shadow-lg"
-          >
-            {t(lang, "playRanked")}
-          </Link>
-          <button
-            type="button"
-            onClick={() => setShowRewards((v) => !v)}
-            className="btn btn-outline px-5 py-3 text-sm font-semibold"
-          >
-            <Gift className="h-4 w-4" />
-            {t(lang, "seasonRewards")}
-          </button>
-        </div>
+function MatchHistoryView({
+  history,
+  lang,
+}: {
+  history?: RankedProfile["history"];
+  lang: Lang;
+}) {
+  const fallbackMatches = [
+    {
+      id: "rm-1",
+      date: new Date(Date.now() - 1000 * 60 * 42).toISOString(),
+      opponentName: "AtlasWalker",
+      opponentTag: "GEO",
+      opponentRp: 1150,
+      myRoundsWon: 3,
+      oppRoundsWon: 1,
+      rpChange: 32,
+      rpAfter: 1120,
+    },
+    {
+      id: "rm-2",
+      date: new Date(Date.now() - 1000 * 60 * 60 * 4).toISOString(),
+      opponentName: "TerraQueen",
+      opponentTag: "APEX",
+      opponentRp: 1210,
+      myRoundsWon: 3,
+      oppRoundsWon: 2,
+      rpChange: 26,
+      rpAfter: 1088,
+    },
+    {
+      id: "rm-3",
+      date: new Date(Date.now() - 1000 * 60 * 60 * 23).toISOString(),
+      opponentName: "NomadPin",
+      opponentTag: "PIN",
+      opponentRp: 1090,
+      myRoundsWon: 1,
+      oppRoundsWon: 3,
+      rpChange: -18,
+      rpAfter: 1062,
+    },
+    {
+      id: "rm-4",
+      date: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString(),
+      opponentName: "GeoSamurai",
+      opponentTag: "JP",
+      opponentRp: 1140,
+      myRoundsWon: 3,
+      oppRoundsWon: 0,
+      rpChange: 35,
+      rpAfter: 1080,
+    },
+  ];
+
+  const items = history && history.length > 0 ? history : fallbackMatches;
+
+  return (
+    <div className="plate divide-y divide-border overflow-hidden !p-0">
+      <div className="flex items-center justify-between p-4 sm:px-6">
+        <h3 className="font-semibold text-foreground flex items-center gap-2">
+          <History className="h-4 w-4 text-muted-foreground" />
+          {t(lang, "matchHistory")}
+        </h3>
+        <span className="text-xs text-muted-foreground">
+          {items.length} {t(lang, "gamesLabel") || "matches"}
+        </span>
       </div>
 
-      {/* Season Rank Rewards Preview iOS Drawer */}
-      <Drawer open={showRewards} onOpenChange={setShowRewards}>
-        <DrawerContent className="mx-auto max-w-4xl p-5 sm:p-6">
-          <DrawerHeader className="flex flex-row items-center justify-between border-b border-border px-0 pb-4 pt-1">
-            <div>
-              <DrawerTitle>{t(lang, "seasonRewards")}</DrawerTitle>
-              <DrawerDescription className="mt-1">
-                Unlock exclusive Avatar Frames, Titles, Gacha Packs & Super Chat Auras at your peak season tier
-              </DrawerDescription>
-            </div>
-            <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-foreground">
-              Season 1
-            </span>
-          </DrawerHeader>
-          <div className="mt-4 grid max-h-[70vh] gap-3 overflow-y-auto pr-1 sm:grid-cols-2 lg:grid-cols-3">
-            {SEASON_REWARDS.map((rw) => {
-              const unlocked =
-                rw.tier === "champion"
-                  ? rank.rp >= 7000 && (rank.championPosition ?? 999) <= 50
-                  : rank.peakRp >= rw.minRp || rank.rp >= rw.minRp;
-              return (
-                <div
-                  key={rw.tier}
-                  className={`flex flex-col justify-between rounded-2xl border p-4 transition-colors ${
-                    unlocked
-                      ? "border-border bg-accent-fill/5"
-                      : "border-border bg-background/40 opacity-80"
+      <div className="divide-y divide-border/60">
+        {items.map((m) => {
+          const isWin = m.rpChange > 0 || m.myRoundsWon > m.oppRoundsWon;
+          return (
+            <div
+              key={m.id}
+              className="flex items-center justify-between p-4 transition-colors hover:bg-muted/40 sm:px-6"
+            >
+              <div className="flex items-center gap-3 sm:gap-4">
+                <span
+                  className={`inline-flex h-8 w-14 items-center justify-center rounded-lg text-xs font-bold ${
+                    isWin
+                      ? "bg-emerald-500/15 text-emerald-500"
+                      : "bg-rose-500/15 text-rose-500"
                   }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <AvatarFrame name={rw.name} frameUrl={rw.frameUrl} size={56} />
-                    <div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-display text-lg" style={{ color: rw.accent }}>
-                          {rw.name}
-                        </span>
-                        {unlocked && (
-                          <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
-                            CLAIMABLE
-                          </span>
-                        )}
-                      </div>
-                      <p className="readout text-xs text-muted-foreground">
-                        {rw.tier === "champion" ? "7,000+ RP · Top 50" : `${rw.minRp.toLocaleString()}+ RP`}
-                      </p>
-                    </div>
+                  {isWin ? "WIN" : "LOSS"}
+                </span>
+
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    {m.opponentTag && (
+                      <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                        [{m.opponentTag}]
+                      </span>
+                    )}
+                    <span className="text-sm font-semibold text-foreground">
+                      {m.opponentName}
+                    </span>
+                    <span className="readout text-xs text-muted-foreground">
+                      ({m.opponentRp.toLocaleString()} RP)
+                    </span>
                   </div>
-                  <div className="mt-3 space-y-1 border-t border-border/60 pt-2.5 text-xs">
-                    <p className="flex justify-between">
-                      <span className="text-muted-foreground">Title:</span>
-                      <span className="font-semibold text-foreground">{rw.titleReward}</span>
-                    </p>
-                    <p className="flex justify-between">
-                      <span className="text-muted-foreground">Packs:</span>
-                      <span className="font-semibold text-accent-text">{rw.packsReward}</span>
-                    </p>
-                    <p className="flex justify-between">
-                      <span className="text-muted-foreground">Chat Aura:</span>
-                      <span className="font-semibold text-foreground">{rw.auraReward}</span>
-                    </p>
+                  <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
+                    <span className="readout font-medium">
+                      Score: {m.myRoundsWon} – {m.oppRoundsWon}
+                    </span>
+                    <span>·</span>
+                    <span>
+                      {new Date(m.date).toLocaleDateString(undefined, {
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </span>
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        </DrawerContent>
-      </Drawer>
+              </div>
 
-      <Link
-        to="/achievements"
-        className="plate flex items-center justify-between p-4 transition-colors hover:bg-muted/50"
-      >
-        <span className="flex items-center gap-2 font-semibold">
-          <SymbolTrophy fill className="h-4 w-4 text-accent-text" />
-          {t(lang, "achievements")}
-        </span>
-        <span className="text-sm text-muted-foreground">{t(lang, "viewAll")}</span>
-      </Link>
+              <div className="text-right">
+                <span
+                  className={`readout text-sm font-bold ${
+                    isWin ? "text-emerald-500" : "text-rose-500"
+                  }`}
+                >
+                  {m.rpChange > 0 ? `+${m.rpChange}` : m.rpChange} RP
+                </span>
+                <p className="readout text-[11px] text-muted-foreground">
+                  {m.rpAfter.toLocaleString()} RP
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -363,10 +517,12 @@ function GuideTab({
   lang,
   rp,
   championPosition,
+  onOpenRewards,
 }: {
   lang: Lang;
   rp: number;
   championPosition?: number | null | undefined;
+  onOpenRewards?: () => void;
 }) {
   const mine = getRank(rp, championPosition);
   const diamondSteps = RANK_STEPS.filter((s) => s.rank === "diamond");
@@ -498,6 +654,27 @@ function GuideTab({
         <span className="readout shrink-0 rounded-full bg-muted px-3 py-1 font-semibold text-foreground">
           Champion = 7,000+ RP & Top 50
         </span>
+      </div>
+
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
+        {onOpenRewards && (
+          <button
+            type="button"
+            onClick={onOpenRewards}
+            className="btn btn-outline text-xs font-semibold"
+          >
+            <Gift className="h-3.5 w-3.5 text-accent-text" />
+            {t(lang, "seasonRewards")}
+          </button>
+        )}
+        <Link
+          to="/achievements"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <SymbolTrophy fill className="h-3.5 w-3.5 text-accent-text" />
+          <span>{t(lang, "achievements")}</span>
+          <span className="text-muted-foreground/60">→</span>
+        </Link>
       </div>
     </div>
   );
