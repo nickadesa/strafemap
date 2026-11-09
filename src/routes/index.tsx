@@ -22,6 +22,17 @@ import {
 import { SlidingTabs } from "@/components/ui/SlidingTabs";
 import { Flame, ChevronRight, X, Sparkles, Coins } from "lucide-react";
 
+const QUICK_EXPLORE_MODES = [
+  { id: "capitals", name: "Capitals", pool: "capitals", icon: "🏛️", pillClass: "bg-blue-500/15 text-blue-300 border-blue-500/30" },
+  { id: "landmarks", name: "Landmarks", pool: "landmarks", icon: "🗼", pillClass: "bg-purple-500/15 text-purple-300 border-purple-500/30" },
+  { id: "stadiums", name: "Stadiums", pool: "stadiums", icon: "⚽", pillClass: "bg-amber-500/15 text-amber-300 border-amber-500/30" },
+  { id: "wonders", name: "Wonders", pool: "wonders", icon: "✨", pillClass: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30" },
+  { id: "sins", name: "7 Sins", mode: "sins", icon: "🃏", pillClass: "bg-rose-500/15 text-rose-300 border-rose-500/30" },
+  { id: "shrink", name: "Shrink Zone", mode: "shrink", icon: "🎯", pillClass: "bg-cyan-500/15 text-cyan-300 border-cyan-500/30" },
+  { id: "country-quiz", name: "Country Quiz", directRoute: "/country-guess", icon: "🚩", pillClass: "bg-orange-500/15 text-orange-300 border-orange-500/30" },
+  { id: "duel", name: "1v1 Duel", directRoute: "/duel", icon: "⚔️", pillClass: "bg-red-500/15 text-red-300 border-red-500/30" },
+];
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -207,7 +218,68 @@ function Home() {
             </div>
           </section>
 
-          {/* 3. Paired Cards: Streak (7-day bar) & Rank Progress */}
+          {/* 3. Explore Modes Carousel (Mobbin Style Horizontal Pills) */}
+          <section className="space-y-2.5">
+            <div className="flex items-center justify-between px-1">
+              <h3 className="font-display text-base font-semibold tracking-tight text-foreground">
+                Explore Modes
+              </h3>
+              <Link
+                to="/play"
+                onClick={() => buzz(6)}
+                className="text-xs font-semibold text-accent-text hover:underline flex items-center gap-0.5"
+              >
+                See All <ChevronRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+
+            <div className="flex gap-2.5 overflow-x-auto pb-1.5 scrollbar-none">
+              {QUICK_EXPLORE_MODES.map((item) => {
+                if (item.directRoute) {
+                  return (
+                    <Link
+                      key={item.id}
+                      to={item.directRoute as any}
+                      onClick={() => buzz(6)}
+                      className={`inline-flex shrink-0 items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold shadow-xs transition-all hover:scale-105 active:scale-95 ${item.pillClass}`}
+                    >
+                      <span>{item.icon}</span>
+                      <span>{item.name}</span>
+                    </Link>
+                  );
+                }
+                if (item.mode) {
+                  return (
+                    <Link
+                      key={item.id}
+                      to="/game/$mode"
+                      params={{ mode: item.mode as any }}
+                      onClick={() => buzz(6)}
+                      className={`inline-flex shrink-0 items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold shadow-xs transition-all hover:scale-105 active:scale-95 ${item.pillClass}`}
+                    >
+                      <span>{item.icon}</span>
+                      <span>{item.name}</span>
+                    </Link>
+                  );
+                }
+                return (
+                  <Link
+                    key={item.id}
+                    to="/game/$mode"
+                    params={{ mode: "classic" }}
+                    search={{ pool: item.pool as any }}
+                    onClick={() => buzz(6)}
+                    className={`inline-flex shrink-0 items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold shadow-xs transition-all hover:scale-105 active:scale-95 ${item.pillClass}`}
+                  >
+                    <span>{item.icon}</span>
+                    <span>{item.name}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* 4. Paired Cards: Streak (7-day bar) & Rank Progress */}
           <div className="grid gap-4 sm:grid-cols-2">
             {/* Streak Card */}
             <button
