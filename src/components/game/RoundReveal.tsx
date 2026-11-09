@@ -130,7 +130,7 @@ export function RoundReveal({
                 key={p.name}
                 className={`flex items-center justify-between rounded-xl px-3 py-1.5 ${
                   p.isMe
-                    ? "bg-accent-fill font-bold text-[#161616] shadow-xs"
+                    ? "bg-accent-fill font-bold text-[#03121C] shadow-xs"
                     : "bg-muted/50 text-muted-foreground"
                 }`}
               >

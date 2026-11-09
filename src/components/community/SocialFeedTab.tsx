@@ -43,7 +43,7 @@ export function SocialFeedTab({
         score: "Story",
         accuracy: "100%",
         caption: "Shared a new photo story",
-        gradient: "linear-gradient(160deg, #161616 0%, #262626 100%)",
+        gradient: "#1f242d",
         imageUrl: imgUrl,
       });
     };
@@ -107,7 +107,7 @@ export function SocialFeedTab({
               onChange={handleUploadStory}
             />
             <div className="flex h-full w-full flex-col items-center justify-center rounded-[15.5px] bg-card p-2 text-foreground">
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-accent-fill text-[#161616]">
+              <div className="grid h-10 w-10 place-items-center rounded-full bg-accent-fill text-[#03121C]">
                 <Plus className="h-5 w-5" />
               </div>
               <span className="mt-2 text-xs font-semibold text-accent-text">+ Add Story</span>
@@ -125,7 +125,7 @@ export function SocialFeedTab({
               {st.imageUrl ? (
                 <div className="relative h-full w-full rounded-[15.5px] overflow-hidden">
                   <img src={st.imageUrl} alt={st.caption} className="h-full w-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 p-2.5 flex flex-col justify-between text-white">
+                  <div className="absolute inset-0 bg-black/50 p-2.5 flex flex-col justify-between text-white">
                     <AvatarFrame
                       name={st.authorName}
                       rp={st.authorRp}
@@ -299,7 +299,7 @@ export function SocialFeedTab({
               <button
                 type="button"
                 onClick={() => submitComment(post.id)}
-                className="rounded-full bg-accent-fill px-3.5 py-1.5 text-xs font-semibold text-[#161616]"
+                className="rounded-full bg-accent-fill px-3.5 py-1.5 text-xs font-semibold text-[#03121C]"
               >
                 Reply
               </button>
@@ -315,7 +315,7 @@ export function SocialFeedTab({
             {activeStory.imageUrl ? (
               <div className="relative h-full w-full rounded-[21px] overflow-hidden">
                 <img src={activeStory.imageUrl} alt={activeStory.caption} className="h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/60 p-6 flex flex-col justify-between text-white">
+                <div className="absolute inset-0 bg-black/60 p-6 flex flex-col justify-between text-white">
                   <div className="flex items-center justify-between">
                     <span className="font-semibold text-lg">{activeStory.authorName}</span>
                     <button

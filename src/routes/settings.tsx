@@ -371,8 +371,8 @@ function SettingsPage() {
                       : "border-border/60 hover:border-border opacity-85 hover:opacity-100 bg-card"
                   }`}
                 >
-                  <div className="relative aspect-video bg-gradient-to-br from-blue-500/20 via-sky-500/20 to-indigo-500/20 overflow-hidden flex items-center justify-center p-3">
-                    <span className="rounded-full bg-card/80 px-2.5 py-1 text-xs font-semibold shadow-xs">
+                  <div className="relative aspect-video bg-muted/70 border-b border-border/60 overflow-hidden flex items-center justify-center p-3">
+                    <span className="rounded-full bg-card px-2.5 py-1 text-xs font-semibold shadow-xs border border-border/60">
                       {theme === "dark" ? "Auto (Apple Dark)" : "Auto (Apple Light)"}
                     </span>
                   </div>
@@ -402,8 +402,21 @@ function SettingsPage() {
                     >
                       <div
                         className="relative aspect-video overflow-hidden flex items-center justify-center p-2"
-                        style={{ background: opt.gradient }}
-                      />
+                        style={{ backgroundColor: opt.waterColor }}
+                      >
+                        <span
+                          className="swatch"
+                          style={
+                            {
+                              "--sw-bg": opt.waterColor,
+                              "--sw-fg": opt.landColor,
+                            } as React.CSSProperties
+                          }
+                        >
+                          <i style={{ left: 6, top: 10, width: 18, height: 10, borderRadius: 4 }} />
+                          <i style={{ left: 26, top: 4, width: 12, height: 8, borderRadius: 3 }} />
+                        </span>
+                      </div>
                       <div
                         className={`px-3 py-2 text-xs font-semibold flex items-center justify-between ${
                           on ? "bg-foreground text-background" : "bg-card/90"
@@ -449,7 +462,7 @@ function SettingsPage() {
                       type="button"
                       onClick={() => toggleQuickEmoji(emo)}
                       title="Tap to remove"
-                      className="grid h-9 w-9 place-items-center rounded-xl bg-accent-fill text-base text-[#161616] font-semibold shadow-sm transition-transform active:scale-90"
+                      className="grid h-9 w-9 place-items-center rounded-xl bg-accent-fill text-base text-[#03121C] font-semibold shadow-sm transition-transform active:scale-90"
                     >
                       {emo}
                     </button>

@@ -83,7 +83,7 @@ export function Sidebar() {
             className="flex items-center gap-3 font-display text-xl tracking-tight"
             aria-label="STRAFE"
           >
-            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-accent-fill text-sm font-semibold text-[#161616]">
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-accent-fill text-sm font-semibold text-[#03121C]">
               S
             </span>
             <span className="tracking-tight text-foreground">STRAFE</span>
@@ -265,7 +265,7 @@ export function Sidebar() {
           className="flex items-center gap-2.5 font-display text-lg tracking-tight"
           aria-label="STRAFE"
         >
-          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-xl bg-accent-fill text-xs font-bold text-[#161616]">
+          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-xl bg-accent-fill text-xs font-bold text-[#03121C]">
             S
           </span>
           <span className="tracking-tight text-foreground font-semibold">STRAFE</span>

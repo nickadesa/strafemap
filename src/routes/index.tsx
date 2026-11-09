@@ -246,7 +246,7 @@ function Home() {
                       key={d}
                       className={`flex flex-col items-center justify-center rounded-xl py-1.5 text-[10px] font-semibold transition-colors ${
                         done
-                          ? "bg-accent-fill text-[#161616]"
+                          ? "bg-accent-fill text-[#03121C]"
                           : "bg-muted text-muted-foreground"
                       }`}
                     >
@@ -495,7 +495,7 @@ function Home() {
             {activeStory.imageUrl ? (
               <div className="relative h-full w-full rounded-[21px] overflow-hidden">
                 <img src={activeStory.imageUrl} alt={activeStory.caption} className="h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/60 p-6 flex flex-col justify-between text-white">
+                <div className="absolute inset-0 bg-black/60 p-6 flex flex-col justify-between text-white">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <AvatarFrame name={activeStory.authorName} rp={activeStory.authorRp} size={32} />

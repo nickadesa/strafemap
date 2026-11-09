@@ -888,7 +888,7 @@ function GamePage() {
 
                       <div className="flex items-center gap-2 shrink-0">
                         {selected && (
-                          <span className="rounded-full bg-accent-fill px-2 py-0.5 text-[10px] font-bold text-black uppercase">
+                          <span className="rounded-full bg-accent-fill px-2 py-0.5 text-[10px] font-bold text-[#03121C] uppercase">
                             Selected
                           </span>
                         )}

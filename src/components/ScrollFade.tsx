@@ -58,7 +58,7 @@ export function ScrollFade({
       />
       {/* Surface color wash */}
       <div
-        className={cn("absolute inset-0 bg-gradient-to-b to-transparent", surfaceClassName)}
+        className={cn("absolute inset-0 bg-card/60 backdrop-blur-xs", surfaceClassName)}
         style={{ opacity: progress * 0.95 }}
       />
     </div>

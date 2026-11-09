@@ -416,7 +416,7 @@ const INITIAL_STORIES: StoryHighlight[] = [
     score: "24,980",
     accuracy: "99.9%",
     caption: "0.4 km off Ushuaia with zero labels! Can anyone top this?",
-    gradient: "linear-gradient(160deg, #22252a 0%, #161616 100%)",
+    gradient: "#1f242d",
     timestamp: "12m ago",
   },
   {
@@ -433,7 +433,7 @@ const INITIAL_STORIES: StoryHighlight[] = [
     score: "25,000",
     accuracy: "100%",
     caption: "Pride Card +12% Bullseye radius paid off every single round.",
-    gradient: "linear-gradient(160deg, #281a1c 0%, #161616 100%)",
+    gradient: "#281e22",
     timestamp: "41m ago",
   },
   {
@@ -450,7 +450,7 @@ const INITIAL_STORIES: StoryHighlight[] = [
     score: "24,410",
     accuracy: "97.6%",
     caption: "No city names in Brazil & Japan — pure coastline triangulation.",
-    gradient: "linear-gradient(160deg, #17241e 0%, #161616 100%)",
+    gradient: "#1a2520",
     timestamp: "1h ago",
   },
   {
@@ -467,7 +467,7 @@ const INITIAL_STORIES: StoryHighlight[] = [
     score: "23,890",
     accuracy: "95.5%",
     caption: "10-round Ranked streak into Champion Top 10!",
-    gradient: "linear-gradient(160deg, #9333EA 0%, #161616 60%, #D2F801 100%)",
+    gradient: "#231e2b",
     timestamp: "3h ago",
   },
 ];
@@ -567,7 +567,7 @@ const DEFAULT_SOCIAL_PROFILE: SocialProfile = {
   isGuest: false,
   bio: "Exploring every meridian. Elite cartographer on STRAFE.",
   avatarUrl: null,
-  bannerGradient: "linear-gradient(135deg, #27272a 0%, #1e1e20 100%)",
+  bannerGradient: "#27272a",
   bannerColor: "#27272a",
   bannerImageUrl: null,
   country: "Thailand",

@@ -299,7 +299,7 @@ export function GameChat({
                 <div
                   className={`inline-block px-4 py-2 text-sm leading-relaxed ${
                     m.me
-                      ? "rounded-[20px] rounded-br-sm bg-accent-fill text-[#161616] font-semibold"
+                      ? "rounded-[20px] rounded-br-sm bg-accent-fill text-[#03121C] font-semibold"
                       : "rounded-[20px] rounded-bl-sm bg-muted text-foreground font-medium"
                   }`}
                 >

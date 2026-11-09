@@ -90,11 +90,23 @@ export function MapStyleSelector({
                       : "var(--color-card)",
                   }}
                 >
-                  {/* Visual Style Preview Gradient Header */}
+                  {/* Visual Style Preview Swatch Header */}
                   <div
-                    className="relative mb-2 h-16 w-full rounded-xl overflow-hidden border border-black/10 dark:border-white/10 shadow-inner flex items-center justify-center"
-                    style={{ background: opt.gradient }}
+                    className="relative mb-2 h-16 w-full rounded-xl overflow-hidden border border-border/50 flex items-center justify-center"
+                    style={{ backgroundColor: opt.waterColor }}
                   >
+                    <span
+                      className="swatch"
+                      style={
+                        {
+                          "--sw-bg": opt.waterColor,
+                          "--sw-fg": opt.landColor,
+                        } as React.CSSProperties
+                      }
+                    >
+                      <i style={{ left: 6, top: 10, width: 18, height: 10, borderRadius: 4 }} />
+                      <i style={{ left: 26, top: 4, width: 12, height: 8, borderRadius: 3 }} />
+                    </span>
                     {isActive && (
                       <div className="absolute right-2 top-2 grid h-5 w-5 place-items-center rounded-full bg-foreground text-background shadow-sm">
                         <Check className="h-3 w-3 stroke-[3]" />

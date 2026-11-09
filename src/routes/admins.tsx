@@ -150,7 +150,7 @@ function AdminsPage() {
       <main className="rail-offset px-4 pb-16 pt-8 md:px-6">
         <div className="mx-auto max-w-3xl space-y-6">
           <div className="flex items-center gap-3">
-            <span className="grid h-10 w-10 place-items-center rounded-2xl bg-accent-fill text-[#161616]">
+            <span className="grid h-10 w-10 place-items-center rounded-2xl bg-accent-fill text-[#03121C]">
               <ShieldCheck className="h-6 w-6" />
             </span>
             <div>

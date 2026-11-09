@@ -19,7 +19,9 @@ export interface MapStyleOption {
   nameTh: string;
   url: string;
   accent: string;
-  gradient: string;
+  waterColor: string;
+  landColor: string;
+  gradient?: string;
   description: string;
   descriptionTh: string;
   is3D?: boolean;

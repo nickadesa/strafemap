@@ -199,7 +199,7 @@ export function GameHud({
                       buzz(6);
                       onSelectQuizChoice?.(countryOpt);
                     }}
-                    className="flex min-h-[44px] items-center justify-center rounded-2xl border border-border bg-background/90 px-4 py-3 text-center text-sm font-semibold transition-all hover:border-foreground/60 hover:bg-accent-fill hover:text-[#161616] active:scale-95"
+                    className="flex min-h-[44px] items-center justify-center rounded-2xl border border-border bg-background/90 px-4 py-3 text-center text-sm font-semibold transition-all hover:border-foreground/60 hover:bg-accent-fill hover:text-[#03121C] active:scale-95"
                   >
                     <span className="truncate">{countryOpt}</span>
                   </button>
@@ -234,7 +234,7 @@ export function GameHud({
                     buzz(8);
                     onSubmit();
                   }}
-                  className="game-confirm flex min-h-[48px] items-center gap-2 rounded-full bg-accent-fill px-8 py-3 text-sm font-semibold text-[#161616] shadow-[0_12px_32px_rgba(210,248,1,0.35)] transition-transform hover:bg-[#DCFF1A] active:scale-[0.96]"
+                  className="game-confirm flex min-h-[48px] items-center gap-2 rounded-full bg-accent-fill px-8 py-3 text-sm font-semibold text-[#03121C] shadow-[0_8px_24px_rgba(0,173,255,0.35)] transition-transform hover:opacity-90 active:scale-[0.96]"
                 >
                   <span>{t(lang, "dropPin")}</span>
                   <kbd className="hidden rounded-full bg-black/15 px-2 py-0.5 text-xs font-mono md:inline">

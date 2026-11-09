@@ -431,7 +431,7 @@ function XStyleProfileTab({
           className="relative h-36 w-full sm:h-44 bg-cover bg-center transition-colors"
           style={{
             backgroundColor: social.bannerColor || "#27272a",
-            backgroundImage: social.bannerImageUrl ? `url(${social.bannerImageUrl})` : (social.bannerColor ? undefined : social.bannerGradient),
+            backgroundImage: social.bannerImageUrl ? `url(${social.bannerImageUrl})` : undefined,
           }}
         >
           <div className="absolute right-4 top-4 flex items-center gap-2">
@@ -834,17 +834,18 @@ function CosmeticLivePreview({
 
   if (item.category === "trail") {
     const trailColors: Record<string, string> = {
-      blue: "from-cyan-400 via-sky-500 to-blue-600",
-      rainbow: "from-pink-500 via-[#D2F801] to-cyan-400",
-      solar: "from-amber-400 via-yellow-500 to-orange-500",
+      blue: "bg-[#00ADFF]",
+      rainbow: "bg-[#BF5AF2]",
+      solar: "bg-[#FF9F0A]",
     };
+    const c = trailColors[item.value] ?? "bg-[#00ADFF]";
     return (
       <div className="rounded-2xl border border-border bg-background/60 p-4">
         <p className="text-[10px] font-semibold text-muted-foreground uppercase mb-2">Trajectory Laser Trail Preview</p>
         <div className="relative h-20 w-full rounded-xl border border-border/60 bg-[#161618] flex items-center justify-between px-6 overflow-hidden">
           <div className="h-3 w-3 rounded-full bg-foreground shadow-sm" />
-          <div className={`h-0.5 flex-1 mx-2 bg-gradient-to-r ${trailColors[item.value] ?? "from-primary to-muted"} border-dashed`} />
-          <div className="h-3 w-3 rounded-full bg-[#D2F801] shadow-sm" />
+          <div className={`h-0.5 flex-1 mx-2 ${c} opacity-80`} />
+          <div className="h-3 w-3 rounded-full bg-[#00ADFF] shadow-sm" />
         </div>
       </div>
     );

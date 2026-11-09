@@ -717,10 +717,10 @@ function LeaderboardPodium({ topThree }: { topThree: PodiumEntry[] }) {
       step: step2,
       avatarSize: 52,
       heightClass: "h-24 sm:h-30",
-      pedestalBorder: "border-t-2 border-x border-[#C5CCD8]/50",
-      pedestalBg: "bg-gradient-to-b from-white/10 via-card/90 to-card/50",
-      badgeBg: "bg-[#C5CCD8] text-[#161616]",
-      stepNumColor: "text-[#C5CCD8]/30",
+      pedestalBorder: "border-t-2 border-x border-[#8E8E93]/60",
+      pedestalBg: "bg-card border border-border/70",
+      badgeBg: "bg-[#8E8E93] text-[#03121C]",
+      stepNumColor: "text-[#8E8E93]/30",
     },
     {
       player: p1,
@@ -729,9 +729,9 @@ function LeaderboardPodium({ topThree }: { topThree: PodiumEntry[] }) {
       step: step1,
       avatarSize: 64,
       heightClass: "h-32 sm:h-42",
-      pedestalBorder: "border-t-2 border-x border-accent-fill/70",
-      pedestalBg: "bg-gradient-to-b from-accent-fill/15 via-card/95 to-card/60",
-      badgeBg: "bg-accent-fill text-[#161616]",
+      pedestalBorder: "border-t-2 border-x border-accent-fill/80",
+      pedestalBg: "bg-card border border-accent-fill/40",
+      badgeBg: "bg-accent-fill text-[#03121C]",
       stepNumColor: "text-accent-text/35",
     },
     {
@@ -741,17 +741,15 @@ function LeaderboardPodium({ topThree }: { topThree: PodiumEntry[] }) {
       step: step3,
       avatarSize: 48,
       heightClass: "h-18 sm:h-24",
-      pedestalBorder: "border-t-2 border-x border-[#CD7F32]/50",
-      pedestalBg: "bg-gradient-to-b from-[#CD7F32]/10 via-card/85 to-card/40",
-      badgeBg: "bg-[#CD7F32] text-white",
-      stepNumColor: "text-[#CD7F32]/30",
+      pedestalBorder: "border-t-2 border-x border-[#A2845E]/60",
+      pedestalBg: "bg-card border border-border/70",
+      badgeBg: "bg-[#A2845E] text-[#03121C]",
+      stepNumColor: "text-[#A2845E]/30",
     },
   ];
 
   return (
     <div className="plate relative overflow-hidden p-4 sm:p-6 mb-4">
-      {/* Background subtle radial glow behind 1st place */}
-      <div className="pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 h-32 w-64 rounded-full bg-accent-fill/5 blur-3xl" />
 
       {/* Podium Grid: 3 columns (Rank 2, Rank 1, Rank 3) */}
       <div className="relative grid grid-cols-3 items-end gap-2 sm:gap-4 max-w-xl mx-auto pt-5">
@@ -937,7 +935,7 @@ export function UnifiedLeaderboardView({
                 key={z}
                 onClick={() => setSelectedZone(z)}
                 className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
-                  selectedZone === z ? "bg-accent-fill text-[#161616]" : "bg-muted text-muted-foreground hover:text-foreground"
+                  selectedZone === z ? "bg-accent-fill text-[#03121C]" : "bg-muted text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {z}
@@ -953,7 +951,7 @@ export function UnifiedLeaderboardView({
                 key={c}
                 onClick={() => setSelectedCountry(c)}
                 className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
-                  selectedCountry === c ? "bg-accent-fill text-[#161616]" : "bg-muted text-muted-foreground hover:text-foreground"
+                  selectedCountry === c ? "bg-accent-fill text-[#03121C]" : "bg-muted text-muted-foreground hover:text-foreground"
                 }`}
               >
                 <Flag country={c} size={16} />
@@ -1014,7 +1012,7 @@ export function UnifiedLeaderboardView({
                     <span
                       className={`inline-grid h-7 w-7 place-items-center rounded-full text-xs font-semibold ${
                         pos === 1
-                          ? "bg-accent-fill text-[#161616]"
+                          ? "bg-accent-fill text-[#03121C]"
                           : pos === 2
                             ? "bg-[#C5CCD8] text-[#161616]"
                             : "bg-[#CD7F32] text-white"

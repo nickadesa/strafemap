@@ -168,7 +168,7 @@ export function GameSummary({
                       <span className="text-xs font-bold text-muted-foreground">#{i + 1}</span>
                       <span className="text-sm font-semibold">{name}</span>
                       {data.best && (
-                        <span className="rounded-full bg-accent-fill px-2 py-0.5 text-[10px] font-bold text-[#161616]">
+                        <span className="rounded-full bg-accent-fill px-2 py-0.5 text-[10px] font-bold text-[#03121C]">
                           Best Pin
                         </span>
                       )}

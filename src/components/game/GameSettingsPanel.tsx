@@ -204,7 +204,7 @@ export function GameSettingsPanel({
                       }}
                       className={`rounded-lg px-2 py-1 text-[11px] font-semibold transition-colors shrink-0 ${
                         lang === l
-                          ? "bg-accent-fill text-[#161616]"
+                          ? "bg-accent-fill text-[#03121C]"
                           : "bg-muted text-muted-foreground hover:bg-muted/80"
                       }`}
                     >

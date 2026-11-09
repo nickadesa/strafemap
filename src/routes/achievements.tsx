@@ -95,7 +95,7 @@ function AchievementsPage() {
               type="button"
               className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ${
                 group === "all"
-                  ? "bg-accent-fill text-[#161616]"
+                  ? "bg-accent-fill text-[#03121C]"
                   : "bg-muted text-muted-foreground hover:text-foreground"
               }`}
               onClick={() => setGroup("all")}
@@ -108,7 +108,7 @@ function AchievementsPage() {
                 type="button"
                 className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ${
                   group === g.key
-                    ? "bg-accent-fill text-[#161616]"
+                    ? "bg-accent-fill text-[#03121C]"
                     : "bg-muted text-muted-foreground hover:text-foreground"
                 }`}
                 onClick={() => setGroup(g.key)}

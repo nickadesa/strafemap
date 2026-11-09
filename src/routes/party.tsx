@@ -262,7 +262,7 @@ function PartyPage() {
               onClick={() => setSelectedMode(m)}
               className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
                 selectedMode === m
-                  ? "bg-accent-fill text-[#161616]"
+                  ? "bg-accent-fill text-[#03121C]"
                   : "bg-muted text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -505,7 +505,7 @@ function PartyPage() {
                         <button
                           type="button"
                           onClick={() => startPartyWithFriend(f)}
-                          className="btn btn-outline ml-2 shrink-0 px-3 py-1.5 text-xs font-semibold hover:border-accent-fill hover:bg-accent-fill hover:text-[#161616]"
+                          className="btn btn-outline ml-2 shrink-0 px-3 py-1.5 text-xs font-semibold hover:border-accent-fill hover:bg-accent-fill hover:text-[#03121C]"
                         >
                           + Invite
                         </button>
@@ -628,7 +628,7 @@ function PartyPage() {
                       <button
                         type="button"
                         onClick={() => setShowHostSettings(false)}
-                        className="rounded-full bg-accent-fill px-3 py-1 text-xs font-semibold text-[#161616]"
+                        className="rounded-full bg-accent-fill px-3 py-1 text-xs font-semibold text-[#03121C]"
                       >
                         Confirm Settings
                       </button>
@@ -732,7 +732,7 @@ function PartyPage() {
                         onClick={() => setMicOn((m) => !m)}
                         className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ${
                           micOn
-                            ? "bg-accent-fill text-[#161616]"
+                            ? "bg-accent-fill text-[#03121C]"
                             : "bg-destructive text-white"
                         }`}
                       >
