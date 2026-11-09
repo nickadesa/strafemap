@@ -424,15 +424,15 @@ export function PlayHub() {
         </div>
       </main>
 
-      {/* 5. Mode Options Sheet / Drawer (Section 7 Item 5) */}
+      {/* 5. Apple HIG / Mobbin Mode Options Bottom Sheet */}
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
-        <DrawerContent className="mx-auto max-w-2xl p-5 sm:p-6">
-          <DrawerHeader className="flex flex-row items-center justify-between border-b border-border px-0 pb-3 pt-1">
-            <div>
-              <DrawerTitle className="capitalize">
+        <DrawerContent className="mx-auto max-w-xl p-5 sm:p-6 pb-8">
+          <DrawerHeader className="flex flex-row items-center justify-between border-b border-border/80 px-1 pb-3 pt-0">
+            <div className="text-left">
+              <DrawerTitle className="capitalize text-xl font-display font-semibold tracking-tight text-foreground">
                 {t(lang, selectedMode)} · Match Options
               </DrawerTitle>
-              <DrawerDescription className="mt-1">
+              <DrawerDescription className="mt-0.5 text-xs text-muted-foreground">
                 Customize category pool, difficulty rating, and round time limit.
               </DrawerDescription>
             </div>
@@ -440,20 +440,21 @@ export function PlayHub() {
               <button
                 type="button"
                 aria-label="Close"
-                className="grid h-8 w-8 place-items-center rounded-full bg-muted text-muted-foreground hover:text-foreground"
+                onClick={() => buzz(4)}
+                className="grid h-8 w-8 min-h-[32px] min-w-[32px] place-items-center rounded-full bg-muted/80 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
               >
                 <X className="h-4 w-4" />
               </button>
             </DrawerClose>
           </DrawerHeader>
 
-          <div className="mt-4 space-y-4 max-h-[60vh] overflow-y-auto no-scrollbar pr-1">
-            {/* Category Pool Picker */}
+          <div className="mt-4 space-y-4 max-h-[62vh] overflow-y-auto no-scrollbar pr-0.5">
+            {/* Category Pool Picker (Apple Inset Grouped List) */}
             <div>
-              <label className="text-xs font-semibold text-muted-foreground block mb-2">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground block mb-1.5 px-1">
                 {t(lang, "category")}
-              </label>
-              <div className="flex flex-wrap gap-1.5">
+              </span>
+              <div className="apple-group">
                 {pools.map((p) => {
                   const active = pool === p.id;
                   return (
@@ -461,57 +462,87 @@ export function PlayHub() {
                       key={p.id}
                       type="button"
                       onClick={() => {
-                        buzz(4);
+                        buzz(5);
                         setPool(p.id);
                       }}
-                      className={`rounded-xl border px-3 py-1.5 text-xs font-semibold transition-all ${
-                        active
-                          ? "border-foreground/60 bg-accent-fill/15 text-accent-text"
-                          : "border-border bg-card text-muted-foreground hover:bg-muted"
-                      }`}
+                      className="apple-row w-full text-left transition-colors hover:bg-muted/40 cursor-pointer"
                     >
-                      {t(lang, p.labelKey)}
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span className="text-base select-none">
+                          {p.id === "world" && "🌍"}
+                          {p.id === "capitals" && "🏛️"}
+                          {p.id === "countries" && "🚩"}
+                          {p.id === "landmarks" && "🗼"}
+                          {p.id === "stadiums" && "⚽"}
+                          {p.id === "wonders" && "✨"}
+                          {p.id === "attractions" && "🎢"}
+                        </span>
+                        <span className={`text-sm font-semibold ${active ? "text-accent-text" : "text-foreground"}`}>
+                          {t(lang, p.labelKey)}
+                        </span>
+                      </div>
+                      {active && (
+                        <div className="grid h-6 w-6 place-items-center rounded-full bg-accent-fill/15 text-accent-text">
+                          <SymbolCheckmark className="h-3.5 w-3.5" />
+                        </div>
+                      )}
                     </button>
                   );
                 })}
               </div>
             </div>
 
-            {/* Difficulty Picker */}
+            {/* Difficulty Picker (Apple Inset Grouped List with Color Accents) */}
             <div>
-              <label className="text-xs font-semibold text-muted-foreground block mb-2">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground block mb-1.5 px-1">
                 {t(lang, "difficulty")}
-              </label>
-              <div className="flex flex-wrap gap-1.5">
+              </span>
+              <div className="apple-group">
                 {diffs.map((d) => {
                   const active = difficulty === d;
+                  const dotColor =
+                    d === "easy"
+                      ? "bg-emerald-500"
+                      : d === "medium"
+                      ? "bg-blue-500"
+                      : d === "hard"
+                      ? "bg-amber-500"
+                      : d === "expert"
+                      ? "bg-orange-500"
+                      : "bg-rose-500";
                   return (
                     <button
                       key={d}
                       type="button"
                       onClick={() => {
-                        buzz(4);
+                        buzz(5);
                         setDiff(d);
                       }}
-                      className={`rounded-xl border px-3 py-1.5 text-xs font-semibold capitalize transition-all ${
-                        active
-                          ? "border-foreground/60 bg-accent-fill/15 text-accent-text"
-                          : "border-border bg-card text-muted-foreground hover:bg-muted"
-                      }`}
+                      className="apple-row w-full text-left transition-colors hover:bg-muted/40 cursor-pointer"
                     >
-                      {t(lang, d)}
+                      <div className="flex items-center gap-2.5">
+                        <span className={`h-2.5 w-2.5 rounded-full ${dotColor}`} />
+                        <span className={`text-sm font-semibold capitalize ${active ? "text-accent-text" : "text-foreground"}`}>
+                          {t(lang, d)}
+                        </span>
+                      </div>
+                      {active && (
+                        <div className="grid h-6 w-6 place-items-center rounded-full bg-accent-fill/15 text-accent-text">
+                          <SymbolCheckmark className="h-3.5 w-3.5" />
+                        </div>
+                      )}
                     </button>
                   );
                 })}
               </div>
             </div>
 
-            {/* Time per round */}
+            {/* Time per round (Horizontal Segmented Chips) */}
             <div>
-              <label className="text-xs font-semibold text-muted-foreground block mb-2">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground block mb-1.5 px-1">
                 {t(lang, "timePerRound")}
-              </label>
-              <div className="flex flex-wrap gap-1.5">
+              </span>
+              <div className="flex flex-wrap gap-2">
                 {TIME_OPTIONS.map((tOpt) => {
                   const active = time === tOpt;
                   return (
@@ -522,10 +553,10 @@ export function PlayHub() {
                         buzz(4);
                         setTime(tOpt);
                       }}
-                      className={`rounded-xl border px-3 py-1.5 text-xs font-semibold transition-all ${
+                      className={`min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all ${
                         active
-                          ? "border-foreground/60 bg-accent-fill/15 text-accent-text"
-                          : "border-border bg-card text-muted-foreground hover:bg-muted"
+                          ? "border-accent-fill bg-accent-fill/15 text-accent-text font-bold shadow-xs scale-102"
+                          : "border-border bg-card text-muted-foreground hover:bg-muted/60"
                       }`}
                     >
                       {tOpt === 0 ? "Unlimited ∞" : `${tOpt}s`}
@@ -538,9 +569,9 @@ export function PlayHub() {
             {/* Sins Card Selector (if mode === "sins") */}
             {selectedMode === "sins" && (
               <div>
-                <label className="text-xs font-semibold text-muted-foreground block mb-2">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground block mb-1.5 px-1">
                   Select Sin Skill Card
-                </label>
+                </span>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                   {SIN_CARDS.map((sin) => {
                     const active = selectedSin === sin.id;
@@ -552,10 +583,10 @@ export function PlayHub() {
                           buzz(4);
                           setSelectedSin(sin.id);
                         }}
-                        className={`rounded-xl border p-2.5 text-left transition-all ${
+                        className={`rounded-2xl border p-3 text-left transition-all ${
                           active
-                            ? "border-accent-fill bg-accent-fill/10"
-                            : "border-border bg-card hover:bg-muted"
+                            ? "border-accent-fill bg-accent-fill/10 ring-1 ring-accent-fill/30"
+                            : "border-border bg-card hover:bg-muted/60"
                         }`}
                       >
                         <p className="text-xs font-bold capitalize text-foreground">{sin.sinName}</p>
@@ -569,29 +600,44 @@ export function PlayHub() {
               </div>
             )}
 
-            {/* Practice Mode Toggle */}
-            <div className="flex items-center justify-between rounded-xl border border-border bg-card p-3">
-              <div>
-                <p className="text-xs font-semibold text-foreground">Practice Mode</p>
-                <p className="text-[11px] text-muted-foreground">
-                  Score will not be saved to records or stats
-                </p>
+            {/* Practice Mode (Apple Inset Grouped Switch Row) */}
+            <div className="apple-group">
+              <div className="apple-row">
+                <div>
+                  <p className="text-sm font-semibold text-foreground">Practice Mode</p>
+                  <p className="text-[11px] text-muted-foreground">
+                    Scores will not affect career stats or rank
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={practice}
+                  aria-label="Practice Mode"
+                  onClick={() => {
+                    buzz(4);
+                    setPractice((p) => !p);
+                  }}
+                  className={`relative inline-flex h-7 w-12 shrink-0 cursor-pointer rounded-full p-0.5 transition-colors duration-200 ease-in-out ${
+                    practice ? "bg-accent-fill" : "bg-muted-foreground/30"
+                  }`}
+                >
+                  <span
+                    className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-md transition duration-200 ease-in-out ${
+                      practice ? "translate-x-5" : "translate-x-0"
+                    }`}
+                  />
+                </button>
               </div>
-              <input
-                type="checkbox"
-                checked={practice}
-                onChange={(e) => setPractice(e.target.checked)}
-                className="h-4 w-4 accent-accent-fill"
-              />
             </div>
           </div>
 
-          {/* Start Game Action */}
-          <div className="mt-5 pt-3 border-t border-border flex gap-2">
+          {/* Start Game Action CTA */}
+          <div className="mt-5 pt-3 border-t border-border/80 flex gap-2">
             <button
               type="button"
               onClick={handleStartGame}
-              className="btn btn-primary w-full py-3 text-sm font-semibold flex items-center justify-center gap-2"
+              className="btn btn-primary w-full py-3.5 text-sm font-semibold flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] transition-transform"
             >
               <Play className="h-4 w-4 fill-current" />
               Start {t(lang, selectedMode)}
