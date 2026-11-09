@@ -74,15 +74,15 @@ export function useResolvedMapStyle(): OpenFreeMapStyleId {
 
 /* ---------- Core Brand Palette + Liquid Glass ---------- */
 export const BRAND_COLORS = {
-  electricBlue: "#0367FC",
-  acidLime: "#D2F801",
+  cyan: "#00ADFF",
+  inkOnAccent: "#03121C",
   darkSurface: "#161616",
   lightSurface: "#FFFFFF",
 } as const;
 
 export const ACCENTS = {
-  lime: { label: "Acid Lime", primary: "#D2F801", active: "#DCFF1A" },
-  blue: { label: "Electric Blue", primary: "#0367FC", active: "#257CFD" },
+  cyan: { label: "Electric Cyan", primary: "#00ADFF", active: "#0099E0" },
+  blue: { label: "Electric Blue", primary: "#00ADFF", active: "#0099E0" },
 } as const;
 export type Accent = keyof typeof ACCENTS;
 export const GLASS_PRESETS = ["off", "bend", "dispersion", "frost", "rim"] as const;
@@ -97,9 +97,10 @@ const readGlass = (): GlassPreset => {
 
 export function applyAppearance() {
   const root = document.documentElement;
-  root.style.setProperty("--primary", BRAND_COLORS.acidLime);
-  root.style.setProperty("--primary-active", "#DCFF1A");
-  root.style.setProperty("--ring-accent", BRAND_COLORS.acidLime);
+  root.style.setProperty("--primary", BRAND_COLORS.cyan);
+  root.style.setProperty("--primary-foreground", BRAND_COLORS.inkOnAccent);
+  root.style.setProperty("--accent-fill", BRAND_COLORS.cyan);
+  root.style.setProperty("--ring-accent", BRAND_COLORS.cyan);
   const g = readGlass();
   if (g === "off") root.removeAttribute("data-glass");
   else root.setAttribute("data-glass", g);
@@ -121,5 +122,5 @@ export function useAppearance() {
     window.dispatchEvent(new Event(EVT));
   }, []);
   const setAccent = useCallback((_v: Accent) => {}, []);
-  return { accent: "lime" as Accent, setAccent, glass, setGlass } as const;
+  return { accent: "cyan" as Accent, setAccent, glass, setGlass } as const;
 }

@@ -147,7 +147,7 @@ function PartyPage() {
         name: hostFriend.nickname,
         username: hostFriend.username,
         clanTag: hostFriend.clanTag,
-        clanTagColor: hostFriend.clanTagColor ?? "#D2F801",
+        clanTagColor: hostFriend.clanTagColor ?? "#00ADFF",
         verified: hostFriend.verifiedBadge,
         rp: hostFriend.rp,
         championPosition: hostFriend.championPosition,
@@ -214,7 +214,7 @@ function PartyPage() {
         name: f.nickname,
         username: f.username,
         clanTag: f.clanTag,
-        clanTagColor: f.clanTagColor ?? "#D2F801",
+        clanTagColor: f.clanTagColor ?? "#00ADFF",
         verified: f.verifiedBadge,
         rp: f.rp,
         championPosition: f.championPosition,
@@ -685,8 +685,8 @@ function PartyPage() {
                             {/* Speaking Indicator */}
                             {p.speaking && (
                               <span className="relative flex h-2.5 w-2.5" title="Speaking">
-                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-fill opacity-75" />
+                                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-accent-fill" />
                               </span>
                             )}
 
@@ -709,7 +709,7 @@ function PartyPage() {
                             <span
                               className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${
                                 p.ready
-                                  ? "bg-emerald-500/15 text-emerald-500"
+                                  ? "bg-accent-fill/15 text-accent-text"
                                   : "bg-muted text-muted-foreground"
                               }`}
                             >

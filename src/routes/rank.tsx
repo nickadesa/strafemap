@@ -184,7 +184,7 @@ function RankPage() {
                   className="h-full rounded-full transition-[width] duration-500"
                   style={{
                     width: `${progress}%`,
-                    backgroundColor: "#D2F801",
+                    backgroundColor: "var(--accent-fill)",
                   }}
                 />
               </div>
@@ -451,8 +451,8 @@ function MatchHistoryView({
                 <span
                   className={`inline-flex h-8 w-14 items-center justify-center rounded-lg text-xs font-bold ${
                     isWin
-                      ? "bg-emerald-500/15 text-emerald-500"
-                      : "bg-rose-500/15 text-rose-500"
+                      ? "bg-accent-fill/15 text-accent-text"
+                      : "bg-destructive/15 text-destructive"
                   }`}
                 >
                   {isWin ? "WIN" : "LOSS"}
@@ -490,7 +490,7 @@ function MatchHistoryView({
               <div className="text-right">
                 <span
                   className={`readout text-sm font-bold ${
-                    isWin ? "text-emerald-500" : "text-rose-500"
+                    isWin ? "text-accent-text" : "text-destructive"
                   }`}
                 >
                   {m.rpChange > 0 ? `+${m.rpChange}` : m.rpChange} RP
@@ -867,7 +867,7 @@ export function UnifiedLeaderboardView({
       rp: p.rp,
       championPosition: p.championPosition ?? null,
       clanTag: p.clanTag,
-      clanTagColor: p.clanTagColor ?? "#D2F801",
+      clanTagColor: p.clanTagColor ?? "#00ADFF",
       verifiedBadge: p.verifiedBadge,
       avatarUrl: p.avatarUrl ?? null,
       me: false,

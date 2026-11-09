@@ -29,7 +29,7 @@ export interface CardData {
   url: string;
 }
 
-const LIME = "#D2F801";
+const ACCENT = "#00ADFF";
 const BG = "#161616";
 const PLATE = "#1E1E20";
 const LINE = "#2C2E33";
@@ -75,13 +75,13 @@ export async function renderCard(d: CardData): Promise<Blob> {
   c.fillStyle = BG;
   c.fillRect(0, 0, logicalW, logicalH);
 
-  // Single brand lime ambient highlight
-  const accentPrimary = LIME;
-  const accentSecondary = LIME;
+  // Single brand cyan ambient highlight
+  const accentPrimary = ACCENT;
+  const accentSecondary = ACCENT;
 
   const g1 = c.createRadialGradient(logicalW * 0.5, logicalH * 0.08, 40, logicalW * 0.5, logicalH * 0.08, logicalW * 0.6);
-  g1.addColorStop(0, "rgba(210,248,1,0.06)");
-  g1.addColorStop(1, "rgba(210,248,1,0)");
+  g1.addColorStop(0, "rgba(0,173,255,0.06)");
+  g1.addColorStop(1, "rgba(0,173,255,0)");
   c.fillStyle = g1;
   c.fillRect(0, 0, logicalW, logicalH);
 
@@ -109,7 +109,7 @@ export async function renderCard(d: CardData): Promise<Blob> {
   rr(c, logicalW - pad - tw, pad + 8, tw, 56, 28);
   c.fillStyle = accentPrimary;
   c.fill();
-  c.fillStyle = accentPrimary === LIME ? "#161616" : "#FFFFFF";
+  c.fillStyle = "#03121C";
   c.fillText(badgeLabel, logicalW - pad - tw + 24, pad + 45);
 
   const pct = d.max > 0 ? d.total / d.max : 0;
@@ -124,7 +124,7 @@ export async function renderCard(d: CardData): Promise<Blob> {
 
     const rx = mx + mw + 56;
     const rw = logicalW - rx - pad;
-    c.fillStyle = LIME;
+    c.fillStyle = ACCENT;
     c.font = disp(190);
     c.fillText(gradeFor(pct), rx, my + 165);
 
@@ -170,7 +170,7 @@ export async function renderCard(d: CardData): Promise<Blob> {
     drawMapPlate(c, d, mx, my, mw, mapH);
 
     const scoreY = my + mapH + (aspect === "1:1" ? 150 : 210);
-    c.fillStyle = LIME;
+    c.fillStyle = ACCENT;
     c.font = disp(aspect === "1:1" ? 150 : 220);
     c.fillText(gradeFor(pct), pad, scoreY);
 
@@ -213,7 +213,7 @@ export async function renderCard(d: CardData): Promise<Blob> {
     }
 
     c.textAlign = "center";
-    c.fillStyle = LIME;
+    c.fillStyle = ACCENT;
     c.font = body(32, 800);
     c.fillText(d.url, logicalW / 2, logicalH - pad * 0.65);
     c.textAlign = "left";
@@ -261,7 +261,7 @@ function drawMapPlate(
       const gx = px(r.guess.lng),
         gy = py(r.guess.lat);
       c.setLineDash([12, 10]);
-      c.strokeStyle = "rgba(210,248,1,0.85)";
+      c.strokeStyle = "rgba(0,173,255,0.85)";
       c.lineWidth = 4;
       c.beginPath();
       c.moveTo(gx, gy);
@@ -275,9 +275,9 @@ function drawMapPlate(
     }
     c.beginPath();
     c.arc(tx, ty, 17, 0, Math.PI * 2);
-    c.fillStyle = LIME;
+    c.fillStyle = ACCENT;
     c.fill();
-    c.fillStyle = "#161616";
+    c.fillStyle = "#03121C";
     c.font = `800 19px Inter, sans-serif`;
     c.textAlign = "center";
     c.fillText(String(i + 1), tx, ty + 7);
@@ -302,14 +302,14 @@ function drawRoundSquares(
     rr(c, x, y, sq, sq, 22);
     c.fillStyle =
       r.points >= 4000
-        ? LIME
+        ? ACCENT
         : r.points >= 2000
           ? "#2D3035"
           : r.points > 0
             ? "#222428"
             : LINE;
     c.fill();
-    c.fillStyle = r.points >= 4000 ? "#161616" : INK;
+    c.fillStyle = r.points >= 4000 ? "#03121C" : INK;
     c.font = `800 24px Inter, sans-serif`;
     c.textAlign = "center";
     c.fillText(

@@ -112,7 +112,7 @@ function AdminsPage() {
       country: "Thailand",
       zone: "Asia",
       clanTag: "STRF",
-      clanTagColor: "#D2F801",
+      clanTagColor: "#00ADFF",
       clanId: "clan-strf",
       isGuest: false,
       verifiedBadge: "gold",

@@ -84,7 +84,7 @@ function AchievementsPage() {
               className="h-full rounded-full transition-[width] duration-500"
               style={{
                 width: `${(count / ACH_ALL.length) * 100}%`,
-                backgroundColor: "#D2F801",
+                backgroundColor: "var(--accent-fill)",
               }}
             />
           </div>

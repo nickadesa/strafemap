@@ -265,7 +265,7 @@ function SettingsPage() {
               {/* Emoji Reactions Toggle */}
               <div className="apple-row">
                 <div className="flex items-center gap-3">
-                  <div className="grid h-7 w-7 place-items-center rounded-lg bg-emerald-500/15 text-emerald-500 dark:bg-emerald-500/20 dark:text-emerald-400">
+                  <div className="grid h-7 w-7 place-items-center rounded-lg bg-accent-fill/15 text-accent-text">
                     <Smile className="h-4 w-4" />
                   </div>
                   <span className="text-sm font-medium">{t(lang, "emojiReactions")}</span>

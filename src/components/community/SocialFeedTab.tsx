@@ -260,7 +260,7 @@ export function SocialFeedTab({
                   post.likedByMe ? "text-accent-text" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <Heart className="h-4 w-4" fill={post.likedByMe ? "#D2F801" : "none"} />
+                <Heart className="h-4 w-4" fill={post.likedByMe ? "currentColor" : "none"} />
                 {post.likes} Likes
               </button>
               <span className="inline-flex items-center gap-1.5 text-muted-foreground">

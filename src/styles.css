@@ -736,20 +736,12 @@
   --material-glass-clear-saturate: 1.8;
 }
 
-/* Light theme: Dark neutral text & badges on light surfaces (no green text) */
-:root:not(.dark) .text-\[\#D2F801\] {
-  color: var(--color-foreground, #000000) !important;
+/* Light theme: Crisp contrast for accent pills & text */
+:root:not(.dark) .text-accent-text {
+  color: #0369a1 !important;
 }
-:root:not(.dark) svg.text-\[\#D2F801\],
-:root:not(.dark) [class*="text-[#D2F801]"] svg {
-  color: var(--color-foreground, #000000) !important;
-}
-:root:not(.dark) .bg-\[\#D2F801\]\/10,
-:root:not(.dark) .bg-\[\#D2F801\]\/15,
-:root:not(.dark) .bg-\[\#D2F801\]\/20,
-:root:not(.dark) .bg-\[\#D2F801\]\/25 {
-  background-color: rgba(0, 0, 0, 0.06) !important;
-  color: var(--color-foreground, #000000) !important;
+:root:not(.dark) .bg-accent-fill {
+  color: #03121c !important;
 }
 
 /* Thai: Extra vertical breathing room for upper/lower vowel & tone marks */
@@ -1078,18 +1070,18 @@
   line-height: 1.4;
 }
 @utility story-ring {
-  border: 2.5px solid #d2f801;
+  border: 2.5px solid #00adff;
   padding: 2px;
 }
 .dark .story-ring {
-  border-color: #d2f801;
+  border-color: #00adff;
 }
 
 /* Map pins */
 .pin { border-radius: 9999px; border: 3px solid var(--color-card); box-shadow: 0 0 0 1.5px var(--color-foreground); }
-.pin-guess { background: #d2f801; box-shadow: 0 0 0 2px #161616; }
+.pin-guess { background: #00adff; box-shadow: 0 0 0 2px #03121c; }
 .pin-guess-2 { background: #a855f7; box-shadow: 0 0 0 2px #ffffff; }
-.pin-target { background: #d2f801; box-shadow: 0 0 0 2px #161616; }
+.pin-target { background: #00adff; box-shadow: 0 0 0 2px #03121c; }
 .maplibregl-map {
   font-family: var(--font-sans);
   background: var(--color-background);

@@ -219,7 +219,7 @@ function ProfileHubPage() {
                   className="h-full rounded-full transition-[width] duration-500"
                   style={{
                     width: `${(Object.keys(unlockedMap).length / ACH_ALL.length) * 100}%`,
-                    backgroundColor: "#D2F801",
+                    backgroundColor: "var(--accent-fill)",
                   }}
                 />
               </div>
@@ -787,7 +787,7 @@ function CosmeticLivePreview({
       fire: "border border-orange-500/80 bg-orange-500/10 text-orange-200",
       water: "border border-sky-400/80 bg-sky-500/10 text-sky-200",
       rainbow: "border border-purple-400/80 bg-purple-500/10 text-purple-200",
-      vines: "border border-emerald-500/80 bg-emerald-500/10 text-emerald-200",
+      vines: "border border-cyan-400/80 bg-cyan-500/10 text-cyan-200",
     };
     return (
       <div className="rounded-2xl border border-border bg-background/60 p-4">
@@ -807,11 +807,12 @@ function CosmeticLivePreview({
 
   if (item.category === "pin") {
     const pinColors: Record<string, string> = {
-      lime: "#D2F801",
+      lime: "#00ADFF",
+      cyan: "#00ADFF",
       crimson: "#DC1F30",
       violet: "#9333EA",
     };
-    const c = pinColors[item.value] ?? "#D2F801";
+    const c = pinColors[item.value] ?? "#00ADFF";
     return (
       <div className="rounded-2xl border border-border bg-background/60 p-4">
         <p className="text-[10px] font-semibold text-muted-foreground uppercase mb-2">Map Pin Marker Preview</p>
@@ -902,10 +903,10 @@ function CosmeticShopTab({
   };
 
   const rarityColor: Record<GachaItem["rarity"], string> = {
-    Common: "#9A9D97",
-    Rare: "#3898FF",
-    Epic: "#D2F801",
-    Mythic: "#DC1F30",
+    Common: "#8E8E93",
+    Rare: "#00ADFF",
+    Epic: "#BF5AF2",
+    Mythic: "#FF375F",
   };
 
   const categories = [
@@ -1044,9 +1045,9 @@ function CosmeticShopTab({
                     <span
                       className="rounded-full px-2.5 py-0.5 text-[10px] font-semibold"
                       style={{
-                        backgroundColor: color === "#D2F801" ? "#D2F801" : `${color}22`,
-                        color: color === "#D2F801" ? "#161616" : color,
-                        border: color === "#D2F801" ? "none" : `1px solid ${color}44`,
+                        backgroundColor: `${color}22`,
+                        color: color,
+                        border: `1px solid ${color}44`,
                       }}
                     >
                       {item.rarity}
@@ -1074,7 +1075,7 @@ function CosmeticShopTab({
 
                 <div className="mt-4 pt-3 border-t border-border/50">
                   {equipped ? (
-                    <div className="flex items-center justify-center gap-1.5 rounded-xl border border-emerald-500/20 bg-emerald-500/10 py-2 text-xs font-semibold text-emerald-500">
+                    <div className="flex items-center justify-center gap-1.5 rounded-xl border border-accent-fill/30 bg-accent-fill/15 py-2 text-xs font-semibold text-accent-text">
                       <Check className="h-4 w-4" /> {t(lang, "equipped")}
                     </div>
                   ) : owned ? (
@@ -1154,7 +1155,7 @@ function CosmeticShopTab({
               <div className="flex items-center gap-2">
                 {social.unlockedCosmetics.includes(previewItem.id) ? (
                   isEquipped(previewItem) ? (
-                    <span className="text-xs font-semibold text-emerald-500 flex items-center gap-1">
+                    <span className="text-xs font-semibold text-accent-text flex items-center gap-1">
                       <Check className="h-3.5 w-3.5" /> {t(lang, "equipped")}
                     </span>
                   ) : (

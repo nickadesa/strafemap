@@ -156,7 +156,7 @@ export function VerifiedBadge({
             <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="#0367FC" />
               <stop offset="28%" stopColor="#00E5FF" />
-              <stop offset="55%" stopColor="#D2F801" />
+              <stop offset="55%" stopColor="#00ADFF" />
               <stop offset="80%" stopColor="#FF2E93" />
               <stop offset="100%" stopColor="#A855F7" />
             </linearGradient>
@@ -170,8 +170,8 @@ export function VerifiedBadge({
           )}
           {type === "green" && (
             <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#D2F801" />
-              <stop offset="100%" stopColor="#10B981" />
+              <stop offset="0%" stopColor="#00ADFF" />
+              <stop offset="100%" stopColor="#0284C7" />
             </linearGradient>
           )}
           {type === "red" && (
@@ -229,8 +229,8 @@ export function VerifiedBadge({
           )}
           {type === "moderator" && (
             <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#34D399" />
-              <stop offset="100%" stopColor="#047857" />
+              <stop offset="0%" stopColor="#38BDF8" />
+              <stop offset="100%" stopColor="#0284C7" />
             </linearGradient>
           )}
           {type === "champion" && (
@@ -355,7 +355,7 @@ export function VerifiedBadge({
 
 export function ClanTagPill({
   tag,
-  color = "#D2F801",
+  color = "#00ADFF",
   className = "",
 }: {
   tag?: string | null | undefined;
@@ -363,13 +363,13 @@ export function ClanTagPill({
   className?: string | undefined;
 }) {
   if (!tag) return null;
-  const isLime = color.toUpperCase() === "#D2F801" || color.toUpperCase() === "#FFC82A" || color.toUpperCase() === "#B9FF24";
+  const isLight = color.toUpperCase() === "#00ADFF" || color.toUpperCase() === "#FFC82A" || color.toUpperCase() === "#FFFFFF" || color.toUpperCase() === "#38BDF8";
   return (
     <span
       className={`inline-flex shrink-0 items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold uppercase leading-none ${className}`}
       style={{
         backgroundColor: color,
-        color: isLime ? "#161616" : "#FFFFFF",
+        color: isLight ? "#03121C" : "#FFFFFF",
       }}
     >
       {tag}

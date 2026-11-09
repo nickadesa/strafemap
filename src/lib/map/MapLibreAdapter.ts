@@ -152,7 +152,7 @@ export class MapLibreAdapter implements IMapAdapter {
         type: "fill",
         source: "shrink-zone-source",
         paint: {
-          "fill-color": "#D2F801",
+          "fill-color": "#00ADFF",
           "fill-opacity": 0.07,
         },
       });
@@ -162,7 +162,7 @@ export class MapLibreAdapter implements IMapAdapter {
         type: "line",
         source: "shrink-zone-source",
         paint: {
-          "line-color": "#D2F801",
+          "line-color": "#00ADFF",
           "line-width": 1.5,
           "line-dasharray": [4, 4],
         },
@@ -182,7 +182,7 @@ export class MapLibreAdapter implements IMapAdapter {
         source: "trajectories-source",
         filter: ["==", "type", "player"],
         paint: {
-          "line-color": "#D2F801",
+          "line-color": "#00ADFF",
           "line-width": 2.5,
           "line-dasharray": [2, 2],
         },

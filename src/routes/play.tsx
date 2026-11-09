@@ -152,7 +152,7 @@ export function PlayHub() {
       tagKey: "classicTag",
       category: "solo",
       icon: SymbolGameController,
-      accentColor: "#D2F801",
+      accentColor: "#00ADFF",
     },
     {
       id: "shrink",
@@ -172,7 +172,7 @@ export function PlayHub() {
       tagKey: "closestTag",
       category: "solo",
       icon: Bot,
-      accentColor: "#10B981",
+      accentColor: "#0284C7",
     },
     {
       id: "blind",

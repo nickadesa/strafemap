@@ -339,7 +339,7 @@ function CountryGuessPage() {
               let btnStyle = "border-border bg-card/70 hover:bg-muted";
               if (answered) {
                 if (isCorrect) {
-                  btnStyle = "border-emerald-500 bg-emerald-500/20 text-emerald-400 ring-2 ring-emerald-500";
+                  btnStyle = "border-accent-fill bg-accent-fill/20 text-accent-text ring-2 ring-accent-fill";
                 } else if (isSelected) {
                   btnStyle = "border-destructive bg-destructive/20 text-destructive ring-2 ring-destructive";
                 } else {
@@ -361,7 +361,7 @@ function CountryGuessPage() {
                     </span>
                     <span className="font-semibold text-sm md:text-base">{option}</span>
                   </div>
-                  {answered && isCorrect && <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0" />}
+                  {answered && isCorrect && <CheckCircle2 className="h-5 w-5 text-accent-text shrink-0" />}
                   {answered && isSelected && !isCorrect && <XCircle className="h-5 w-5 text-destructive shrink-0" />}
                 </button>
               );

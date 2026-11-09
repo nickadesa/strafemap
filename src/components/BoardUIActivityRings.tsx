@@ -36,7 +36,7 @@ export function ActivityRings({
       value: rounds,
       target: roundsTarget,
       unit: "rds",
-      color: "#D2F801", // Acid Lime
+      color: "#00ADFF", // Electric Cyan
       radius: center - strokeWidth / 2 - 4,
       strokeWidth,
     },
@@ -199,8 +199,8 @@ export function CartographerRadar({
         <svg width={size} height={size}>
           <defs>
             <radialGradient id={`radar-grad-${svgId}`} cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#D2F801" stopOpacity="0.45" />
-              <stop offset="100%" stopColor="#D2F801" stopOpacity="0.10" />
+              <stop offset="0%" stopColor="#00ADFF" stopOpacity="0.45" />
+              <stop offset="100%" stopColor="#00ADFF" stopOpacity="0.10" />
             </radialGradient>
           </defs>
 
@@ -245,7 +245,7 @@ export function CartographerRadar({
           <polygon
             points={scorePoints}
             fill={`url(#radar-grad-${svgId})`}
-            stroke="#D2F801"
+            stroke="#00ADFF"
             strokeWidth={2}
             className="transition-all duration-500 ease-out"
           />
@@ -259,7 +259,7 @@ export function CartographerRadar({
                 cx={x}
                 cy={y}
                 r={3.5}
-                fill="#D2F801"
+                fill="#00ADFF"
                 stroke="#161616"
                 strokeWidth={1.5}
               />
