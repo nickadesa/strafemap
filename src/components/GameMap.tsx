@@ -146,27 +146,27 @@ export function GameMap({
 
       {/* Floating Apple Maps 3D/2D and Zoom Controls on Right */}
       {!hideZoomButtons && status === "ready" && (
-        <div className="absolute right-4 bottom-18 z-20 flex flex-col items-center gap-2">
+        <div className="absolute right-3.5 bottom-22 sm:right-4 sm:bottom-24 z-20 flex flex-col items-center gap-2.5 transition-all duration-300">
           {/* Apple 3D Toggle Capsule */}
           <button
             type="button"
             onClick={() => adapter.current?.toggle3D()}
             aria-label={is3DActive ? "Switch to 2D flat view" : "Switch to 3D perspective & globe view"}
             title={is3DActive ? "2D View" : "3D View"}
-            className={`flex h-10 w-10 items-center justify-center rounded-full glass-plate shadow-lg border border-border/80 text-xs font-bold transition-all active:scale-95 ${
+            className={`flex h-12 w-12 items-center justify-center rounded-full glass-plate shadow-lg border border-border/80 text-xs font-bold transition-all active:scale-95 ${
               is3DActive ? "bg-foreground text-background font-extrabold" : "text-foreground hover:bg-muted/80"
             }`}
           >
             {is3DActive ? "2D" : "3D"}
           </button>
 
-          {/* Zoom In / Zoom Out Capsule */}
-          <div className="flex flex-col overflow-hidden rounded-full glass-plate shadow-lg border border-border/80">
+          {/* Zoom In / Zoom Out Capsule (48px wide Apple glass pill) */}
+          <div className="flex w-12 flex-col overflow-hidden rounded-[24px] glass-plate shadow-lg border border-border/80">
             <button
               type="button"
               onClick={() => adapter.current?.zoomIn()}
               aria-label="Zoom in"
-              className="grid h-10 w-10 place-items-center text-foreground hover:bg-muted/80 active:scale-95 transition-all border-b border-border/40"
+              className="grid h-12 w-12 place-items-center text-foreground hover:bg-muted/80 active:scale-95 transition-all border-b border-border/40"
             >
               <Plus className="h-4 w-4" />
             </button>
@@ -174,7 +174,7 @@ export function GameMap({
               type="button"
               onClick={() => adapter.current?.zoomOut()}
               aria-label="Zoom out"
-              className="grid h-10 w-10 place-items-center text-foreground hover:bg-muted/80 active:scale-95 transition-all"
+              className="grid h-12 w-12 place-items-center text-foreground hover:bg-muted/80 active:scale-95 transition-all"
             >
               <Minus className="h-4 w-4" />
             </button>

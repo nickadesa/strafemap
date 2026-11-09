@@ -252,11 +252,11 @@ export function GameSettingsPanel({
                 : t(lang, "leaveGameBody")}
             </p>
 
-            <div className="pt-2 flex flex-col gap-2">
+            <div className="pt-2 flex gap-2.5">
               <button
                 type="button"
                 onClick={() => setQuitAlertOpen(false)}
-                className="btn btn-primary w-full py-2.5 text-xs font-semibold"
+                className="btn btn-outline flex-1 py-2.5 text-xs font-semibold rounded-full"
               >
                 {t(lang, "keepPlaying")}
               </button>
@@ -266,7 +266,7 @@ export function GameSettingsPanel({
                   setQuitAlertOpen(false);
                   onConfirmQuit();
                 }}
-                className="btn btn-outline w-full py-2.5 text-xs font-semibold text-destructive border-destructive/30 hover:bg-destructive/10"
+                className="btn flex-1 py-2.5 text-xs font-semibold rounded-full bg-destructive text-white hover:bg-destructive/90"
               >
                 {t(lang, "leave")}
               </button>

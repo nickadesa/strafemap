@@ -740,13 +740,7 @@ function GamePage() {
         placingSecondPin={placingSecondPin}
         onToggleSecondPin={() => setPlacingSecondPin((v) => !v)}
         onSubmit={() => submit()}
-        onOpenSettings={() => setGameMenuOpen(true)}
         onOpenQuitModal={() => setQuitModalOpen(true)}
-        activeMapStyle={activeMapStyle}
-        onSelectMapStyle={(s) => {
-          setActiveMapStyle(s);
-          setMapStylePref(s);
-        }}
         lang={lang}
         phase={phase}
         quizChoices={quizChoices}
@@ -754,6 +748,10 @@ function GamePage() {
           setQuizSelected(countryOpt);
           submit({ lat: loc.lat, lng: loc.lng }, countryOpt);
         }}
+        sound={settings.sound}
+        onToggleSound={() => setSettings({ sound: !settings.sound })}
+        hideZoomButtons={!!settings.hideZoomButtons}
+        onToggleZoomButtons={() => setSettings({ hideZoomButtons: !settings.hideZoomButtons })}
       />
 
       {/* Top-Center: Floating SmartClue Pill (Preserved strictly as per Section 17.5 Item 7) */}

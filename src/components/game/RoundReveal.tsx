@@ -89,9 +89,12 @@ export function RoundReveal({
             )}
           </div>
 
-          <p className="font-display readout mt-1 text-5xl text-foreground dark:text-accent-text">
-            +<NumberPopIn value={animatedPoints.toLocaleString()} />
-          </p>
+          <div className="mt-1 flex items-baseline gap-2">
+            <span className="font-display readout text-5xl font-extrabold tracking-tight text-accent-text">
+              +<NumberPopIn value={animatedPoints.toLocaleString()} />
+            </span>
+            <span className="text-sm font-semibold text-muted-foreground">/ 5,000</span>
+          </div>
 
           {last.sinNote && (
             <p className="mt-1 text-xs font-semibold text-accent-text">{last.sinNote}</p>
@@ -110,6 +113,26 @@ export function RoundReveal({
             </p>
           )}
         </div>
+      </div>
+
+      {/* 8px Animated Score Progress Bar (strafe-game-hud.html spec) */}
+      <div className="my-3.5 h-2 w-full overflow-hidden rounded-full bg-muted/60">
+        <div
+          className="h-full rounded-full bg-accent-fill transition-all duration-700 ease-out"
+          style={{ width: `${Math.min(100, Math.max(0, (last.points / 5000) * 100))}%` }}
+        />
+      </div>
+
+      {/* Distance Separation Line (strafe-game-hud.html spec) */}
+      <div className="flex items-center gap-2.5 text-xs text-muted-foreground my-1.5">
+        <span className="h-2.5 w-2.5 rounded-full bg-accent-fill shrink-0" />
+        <span>Your pin</span>
+        <span className="flex-1 border-t-2 border-dotted border-border/80" />
+        <b className="font-mono text-sm font-bold text-foreground tabular-nums">
+          {last.km === null ? t(lang, "noGuess") : formatDistance(last.km, unit)}
+        </b>
+        <span>away</span>
+        <span className="h-2.5 w-2.5 rounded-full border-2 border-foreground bg-foreground/20 shrink-0" />
       </div>
 
       {/* Standings if Bots/Multiplayer */}
