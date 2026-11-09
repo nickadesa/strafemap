@@ -20,3 +20,14 @@
 - **เพราะอะไร**: บรรลุเกณฑ์ EXP-A (Apple Native Spatial + Mobbin Inset Sheets) เพื่อเพิ่มความงามและสรีรศาสตร์ตาม Apple HIG
 - **หลักฐาน**: `SCORECARD.md` ให้คะแนน 93.5/100 (`Strong Candidate`), บันทึกใน `EXPERIMENTS.md`
 
+## [2026-11-09T13:55:00Z] - EXP-B Implementation & Verification Completed
+- **แก้อะไร**:
+  1. แยกบรานช์ `exp/clean-arcade` จาก `main`
+  2. พัฒนา Match Setup Drawer ใน `/play` ด้วย High-Contrast Segmented Tiles และระบุพิกัดระยะรัศมีชัดเจน (±250km, ±100km, ±35km, ±10km, ±2km)
+  3. เพิ่ม Focus Mode Toggle ใน `GameHud.tsx` ซ่อนข้อมูลรบกวนสายตาขณะแข่งขันเล็งพิกัดบนแผนที่
+  4. ทดสอบ Unit Tests (15/15 ผ่าน) และ Production Build Nitro SSR สำเร็จ (1.20s)
+- **เพราะอะไร**: บรรลุเกณฑ์ EXP-B (Minimalist Clean Arcade + Zero-Blur High Contrast) เพื่อเพิ่มความเร็วและการเข้าถึง a11y สูงสุด
+- **หลักฐาน**: `SCORECARD.md` ให้คะแนน 93.5/100 (`Strong Candidate`), บันทึกใน `EXPERIMENTS.md`
+
+
+
