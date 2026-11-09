@@ -1,7 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Sidebar } from "@/components/Sidebar";
-import { IconCheck } from "@/components/icons";
 import { useSettings } from "@/lib/game/storage";
 import { blip, buzz } from "@/lib/game/sound";
 import {
@@ -713,7 +712,7 @@ function PartyPage() {
                                   : "bg-muted text-muted-foreground"
                               }`}
                             >
-                              {p.ready && <IconCheck className="h-3 w-3" />}
+                              {p.ready && <Check className="h-3 w-3" />}
                               {p.ready ? "Ready" : "Wait"}
                             </span>
                           </div>
