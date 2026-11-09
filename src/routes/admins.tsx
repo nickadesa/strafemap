@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Sidebar } from "@/components/Sidebar";
 import { getRank, loadRank, saveRank, type RankedProfile } from "@/lib/rank";
@@ -6,8 +6,10 @@ import { AvatarFrame, ClanTagPill, RankBanner, VerifiedBadge, type VerifiedBadge
 import { useSocialProfile, useClans, computeLevelFromExp, LEVEL_MAX, EXP_PER_LEVEL } from "@/lib/social";
 import { Flag } from "@/components/Flag";
 import { buzz } from "@/lib/game/sound";
-import { ShieldCheck, Sliders, Sparkles, Flame, UserCheck, RotateCcw, Award } from "lucide-react";
+import { ShieldCheck, Sliders, Sparkles, Flame, UserCheck, RotateCcw, Award, Lock, KeyRound, ShieldAlert, LogOut } from "lucide-react";
 import { GameChat } from "@/components/GameChat";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/admins")({
   head: () => ({
@@ -24,6 +26,35 @@ function AdminsPage() {
   const [clans, saveClans] = useClans();
   const [rank, setRank] = useState<RankedProfile>(loadRank());
   const [presetNotice, setPresetNotice] = useState<string | null>(null);
+
+  // Security Gate State
+  const MASTER_PIN = "8888";
+  const [authorized, setAuthorized] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return sessionStorage.getItem("strafe_admin_session") === "unlocked";
+  });
+  const [pinInput, setPinInput] = useState("");
+  const [pinError, setPinError] = useState(false);
+
+  const handleUnlock = () => {
+    if (pinInput === MASTER_PIN) {
+      buzz(12);
+      sessionStorage.setItem("strafe_admin_session", "unlocked");
+      setAuthorized(true);
+      setPinError(false);
+    } else {
+      buzz(40);
+      setPinError(true);
+      setPinInput("");
+    }
+  };
+
+  const handleLock = () => {
+    buzz(8);
+    sessionStorage.removeItem("strafe_admin_session");
+    setAuthorized(false);
+    setPinInput("");
+  };
 
   const current = getRank(rank.rp, rank.championPosition);
 
@@ -144,21 +175,91 @@ function AdminsPage() {
     setTimeout(() => setPresetNotice(null), 4000);
   };
 
+  if (!authorized) {
+    return (
+      <div className="min-h-screen">
+        <Sidebar />
+        <main className="rail-offset grid min-h-screen place-items-center p-4">
+          <div className="plate w-full max-w-sm p-6 text-center shadow-2xl backdrop-blur-xl border border-border/80 rounded-3xl">
+            <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-accent-fill/15 text-accent-text">
+              <Lock className="h-7 w-7" />
+            </div>
+            <h1 className="font-display text-2xl font-bold tracking-tight text-foreground">
+              Developer Gateway
+            </h1>
+            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+              Protected sandbox console. Enter the 4-digit Master Passcode to continue.
+            </p>
+
+            <div className="my-6 flex justify-center">
+              <InputOTP
+                maxLength={4}
+                value={pinInput}
+                onChange={(val) => {
+                  setPinInput(val);
+                  setPinError(false);
+                }}
+              >
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                  <InputOTPSlot index={3} />
+                </InputOTPGroup>
+              </InputOTP>
+            </div>
+
+            {pinError && (
+              <p className="mb-4 flex items-center justify-center gap-1.5 text-xs font-semibold text-destructive">
+                <ShieldAlert className="h-4 w-4" /> Invalid Passcode. Access denied.
+              </p>
+            )}
+
+            <div className="flex flex-col gap-2.5">
+              <Button
+                variant="filled"
+                size="large"
+                className="w-full"
+                onClick={handleUnlock}
+                disabled={pinInput.length < 4}
+              >
+                <KeyRound className="h-4 w-4" /> Unlock Console
+              </Button>
+              <Link to="/" className="text-xs font-medium text-muted-foreground hover:text-foreground">
+                Return to Safe Ground (Home)
+              </Link>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen">
       <Sidebar />
       <main className="rail-offset px-4 pb-16 pt-8 md:px-6">
         <div className="mx-auto max-w-3xl space-y-6">
-          <div className="flex items-center gap-3">
-            <span className="grid h-10 w-10 place-items-center rounded-2xl bg-accent-fill text-[#03121C]">
-              <ShieldCheck className="h-6 w-6" />
-            </span>
-            <div>
-              <h1 className="font-display text-3xl md:text-4xl">Admin & Developer Console</h1>
-              <p className="text-xs text-muted-foreground">
-                Dedicated sandbox tools for testing profiles, ranks, champion states, and badges.
-              </p>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <span className="grid h-10 w-10 place-items-center rounded-2xl bg-accent-fill text-[#03121C]">
+                <ShieldCheck className="h-6 w-6" />
+              </span>
+              <div>
+                <h1 className="font-display text-3xl md:text-4xl">Admin & Developer Console</h1>
+                <p className="text-xs text-muted-foreground">
+                  Authenticated session · Sandbox tools for testing profiles, ranks, and badges.
+                </p>
+              </div>
             </div>
+            <Button
+              variant="outline"
+              size="small"
+              onClick={handleLock}
+              className="text-xs gap-1.5 text-muted-foreground hover:text-destructive hover:border-destructive/40"
+            >
+              <LogOut className="h-3.5 w-3.5" /> Lock Console
+            </Button>
           </div>
 
           {/* Profile Presets Simulator (Ronaldo & Default) */}
