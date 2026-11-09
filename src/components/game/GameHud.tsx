@@ -4,7 +4,7 @@ import { buzz } from "@/lib/game/sound";
 import { AvatarFrame } from "@/components/RankVisuals";
 import { NumberPopIn } from "@/components/ui/NumberPopIn";
 import { SymbolGearshape, SymbolLogOut } from "@/components/SFSymbols";
-import { Volume2, VolumeX, ZoomIn } from "lucide-react";
+import { Volume2, VolumeX, ZoomIn, Eye, Maximize2 } from "lucide-react";
 import type { Mode, LatLng, SIN_CARDS } from "@/lib/game/engine";
 import type { CommunityPlayer } from "@/lib/social";
 
@@ -70,6 +70,7 @@ export function GameHud({
   onToggleZoomButtons,
 }: GameHudProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [focusMode, setFocusMode] = useState(false);
 
   const remainingSeconds = Math.max(0, Math.ceil(timeLimit - elapsedSeconds));
   const isUrgent = remainingSeconds <= 10;
@@ -88,30 +89,31 @@ export function GameHud({
     <>
       {/* Top Floating Glass Header (Apple Glass Architecture) */}
       <header className="pointer-events-none fixed inset-x-3 top-3 z-40 flex items-start justify-between sm:inset-x-4 sm:top-4">
-        {/* Top-Left: Settings Button & Glass Popover Menu */}
-        <div className="pointer-events-auto relative">
-          <button
-            type="button"
-            onClick={() => {
-              buzz(6);
-              setMenuOpen((prev) => !prev);
-            }}
-            aria-label="Settings"
-            aria-expanded={menuOpen}
-            className={`grid h-12 w-12 min-h-[48px] min-w-[48px] place-items-center rounded-full glass-plate shadow-sm transition-all hover:bg-muted/80 active:scale-95 ${
-              menuOpen ? "text-accent-fill ring-2 ring-accent-fill/40" : "text-foreground"
-            }`}
-          >
-            <SymbolGearshape className="h-5 w-5" />
-          </button>
+        {/* Top-Left: Settings Button & Focus Mode Button */}
+        <div className="pointer-events-auto flex items-center gap-2">
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                buzz(6);
+                setMenuOpen((prev) => !prev);
+              }}
+              aria-label="Settings"
+              aria-expanded={menuOpen}
+              className={`grid h-12 w-12 min-h-[48px] min-w-[48px] place-items-center rounded-full border-2 border-border/80 bg-card/95 shadow-sm transition-all hover:bg-muted/80 active:scale-95 ${
+                menuOpen ? "text-accent-fill ring-2 ring-accent-fill/40" : "text-foreground"
+              }`}
+            >
+              <SymbolGearshape className="h-5 w-5" />
+            </button>
 
-          {/* Settings Scrim Overlay */}
-          {menuOpen && (
-            <div
-              className="fixed inset-0 z-40 bg-black/20 backdrop-blur-[2px] dark:bg-black/40"
-              onClick={() => setMenuOpen(false)}
-            />
-          )}
+            {/* Settings Scrim Overlay */}
+            {menuOpen && (
+              <div
+                className="fixed inset-0 z-40 bg-black/20 backdrop-blur-[2px] dark:bg-black/40"
+                onClick={() => setMenuOpen(false)}
+              />
+            )}
 
           {/* Settings Glass Popover Menu */}
           {menuOpen && (
@@ -201,59 +203,81 @@ export function GameHud({
           )}
         </div>
 
-        {/* Top-Right: Integrated Timer, Round Progress & Points Capsule */}
-        <div className="pointer-events-auto flex flex-col items-end gap-2">
-          <div className="glass-plate flex items-center gap-3 rounded-full px-4 py-2 shadow-sm border border-border/70">
-            {/* Countdown Timer */}
-            {!unlimitedTime && (
-              <>
-                <span className={`tabular-nums text-sm font-extrabold ${timerColorClass}`}>
-                  {remainingSeconds}s
-                </span>
-                <span className="h-4 w-px bg-border/60" />
-              </>
-            )}
+        {/* Quick Focus Mode Button */}
+        <button
+          type="button"
+          onClick={() => {
+            buzz(6);
+            setFocusMode((f) => !f);
+          }}
+          aria-label={focusMode ? "Exit Focus Mode" : "Enter Focus Mode"}
+          title={focusMode ? "Exit Focus Mode" : "Focus Mode (Hide distractions)"}
+          className={`grid h-12 w-12 min-h-[48px] min-w-[48px] place-items-center rounded-full border-2 transition-all active:scale-95 ${
+            focusMode
+              ? "border-accent-fill bg-accent-fill text-[#03121C] shadow-md font-bold"
+              : "border-border/80 bg-card/95 text-muted-foreground hover:text-foreground hover:bg-muted"
+          }`}
+        >
+          {focusMode ? <Maximize2 className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+        </button>
+      </div>
 
-            {/* Round Tracker + 5 Segmented Dot Indicators */}
-            <div className="flex flex-col line-tight">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-                {practice ? t(lang, "practice") : `${t(lang, "round")} ${Math.min(idx + 1, roundsTotal)}/${roundsTotal}`}
+      {/* Top-Right: Integrated Timer, Round Progress & Points Capsule */}
+      <div className="pointer-events-auto flex flex-col items-end gap-2">
+        <div className="flex items-center gap-3 rounded-full border-2 border-border/80 bg-card/95 px-4 py-2 shadow-sm">
+          {/* Countdown Timer */}
+          {!unlimitedTime && (
+            <>
+              <span className={`tabular-nums text-sm font-extrabold ${timerColorClass}`}>
+                {remainingSeconds}s
               </span>
-              <div className="flex gap-1 mt-0.5" aria-hidden="true">
-                {Array.from({ length: roundsTotal > 0 ? roundsTotal : 5 }, (_, i) => {
-                  const isDone = i < idx;
-                  const isCurrent = i === idx;
-                  return (
-                    <i
-                      key={i}
-                      className={`h-[3px] w-3 rounded-full transition-colors duration-200 ${
-                        isDone
-                          ? "bg-accent-fill"
-                          : isCurrent
-                          ? "bg-foreground"
-                          : "bg-muted-foreground/30"
-                      }`}
-                    />
-                  );
-                })}
-              </div>
-            </div>
+              <span className="h-4 w-px bg-border/60" />
+            </>
+          )}
 
-            <span className="h-4 w-px bg-border/60" />
-
-            {/* Score Points Counter */}
-            <div className="flex flex-col line-tight">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-                {t(lang, "points")}
-              </span>
-              <span className="tabular-nums font-extrabold text-sm text-foreground">
-                <NumberPopIn value={totalScore.toLocaleString()} />
-              </span>
+          {/* Round Tracker + 5 Segmented Dot Indicators */}
+          <div className="flex flex-col line-tight">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+              {practice ? t(lang, "practice") : `${t(lang, "round")} ${Math.min(idx + 1, roundsTotal)}/${roundsTotal}`}
+            </span>
+            <div className="flex gap-1 mt-0.5" aria-hidden="true">
+              {Array.from({ length: roundsTotal > 0 ? roundsTotal : 5 }, (_, i) => {
+                const isDone = i < idx;
+                const isCurrent = i === idx;
+                return (
+                  <i
+                    key={i}
+                    className={`h-[3px] w-3 rounded-full transition-colors duration-200 ${
+                      isDone
+                        ? "bg-accent-fill"
+                        : isCurrent
+                        ? "bg-foreground"
+                        : "bg-muted-foreground/30"
+                    }`}
+                  />
+                );
+              })}
             </div>
           </div>
 
-          {/* Ranked 1v1 Opponent Pill (Floating below Score capsule) */}
-          {ranked && opponent && (
+          {/* Score Points Counter (Hidden in Focus Mode) */}
+          {!focusMode && (
+            <>
+              <span className="h-4 w-px bg-border/60" />
+              <div className="flex flex-col line-tight">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                  {t(lang, "points")}
+                </span>
+                <span className="tabular-nums font-extrabold text-sm text-foreground">
+                  <NumberPopIn value={totalScore.toLocaleString()} />
+                </span>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Ranked 1v1 Opponent Pill (Floating below Score capsule, hidden in Focus Mode) */}
+        {!focusMode && ranked && opponent && (
             <div className="glass-plate flex items-center gap-2 rounded-full px-3 py-1.5 text-xs shadow-sm border border-border/60 animate-in fade-in duration-200">
               <span className="text-[10px] font-bold text-muted-foreground">VS</span>
               <AvatarFrame name={opponent.nickname} rp={opponent.rp} size={20} />

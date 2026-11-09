@@ -424,36 +424,40 @@ export function PlayHub() {
         </div>
       </main>
 
-      {/* 5. Mode Options Sheet / Drawer (Section 7 Item 5) */}
+      {/* 5. Minimalist Clean Arcade Match Drawer */}
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
-        <DrawerContent className="mx-auto max-w-2xl p-5 sm:p-6">
-          <DrawerHeader className="flex flex-row items-center justify-between border-b border-border px-0 pb-3 pt-1">
-            <div>
-              <DrawerTitle className="capitalize">
-                {t(lang, selectedMode)} · Match Options
+        <DrawerContent className="mx-auto max-w-xl border-2 border-border bg-background p-6 pb-8 shadow-2xl">
+          <DrawerHeader className="flex flex-row items-center justify-between border-b-2 border-border pb-4 pt-0 px-0">
+            <div className="text-left">
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-accent-fill/15 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-accent-text mb-1">
+                Arcade Setup
+              </div>
+              <DrawerTitle className="capitalize text-2xl font-bold tracking-tight text-foreground">
+                {t(lang, selectedMode)}
               </DrawerTitle>
-              <DrawerDescription className="mt-1">
-                Customize category pool, difficulty rating, and round time limit.
+              <DrawerDescription className="mt-0.5 text-xs font-medium text-muted-foreground">
+                High-contrast competitive ruleset and pinpoint scoring tolerance.
               </DrawerDescription>
             </div>
             <DrawerClose asChild>
               <button
                 type="button"
                 aria-label="Close"
-                className="grid h-8 w-8 place-items-center rounded-full bg-muted text-muted-foreground hover:text-foreground"
+                onClick={() => buzz(4)}
+                className="grid h-9 w-9 min-h-[36px] min-w-[36px] place-items-center rounded-xl border border-border bg-card text-foreground hover:bg-muted transition-colors"
               >
                 <X className="h-4 w-4" />
               </button>
             </DrawerClose>
           </DrawerHeader>
 
-          <div className="mt-4 space-y-4 max-h-[60vh] overflow-y-auto no-scrollbar pr-1">
-            {/* Category Pool Picker */}
+          <div className="mt-5 space-y-5 max-h-[60vh] overflow-y-auto no-scrollbar">
+            {/* Category Pool Selector (High-Contrast Segmented Tiles) */}
             <div>
-              <label className="text-xs font-semibold text-muted-foreground block mb-2">
-                {t(lang, "category")}
-              </label>
-              <div className="flex flex-wrap gap-1.5">
+              <span className="text-xs font-bold uppercase tracking-wider text-foreground block mb-2">
+                1. {t(lang, "category")} Pool
+              </span>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                 {pools.map((p) => {
                   const active = pool === p.id;
                   return (
@@ -461,57 +465,91 @@ export function PlayHub() {
                       key={p.id}
                       type="button"
                       onClick={() => {
-                        buzz(4);
+                        buzz(5);
                         setPool(p.id);
                       }}
-                      className={`rounded-xl border px-3 py-1.5 text-xs font-semibold transition-all ${
+                      className={`flex items-center gap-2 rounded-xl border-2 p-2.5 text-left transition-all ${
                         active
-                          ? "border-foreground/60 bg-accent-fill/15 text-accent-text"
-                          : "border-border bg-card text-muted-foreground hover:bg-muted"
+                          ? "border-accent-fill bg-accent-fill/15 font-bold text-accent-text shadow-sm"
+                          : "border-border bg-card text-muted-foreground hover:border-foreground/30 hover:text-foreground"
                       }`}
                     >
-                      {t(lang, p.labelKey)}
+                      <span className="text-lg">
+                        {p.id === "world" && "🌍"}
+                        {p.id === "capitals" && "🏛️"}
+                        {p.id === "countries" && "🚩"}
+                        {p.id === "landmarks" && "🗼"}
+                        {p.id === "stadiums" && "⚽"}
+                        {p.id === "wonders" && "✨"}
+                        {p.id === "attractions" && "🎢"}
+                      </span>
+                      <span className="text-xs truncate">{t(lang, p.labelKey)}</span>
                     </button>
                   );
                 })}
               </div>
             </div>
 
-            {/* Difficulty Picker */}
+            {/* Difficulty Rating with Explicit Radiuses */}
             <div>
-              <label className="text-xs font-semibold text-muted-foreground block mb-2">
-                {t(lang, "difficulty")}
-              </label>
-              <div className="flex flex-wrap gap-1.5">
+              <span className="text-xs font-bold uppercase tracking-wider text-foreground block mb-2">
+                2. {t(lang, "difficulty")} & Pin Tolerance
+              </span>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
                 {diffs.map((d) => {
                   const active = difficulty === d;
+                  const radiusDesc =
+                    d === "easy"
+                      ? "±250km"
+                      : d === "medium"
+                      ? "±100km"
+                      : d === "hard"
+                      ? "±35km"
+                      : d === "expert"
+                      ? "±10km"
+                      : "±2km";
+                  const colorBadge =
+                    d === "easy"
+                      ? "text-emerald-500"
+                      : d === "medium"
+                      ? "text-blue-500"
+                      : d === "hard"
+                      ? "text-amber-500"
+                      : d === "expert"
+                      ? "text-orange-500"
+                      : "text-rose-500";
                   return (
                     <button
                       key={d}
                       type="button"
                       onClick={() => {
-                        buzz(4);
+                        buzz(5);
                         setDiff(d);
                       }}
-                      className={`rounded-xl border px-3 py-1.5 text-xs font-semibold capitalize transition-all ${
+                      className={`flex flex-col items-start rounded-xl border-2 p-2 text-left transition-all ${
                         active
-                          ? "border-foreground/60 bg-accent-fill/15 text-accent-text"
-                          : "border-border bg-card text-muted-foreground hover:bg-muted"
+                          ? "border-accent-fill bg-accent-fill/15 shadow-sm"
+                          : "border-border bg-card hover:border-foreground/30"
                       }`}
                     >
-                      {t(lang, d)}
+                      <span className={`text-xs font-bold capitalize ${active ? "text-accent-text" : colorBadge}`}>
+                        {t(lang, d)}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground font-mono mt-0.5">
+                        {radiusDesc}
+                      </span>
                     </button>
                   );
                 })}
               </div>
             </div>
 
-            {/* Time per round */}
+            {/* Round Time Limit */}
             <div>
-              <label className="text-xs font-semibold text-muted-foreground block mb-2">
-                {t(lang, "timePerRound")}
-              </label>
-              <div className="flex flex-wrap gap-1.5">
+              <span className="text-xs font-bold uppercase tracking-wider text-foreground block mb-2">
+                3. {t(lang, "timePerRound")}
+              </span>
+              <div className="flex flex-wrap gap-2">
                 {TIME_OPTIONS.map((tOpt) => {
                   const active = time === tOpt;
                   return (
@@ -522,10 +560,10 @@ export function PlayHub() {
                         buzz(4);
                         setTime(tOpt);
                       }}
-                      className={`rounded-xl border px-3 py-1.5 text-xs font-semibold transition-all ${
+                      className={`min-h-[42px] px-4 py-2 rounded-xl text-xs font-bold border-2 transition-all ${
                         active
-                          ? "border-foreground/60 bg-accent-fill/15 text-accent-text"
-                          : "border-border bg-card text-muted-foreground hover:bg-muted"
+                          ? "border-accent-fill bg-accent-fill text-[#03121C] shadow-md scale-102"
+                          : "border-border bg-card text-muted-foreground hover:border-foreground/40 hover:text-foreground"
                       }`}
                     >
                       {tOpt === 0 ? "Unlimited ∞" : `${tOpt}s`}
@@ -535,66 +573,45 @@ export function PlayHub() {
               </div>
             </div>
 
-            {/* Sins Card Selector (if mode === "sins") */}
-            {selectedMode === "sins" && (
-              <div>
-                <label className="text-xs font-semibold text-muted-foreground block mb-2">
-                  Select Sin Skill Card
-                </label>
-                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                  {SIN_CARDS.map((sin) => {
-                    const active = selectedSin === sin.id;
-                    return (
-                      <button
-                        key={sin.id}
-                        type="button"
-                        onClick={() => {
-                          buzz(4);
-                          setSelectedSin(sin.id);
-                        }}
-                        className={`rounded-xl border p-2.5 text-left transition-all ${
-                          active
-                            ? "border-accent-fill bg-accent-fill/10"
-                            : "border-border bg-card hover:bg-muted"
-                        }`}
-                      >
-                        <p className="text-xs font-bold capitalize text-foreground">{sin.sinName}</p>
-                        <p className="text-[10px] text-muted-foreground line-clamp-2 mt-0.5">
-                          {sin.skillName} · {sin.boon}
-                        </p>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
             {/* Practice Mode Toggle */}
-            <div className="flex items-center justify-between rounded-xl border border-border bg-card p-3">
+            <div className="flex items-center justify-between rounded-xl border-2 border-border bg-card p-3.5">
               <div>
-                <p className="text-xs font-semibold text-foreground">Practice Mode</p>
+                <p className="text-xs font-bold text-foreground">Practice Mode (Unranked)</p>
                 <p className="text-[11px] text-muted-foreground">
-                  Score will not be saved to records or stats
+                  Scores will not be submitted to leaderboard or season ladder
                 </p>
               </div>
-              <input
-                type="checkbox"
-                checked={practice}
-                onChange={(e) => setPractice(e.target.checked)}
-                className="h-4 w-4 accent-accent-fill"
-              />
+              <button
+                type="button"
+                role="switch"
+                aria-checked={practice}
+                aria-label="Practice Mode"
+                onClick={() => {
+                  buzz(4);
+                  setPractice((p) => !p);
+                }}
+                className={`relative inline-flex h-7 w-12 shrink-0 cursor-pointer rounded-full p-0.5 transition-colors duration-200 ease-in-out ${
+                  practice ? "bg-accent-fill" : "bg-muted-foreground/30"
+                }`}
+              >
+                <span
+                  className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-md transition duration-200 ease-in-out ${
+                    practice ? "translate-x-5" : "translate-x-0"
+                  }`}
+                />
+              </button>
             </div>
           </div>
 
-          {/* Start Game Action */}
-          <div className="mt-5 pt-3 border-t border-border flex gap-2">
+          {/* High-Contrast Start CTA Button */}
+          <div className="mt-6 pt-4 border-t-2 border-border">
             <button
               type="button"
               onClick={handleStartGame}
-              className="btn btn-primary w-full py-3 text-sm font-semibold flex items-center justify-center gap-2"
+              className="btn btn-primary w-full py-4 text-base font-extrabold tracking-wide uppercase flex items-center justify-center gap-2 shadow-xl hover:brightness-105 active:scale-[0.98] transition-all"
             >
-              <Play className="h-4 w-4 fill-current" />
-              Start {t(lang, selectedMode)}
+              <Play className="h-5 w-5 fill-current" />
+              Launch {t(lang, selectedMode)} Match
             </button>
           </div>
         </DrawerContent>
