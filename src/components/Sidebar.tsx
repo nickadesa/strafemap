@@ -248,8 +248,9 @@ export function Sidebar() {
         </div>
       </aside>
 
-      {/* Mobile: Apple HIG Top Navigation Bar */}
-      <header className="glass-plate fixed left-0 right-0 top-0 z-40 flex h-14 items-center justify-between border-x-0 border-t-0 px-4 md:hidden">
+      {/* Mobile: Apple HIG Top Navigation Bar (Hidden on Home per user request) */}
+      {location.pathname !== "/" && (
+        <header className="glass-plate fixed left-0 right-0 top-0 z-40 flex h-14 items-center justify-between border-none shadow-xs px-4 md:hidden">
         <Link
           to="/"
           onClick={() => buzz(6)}
@@ -300,6 +301,7 @@ export function Sidebar() {
           </Link>
         </div>
       </header>
+      )}
 
       {/* Mobile: Apple HIG 5-Tab Bar (Floating pill at bottom) */}
       <nav

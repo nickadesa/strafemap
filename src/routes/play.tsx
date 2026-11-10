@@ -301,35 +301,40 @@ export function PlayHub() {
             </div>
           </div>
 
-          {/* 2. Featured Daily Challenge Card (Section 7 Item 2) */}
-          <section className="plate relative overflow-hidden p-6 md:p-8">
-            <div className="relative z-10 flex flex-col justify-between gap-4 md:flex-row md:items-center">
-              <div className="max-w-xl">
-                <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-fill/15 px-3 py-1 text-xs font-semibold text-accent-text">
-                    <Calendar className="h-3.5 w-3.5" />
-                    {t(lang, "daily")} · {todayKey()}
-                  </span>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-xs font-semibold text-muted-foreground">
-                    <Flame className="h-3.5 w-3.5 text-accent-text" /> {dailyStreak}d Streak
-                  </span>
+          {/* 2. Featured Daily Challenge Card (Image 1 & 5 style) */}
+          <section className="plate relative overflow-hidden p-6 md:p-8 bg-gradient-to-br from-[#00ADFF]/15 via-blue-500/10 to-purple-600/15">
+            <div className="relative z-10 flex flex-col justify-between gap-5 md:flex-row md:items-center">
+              <div className="flex items-start gap-4 max-w-xl">
+                <div className="grid h-16 w-16 sm:h-18 sm:w-18 shrink-0 place-items-center rounded-full bg-gradient-to-tr from-amber-500 to-orange-400 text-white shadow-lg text-3xl">
+                  🔥
                 </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-fill/20 px-3 py-1 text-xs font-bold text-accent-text">
+                      <Calendar className="h-3.5 w-3.5" />
+                      {t(lang, "daily")} · {todayKey()}
+                    </span>
+                    <span className="inline-flex items-center gap-1 rounded-full bg-card/80 px-2.5 py-1 text-xs font-bold text-foreground shadow-2xs">
+                      {dailyStreak}d Streak
+                    </span>
+                  </div>
 
-                <h2 className="font-display mt-3 text-2xl tracking-tight text-foreground sm:text-3xl md:text-4xl">
-                  {t(lang, "todayFivePins")}
-                </h2>
-                <p className="mt-1.5 text-xs text-muted-foreground sm:text-sm">
-                  {t(lang, "sameFivePlaces")}. Fixed global seed with verified pinpoint coordinates.
-                </p>
+                  <h2 className="font-display mt-2.5 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                    {t(lang, "todayFivePins")}
+                  </h2>
+                  <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
+                    {t(lang, "sameFivePlaces")}. Fixed global seed with verified pinpoint coordinates.
+                  </p>
+                </div>
               </div>
 
               {/* Status & CTA */}
-              <div className="shrink-0">
+              <div className="shrink-0 flex items-center justify-end">
                 {hasPlayedDailyToday ? (
-                  <div className="flex flex-col gap-2 sm:items-end">
-                    <div className="flex items-center gap-2 rounded-2xl bg-card/80 px-4 py-2 shadow-xs">
+                  <div className="flex flex-col gap-2 sm:items-end w-full sm:w-auto">
+                    <div className="flex items-center gap-2 rounded-full bg-card/90 px-4 py-2.5 shadow-xs">
                       <SymbolCheckmark className="h-4 w-4 text-accent-text" />
-                      <span className="text-xs font-semibold">
+                      <span className="text-xs font-bold">
                         {t(lang, "todayScore", { n: todayDailyRecord?.score.toLocaleString() ?? "0" })}
                       </span>
                     </div>
@@ -338,7 +343,7 @@ export function PlayHub() {
                       params={{ mode: "classic" }}
                       search={{ daily: 1 }}
                       onClick={() => buzz(6)}
-                      className="btn btn-outline !px-4 !py-2 text-xs font-semibold"
+                      className="btn btn-outline rounded-full !px-5 !py-2.5 text-xs font-bold text-center"
                     >
                       {t(lang, "viewResults")}
                     </Link>
@@ -349,9 +354,9 @@ export function PlayHub() {
                     params={{ mode: "classic" }}
                     search={{ daily: 1 }}
                     onClick={() => buzz(6)}
-                    className="btn btn-primary px-7 py-3 text-sm font-semibold shadow-md active:scale-95"
+                    className="btn btn-primary rounded-full px-8 py-3.5 text-sm font-bold shadow-lg active:scale-95 text-center flex items-center justify-center gap-2"
                   >
-                    <Play className="h-4 w-4 mr-1.5 fill-current" />
+                    <Play className="h-4 w-4 fill-current" />
                     {t(lang, "playDaily")}
                   </Link>
                 )}
@@ -359,7 +364,7 @@ export function PlayHub() {
             </div>
           </section>
 
-          {/* 3. Segmented Control: All, Solo, Multiplayer, Ranked (Section 7 Item 3) */}
+          {/* 3. Segmented Control: All, Solo, Multiplayer, Ranked */}
           <div className="flex items-center justify-between gap-3">
             <SlidingTabs
               tabs={[
@@ -374,13 +379,13 @@ export function PlayHub() {
                 setActiveCategory(nextCat as ModeCategory);
               }}
             />
-            <span className="text-xs text-muted-foreground hidden sm:inline">
+            <span className="text-xs font-semibold text-muted-foreground hidden sm:inline">
               {filteredModes.length} modes
             </span>
           </div>
 
-          {/* 4. Apple Inset Grouped List of Modes (Section 7 Item 4) */}
-          <div className="apple-group">
+          {/* 4. Rich Mode Cards (Directly matching Reference Image 5) */}
+          <div className="grid gap-3.5 sm:grid-cols-2">
             {filteredModes.map((item) => {
               const Icon = item.icon;
               return (
@@ -388,36 +393,38 @@ export function PlayHub() {
                   key={item.id}
                   type="button"
                   onClick={() => handleSelectMode(item)}
-                  className="apple-row w-full text-left transition-colors hover:bg-muted/50 active:scale-[0.99] cursor-pointer"
+                  className="group flex items-center justify-between p-4 sm:p-5 rounded-3xl bg-card/90 hover:bg-card shadow-xs hover:shadow-md transition-all active:scale-[0.98] cursor-pointer text-left ring-1 ring-black/5 dark:ring-white/5"
                 >
-                  <div className="flex items-center gap-3.5 min-w-0">
+                  <div className="flex items-center gap-4 min-w-0">
+                    {/* 56px Rich Colored Circular Icon Container (Reference Image 5) */}
                     <div
-                      className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl shadow-xs"
+                      className="grid h-14 w-14 shrink-0 place-items-center rounded-full text-white shadow-md transition-transform group-hover:scale-105"
                       style={{
-                        backgroundColor: `${item.accentColor}20`,
-                        color: item.accentColor,
+                        backgroundColor: item.accentColor,
                       }}
                     >
-                      <Icon className="h-5 w-5" />
+                      <Icon className="h-7 w-7 text-white" />
                     </div>
 
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-semibold text-sm text-foreground">
+                        <span className="font-bold text-base text-foreground truncate">
                           {t(lang, item.titleKey)}
                         </span>
-                        <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                        <span className="rounded-full bg-muted/80 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground shrink-0">
                           {t(lang, item.tagKey)}
                         </span>
                       </div>
-                      <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
+                      <p className="mt-1 line-clamp-2 text-xs text-muted-foreground leading-relaxed">
                         {t(lang, item.blurbKey)}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 shrink-0 pl-3">
-                    <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                  <div className="shrink-0 pl-3">
+                    <div className="grid h-8 w-8 place-items-center rounded-full bg-muted/60 text-muted-foreground group-hover:bg-accent-fill group-hover:text-[#03121C] transition-colors">
+                      <ChevronRight className="h-4 w-4" />
+                    </div>
                   </div>
                 </button>
               );
@@ -457,7 +464,7 @@ export function PlayHub() {
               <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground block mb-1.5 px-1">
                 {t(lang, "category")}
               </span>
-              <div className="apple-group">
+              <div className="space-y-1.5">
                 {pools.map((p) => {
                   const active = pool === p.id;
                   return (
@@ -468,10 +475,14 @@ export function PlayHub() {
                         buzz(5);
                         setPool(p.id);
                       }}
-                      className="apple-row w-full text-left transition-colors hover:bg-muted/40 cursor-pointer"
+                      className={`flex w-full items-center justify-between px-3.5 py-3 rounded-2xl text-left transition-all cursor-pointer ${
+                        active
+                          ? "bg-accent-fill/15 text-accent-text font-bold shadow-2xs ring-1 ring-accent-fill/30"
+                          : "hover:bg-muted/40 text-foreground"
+                      }`}
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <span className="text-base select-none">
+                        <span className="text-xl select-none">
                           {p.id === "world" && "🌍"}
                           {p.id === "capitals" && "🏛️"}
                           {p.id === "countries" && "🚩"}
@@ -480,12 +491,12 @@ export function PlayHub() {
                           {p.id === "wonders" && "✨"}
                           {p.id === "attractions" && "🎢"}
                         </span>
-                        <span className={`text-sm font-semibold ${active ? "text-accent-text" : "text-foreground"}`}>
+                        <span className="text-sm font-semibold truncate">
                           {t(lang, p.labelKey)}
                         </span>
                       </div>
                       {active && (
-                        <div className="grid h-6 w-6 place-items-center rounded-full bg-accent-fill/15 text-accent-text">
+                        <div className="grid h-6 w-6 place-items-center rounded-full bg-accent-fill text-[#03121C] font-bold text-xs shadow-2xs">
                           <SymbolCheckmark className="h-3.5 w-3.5" />
                         </div>
                       )}
@@ -495,12 +506,12 @@ export function PlayHub() {
               </div>
             </div>
 
-            {/* Difficulty Picker (Apple Inset Grouped List with Color Accents) */}
+            {/* Difficulty Picker (Image 2 style with Color Accents) */}
             <div>
               <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground block mb-1.5 px-1">
                 {t(lang, "difficulty")}
               </span>
-              <div className="apple-group">
+              <div className="space-y-1.5">
                 {diffs.map((d) => {
                   const active = difficulty === d;
                   const dotColor =
@@ -521,16 +532,20 @@ export function PlayHub() {
                         buzz(5);
                         setDiff(d);
                       }}
-                      className="apple-row w-full text-left transition-colors hover:bg-muted/40 cursor-pointer"
+                      className={`flex w-full items-center justify-between px-3.5 py-3 rounded-2xl text-left transition-all cursor-pointer ${
+                        active
+                          ? "bg-accent-fill/15 text-accent-text font-bold shadow-2xs ring-1 ring-accent-fill/30"
+                          : "hover:bg-muted/40 text-foreground"
+                      }`}
                     >
-                      <div className="flex items-center gap-2.5">
-                        <span className={`h-2.5 w-2.5 rounded-full ${dotColor}`} />
-                        <span className={`text-sm font-semibold capitalize ${active ? "text-accent-text" : "text-foreground"}`}>
+                      <div className="flex items-center gap-3">
+                        <span className={`h-3 w-3 rounded-full ${dotColor}`} />
+                        <span className="text-sm font-semibold capitalize">
                           {t(lang, d)}
                         </span>
                       </div>
                       {active && (
-                        <div className="grid h-6 w-6 place-items-center rounded-full bg-accent-fill/15 text-accent-text">
+                        <div className="grid h-6 w-6 place-items-center rounded-full bg-accent-fill text-[#03121C] font-bold text-xs shadow-2xs">
                           <SymbolCheckmark className="h-3.5 w-3.5" />
                         </div>
                       )}
@@ -635,12 +650,12 @@ export function PlayHub() {
             </div>
           </div>
 
-          {/* Start Game Action CTA */}
-          <div className="mt-5 pt-3 border-t border-border/80 flex gap-2">
+          {/* Start Game Action CTA (Matching Image 2 full pill button) */}
+          <div className="mt-5 pt-3 border-t border-black/5 dark:border-white/5 flex gap-2">
             <button
               type="button"
               onClick={handleStartGame}
-              className="btn btn-primary w-full py-3.5 text-sm font-semibold flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] transition-transform"
+              className="btn btn-primary w-full py-4 text-base font-bold rounded-full shadow-lg flex items-center justify-center gap-2 cursor-pointer active:scale-95 transition-all"
             >
               <Play className="h-4 w-4 fill-current" />
               Start {t(lang, selectedMode)}

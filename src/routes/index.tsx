@@ -105,78 +105,116 @@ function Home() {
   return (
     <div className="min-h-screen">
       <Sidebar />
-      <main className="rail-offset px-4 pb-24 pt-4 md:px-6 md:pb-12 md:pt-8">
+      <main className="rail-offset px-4 pb-24 pt-3 md:px-6 md:pb-12 md:pt-6">
         <div className="mx-auto max-w-4xl space-y-6">
 
-          {/* 1. Hero Card: Today's Five Pins (Clean Borderless Apple Arcade Style) */}
-          <section className="plate relative overflow-hidden p-6 md:p-8">
-            <div className="relative z-10 max-w-2xl">
-              <div className="flex items-center gap-2.5">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-fill/15 px-3 py-1 text-xs font-semibold text-accent-text">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  {t(lang, "daily")} &bull; {todayKey()}
-                </span>
-                <span className="text-xs font-medium text-muted-foreground">
-                  {todayFormatted}
-                </span>
+          {/* 1. App Top Header (Directly matching Reference Image 1) */}
+          <div className="flex items-center justify-between pb-1 pt-1">
+            <Link
+              to="/profile"
+              onClick={() => buzz(6)}
+              className="flex items-center gap-3 transition-transform active:scale-95"
+            >
+              <AvatarFrame
+                src={social.avatarUrl}
+                name={social.nickname}
+                rp={rank.rp}
+                championPosition={rank.championPosition}
+                size={42}
+              />
+              <div className="text-left">
+                <p className="text-[11px] font-medium text-muted-foreground">Welcome back</p>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-display text-base font-bold text-foreground">
+                    {social.nickname || "Explorer"}
+                  </span>
+                  <VerifiedBadge type={social.verifiedBadge} size={14} />
+                </div>
+              </div>
+            </Link>
+
+            <div className="flex items-center gap-2">
+              <Link
+                to="/profile"
+                search={{ tab: "shop" } as any}
+                onClick={() => buzz(6)}
+                className="flex items-center gap-1.5 rounded-full bg-accent-fill/15 px-3.5 py-1.5 text-xs font-bold text-accent-text shadow-xs transition-transform active:scale-95"
+              >
+                <Coins className="h-3.5 w-3.5" />
+                <span>{social.coins.toLocaleString()}</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* 2. Hero Card: Today's 5 Pins (Matching Reference Image 1 lavender/cyan frosted gradient) */}
+          <section className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-[#00ADFF]/20 via-blue-500/10 to-purple-600/20 p-6 md:p-8 shadow-sm">
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-3.5">
+                <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gradient-to-tr from-[#00ADFF] to-blue-600 text-white shadow-lg shadow-[#00ADFF]/30">
+                  <SymbolCompass className="h-7 w-7" />
+                </div>
+                <div>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-accent-fill/25 px-2.5 py-0.5 text-[10px] font-bold tracking-wider text-accent-text">
+                    DAILY SEED &bull; {todayKey()}
+                  </span>
+                  <h1 className="font-display mt-1 text-2xl font-bold tracking-tight text-foreground sm:text-3xl md:text-4xl">
+                    {t(lang, "todayFivePins")}
+                  </h1>
+                </div>
               </div>
 
-              <h1 className="font-display mt-3 text-3xl tracking-tight text-foreground sm:text-4xl md:text-5xl">
-                {t(lang, "todayFivePins")}
-              </h1>
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-accent-fill text-xs font-bold text-[#03121C] shadow-sm">
+                5
+              </span>
+            </div>
 
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
-                {t(lang, "sameFivePlaces")}. Drop your pin as close as you can to rack up precision points.
-              </p>
+            <p className="mt-3 text-xs leading-relaxed text-muted-foreground sm:text-sm max-w-xl">
+              {t(lang, "sameFivePlaces")}. Drop your pin as close as you can to rank up!
+            </p>
 
-              {/* Action Buttons */}
-              <div className="mt-6 flex flex-wrap items-center gap-3">
+            <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+              {/* Pagination Dots (Reference Image 1) */}
+              <div className="flex items-center gap-1.5">
+                <span className="h-1.5 w-6 rounded-full bg-accent-fill" />
+                <span className="h-1.5 w-2 rounded-full bg-muted-foreground/30" />
+              </div>
+
+              <div className="flex items-center gap-2">
                 {todayRecord ? (
                   <>
-                    <div className="flex items-center gap-2 rounded-2xl bg-card/80 px-4 py-2.5 shadow-sm">
-                      <SymbolCheckmark className="h-4 w-4 text-accent-text" />
-                      <span className="text-sm font-semibold">
-                        {t(lang, "todayScore", { n: todayRecord.score.toLocaleString() })}
-                      </span>
+                    <div className="flex items-center gap-2 rounded-full bg-card/90 px-4 py-2 text-xs font-bold shadow-xs">
+                      <SymbolCheckmark className="h-3.5 w-3.5 text-accent-text" />
+                      <span>{t(lang, "todayScore", { n: todayRecord.score.toLocaleString() })}</span>
                     </div>
                     <Link
                       to="/play"
                       onClick={() => buzz(6)}
-                      className="btn btn-outline border-none bg-muted/60 px-5 py-2.5 text-xs font-semibold hover:bg-muted"
+                      className="btn btn-outline !rounded-full !py-2 !px-4 text-xs font-semibold hover:bg-muted"
                     >
                       {t(lang, "chooseMode")}
                     </Link>
                   </>
                 ) : (
-                  <>
-                    <Link
-                      to="/game/$mode"
-                      params={{ mode: "classic" }}
-                      search={{ daily: 1 }}
-                      onClick={() => buzz(6)}
-                      className="btn btn-primary px-7 py-3 text-sm font-semibold shadow-md active:scale-95"
-                    >
-                      {t(lang, "playDaily")}
-                    </Link>
-                    <Link
-                      to="/play"
-                      onClick={() => buzz(6)}
-                      className="btn btn-outline border-none bg-muted/60 px-6 py-3 text-sm font-semibold hover:bg-muted"
-                    >
-                      {t(lang, "chooseMode")}
-                    </Link>
-                  </>
+                  <Link
+                    to="/game/$mode"
+                    params={{ mode: "classic" }}
+                    search={{ daily: 1 }}
+                    onClick={() => buzz(6)}
+                    className="btn btn-primary !rounded-full !py-2.5 !px-7 text-xs font-bold shadow-md active:scale-95"
+                  >
+                    {t(lang, "playDaily")} →
+                  </Link>
                 )}
               </div>
             </div>
           </section>
 
-          {/* 3. Explore Modes Carousel (Mobbin Style Horizontal Pills) */}
-          <section className="space-y-2.5">
+          {/* 3. Explore Modes Carousel (Matching Reference Image 1 "Explore Interests" pills) */}
+          <section className="space-y-3">
             <div className="flex items-center justify-between px-1">
-              <h3 className="font-display text-base font-semibold tracking-tight text-foreground">
-                Explore Modes
-              </h3>
+              <h2 className="text-base font-bold tracking-tight text-foreground">
+                Explore Interests
+              </h2>
               <Link
                 to="/play"
                 onClick={() => buzz(6)}
@@ -186,53 +224,102 @@ function Home() {
               </Link>
             </div>
 
-            <div className="flex gap-2.5 overflow-x-auto pb-1.5 scrollbar-none">
-              {QUICK_EXPLORE_MODES.map((item) => {
-                if (item.directRoute) {
-                  return (
-                    <Link
-                      key={item.id}
-                      to={item.directRoute as any}
-                      onClick={() => buzz(6)}
-                      className={`inline-flex shrink-0 items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold shadow-xs transition-all hover:scale-105 active:scale-95 ${item.pillClass}`}
-                    >
-                      <span>{item.icon}</span>
-                      <span>{item.name}</span>
-                    </Link>
-                  );
-                }
-                if (item.mode) {
-                  return (
-                    <Link
-                      key={item.id}
-                      to="/game/$mode"
-                      params={{ mode: item.mode as any }}
-                      onClick={() => buzz(6)}
-                      className={`inline-flex shrink-0 items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold shadow-xs transition-all hover:scale-105 active:scale-95 ${item.pillClass}`}
-                    >
-                      <span>{item.icon}</span>
-                      <span>{item.name}</span>
-                    </Link>
-                  );
-                }
-                return (
-                  <Link
-                    key={item.id}
-                    to="/game/$mode"
-                    params={{ mode: "classic" }}
-                    search={{ pool: item.pool as any }}
-                    onClick={() => buzz(6)}
-                    className={`inline-flex shrink-0 items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold shadow-xs transition-all hover:scale-105 active:scale-95 ${item.pillClass}`}
-                  >
-                    <span>{item.icon}</span>
-                    <span>{item.name}</span>
-                  </Link>
-                );
-              })}
+            <div className="flex gap-2.5 overflow-x-auto pb-1 scrollbar-none">
+              {QUICK_EXPLORE_MODES.map((item) => (
+                <Link
+                  key={item.id}
+                  to={item.directRoute ? (item.directRoute as any) : item.mode ? "/game/$mode" : "/game/$mode"}
+                  params={item.mode ? { mode: item.mode as any } : { mode: "classic" }}
+                  search={item.pool ? { pool: item.pool as any } : undefined}
+                  onClick={() => buzz(6)}
+                  className={`inline-flex shrink-0 items-center gap-2.5 rounded-full px-4 py-2 text-xs font-bold shadow-xs transition-transform active:scale-95 ${item.pillClass}`}
+                >
+                  <span className="grid h-6 w-6 place-items-center rounded-full bg-white/25 text-sm shadow-2xs">
+                    {item.icon}
+                  </span>
+                  <span>{item.name}</span>
+                </Link>
+              ))}
             </div>
           </section>
 
-          {/* 4. Paired Cards: Streak (7-day bar) & Rank Progress */}
+          {/* 4. Honk Games 6-Icon Grid Showcase (Directly matching Reference Image 3) */}
+          <section className="plate p-6">
+            <div className="mb-4 text-center">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-foreground">
+                Featured Game Hubs
+              </h2>
+              <p className="mt-1 text-xs text-muted-foreground">
+                From precision world capitals to real-time shrinking arenas
+              </p>
+            </div>
+
+            {/* 3x2 Grid of 60px Vibrant Colored Circles (Matching Image 3) */}
+            <div className="grid grid-cols-3 gap-3 sm:gap-6 max-w-md mx-auto mb-6">
+              {[
+                { id: "capitals", name: "Capitals", color: "bg-blue-500", icon: "🏛️", to: "/game/classic", search: { pool: "capitals" } },
+                { id: "landmarks", name: "Landmarks", color: "bg-purple-500", icon: "🗼", to: "/game/classic", search: { pool: "landmarks" } },
+                { id: "wonders", name: "Wonders", color: "bg-[#00ADFF]", icon: "✨", to: "/game/classic", search: { pool: "wonders" } },
+                { id: "shrink", name: "Shrink Zone", color: "bg-emerald-500", icon: "🎯", to: "/game/shrink" },
+                { id: "quiz", name: "Country Quiz", color: "bg-indigo-500", icon: "🚩", to: "/country-guess" },
+                { id: "duel", name: "1v1 Duel", color: "bg-orange-500", icon: "⚔️", to: "/party" },
+              ].map((g) => (
+                <Link
+                  key={g.id}
+                  to={g.to as any}
+                  search={g.search as any}
+                  onClick={() => buzz(6)}
+                  className="flex flex-col items-center gap-2 p-2.5 rounded-2xl hover:bg-muted/50 active:scale-95 transition-all text-center"
+                >
+                  <div className={`grid h-14 w-14 sm:h-16 sm:w-16 place-items-center rounded-full ${g.color} text-2xl shadow-md text-white transition-transform hover:scale-105`}>
+                    {g.icon}
+                  </div>
+                  <span className="text-xs font-semibold text-foreground truncate w-full">{g.name}</span>
+                </Link>
+              ))}
+            </div>
+
+            {/* Bullet List with Colored Icons (Reference Image 3) */}
+            <div className="space-y-3 border-t border-black/5 dark:border-white/5 pt-4 max-w-md mx-auto mb-5 text-left">
+              <div className="flex items-start gap-3">
+                <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-blue-500/15 text-blue-500 mt-0.5">
+                  <SymbolGameController className="h-4 w-4" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-foreground">Play with precision</p>
+                  <p className="text-[11px] text-muted-foreground">Drop pins on 250+ landmarks and capital cities</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#00ADFF]/15 text-[#00ADFF] mt-0.5">
+                  <Sparkles className="h-4 w-4" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-foreground">Tactile micro-haptics</p>
+                  <p className="text-[11px] text-muted-foreground">Feel every guess with Apple-grade vibration pulses</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-purple-500/15 text-purple-500 mt-0.5">
+                  <SymbolTrophy className="h-4 w-4" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-foreground">Climb the global ladder</p>
+                  <p className="text-[11px] text-muted-foreground">Battle for Top 50 Champion standing & rewards</p>
+                </div>
+              </div>
+            </div>
+
+            <Link
+              to="/play"
+              onClick={() => buzz(6)}
+              className="btn btn-primary w-full max-w-md mx-auto !py-3.5 text-sm font-bold rounded-full shadow-md text-center block"
+            >
+              Open Play Hub →
+            </Link>
+          </section>
+
+          {/* 4. Paired Cards: Streak (7-day bar) & Rank Progress (Matching Reference Image 5) */}
           <div className="grid gap-4 sm:grid-cols-2">
             {/* Streak Card */}
             <button
@@ -241,25 +328,29 @@ function Home() {
                 buzz(6);
                 setShowDailyModal(true);
               }}
-              className="plate flex flex-col justify-between p-5 text-left transition-all hover:bg-muted/30 active:scale-[0.99]"
+              className="plate flex flex-col justify-between p-5 text-left transition-all hover:bg-muted/30 active:scale-[0.99] cursor-pointer"
             >
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
-                  <Flame className="h-4 w-4 text-accent-text" />
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                   {t(lang, "dailyStreak")}
                 </span>
-                <span className="text-xs text-muted-foreground hover:text-foreground">
+                <span className="text-xs font-semibold text-accent-text hover:underline">
                   Calendar →
                 </span>
               </div>
 
-              <div className="my-3">
-                <p className="font-display text-3xl tracking-tight text-foreground">
-                  {t(lang, "dayStreak", { n: dailyStreak })}
-                </p>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  Play daily to maintain your global consecutive score
-                </p>
+              <div className="my-3 flex items-center gap-4">
+                <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-gradient-to-tr from-amber-500 to-orange-400 text-white shadow-md text-2xl">
+                  🔥
+                </div>
+                <div>
+                  <p className="font-display text-3xl font-extrabold tracking-tight text-foreground">
+                    {t(lang, "dayStreak", { n: dailyStreak })}
+                  </p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    Play daily to maintain global score
+                  </p>
+                </div>
               </div>
 
               {/* Visual 7-Day Streak Bar */}
@@ -271,7 +362,7 @@ function Home() {
                       key={d}
                       className={`flex flex-col items-center justify-center rounded-xl py-1.5 text-[10px] font-semibold transition-colors ${
                         done
-                          ? "bg-accent-fill text-[#03121C]"
+                          ? "bg-accent-fill text-[#03121C] shadow-2xs font-bold"
                           : "bg-muted text-muted-foreground"
                       }`}
                     >
@@ -290,19 +381,20 @@ function Home() {
               className="plate flex flex-col justify-between p-5 transition-all hover:bg-muted/30 active:scale-[0.99]"
             >
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
-                  <SymbolTrophy className="h-4 w-4 text-accent-text" />
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                   {t(lang, "currentRank")}
                 </span>
-                <span className="text-xs text-muted-foreground hover:text-foreground">
+                <span className="text-xs font-semibold text-accent-text hover:underline">
                   Ladder →
                 </span>
               </div>
 
-              <div className="my-3 flex items-center gap-3.5">
-                <RankBanner rp={rank.rp} championPosition={rank.championPosition} width={54} />
-                <div>
-                  <p className="font-display text-2xl" style={{ color: curRank.tier.accent }}>
+              <div className="my-3 flex items-center gap-4">
+                <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-gradient-to-tr from-[#00ADFF] to-blue-600 text-white shadow-md">
+                  <SymbolTrophy className="h-7 w-7 text-white" />
+                </div>
+                <div className="min-w-0">
+                  <p className="font-display text-2xl font-bold truncate" style={{ color: curRank.tier.accent }}>
                     {curRank.name}
                   </p>
                   <p className="readout text-xs font-semibold text-accent-text">
@@ -311,7 +403,7 @@ function Home() {
                 </div>
               </div>
 
-              <div className="rounded-xl bg-card/80 p-2.5 shadow-xs">
+              <div className="rounded-2xl bg-card/80 p-2.5 shadow-2xs">
                 <p className="truncate text-xs font-medium text-muted-foreground">
                   {rpToNextText}
                 </p>
@@ -323,7 +415,7 @@ function Home() {
           <section className="plate p-5">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-black/5 dark:border-white/5 pb-3">
               <div>
-                <h2 className="font-display text-xl text-foreground">
+                <h2 className="font-display text-xl font-bold text-foreground">
                   {t(lang, "ranked")} · Global Top 3
                 </h2>
                 <p className="text-xs text-muted-foreground">
@@ -345,20 +437,26 @@ function Home() {
             <div className="mt-3 divide-y divide-black/5 dark:divide-white/5">
               {COMMUNITY_PLAYERS.slice(0, 3).map((player, rankIdx) => {
                 const pRank = getRank(player.rp, player.championPosition);
+                const medalBg =
+                  rankIdx === 0
+                    ? "bg-amber-400 text-amber-950 shadow-xs"
+                    : rankIdx === 1
+                    ? "bg-slate-300 text-slate-900 shadow-xs"
+                    : "bg-amber-700/80 text-white shadow-xs";
                 return (
                   <div
                     key={player.id}
-                    className="flex items-center justify-between py-3 rounded-xl px-2 transition-colors hover:bg-muted/40"
+                    className="flex items-center justify-between py-3 rounded-2xl px-2 transition-colors hover:bg-muted/40"
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <span className="font-display font-bold text-base w-5 text-center text-muted-foreground">
-                        #{rankIdx + 1}
-                      </span>
+                      <div className={`grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs font-black ${medalBg}`}>
+                        {rankIdx + 1}
+                      </div>
                       <AvatarFrame
                         name={player.nickname}
                         rp={player.rp}
                         championPosition={player.championPosition}
-                        size={36}
+                        size={40}
                       />
                       <div className="min-w-0">
                         <div className="flex items-center gap-1.5">
@@ -444,12 +542,12 @@ function Home() {
                 onClick={() => buzz(6)}
                 className="apple-row transition-colors hover:bg-muted/50"
               >
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-accent-fill/15 text-accent-text">
-                    <SymbolChartBar className="h-4 w-4" />
+                <div className="flex items-center gap-3.5 min-w-0">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-emerald-500 text-white shadow-sm">
+                    <SymbolChartBar className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
-                    <p className="font-semibold text-sm truncate">
+                    <p className="font-semibold text-sm truncate text-foreground">
                       {t(lang, "stats")}
                     </p>
                     <p className="text-xs text-muted-foreground truncate">
@@ -465,12 +563,12 @@ function Home() {
                 onClick={() => buzz(6)}
                 className="apple-row transition-colors hover:bg-muted/50"
               >
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-accent-fill/15 text-accent-text">
-                    <SymbolPerson2 className="h-4 w-4" />
+                <div className="flex items-center gap-3.5 min-w-0">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-purple-500 text-white shadow-sm">
+                    <SymbolPerson2 className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
-                    <p className="font-semibold text-sm truncate">
+                    <p className="font-semibold text-sm truncate text-foreground">
                       {t(lang, "party")}
                     </p>
                     <p className="text-xs text-muted-foreground truncate">
@@ -487,16 +585,16 @@ function Home() {
                 onClick={() => buzz(6)}
                 className="apple-row transition-colors hover:bg-muted/50"
               >
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-accent-fill/15 text-accent-text">
-                    <SymbolBag className="h-4 w-4" />
+                <div className="flex items-center gap-3.5 min-w-0">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-amber-500 text-white shadow-sm">
+                    <SymbolBag className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
-                    <p className="font-semibold text-sm truncate">
-                      Shop
+                    <p className="font-semibold text-sm truncate text-foreground">
+                      {t(lang, "shop")}
                     </p>
                     <p className="text-xs text-muted-foreground truncate">
-                      Pins, auras and tags ({social.coins.toLocaleString()} Coins)
+                      Name colors, avatar frames & pins
                     </p>
                   </div>
                 </div>
