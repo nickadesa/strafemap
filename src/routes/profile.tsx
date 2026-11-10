@@ -39,8 +39,6 @@ import {
   SymbolMedal,
 } from "@/components/SFSymbols";
 import { SlidingTabs } from "@/components/ui/SlidingTabs";
-import { ClanSystemTab } from "@/components/community/ClanSystemTab";
-import { SocialFeedTab } from "@/components/community/SocialFeedTab";
 import { toast } from "sonner";
 import {
   BarChart3,
@@ -64,7 +62,7 @@ import {
   X,
 } from "lucide-react";
 
-type ProfileTab = "overview" | "achievements" | "stats" | "shop" | "gacha" | "feed" | "clan";
+type ProfileTab = "overview" | "achievements" | "stats" | "shop" | "gacha";
 
 export const Route = createFileRoute("/profile")({
   head: () => ({
@@ -79,7 +77,7 @@ export const Route = createFileRoute("/profile")({
   }),
   validateSearch: (s: Record<string, unknown>): { tab?: ProfileTab } => {
     const tab = s["tab"];
-    if (tab === "overview" || tab === "achievements" || tab === "stats" || tab === "shop" || tab === "gacha" || tab === "feed" || tab === "clan") return { tab };
+    if (tab === "overview" || tab === "achievements" || tab === "stats" || tab === "shop" || tab === "gacha") return { tab };
     return {};
   },
   component: ProfileHubPage,
@@ -153,7 +151,7 @@ function ProfileHubPage() {
                   ),
                 },
               ]}
-              activeId={tab === "gacha" ? "shop" : tab === "clan" || tab === "feed" ? "overview" : tab}
+              activeId={tab === "gacha" ? "shop" : tab}
               onChange={(nextTab) => {
                 buzz(6);
                 setTab(nextTab as ProfileTab);
@@ -161,13 +159,6 @@ function ProfileHubPage() {
             />
 
             <div className="flex items-center gap-2">
-              <Link
-                to="/community"
-                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground active:scale-95"
-              >
-                <SymbolCompass className="h-3.5 w-3.5" />
-                {t(lang, "community")}
-              </Link>
               <Link
                 to="/settings"
                 className="inline-grid h-8 w-8 place-items-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:text-foreground active:scale-95"
@@ -177,15 +168,6 @@ function ProfileHubPage() {
               </Link>
             </div>
           </div>
-
-          {(tab === "feed" || tab === "clan") && (
-            <div className="flex items-center justify-between rounded-2xl border border-accent-fill/30 bg-accent-fill/10 p-3 text-xs">
-              <span>Clan & Feed have moved to the new Community hub.</span>
-              <Link to="/community" search={{ tab }} className="btn btn-primary !px-3 !py-1 text-xs font-semibold">
-                Go to Community
-              </Link>
-            </div>
-          )}
 
           {tab === "overview" && (
             <XStyleProfileTab
@@ -296,13 +278,6 @@ function ProfileHubPage() {
             </div>
           )}
 
-          {tab === "feed" && (
-            <SocialFeedTab social={social} rank={rank} stats={stats} lang={lang} />
-          )}
-
-          {tab === "clan" && (
-            <ClanSystemTab social={social} updateSocial={updateSocial} rank={rank} />
-          )}
 
           {(tab === "shop" || tab === "gacha") && (
             <CosmeticShopTab social={social} updateSocial={updateSocial} lang={lang} />

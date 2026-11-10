@@ -7,7 +7,7 @@ import { getRank, loadRank, getAdjacentRanks } from "@/lib/rank";
 import { ACH_ALL, loadUnlocked, syncAchievements } from "@/lib/achievements";
 import { AvatarFrame, ClanTagPill, RankBanner, VerifiedBadge } from "@/components/RankVisuals";
 import { Flag } from "@/components/Flag";
-import { computeLevelFromExp, useFeed, useSocialProfile, type StoryHighlight } from "@/lib/social";
+import { computeLevelFromExp, useSocialProfile, COMMUNITY_PLAYERS } from "@/lib/social";
 import { t, type Lang } from "@/lib/i18n";
 import { buzz } from "@/lib/game/sound";
 import {
@@ -51,7 +51,6 @@ function Home() {
   const [records] = useRecords();
   const [settings] = useSettings();
   const [social] = useSocialProfile();
-  const { stories } = useFeed();
   const lang = (settings.language ?? "en") as Lang;
   const stats = computeStats(records ?? []);
   const rank = loadRank();
@@ -65,9 +64,7 @@ function Home() {
   const dailyStreak = Math.max(1, stats.dailies || 4);
 
   const [unlockedMap, setUnlockedMap] = useState<Record<string, string>>({});
-  const [activeStory, setActiveStory] = useState<StoryHighlight | null>(null);
   const [showDailyModal, setShowDailyModal] = useState(false);
-  const [communityTab, setCommunityTab] = useState<"top" | "following">("top");
 
   useEffect(() => {
     syncAchievements(records ?? [], rank);
@@ -95,14 +92,6 @@ function Home() {
 
   const unlockedCount = Object.keys(unlockedMap).length;
 
-  // Filtered community highlights for Home page
-  const communityHighlights = useMemo(() => {
-    if (communityTab === "following") {
-      const followingList = stories.filter((s) => social.followingIds.includes(s.authorId));
-      return followingList.length > 0 ? followingList.slice(0, 4) : stories.slice(0, 4);
-    }
-    return stories.slice(0, 4);
-  }, [stories, communityTab, social.followingIds]);
 
   // Rank progression text
   const rpToNextText = useMemo(() => {
@@ -366,77 +355,72 @@ function Home() {
             </Link>
           </div>
 
-          {/* 4. Community Highlights (Apple-style list with Top / Following) */}
+          {/* 4. Season 1 Leaderboard Spotlight (Replaces Community/Stories) */}
           <section className="plate p-5">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-3">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-3">
               <div>
                 <h2 className="font-display text-xl text-foreground">
-                  {t(lang, "community")}
+                  {t(lang, "ranked")} · Global Top 3
                 </h2>
                 <p className="text-xs text-muted-foreground">
-                  Recent top precision rounds shared by global players
+                  Current leaders in Season 1 global championship ladder
                 </p>
               </div>
 
-              <div className="flex items-center gap-3">
-                <SlidingTabs
-                  tabs={[
-                    { id: "top", label: "Top" },
-                    { id: "following", label: "Following" },
-                  ]}
-                  activeId={communityTab}
-                  onChange={(tabId) => {
-                    buzz(6);
-                    setCommunityTab(tabId as "top" | "following");
-                  }}
-                />
-
-                <Link
-                  to="/community"
-                  onClick={() => buzz(6)}
-                  className="text-xs font-semibold text-accent-text hover:underline"
-                >
-                  See all →
-                </Link>
-              </div>
+              <Link
+                to="/rank"
+                search={{ tab: "leaderboard" } as any}
+                onClick={() => buzz(6)}
+                className="text-xs font-semibold text-accent-text hover:underline flex items-center gap-1"
+              >
+                View Full Ladder <ChevronRight className="h-3.5 w-3.5" />
+              </Link>
             </div>
 
-            {/* Compact 4-Row Highlights List */}
+            {/* Top 3 Champions Inset List */}
             <div className="mt-3 divide-y divide-border">
-              {communityHighlights.map((st) => (
-                <div
-                  key={st.id}
-                  onClick={() => setActiveStory(st)}
-                  className="flex cursor-pointer items-center justify-between py-3 transition-colors hover:bg-muted/40 rounded-xl px-2 active:scale-[0.99]"
-                >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <AvatarFrame
-                      name={st.authorName}
-                      rp={st.authorRp}
-                      championPosition={st.authorChampPos}
-                      size={36}
-                    />
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-1.5">
-                        <ClanTagPill tag={st.authorClanTag} />
-                        <span className="truncate text-xs font-semibold text-foreground">
-                          {st.authorName}
-                        </span>
-                        <VerifiedBadge type={st.authorVerified} size={12} />
-                        <Flag country={st.country} size={14} />
+              {COMMUNITY_PLAYERS.slice(0, 3).map((player, rankIdx) => {
+                const pRank = getRank(player.rp, player.championPosition);
+                return (
+                  <div
+                    key={player.id}
+                    className="flex items-center justify-between py-3 rounded-xl px-2 transition-colors hover:bg-muted/40"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className="font-display font-bold text-base w-5 text-center text-muted-foreground">
+                        #{rankIdx + 1}
+                      </span>
+                      <AvatarFrame
+                        name={player.nickname}
+                        rp={player.rp}
+                        championPosition={player.championPosition}
+                        size={36}
+                      />
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <ClanTagPill tag={player.clanTag} color={player.clanTagColor} />
+                          <span className="truncate text-xs font-semibold text-foreground">
+                            {player.nickname}
+                          </span>
+                          <VerifiedBadge type={player.verifiedBadge} size={12} />
+                        </div>
+                        <p className="truncate text-[11px] text-muted-foreground">
+                          @{player.username} · <span style={{ color: pRank.tier.accent }}>{pRank.name}</span>
+                        </p>
                       </div>
-                      <p className="truncate text-[11px] text-muted-foreground">
-                        {st.mode} · {st.caption}
+                    </div>
+
+                    <div className="pl-3 text-right shrink-0">
+                      <p className="font-display text-base text-accent-text font-bold">
+                        {player.rp.toLocaleString()} <span className="text-[10px] text-muted-foreground font-normal">RP</span>
+                      </p>
+                      <p className="text-[10px] text-muted-foreground font-mono">
+                        {Math.round((player.wins / Math.max(1, player.games)) * 100)}% Win
                       </p>
                     </div>
                   </div>
-
-                  <div className="pl-3 text-right shrink-0">
-                    <p className="font-display text-base text-accent-text">{st.score}</p>
-                    <p className="text-[10px] text-muted-foreground">{st.accuracy}</p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </section>
 
@@ -560,74 +544,6 @@ function Home() {
         </div>
       </main>
 
-      {/* Story Viewer Modal */}
-      {activeStory && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-black/80 p-4 backdrop-blur-md">
-          <div className="story-ring relative aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[24px]">
-            {activeStory.imageUrl ? (
-              <div className="relative h-full w-full rounded-[21px] overflow-hidden">
-                <img src={activeStory.imageUrl} alt={activeStory.caption} className="h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-black/60 p-6 flex flex-col justify-between text-white">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <AvatarFrame name={activeStory.authorName} rp={activeStory.authorRp} size={32} />
-                      <span className="font-semibold text-sm">{activeStory.authorName}</span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setActiveStory(null)}
-                      className="grid h-8 w-8 place-items-center rounded-full bg-black/60"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  </div>
-                  <div>
-                    <p className="font-display text-4xl text-accent-text">{activeStory.score}</p>
-                    <p className="mt-1 text-sm text-white/90">{activeStory.caption}</p>
-                    <Link
-                      to="/community"
-                      onClick={() => setActiveStory(null)}
-                      className="btn btn-primary mt-4 w-full py-2.5 text-xs font-semibold"
-                    >
-                      View in Community
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div
-                className="flex h-full w-full flex-col justify-between rounded-[21px] p-6 text-white"
-                style={{ background: activeStory.gradient }}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <AvatarFrame name={activeStory.authorName} rp={activeStory.authorRp} size={32} />
-                    <span className="font-semibold text-sm">{activeStory.authorName}</span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setActiveStory(null)}
-                    className="grid h-8 w-8 place-items-center rounded-full bg-black/50"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-                <div className="text-center">
-                  <p className="font-display text-5xl text-accent-text">{activeStory.score}</p>
-                  <p className="mt-2 text-sm">{activeStory.caption}</p>
-                </div>
-                <Link
-                  to="/community"
-                  onClick={() => setActiveStory(null)}
-                  className="btn btn-primary w-full py-2.5 text-xs font-semibold"
-                >
-                  View in Community
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* Streak Calendar Modal */}
       {showDailyModal && (
