@@ -71,7 +71,7 @@ export function RoundReveal({
     : (reactionSet && reactionSet in REACTION_SETS ? REACTION_SETS[reactionSet as ReactionSet] : REACTION_SETS.classic);
 
   return (
-    <div className="pointer-events-auto relative w-full max-w-lg rounded-[26px] border border-black/10 bg-white/95 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.35)] backdrop-blur-3xl dark:border-white/15 dark:bg-[rgba(28,28,30,0.92)] sm:p-6">
+    <div className="pointer-events-auto relative w-full max-w-lg rounded-[26px] bg-white/95 p-5 shadow-[0_24px_60px_rgba(0,0,0,0.4)] ring-1 ring-black/5 backdrop-blur-3xl dark:bg-[rgba(28,28,30,0.95)] dark:ring-white/5 sm:p-6">
       {/* Apple Sheet Grabber Handle */}
       <div className="mx-auto -mt-1 mb-3.5 h-1 w-10 rounded-full bg-muted-foreground/30" />
 
@@ -172,7 +172,7 @@ export function RoundReveal({
       {/* Emoji Reactions Bar */}
       {reactionsEnabled && (
         <div
-          className="mt-3.5 flex items-center justify-center gap-2 border-t border-border pt-3"
+          className="mt-3.5 flex items-center justify-center gap-2 border-t border-black/5 dark:border-white/5 pt-3"
           role="group"
           aria-label={t(lang, "react")}
         >

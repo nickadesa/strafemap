@@ -49,6 +49,9 @@ export function Sidebar() {
 
   useEffect(() => {
     document.documentElement.style.setProperty("--rail-w", "240px");
+    return () => {
+      document.documentElement.style.setProperty("--rail-w", "0px");
+    };
   }, []);
 
   // Close popovers on escape key
