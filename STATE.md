@@ -6,14 +6,14 @@
 
 ## 1. สถานะปัจจุบัน (Current Status)
 - **โหมดการทำงาน**: Autonomous Continuous Execution (รันต่อเนื่องจนถึงขีดจำกัด)
-- **บรานช์ปัจจุบัน (Active Branch)**: `exp/clean-arcade` (แนวทาง Minimalist Clean Arcade)
-- **รอบการทำงาน (Iteration Round)**: Round 2 (เปรียบเทียบผลการทดลอง 2 แนวทางเสร็จสมบูรณ์)
-- **สถานะ Repo**: Clean, `main` ถูกล็อกและปลอดภัย 100%
+- **บรานช์ปัจจุบัน (Active Branch)**: `exp/apple-spatial` (แนวทาง Apple Native Spatial + Unified 4-Tab)
+- **รอบการทำงาน (Iteration Round)**: Round 3 (ผสานการตัดสินใจของผู้ใช้: 4-Tab Navigation, ลบ Community/Stories, สี #00ADFF)
+- **สถานะ Repo**: Clean, `main` ถูกล็อกและปลอดภัย 100%, 17/17 tests ผ่านฉลุย, Nitro build ผ่าน 100%
 
 ## 2. ทักษะและเครื่องมือที่เรียกใช้ (Skills & Tools Active)
 - `security-audit` & `trufflehog`: ตรวจสอบความปลอดภัยและสแกน Secret ใน Git History (0 leaks)
 - `design-taste-frontend` (Taste 2.5): บังคับใช้กฎต่อต้าน AI Slop, Equal Edges, และ 1 Section ต่อ 1 Screen
-- `ui-ux-pro-max`: ควบคุม Touch Target 44x44px, Contrast WCAG AAA, และ High-Contrast Design Tokens
+- `ui-ux-pro-max`: ควบคุม Touch Target 46x62px (mobile tab bar), Contrast WCAG AAA (#00ADFF / #03121C), และ High-Contrast Design Tokens
 - `writing-plans`: ควบคุมขั้นตอนการพัฒนาแบบ Bite-sized TDD
 
 ## 3. สิ่งที่ทำเสร็จแล้ว (Completed Steps)
@@ -33,13 +33,18 @@
 14. เพิ่ม Focus Mode Toggle ใน `GameHud.tsx` ยุบตัวเลขคะแนนและข้อมูลรอบข้างเพื่อเพิ่มสมาธิในการเล็งพิกัดบนแผนที่
 15. รัน Unit Tests (15/15 ผ่าน) และ Production Build Nitro SSR สำเร็จ (1.20s)
 16. บันทึกผลคะแนนประเมิน EXP-B ใน `SCORECARD.md` และ `EXPERIMENTS.md`: 93.5/100 (Strong Candidate)
+17. ปรับลด Navigation เหลือ 4 แถบหลักตามมติผู้ใช้: `Home`, `Play`, `Rank`, `Settings` (Desktop 240px sidebar, Mobile 4-tab bar)
+18. ลบระบบ Community, Feed, Clan, Story และ Modal ทั้งหมด ลบโค้ดส่วนเกินกว่า 1,020 บรรทัด
+19. แปลง `/community` เป็น graceful redirect ไปยัง `/rank`
+20. เปลี่ยนสีแบรนด์หลักเป็น `#00ADFF` (Laser Cyan) คมชัดระดับ AAA บนหมึก `#03121C`
+21. เพิ่ม Unit Tests สำหรับ 4-Tab core routes และ redirect (17/17 tests ผ่าน 100%) และ Nitro SSR Build ผ่านสมบูรณ์ (1.67s)
 
 ## 4. ขั้นตอนที่กำลังทำอยู่ (In-Progress)
-- สรุปเปรียบเทียบเชิงวิศวกรรมระหว่าง EXP-A (Apple Spatial) และ EXP-B (Clean Arcade) ลงใน `MORNING.md`
-- เตรียมข้อเสนอการผสานจุดแข็ง (Unified Synthesis) เพื่อให้ผู้ใช้เลือกหรือผสมผสาน
+- รายงานสรุปความคืบหน้าฉบับสมบูรณ์แก่ผู้ใช้
+- พร้อมรับคำสั่งในการต่อยอดหน้าจออื่นๆ (เช่น Play Drawer, Settings Redesign, Duel Arena)
 
 ## 5. ขั้นตอนถัดไป (Next Steps)
-1. บันทึก Changelog ใน `PLAN.changelog.md`
-2. อัปเดต `MORNING.md` รายงานผลสรุปทั้งหมดแก่ผู้ใช้
+1. ดำเนินการปรับหน้า `/settings` ให้เป็น Apple iOS Inset Grouped Settings Page เต็มรูปแบบ (เสียง, การสั่น Haptics, ภาษา, กราฟิก)
+2. รวมระบบ Leaderboard และ Rank เข้าด้วยกันอย่างสมบูรณ์ใน `/rank?tab=leaderboard`
 
 
