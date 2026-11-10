@@ -59,13 +59,22 @@
 - **เพราะอะไร**: บรรลุหลักสรีรศาสตร์และความสะอาดตาตามคำสั่งตรงของผู้ใช้ "การดีไซน์ไม่ต้องใส่ขอบเทาๆ"
 - **หลักฐาน**: Commit `ec62d12`, Unit tests 17/17 passing, Nitro SSR Build success.
 
-## [2026-11-09T23:40:00Z] - Phase 4 (Multiplayer, Apple Wallet OTP, and 1v1 Duels) Completed
+## [2026-11-10T02:15:00Z] - Phase 5 (Direct Reference Overhaul matching 5 Screenshots) Completed
 - **แก้อะไร**:
-  1. InputOTP (`input-otp.tsx`): ปรับแต่ง Slot ให้เป็น Apple Wallet Squircle Pin Box ไร้ขอบเทา พร้อม active glow ด้วย `#00ADFF`
-  2. Party Lobby (`party.tsx`): ปรับ Room Creation, Join Card, Followed Friends Roster, Waiting Lobby, Live Rule Editor, และ Voice Chat Bar ให้ไร้ขอบเทา สวยงามหรูหรา
-  3. Duel 1v1 (`duel.$code.tsx`): ปรับ badge รอบแข่งขัน, หลอดเลือด HP, และปุ่ม Next Round เป็นสีเลเซอร์ Laser Cyan `#00ADFF` และหมึก `#03121C`
-- **เพราะอะไร**: เติมเต็มระบบการเล่นหลายคนแบบ Instant Guest-First ให้สวยงามระดับ Apple Design
-- **หลักฐาน**: Commit `15e177a`, Unit tests 17/17 passing, Nitro SSR Build success.
+  1. ซ่อน Mobile Top Bar ซ้ำซ้อนใน `Sidebar.tsx` เมื่ออยู่ที่หน้าแรก (`/`) เพื่อให้เป็น Native App Flow
+  2. ยกเครื่องหน้าแรก (`index.tsx`):
+     - Native Organic Header: Avatar + User Greeting + Coin Pill
+     - Soft Frosted Gradient Hero Card พร้อม 3D Compass, 5 Pins Badge, และ Pagination Dots `── ─` (Reference Image 1)
+     - Explore Interests Pills แถบแนวนอนพร้อม Circular Icon Badges (Reference Image 1)
+     - Honk Games 3x2 Grid 6 Vibrant Circular Game Icons + Feature Bullets + Wide Pill CTA (Reference Image 3)
+     - Streak & Rank Cards พร้อม 56px Circular Flame / Trophy Containers (Reference Image 5)
+     - Season 1 Global Top 3 พร้อม Gold/Silver/Bronze Circular Medal Badges (Reference Image 5)
+  3. ยกเครื่องหน้า Play Hub (`play.tsx`):
+     - Daily Challenge Hero Card พร้อม 64px Glowing Flame Badge และ Wide Pill CTA (Reference Image 1 & 5)
+     - รายการโหมดเกมทั้งหมดเปลี่ยนจากการ์ดตั้งค่าเรียบๆ เป็นการ์ดโค้งมน 56px Circular Icon Container สีสันสดใสเต็มตา (Reference Image 5)
+     - Match Options Drawer: Inset Radio Rows พร้อม Soft Active Pill Background + Checkmark และปุ่ม Start Game แบบ Full-width Rounded-Full Pill (Reference Image 2)
+- **เพราะอะไร**: แก้ปัญหา User Feedback ที่รู้สึกว่าการปรับก่อนหน้าเปลี่ยนเพียงแค่ขอบ CSS แต่โครงสร้างและ visual ยังดูเหมือนเดิม โดยนำแบบ 5 ภาพถ่ายของ Reference Designs มาปรับใช้จริง 100%
+- **หลักฐาน**: Commit `93abb45` บน `main`, Unit tests 17/17 passing, Production Nitro SSR Build success.
 
 
 

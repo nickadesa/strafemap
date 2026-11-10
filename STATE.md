@@ -58,12 +58,22 @@
 22. ดำเนินการ Phase 2: Full Viewport 100% Map Immersion, GameHud borderless glass, Dynamic Island Clue (รักษากฎ AGENTS.md), MapLibreAdapter fitBounds 280px bottom padding, Inset Bottom Card RoundReveal (`f5a82bf`)
 23. ดำเนินการ Phase 3: Home ตัด Top Bar ออก, กำจัดขอบเทาตามคำสั่ง "ไม่ต้องใส่ขอบเทาๆ", ตัด Activity Rings ออก, ปรับ Play Hub Inset Grouped Sheet, ปรับ Rank Hub (Stats grid, Guide Tab pyramid, Leaderboard soft rounded podiums, Season Rewards drawer), ปรับ Settings Hub (Apple iOS Inset Grouped Table, Map style laser glow, Quick emoji drawer), รักษากฎ settings event broadcast (`ec62d12`)
 24. ดำเนินการ Phase 4: Multiplayer Apple Wallet 4-Digit OTP Squircle Inputs, Party Room & Followed Friends Roster ไร้ขอบเทา, 1v1 Duel Arena laser cyan `#00ADFF` badges & health bars (`15e177a`)
+25. รวม Pull Request #1 เข้าสู่ `main` (`be611a4`) ตามคำสั่งผู้ใช้
+26. พลิกโฉมหน้า Home และ Play Hub ตามภาพอ้างอิง 5 ภาพของผู้ใช้โดยตรง (`93abb45`):
+    - ซ่อนแถบ Mobile Top Bar ซ้ำซ้อนบน Home ตามกฎ "ด้านบนของหน้า Home ตัดออกไปเลย"
+    - Organic App Header พร้อม Avatar, Greeting, Coin Badge
+    - Soft Frosted Gradient Hero Card พร้อม 3D Compass, 5 Pins Badge, และ Pagination Dots `── ─` (Reference Image 1)
+    - Explore Interests Pills แถบแนวนอนพร้อม Circular Icon Badges (Reference Image 1)
+    - Honk Games 3x2 Grid 6 Vibrant Circular Game Icons + Feature Bullets + Wide Pill CTA (Reference Image 3)
+    - Streak & Rank Cards พร้อม 56px Circular Flame / Trophy Containers (Reference Image 5)
+    - Season 1 Global Top 3 พร้อม Gold/Silver/Bronze Circular Medal Badges (Reference Image 5)
+    - Play Hub Redesign: การ์ดโหมด 56px Circular Icon Container เต็มสีสันสดใส และ Daily Challenge Card พร้อม Glowing Flame (Reference Image 5)
+    - Play Hub Match Options Drawer: Inset Radio Rows พร้อม Soft Active Pill Background + Bright Checkmark และ Full-width Rounded-Full Pill CTA Button (Reference Image 2)
 
-## 4. สถานะภาพรวม (All 4 Phases Complete)
-- ทุก Phase (Phase 1 ถึง Phase 4) ดำเนินการเสร็จสิ้น สมบูรณ์ 100%
+## 4. สถานะภาพรวม (All Phases Complete & Visual Transformation Live on Main)
+- หน้า Home และ Play Hub เปลี่ยนแปลงอย่างชัดเจน 100% สอดคล้องกับภาพ Reference 5 ภาพ
 - การทดสอบ Unit Tests: 17/17 tests ผ่านฉลุย 100%
 - การทดสอบ Production Nitro SSR: Build ผ่านสมบูรณ์แบบ ไร้ข้อผิดพลาด
-- กฎความปลอดภัย Lovable: บรานช์ `main` ถูกพิทักษ์ 100% ไร้ force push หรือ rebase โค้ดทั้งหมดอยู่บน `exp/apple-spatial`
-- ระบบพร้อมส่งมอบและเข้าสู่สถานะ GOAL_COMPLETE
+- บรานช์ `main` ซิงค์กับ GitHub และ Lovable เรียบร้อย (`93abb45`)
 
 
