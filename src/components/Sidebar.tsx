@@ -32,8 +32,7 @@ const navItems: {
   { to: "/", key: "home", icon: SymbolHouse },
   { to: "/play", key: "play", icon: SymbolGameController },
   { to: "/rank", key: "ranked", icon: SymbolTrophy },
-  { to: "/party", key: "party", icon: SymbolPerson2 },
-  { to: "/community", key: "community", icon: SymbolCompass },
+  { to: "/settings", key: "settings", icon: SymbolGearshape },
 ];
 
 export function Sidebar() {
@@ -50,6 +49,9 @@ export function Sidebar() {
 
   useEffect(() => {
     document.documentElement.style.setProperty("--rail-w", "240px");
+    return () => {
+      document.documentElement.style.setProperty("--rail-w", "0px");
+    };
   }, []);
 
   // Close popovers on escape key
@@ -208,17 +210,6 @@ export function Sidebar() {
                     <SymbolChartBar fill className="h-4 w-4 text-muted-foreground" /> {t(lang, "stats")}
                   </Link>
                   <Link
-                    to="/community"
-                    search={{ tab: "clan" } as any}
-                    onClick={() => {
-                      buzz(6);
-                      setUserPopoverOpen(false);
-                    }}
-                    className="flex items-center gap-2.5 rounded-xl px-3 py-2 font-medium hover:bg-muted"
-                  >
-                    <SymbolShield fill className="h-4 w-4 text-muted-foreground" /> {t(lang, "clan")}
-                  </Link>
-                  <Link
                     to="/profile"
                     search={{ tab: "shop" } as any}
                     onClick={() => {
@@ -324,7 +315,7 @@ export function Sidebar() {
               to={to}
               onClick={() => buzz(6)}
               aria-label={t(lang, key)}
-              className={`flex min-h-[44px] min-w-[54px] flex-col items-center justify-center rounded-2xl px-2 py-1 transition-transform active:scale-90 ${
+              className={`flex min-h-[46px] min-w-[62px] flex-col items-center justify-center rounded-2xl px-3 py-1 transition-transform active:scale-90 ${
                 active
                   ? "text-accent-text font-semibold"
                   : "text-muted-foreground hover:text-foreground"

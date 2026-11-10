@@ -657,7 +657,7 @@ export class MapLibreAdapter implements IMapAdapter {
       for (const pt of points) bounds.extend(pt);
       const reduced = isReducedMotion();
       this.map.fitBounds(bounds, {
-        padding: { top: 70, bottom: 70, left: 60, right: 60 },
+        padding: { top: 90, bottom: 280, left: 60, right: 60 },
         maxZoom: 7,
         duration: reduced ? 0 : 900,
       });

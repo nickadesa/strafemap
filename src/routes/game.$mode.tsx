@@ -807,25 +807,27 @@ function GamePage() {
         </div>
       )}
 
-      {/* Round Reveal Bottom Sheet */}
+      {/* Round Reveal Inset Bottom Sheet */}
       {phase === "reveal" && last && (
-        <RoundReveal
-          last={last}
-          idx={idx}
-          roundsTotal={ROUNDS}
-          practice={practice}
-          unit={settings.unit}
-          playerName={social.nickname || settings.name || t(lang, "you")}
-          revealLeft={revealLeft}
-          autoNextSeconds={AUTO_NEXT_SECONDS}
-          onNext={next}
-          lang={lang}
-          reactionsEnabled={settings.reactions !== false}
-          quickEmojis={settings.quickEmojis}
-          reactionSet={settings.reactionSet}
-          onReact={react}
-          floaters={floaters}
-        />
+        <div className="pointer-events-none fixed inset-x-3 bottom-6 z-50 flex justify-center sm:inset-x-6 sm:bottom-8 animate-in slide-in-from-bottom-8 duration-300">
+          <RoundReveal
+            last={last}
+            idx={idx}
+            roundsTotal={ROUNDS}
+            practice={practice}
+            unit={settings.unit}
+            playerName={social.nickname || settings.name || t(lang, "you")}
+            revealLeft={revealLeft}
+            autoNextSeconds={AUTO_NEXT_SECONDS}
+            onNext={next}
+            lang={lang}
+            reactionsEnabled={settings.reactions !== false}
+            quickEmojis={settings.quickEmojis}
+            reactionSet={settings.reactionSet}
+            onReact={react}
+            floaters={floaters}
+          />
+        </div>
       )}
 
       {/* 7 Deadly Sins Pre-Match Drawer with 30s countdown */}

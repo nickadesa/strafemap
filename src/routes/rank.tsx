@@ -134,14 +134,14 @@ function RankPage() {
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-semibold text-foreground backdrop-blur-md">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-card/80 px-3.5 py-1.5 text-xs font-semibold text-foreground shadow-xs">
                 <Sparkles className="h-3 w-3 text-accent-text" />
                 Season 1
               </span>
               <button
                 type="button"
                 onClick={() => setShowRewards(true)}
-                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-semibold text-foreground transition-colors hover:bg-muted active:scale-95"
+                className="inline-flex items-center gap-1.5 rounded-full bg-card/80 px-3.5 py-1.5 text-xs font-semibold text-foreground shadow-xs transition-colors hover:bg-muted active:scale-95"
               >
                 <Gift className="h-3 w-3 text-accent-text" />
                 {t(lang, "seasonRewards")}
@@ -206,7 +206,7 @@ function RankPage() {
 
             {/* Placement Match Notice (if < 5 games) */}
             {rank.games < 5 && (
-              <div className="mx-auto mt-5 max-w-md rounded-2xl border border-border/80 bg-background/50 p-3.5 text-left">
+              <div className="mx-auto mt-5 max-w-md rounded-2xl bg-card/80 p-3.5 text-left shadow-xs">
                 <div className="flex items-center justify-between text-xs font-semibold">
                   <span className="text-foreground">{t(lang, "placements")}</span>
                   <span className="readout text-accent-text">{rank.games} / 5</span>
@@ -236,7 +236,7 @@ function RankPage() {
                   {t(lang, "findMatch")}
                 </button>
               ) : (
-                <div className="inline-flex items-center gap-3 rounded-2xl border border-accent-fill/40 bg-accent-fill/10 px-6 py-3">
+                <div className="inline-flex items-center gap-3 rounded-2xl bg-accent-fill/15 px-6 py-3 shadow-xs">
                   <span className="relative flex h-3 w-3">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-fill opacity-75" />
                     <span className="relative inline-flex h-3 w-3 rounded-full bg-accent-fill" />
@@ -256,7 +256,7 @@ function RankPage() {
             </div>
 
             {/* Stats Row */}
-            <div className="mx-auto mt-6 grid w-full max-w-lg grid-cols-4 divide-x divide-border rounded-2xl border border-border bg-background/40">
+            <div className="mx-auto mt-6 grid w-full max-w-lg grid-cols-4 divide-x divide-black/5 dark:divide-white/5 rounded-2xl bg-card/80 shadow-xs">
               {stats.map(([v, l]) => (
                 <div key={l} className="px-2 py-3">
                   <p className="readout text-lg sm:text-xl font-semibold">{v}</p>
@@ -300,15 +300,15 @@ function RankPage() {
 
           {/* Season Rewards Drawer */}
           <Drawer open={showRewards} onOpenChange={setShowRewards}>
-            <DrawerContent className="mx-auto max-w-4xl p-5 sm:p-6">
-              <DrawerHeader className="flex flex-row items-center justify-between border-b border-border px-0 pb-4 pt-1">
+            <DrawerContent className="mx-auto max-w-4xl p-5 sm:p-6 border-none ring-1 ring-black/5 dark:ring-white/10">
+              <DrawerHeader className="flex flex-row items-center justify-between border-b border-black/5 dark:border-white/5 px-0 pb-4 pt-1">
                 <div>
                   <DrawerTitle>{t(lang, "seasonRewards")}</DrawerTitle>
                   <DrawerDescription className="mt-1">
                     Unlock exclusive Avatar Frames, Titles, Gacha Packs & Super Chat Auras at your peak season tier
                   </DrawerDescription>
                 </div>
-                <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-foreground">
+                <span className="rounded-full bg-card px-3 py-1 text-xs font-semibold text-muted-foreground shadow-xs">
                   Season 1
                 </span>
               </DrawerHeader>
@@ -321,10 +321,10 @@ function RankPage() {
                   return (
                     <div
                       key={rw.tier}
-                      className={`flex flex-col justify-between rounded-2xl border p-4 transition-colors ${
+                      className={`flex flex-col justify-between rounded-2xl p-4 transition-colors shadow-xs ${
                         unlocked
-                          ? "border-border bg-accent-fill/5"
-                          : "border-border bg-background/40 opacity-80"
+                          ? "bg-accent-fill/10 ring-1 ring-accent-fill/30"
+                          : "bg-card/80 opacity-80"
                       }`}
                     >
                       <div className="flex items-center gap-3">
@@ -335,7 +335,7 @@ function RankPage() {
                               {rw.name}
                             </span>
                             {unlocked && (
-                              <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                              <span className="rounded-full bg-accent-fill/20 px-2 py-0.5 text-[10px] font-semibold text-accent-text">
                                 CLAIMABLE
                               </span>
                             )}
@@ -345,7 +345,7 @@ function RankPage() {
                           </p>
                         </div>
                       </div>
-                      <div className="mt-3 space-y-1 border-t border-border/60 pt-2.5 text-xs">
+                      <div className="mt-3 space-y-1 border-t border-black/5 dark:border-white/5 pt-2.5 text-xs">
                         <p className="flex justify-between">
                           <span className="text-muted-foreground">Title:</span>
                           <span className="font-semibold text-foreground">{rw.titleReward}</span>
@@ -428,7 +428,7 @@ function MatchHistoryView({
   const items = history && history.length > 0 ? history : fallbackMatches;
 
   return (
-    <div className="plate divide-y divide-border overflow-hidden !p-0">
+    <div className="plate divide-y divide-black/5 dark:divide-white/5 overflow-hidden !p-0">
       <div className="flex items-center justify-between p-4 sm:px-6">
         <h3 className="font-semibold text-foreground flex items-center gap-2">
           <History className="h-4 w-4 text-muted-foreground" />
@@ -439,7 +439,7 @@ function MatchHistoryView({
         </span>
       </div>
 
-      <div className="divide-y divide-border/60">
+      <div className="divide-y divide-black/5 dark:divide-white/5">
         {items.map((m) => {
           const isWin = m.rpChange > 0 || m.myRoundsWon > m.oppRoundsWon;
           return (
@@ -547,10 +547,10 @@ function GuideTab({
         <div className="grid grid-cols-2 gap-2.5">
           {/* Master */}
           <div
-            className={`flex flex-col items-center rounded-2xl border p-3 text-center transition-colors ${
+            className={`flex flex-col items-center rounded-2xl p-3 text-center transition-colors shadow-xs ${
               mine.rank === "master"
-                ? "border-foreground/60 bg-accent-fill/10 ring-1 ring-foreground/40"
-                : "border-border bg-background/40"
+                ? "bg-accent-fill/15 ring-1 ring-accent-fill"
+                : "bg-card/80"
             }`}
           >
             <span className="mb-1 text-xs font-semibold" style={{ color: "#E8307A" }}>
@@ -562,10 +562,10 @@ function GuideTab({
 
           {/* Champion */}
           <div
-            className={`flex flex-col items-center rounded-2xl border p-3 text-center transition-colors ${
+            className={`flex flex-col items-center rounded-2xl p-3 text-center transition-colors shadow-xs ${
               mine.rank === "champion"
-                ? "border-foreground/60 bg-accent-fill/10 ring-1 ring-foreground/40"
-                : "border-border bg-background/40"
+                ? "bg-accent-fill/15 ring-1 ring-accent-fill"
+                : "bg-card/80"
             }`}
           >
             <span className="mb-1 text-xs font-semibold" style={{ color: "#DC1F30" }}>
@@ -577,7 +577,7 @@ function GuideTab({
         </div>
 
         {/* ROW 2 (grid-cols-3): Diamond III -> II -> I */}
-        <div className="rounded-2xl border border-border/70 bg-background/25 p-2.5">
+        <div className="rounded-2xl bg-card/60 p-2.5 shadow-xs">
           <div className="mb-1.5 flex items-center justify-between px-1">
             <span className="text-xs font-semibold" style={{ color: "#3F9DE8" }}>
               Diamond
@@ -590,8 +590,8 @@ function GuideTab({
               return (
                 <div
                   key={s.name}
-                  className={`flex flex-col items-center rounded-xl border p-2 text-center ${
-                    active ? "border-foreground/60 bg-accent-fill/10" : "border-border/60 bg-card/60"
+                  className={`flex flex-col items-center rounded-xl p-2 text-center shadow-xs transition-colors ${
+                    active ? "bg-accent-fill/20 ring-1 ring-accent-fill text-foreground" : "bg-card/90"
                   }`}
                 >
                   <RankBanner bannerUrl={s.bannerUrl} alt={s.name} width={54} />
@@ -610,7 +610,7 @@ function GuideTab({
           const minRp = steps[0]?.min ?? 0;
           const maxRp = steps[steps.length - 1]?.max ?? 999;
           return (
-            <div key={tier.key} className="rounded-2xl border border-border/70 bg-background/25 p-2.5">
+            <div key={tier.key} className="rounded-2xl bg-card/60 p-2.5 shadow-xs">
               <div className="mb-1.5 flex items-center justify-between px-1">
                 <span className="text-xs font-semibold" style={{ color: tier.color }}>
                   {tier.label}
@@ -625,8 +625,8 @@ function GuideTab({
                   return (
                     <div
                       key={s.name}
-                      className={`flex flex-col items-center rounded-xl border p-1.5 text-center ${
-                        active ? "border-foreground/60 bg-accent-fill/10" : "border-border/60 bg-card/60"
+                      className={`flex flex-col items-center rounded-xl p-1.5 text-center shadow-xs transition-colors ${
+                        active ? "bg-accent-fill/20 ring-1 ring-accent-fill text-foreground" : "bg-card/90"
                       }`}
                     >
                       <RankBanner bannerUrl={s.bannerUrl} alt={s.name} width={48} />
@@ -643,7 +643,7 @@ function GuideTab({
       </div>
 
       {/* Compact How RP Works Banner */}
-      <div className="mt-4 flex flex-col gap-2 rounded-2xl border border-border bg-background/50 p-4 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-4 flex flex-col gap-2 rounded-2xl bg-card/80 p-4 text-xs text-muted-foreground shadow-xs sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="font-semibold text-foreground">{t(lang, "howRp")}</p>
           <p className="mt-0.5">
@@ -651,12 +651,12 @@ function GuideTab({
             <span className="text-destructive font-semibold">−20 RP</span> · Margin bonus ±1.5/round · First 5 placement matches ×1.5 RP gain!
           </p>
         </div>
-        <span className="readout shrink-0 rounded-full bg-muted px-3 py-1 font-semibold text-foreground">
+        <span className="readout shrink-0 rounded-full bg-card px-3 py-1 font-semibold text-foreground shadow-xs">
           Champion = 7,000+ RP & Top 50
         </span>
       </div>
 
-      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-black/5 dark:border-white/5 pt-4">
         {onOpenRewards && (
           <button
             type="button"
@@ -717,8 +717,8 @@ function LeaderboardPodium({ topThree }: { topThree: PodiumEntry[] }) {
       step: step2,
       avatarSize: 52,
       heightClass: "h-24 sm:h-30",
-      pedestalBorder: "border-t-2 border-x border-[#8E8E93]/60",
-      pedestalBg: "bg-card border border-border/70",
+      pedestalBorder: "",
+      pedestalBg: "bg-muted/70 shadow-xs",
       badgeBg: "bg-[#8E8E93] text-[#03121C]",
       stepNumColor: "text-[#8E8E93]/30",
     },
@@ -729,8 +729,8 @@ function LeaderboardPodium({ topThree }: { topThree: PodiumEntry[] }) {
       step: step1,
       avatarSize: 64,
       heightClass: "h-32 sm:h-42",
-      pedestalBorder: "border-t-2 border-x border-accent-fill/80",
-      pedestalBg: "bg-card border border-accent-fill/40",
+      pedestalBorder: "ring-1 ring-accent-fill/30",
+      pedestalBg: "bg-accent-fill/15 shadow-sm",
       badgeBg: "bg-accent-fill text-[#03121C]",
       stepNumColor: "text-accent-text/35",
     },
@@ -741,8 +741,8 @@ function LeaderboardPodium({ topThree }: { topThree: PodiumEntry[] }) {
       step: step3,
       avatarSize: 48,
       heightClass: "h-18 sm:h-24",
-      pedestalBorder: "border-t-2 border-x border-[#A2845E]/60",
-      pedestalBg: "bg-card border border-border/70",
+      pedestalBorder: "",
+      pedestalBg: "bg-muted/50 shadow-xs",
       badgeBg: "bg-[#A2845E] text-[#03121C]",
       stepNumColor: "text-[#A2845E]/30",
     },
@@ -968,7 +968,7 @@ export function UnifiedLeaderboardView({
       {/* Leaderboard List with internal scroll & sticky header */}
       <div className="plate relative overflow-hidden !p-0">
         {/* Sticky Header with columns and Jump to You button */}
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-card/95 px-3.5 py-2.5 text-xs font-semibold text-muted-foreground backdrop-blur-md sm:px-5">
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-black/5 dark:border-white/5 bg-card/95 px-3.5 py-2.5 text-xs font-semibold text-muted-foreground backdrop-blur-md sm:px-5">
           <div className="flex items-center gap-3">
             <span className="w-7 text-center font-semibold sm:w-9">#</span>
             <span>Player / Rank</span>
@@ -992,7 +992,7 @@ export function UnifiedLeaderboardView({
         <ScrollFade progress={fade.progress} surfaceClassName="from-card/95" className="top-[38px]" />
 
         {/* Scrollable list up to 100 ranks */}
-        <div onScroll={fade.onScroll} className="max-h-[620px] divide-y divide-border overflow-y-auto scroll-smooth">
+        <div onScroll={fade.onScroll} className="max-h-[620px] divide-y divide-black/5 dark:divide-white/5 overflow-y-auto scroll-smooth">
           {listEntries.map((p, idx) => {
             const pos = listStartIndex + idx + 1;
             const effectiveChampPos = p.rp >= 7000 && pos <= 50 ? (p.championPosition ?? pos) : null;

@@ -117,7 +117,7 @@ export function GameHud({
           {menuOpen && (
             <div
               role="menu"
-              className="glass-plate absolute left-0 top-[54px] z-50 w-64 rounded-[26px] p-2 shadow-2xl border border-border/80 animate-in fade-in zoom-in-95 duration-200 origin-top-left"
+              className="glass-plate absolute left-0 top-[54px] z-50 w-64 rounded-[26px] p-2 shadow-2xl border-none ring-1 ring-black/5 dark:ring-white/10 animate-in fade-in zoom-in-95 duration-200 origin-top-left"
             >
               {/* Sound Toggle */}
               <div className="flex min-h-[48px] items-center gap-3 rounded-2xl px-3 py-1.5 transition-colors hover:bg-muted/50">
@@ -203,7 +203,7 @@ export function GameHud({
 
         {/* Top-Right: Integrated Timer, Round Progress & Points Capsule */}
         <div className="pointer-events-auto flex flex-col items-end gap-2">
-          <div className="glass-plate flex items-center gap-3 rounded-full px-4 py-2 shadow-sm border border-border/70">
+          <div className="glass-plate flex items-center gap-3 rounded-full px-4 py-2 shadow-sm border-none ring-1 ring-black/5 dark:ring-white/10">
             {/* Countdown Timer */}
             {!unlimitedTime && (
               <>
@@ -254,7 +254,7 @@ export function GameHud({
 
           {/* Ranked 1v1 Opponent Pill (Floating below Score capsule) */}
           {ranked && opponent && (
-            <div className="glass-plate flex items-center gap-2 rounded-full px-3 py-1.5 text-xs shadow-sm border border-border/60 animate-in fade-in duration-200">
+            <div className="glass-plate flex items-center gap-2 rounded-full px-3 py-1.5 text-xs shadow-sm border-none ring-1 ring-black/5 dark:ring-white/10 animate-in fade-in duration-200">
               <span className="text-[10px] font-bold text-muted-foreground">VS</span>
               <AvatarFrame name={opponent.nickname} rp={opponent.rp} size={20} />
               <span className="max-w-20 truncate font-semibold text-foreground text-xs">

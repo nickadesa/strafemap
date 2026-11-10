@@ -1,7 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Sidebar } from "@/components/Sidebar";
-import { IconCheck } from "@/components/icons";
 import { useSettings } from "@/lib/game/storage";
 import { blip, buzz } from "@/lib/game/sound";
 import {
@@ -370,7 +369,7 @@ function PartyPage() {
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-semibold text-foreground backdrop-blur-md">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-card/80 px-3.5 py-1.5 text-xs font-semibold text-foreground shadow-xs">
                 <Users className="h-3.5 w-3.5 text-accent-text" />
                 Voice Chat
               </span>
@@ -381,14 +380,14 @@ function PartyPage() {
             <div className="mt-6 space-y-6">
               {/* Host Room Configuration Card */}
               <div className="plate space-y-5 p-5 sm:p-7">
-                <div className="flex flex-wrap items-center justify-between border-b border-border pb-3.5 gap-2">
+                <div className="flex flex-wrap items-center justify-between border-b border-black/5 dark:border-white/5 pb-3.5 gap-2">
                   <div>
                     <h2 className="text-xl font-bold text-foreground sm:text-2xl">{t(lang, "hostParty")}</h2>
                     <p className="mt-0.5 text-xs text-muted-foreground">
                       Configure rules now — or tweak them anytime inside the waiting lobby
                     </p>
                   </div>
-                  <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-foreground">
+                  <span className="rounded-full bg-card px-3 py-1 text-xs font-semibold text-foreground shadow-xs">
                     Max {maxPlayers} Players
                   </span>
                 </div>
@@ -463,7 +462,7 @@ function PartyPage() {
 
               {/* Followed Friends & Recent Parties Card */}
               <div className="plate p-5 sm:p-7">
-                <div className="flex items-center justify-between border-b border-border pb-3">
+                <div className="flex items-center justify-between border-b border-black/5 dark:border-white/5 pb-3">
                   <div>
                     <h2 className="text-lg font-bold text-foreground sm:text-xl">{t(lang, "recentParties")}</h2>
                     <p className="text-xs text-muted-foreground">
@@ -481,7 +480,7 @@ function PartyPage() {
                     return (
                       <div
                         key={f.id}
-                        className="flex items-center justify-between rounded-2xl border border-border bg-background/50 p-3 transition-colors hover:bg-muted/40"
+                        className="flex items-center justify-between rounded-2xl bg-card/80 p-3 shadow-xs transition-colors hover:bg-muted/40"
                       >
                         <div className="flex min-w-0 items-center gap-2.5">
                           <AvatarFrame
@@ -519,7 +518,7 @@ function PartyPage() {
             <div className="mt-6 space-y-4">
               {/* Waiting Lobby Card */}
               <div className="plate p-5 sm:p-7">
-                <div className="flex flex-col gap-3 border-b border-border pb-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-3 border-b border-black/5 dark:border-white/5 pb-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <div className="flex items-center gap-2">
                       {isEditingName ? (
@@ -531,7 +530,7 @@ function PartyPage() {
                           onKeyDown={(e) => e.key === "Enter" && setIsEditingName(false)}
                           placeholder={`${meName}'s party`}
                           autoFocus
-                          className="rounded-lg border border-border bg-background px-2.5 py-1 text-lg font-bold text-foreground focus:outline-none focus:ring-1 focus:ring-accent-fill"
+                          className="rounded-xl bg-background/80 px-2.5 py-1 text-lg font-bold text-foreground shadow-xs ring-1 ring-accent-fill/30 focus:outline-none focus:ring-2 focus:ring-accent-fill"
                         />
                       ) : (
                         <div className="flex items-center gap-2">
@@ -566,7 +565,7 @@ function PartyPage() {
                           toast.success(`Copied room code: ${room.slice(0, 3)} ${room.slice(3)}`);
                           setTimeout(() => setCopiedCode(false), 1500);
                         }}
-                        className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground hover:text-foreground"
+                        className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground hover:text-foreground shadow-xs"
                       >
                         {copiedCode ? (
                           <>
@@ -611,7 +610,7 @@ function PartyPage() {
                     <button
                       type="button"
                       onClick={() => setShowLeaveConfirm(true)}
-                      className="rounded-full border border-border px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
+                      className="rounded-full bg-muted/80 px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors shadow-xs"
                     >
                       Leave
                     </button>
@@ -620,7 +619,7 @@ function PartyPage() {
 
                 {/* Live Host Rule Editor inside Waiting Lobby */}
                 {isHost && showHostSettings && (
-                  <div className="mt-4 rounded-2xl border border-border bg-background/60 p-4">
+                  <div className="mt-4 rounded-2xl bg-card/60 p-4 shadow-xs">
                     <div className="mb-3 flex items-center justify-between">
                       <span className="text-xs font-semibold text-accent-text">
                         Host Room Settings (Live Update)
@@ -649,7 +648,7 @@ function PartyPage() {
                       return (
                         <li
                           key={p.id}
-                          className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-background/50 px-4 py-3"
+                          className="flex items-center justify-between gap-3 rounded-2xl bg-card/80 px-4 py-3 shadow-xs"
                         >
                           <div className="flex min-w-0 items-center gap-2.5">
                             <AvatarFrame
@@ -670,7 +669,7 @@ function PartyPage() {
                                 <span className="truncate text-xs sm:text-sm font-semibold">{p.name}</span>
                                 <VerifiedBadge type={p.verified} size={13} />
                                 {p.host && (
-                                  <span className="rounded-full bg-muted px-1.5 py-0.2 text-[10px] font-semibold text-muted-foreground">
+                                  <span className="rounded-full bg-card px-1.5 py-0.2 text-[10px] font-semibold text-muted-foreground shadow-xs">
                                     HOST
                                   </span>
                                 )}
@@ -695,10 +694,10 @@ function PartyPage() {
                               <button
                                 type="button"
                                 onClick={() => togglePlayerMute(p.id)}
-                                className={`grid h-8 w-8 place-items-center rounded-full border transition-colors ${
+                                className={`grid h-8 w-8 place-items-center rounded-full shadow-xs transition-colors ${
                                   p.muted
-                                    ? "border-destructive bg-destructive/15 text-destructive"
-                                    : "border-border bg-card text-foreground hover:bg-muted"
+                                    ? "bg-destructive/15 text-destructive"
+                                    : "bg-card text-foreground hover:bg-muted"
                                 }`}
                                 title={p.muted ? `Unmute ${p.name}` : `Mute ${p.name}`}
                               >
@@ -713,7 +712,7 @@ function PartyPage() {
                                   : "bg-muted text-muted-foreground"
                               }`}
                             >
-                              {p.ready && <IconCheck className="h-3 w-3" />}
+                              {p.ready && <Check className="h-3 w-3" />}
                               {p.ready ? "Ready" : "Wait"}
                             </span>
                           </div>
@@ -724,7 +723,7 @@ function PartyPage() {
                 </div>
 
                 {/* Party Voice Chat Control Bar */}
-                <div className="mt-5 rounded-2xl border border-border bg-background/60 p-3 sm:p-4">
+                <div className="mt-5 rounded-2xl bg-card/80 p-3 sm:p-4 shadow-xs">
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
                       <button
@@ -772,7 +771,7 @@ function PartyPage() {
                     </button>
                   ) : (
                     myReady && (
-                      <div className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-border bg-muted/40 px-4 py-2.5 text-xs font-semibold text-muted-foreground">
+                      <div className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-muted/60 px-4 py-2.5 text-xs font-semibold text-muted-foreground shadow-xs">
                         <span className="h-2 w-2 rounded-full bg-accent-fill animate-pulse" />
                         <span>{t(lang, "waitingForHost")}</span>
                       </div>
@@ -785,7 +784,7 @@ function PartyPage() {
 
           {/* Leave Confirmation Dialog */}
           <Dialog open={showLeaveConfirm} onOpenChange={setShowLeaveConfirm}>
-            <DialogContent className="max-w-md">
+            <DialogContent className="max-w-md border-none ring-1 ring-black/5 dark:ring-white/10">
               <DialogHeader>
                 <DialogTitle>Leave Party?</DialogTitle>
                 <DialogDescription className="pt-2 text-sm text-muted-foreground">
@@ -844,7 +843,7 @@ function PartyPage() {
                 return (
                   <div
                     key={f.id}
-                    className="flex items-center justify-between rounded-2xl border border-border bg-background/50 p-3"
+                    className="flex items-center justify-between rounded-2xl bg-card/80 p-3 shadow-xs"
                   >
                     <div className="flex items-center gap-2.5">
                       <AvatarFrame
