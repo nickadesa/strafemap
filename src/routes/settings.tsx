@@ -293,7 +293,7 @@ function SettingsPage() {
                   {quickEmojis.map((emo) => (
                     <span
                       key={emo}
-                      className="grid h-9 w-9 place-items-center rounded-xl border border-border/80 bg-background/80 text-base shadow-sm"
+                      className="grid h-9 w-9 place-items-center rounded-xl bg-card text-base shadow-xs"
                     >
                       {emo}
                     </span>
@@ -365,20 +365,20 @@ function SettingsPage() {
                 <button
                   type="button"
                   onClick={() => setMapStyle("auto")}
-                  className={`overflow-hidden rounded-2xl border transition-all text-left flex flex-col justify-between ${
+                  className={`overflow-hidden rounded-2xl transition-all text-left flex flex-col justify-between ${
                     mapStyle === "auto"
-                      ? "border-foreground ring-2 ring-foreground/20 shadow-md scale-[1.02]"
-                      : "border-border/60 hover:border-border opacity-85 hover:opacity-100 bg-card"
+                      ? "ring-2 ring-accent-fill shadow-md scale-[1.02]"
+                      : "opacity-85 hover:opacity-100 bg-card shadow-xs"
                   }`}
                 >
-                  <div className="relative aspect-video bg-muted/70 border-b border-border/60 overflow-hidden flex items-center justify-center p-3">
-                    <span className="rounded-full bg-card px-2.5 py-1 text-xs font-semibold shadow-xs border border-border/60">
+                  <div className="relative aspect-video bg-muted/60 overflow-hidden flex items-center justify-center p-3">
+                    <span className="rounded-full bg-card px-2.5 py-1 text-xs font-semibold shadow-xs">
                       {theme === "dark" ? "Auto (Apple Dark)" : "Auto (Apple Light)"}
                     </span>
                   </div>
                   <div
                     className={`px-3 py-2 text-xs font-semibold ${
-                      mapStyle === "auto" ? "bg-foreground text-background" : "bg-card/90"
+                      mapStyle === "auto" ? "bg-accent-fill text-[#03121C]" : "bg-card/90"
                     }`}
                   >
                     <span>Auto ({t(lang, "theme")})</span>
@@ -394,10 +394,10 @@ function SettingsPage() {
                       key={id}
                       type="button"
                       onClick={() => setMapStyle(id)}
-                      className={`overflow-hidden rounded-2xl border transition-all text-left flex flex-col justify-between ${
+                      className={`overflow-hidden rounded-2xl transition-all text-left flex flex-col justify-between ${
                         on
-                          ? "border-foreground ring-2 ring-foreground/20 shadow-md scale-[1.02]"
-                          : "border-border/60 hover:border-border opacity-85 hover:opacity-100 bg-card"
+                          ? "ring-2 ring-accent-fill shadow-md scale-[1.02]"
+                          : "opacity-85 hover:opacity-100 bg-card shadow-xs"
                       }`}
                     >
                       <div
@@ -419,7 +419,7 @@ function SettingsPage() {
                       </div>
                       <div
                         className={`px-3 py-2 text-xs font-semibold flex items-center justify-between ${
-                          on ? "bg-foreground text-background" : "bg-card/90"
+                          on ? "bg-accent-fill text-[#03121C]" : "bg-card/90"
                         }`}
                       >
                         <span>{lang === "th" ? opt.nameTh : opt.name}</span>
@@ -438,9 +438,9 @@ function SettingsPage() {
                 className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
                 onClick={() => setEmojiDrawerOpen(false)}
               />
-              <div className="glass-plate pop-in relative z-10 max-h-[85vh] w-full max-w-lg rounded-t-[32px] border-t border-border/80 p-5 shadow-2xl flex flex-col">
+              <div className="glass-plate pop-in relative z-10 max-h-[85vh] w-full max-w-lg rounded-t-[32px] border-none ring-1 ring-black/5 dark:ring-white/10 p-5 shadow-2xl flex flex-col">
                 <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-muted-foreground/30" />
-                <div className="flex items-center justify-between pb-3 border-b border-border/40">
+                <div className="flex items-center justify-between pb-3 border-b border-black/5 dark:border-white/5">
                   <div>
                     <h3 className="font-semibold text-lg text-foreground">{t(lang, "customizeEmojis")}</h3>
                     <p className="text-xs text-muted-foreground">Tap an emoji to toggle (Max 5)</p>
@@ -478,10 +478,10 @@ function SettingsPage() {
                           key={emo}
                           type="button"
                           onClick={() => toggleQuickEmoji(emo)}
-                          className={`grid h-11 w-11 place-items-center rounded-xl border text-xl transition-all ${
+                          className={`grid h-11 w-11 place-items-center rounded-xl text-xl transition-all ${
                             active
-                              ? "border-accent-fill bg-accent-fill/15 scale-105"
-                              : "border-border/60 bg-card/60 hover:bg-muted/60"
+                              ? "bg-accent-fill/20 text-accent-text ring-1 ring-accent-fill scale-105"
+                              : "bg-card/80 hover:bg-muted/80 shadow-xs"
                           }`}
                         >
                           {emo}
@@ -491,7 +491,7 @@ function SettingsPage() {
                   </div>
                 </div>
 
-                <div className="mt-4 border-t border-border/40 pt-3">
+                <div className="mt-4 border-t border-black/5 dark:border-white/5 pt-3">
                   <button
                     type="button"
                     onClick={() => setEmojiDrawerOpen(false)}

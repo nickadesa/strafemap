@@ -287,7 +287,7 @@ export function PlayHub() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t(lang, "searchModes")}
-                className="w-full rounded-2xl border border-border bg-card py-2 pl-9 pr-8 text-sm outline-none transition-colors focus:border-foreground/60 focus:bg-background"
+                className="w-full rounded-2xl border-none bg-card/80 py-2.5 pl-9 pr-8 text-sm outline-none shadow-xs transition-colors focus:bg-background focus:ring-1 focus:ring-accent-fill/40"
               />
               {searchQuery && (
                 <button
@@ -327,7 +327,7 @@ export function PlayHub() {
               <div className="shrink-0">
                 {hasPlayedDailyToday ? (
                   <div className="flex flex-col gap-2 sm:items-end">
-                    <div className="flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-2">
+                    <div className="flex items-center gap-2 rounded-2xl bg-card/80 px-4 py-2 shadow-xs">
                       <SymbolCheckmark className="h-4 w-4 text-accent-text" />
                       <span className="text-xs font-semibold">
                         {t(lang, "todayScore", { n: todayDailyRecord?.score.toLocaleString() ?? "0" })}
@@ -392,8 +392,11 @@ export function PlayHub() {
                 >
                   <div className="flex items-center gap-3.5 min-w-0">
                     <div
-                      className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-card border border-border shadow-xs"
-                      style={{ color: item.accentColor }}
+                      className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl shadow-xs"
+                      style={{
+                        backgroundColor: `${item.accentColor}20`,
+                        color: item.accentColor,
+                      }}
                     >
                       <Icon className="h-5 w-5" />
                     </div>
@@ -426,8 +429,8 @@ export function PlayHub() {
 
       {/* 5. Apple HIG / Mobbin Mode Options Bottom Sheet */}
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
-        <DrawerContent className="mx-auto max-w-xl p-5 sm:p-6 pb-8">
-          <DrawerHeader className="flex flex-row items-center justify-between border-b border-border/80 px-1 pb-3 pt-0">
+        <DrawerContent className="mx-auto max-w-xl p-5 sm:p-6 pb-8 border-none ring-1 ring-black/5 dark:ring-white/5">
+          <DrawerHeader className="flex flex-row items-center justify-between border-b border-black/5 dark:border-white/5 px-1 pb-3 pt-0">
             <div className="text-left">
               <DrawerTitle className="capitalize text-xl font-display font-semibold tracking-tight text-foreground">
                 {t(lang, selectedMode)} · Match Options

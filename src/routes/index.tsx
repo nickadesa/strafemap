@@ -108,58 +108,22 @@ function Home() {
       <main className="rail-offset px-4 pb-24 pt-4 md:px-6 md:pb-12 md:pt-8">
         <div className="mx-auto max-w-4xl space-y-6">
 
-          {/* 1. Apple Large Title Header + Localized Date + Coins Chip */}
-          <header className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                {todayFormatted}
-              </p>
-              <h1 className="font-display mt-0.5 text-3xl tracking-tight text-foreground md:text-4xl">
-                {t(lang, "welcomeBack")}, {social.nickname}
-              </h1>
-            </div>
-
-            {/* Top Coins Chip & Level Pill */}
-            <div className="flex items-center gap-2">
-              <Link
-                to="/profile"
-                search={{ tab: "shop" } as any}
-                onClick={() => buzz(6)}
-                className="apple-pill flex items-center gap-1.5 border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm hover:bg-muted active:scale-95 transition-all"
-              >
-                <Coins className="h-3.5 w-3.5 text-accent-text" />
-                <span className="readout">{social.coins.toLocaleString()}</span>
-                <span className="text-[10px] text-muted-foreground">Coins</span>
-              </Link>
-
-              <Link
-                to="/profile"
-                onClick={() => buzz(6)}
-                className="apple-pill flex items-center gap-1.5 border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm hover:bg-muted active:scale-95 transition-all"
-              >
-                <AvatarFrame
-                  src={social.avatarUrl}
-                  name={social.nickname}
-                  rp={rank.rp}
-                  championPosition={rank.championPosition}
-                  size={20}
-                />
-                <span className="readout text-accent-text">Lv.{lvl.level}</span>
-              </Link>
-            </div>
-          </header>
-
-          {/* 2. Hero Card: Today's Five Pins */}
+          {/* 1. Hero Card: Today's Five Pins (Clean Borderless Apple Arcade Style) */}
           <section className="plate relative overflow-hidden p-6 md:p-8">
             <div className="relative z-10 max-w-2xl">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-fill/15 px-3 py-1 text-xs font-semibold text-accent-text">
-                <Sparkles className="h-3.5 w-3.5" />
-                {t(lang, "daily")} · {todayKey()}
-              </span>
+              <div className="flex items-center gap-2.5">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-fill/15 px-3 py-1 text-xs font-semibold text-accent-text">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  {t(lang, "daily")} &bull; {todayKey()}
+                </span>
+                <span className="text-xs font-medium text-muted-foreground">
+                  {todayFormatted}
+                </span>
+              </div>
 
-              <h2 className="font-display mt-3 text-3xl tracking-tight text-foreground sm:text-4xl md:text-5xl">
+              <h1 className="font-display mt-3 text-3xl tracking-tight text-foreground sm:text-4xl md:text-5xl">
                 {t(lang, "todayFivePins")}
-              </h2>
+              </h1>
 
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
                 {t(lang, "sameFivePlaces")}. Drop your pin as close as you can to rack up precision points.
@@ -169,7 +133,7 @@ function Home() {
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 {todayRecord ? (
                   <>
-                    <div className="flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-2.5">
+                    <div className="flex items-center gap-2 rounded-2xl bg-card/80 px-4 py-2.5 shadow-sm">
                       <SymbolCheckmark className="h-4 w-4 text-accent-text" />
                       <span className="text-sm font-semibold">
                         {t(lang, "todayScore", { n: todayRecord.score.toLocaleString() })}
@@ -178,7 +142,7 @@ function Home() {
                     <Link
                       to="/play"
                       onClick={() => buzz(6)}
-                      className="btn btn-outline px-5 py-2.5 text-xs font-semibold"
+                      className="btn btn-outline border-none bg-muted/60 px-5 py-2.5 text-xs font-semibold hover:bg-muted"
                     >
                       {t(lang, "chooseMode")}
                     </Link>
@@ -197,7 +161,7 @@ function Home() {
                     <Link
                       to="/play"
                       onClick={() => buzz(6)}
-                      className="btn btn-outline px-6 py-3 text-sm font-semibold"
+                      className="btn btn-outline border-none bg-muted/60 px-6 py-3 text-sm font-semibold hover:bg-muted"
                     >
                       {t(lang, "chooseMode")}
                     </Link>
@@ -347,7 +311,7 @@ function Home() {
                 </div>
               </div>
 
-              <div className="rounded-xl border border-border bg-card/60 p-2.5">
+              <div className="rounded-xl bg-card/80 p-2.5 shadow-xs">
                 <p className="truncate text-xs font-medium text-muted-foreground">
                   {rpToNextText}
                 </p>
@@ -357,7 +321,7 @@ function Home() {
 
           {/* 4. Season 1 Leaderboard Spotlight (Replaces Community/Stories) */}
           <section className="plate p-5">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-3">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-black/5 dark:border-white/5 pb-3">
               <div>
                 <h2 className="font-display text-xl text-foreground">
                   {t(lang, "ranked")} · Global Top 3
@@ -378,7 +342,7 @@ function Home() {
             </div>
 
             {/* Top 3 Champions Inset List */}
-            <div className="mt-3 divide-y divide-border">
+            <div className="mt-3 divide-y divide-black/5 dark:divide-white/5">
               {COMMUNITY_PLAYERS.slice(0, 3).map((player, rankIdx) => {
                 const pRank = getRank(player.rp, player.championPosition);
                 return (
@@ -446,7 +410,7 @@ function Home() {
                 </Link>
               </div>
 
-              <div className="my-4 flex items-center gap-3.5 rounded-2xl border border-border bg-card/60 p-3.5">
+              <div className="my-4 flex items-center gap-3.5 rounded-2xl bg-card/80 p-3.5 shadow-xs">
                 <img
                   src={nextAchievement.files.compact.unlocked}
                   alt={nextAchievement.name}
