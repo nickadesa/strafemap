@@ -39,15 +39,33 @@
 - **หลักฐาน**:
   - `git commit` `58a01db` (-1,020 บรรทัด)
   - `git commit` `93c2db7` (Unit Tests)
-## [2026-11-09T20:50:00Z] - Interactive Design Tree Grilling Concluded
+## [2026-11-09T22:30:00Z] - Phase 2 (Gameplay & Map Immersion) Completed
 - **แก้อะไร**:
-  1. ยืนยันข้อสรุปการจัดแบ่งแผนงานออกเป็น 4 Phases ชัดเจน
-  2. กำหนดให้ Phase 2 จัดวาง Dynamic Island ที่ Top-Center และ Round Reveal แบบ Interactive Map FlyTo Arc
-  3. ปรับสเปกหน้า Home ใน Phase 3: ตัด Top Bar ออก, ดีไซน์ไร้เส้นขอบเทา, และตัดวงแหวน Activity Rings ออกตามคำสั่งตรงของผู้ใช้
-  4. กำหนดให้ Play Hub, Rank, และ Settings เป็นแบบ Apple Inset ไร้ขอบเทา (Zero Gray Borders)
-  5. วางระบบ Multiplayer และ Duel รวมไว้ใน Play Hub และยืนยันระบบ Instant Guest-First
-- **เพราะอะไร**: บรรลุข้อตกลงผ่านการสัมภาษณ์เจาะลึก 5 มิติ (Grill-Me Protocol) ร่วมกับผู้ใช้
-- **หลักฐาน**: `PLAN.md` Section 2.1 & 6, บันทึกการสัมภาษณ์ผ่าน `ask_question`
+  1. Full Viewport 100% Map Immersion: ซ่อน navigation และรีเซ็ต `--rail-w` เป็น 0px ใน `Sidebar.tsx` เมื่อ unmount
+  2. SmartClue cancellable FLIP animation: คง layout และ anim วัดขนาดได้ตามกฎ AGENTS.md
+  3. GameHud: กำจัดขอบเทา เปลี่ยน popovers และ score capsules เป็น borderless glass นุ่มนวล
+  4. Camera Reveal Arc: ปรับ `fitBounds` padding ใน `MapLibreAdapter.ts` เป็น `top: 90, bottom: 280, left: 60, right: 60` ทำให้การ์ดสรุปผลด้านล่างไม่บดบังหมุดเล็งและหมุดเฉลย
+  5. RoundReveal: การ์ดสรุปผลคะแนนเลื่อนขึ้นจากขอบจอด้านล่างแบบ Bottom Card Inset พร้อมคะแนนและปุ่ม Next Round ทันใจ
+- **เพราะอะไร**: ปฏิรูปประสบการณ์การเล่นเกมให้ลื่นไหล สบายตา สมจริงตามมาตรฐาน Apple Spatial HIG
+- **หลักฐาน**: Commit `f5a82bf`, Unit tests 17/17 passing, Nitro SSR Build success.
+
+## [2026-11-09T23:30:00Z] - Phase 3 (Home, Play Hub, Rank, and Settings Overhaul) Completed
+- **แก้อะไร**:
+  1. Home (`index.tsx`): ตัด Top Bar Header ออก, กำจัดขอบเทา (`border: none` บน `.plate`), ไม่มี Activity Rings ตามคำสั่งผู้ใช้ โฟกัสการ์ด Daily Challenge ทันที
+  2. Play Hub (`play.tsx`): แถบค้นหาและ Daily Card ไร้ขอบเทา, ไอคอนโหมดเปลี่ยนเป็น Squircle สีเฉพาะตัว (`${accentColor}20`), Drawer Header ปรับ divider นุ่มนวล
+  3. Rank Hub (`rank.tsx`): กำจัดเส้นขอบเทาจาก Placements card, Stats grid, Guide Tab pyramid, Leaderboard podium pedestals (Soft Rounded Pillars), Season Rewards Drawer
+  4. Settings Hub (`settings.tsx`): Apple iOS Inset Grouped Table ไร้ขอบเทา, Quick Emojis Drawer นุ่มนวล, Map Style Grid พร้อมกรอบแสงเลเซอร์ `#00ADFF`
+  5. การกระจาย Settings Event: ยืนยันการ broadcast `strafe:settings` อัปเดต UI และภาษาทันที
+- **เพราะอะไร**: บรรลุหลักสรีรศาสตร์และความสะอาดตาตามคำสั่งตรงของผู้ใช้ "การดีไซน์ไม่ต้องใส่ขอบเทาๆ"
+- **หลักฐาน**: Commit `ec62d12`, Unit tests 17/17 passing, Nitro SSR Build success.
+
+## [2026-11-09T23:40:00Z] - Phase 4 (Multiplayer, Apple Wallet OTP, and 1v1 Duels) Completed
+- **แก้อะไร**:
+  1. InputOTP (`input-otp.tsx`): ปรับแต่ง Slot ให้เป็น Apple Wallet Squircle Pin Box ไร้ขอบเทา พร้อม active glow ด้วย `#00ADFF`
+  2. Party Lobby (`party.tsx`): ปรับ Room Creation, Join Card, Followed Friends Roster, Waiting Lobby, Live Rule Editor, และ Voice Chat Bar ให้ไร้ขอบเทา สวยงามหรูหรา
+  3. Duel 1v1 (`duel.$code.tsx`): ปรับ badge รอบแข่งขัน, หลอดเลือด HP, และปุ่ม Next Round เป็นสีเลเซอร์ Laser Cyan `#00ADFF` และหมึก `#03121C`
+- **เพราะอะไร**: เติมเต็มระบบการเล่นหลายคนแบบ Instant Guest-First ให้สวยงามระดับ Apple Design
+- **หลักฐาน**: Commit `15e177a`, Unit tests 17/17 passing, Nitro SSR Build success.
 
 
 
