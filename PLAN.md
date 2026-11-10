@@ -50,14 +50,16 @@ flowchart TD
 - **🔴 ดีไซน์เดิมและปัญหา (Current Flaws)**:
   - มีบล็อกข้อมูลมากกว่า 5 ชนิดแย่งสายตากัน (การ์ด Daily ปนกับตาราง Achievements, Story highlights, เลเวล และแคลน)
   - ผู้เล่นเข้าเว็บมาแล้วไม่รู้ว่าต้องกดตรงไหนเพื่อเล่นเกมทันที (High Cognitive Load)
-  - บนมือถือ (Viewport 375–430px) ต้องเลื่อนหน้าจอยาวมาก ตัวเลขตารางล้นขอบจอ
-- **🟢 ดีไซน์ใหม่หมดจด (Radical Redesign - อ้างอิงภาพ Mobbin 1 & Taste Anti-Slop)**:
-  - **Single Hero Screen (1440x900 บน Desktop)**: ส่วนแรกของจอแสดงเฉพาะ **Hero Daily Challenge Card** เป็นกระจกโค้งมน Squircle ขนาดใหญ่ พร้อมป้าย Streak เปลวไฟสีส้ม (`#FF9500`) และปุ่มเริ่มเล่นทันทีสีน้ำเงินสด (`#007AFF`)
-  - **Horizontal Category Pills Carousel (ตามภาพ Mobbin 1)**: แถบหมวดหมู่ทรงแคปซูลเลื่อนแนวนอน เช่น `Capitals`, `Landmarks`, `Stadiums`, `7 Sins` มีไอคอนวงกลมสีพาสเทลนำหน้า แตะแล้วเริ่มเล่นได้ใน 1 สเต็ป
-  - **Activity Rings (Apple Watch Health style)**: แสดงแหวน 3 สีขนาดย่อมบอกสถิติส่วนตัว (Games / Accuracy / Streak) แทนตารางตัวเลขดิบ
+  - มีขอบเส้นเทาและบล็อกหลายชั้นที่ดูรุงรัง
+- **🟢 ดีไซน์ใหม่หมดจด (Radical Redesign - ข้อตกลงผ่าน Grill-Me & Mobbin 1)**:
+  - **ตัด Top Bar ด้านบนออกทั้งหมด**: เข้าสู่หน้าจอเกมแบบ Clean ไร้ Header รกตา
+  - **ดีไซน์ไร้ขอบเทา (Zero Gray Borders)**: ใช้พื้นผิวการ์ด Squircle ที่กลมกลืน นุ่มนวล ไร้เส้นตัดขอบเทาแข็งๆ
+  - **ตัดวงแหวน Activity Rings ออก**: ตามความต้องการของผู้ใช้ เพื่อความเรียบง่ายระดับสูงสุด
+  - **Single Hero Daily Challenge Card**: การ์ด Squircle เด่นตรงกลางจอ แสดงคำท้าทายประจำวัน, Streak, และปุ่มเริ่มเล่นทันทีสี `#00ADFF`
+  - **Horizontal Category Pills Carousel (ตามภาพ Mobbin 1)**: แถบหมวดหมู่ทรงแคปซูลเลื่อนแนวนอน เช่น `Capitals`, `Landmarks`, `Stadiums`, `7 Sins` มีไอคอนวงกลมสีสดใสนำหน้า แตะแล้วเริ่มเล่นได้ทันที
 - **💡 ทำไมถึงดีกว่า & ผลลัพธ์ที่ได้ (Why It's Better & Benefits)**:
   - ผู้เล่นเริ่มเล่นเกมได้ภายใน **1.5 วินาที** (ลด Bounce Rate)
-  - ความรู้สึกเหมือนเปิดแอป Apple Arcade คุณภาพสูง ไม่ใช่เว็บที่ AI เจนขึ้นมาลอยๆ
+  - หน้าตาเรียบหรู คลีนขั้นสุด ตามมาตรฐาน Apple Arcade ยุคใหม่ ไม่ใช่เว็บที่ยัดข้อมูลล้นจอ
 
 ---
 
@@ -246,28 +248,40 @@ flowchart TD
 
 ## 6. Bite-Sized Test-Driven Implementation Strategy (Superpowers TDD)
 
-แบ่งการปฏิบัติงานออกเป็น 4 เฟสตามหลักการ Superpowers Bite-Sized Execution:
+แบ่งการปฏิบัติงานออกเป็น 4 เฟสตามหลักการ Superpowers Bite-Sized Execution และข้อสรุปจากการ Grilling:
 
-### Phase 1: Security Hardening & Design Tokens
-- **สิ่งที่ทำ**: เพิ่ม Guard หน้า `/admins`, ปรับแต่งตัวแปรโทเค็นใน `styles.css`, ลบ `icons.tsx` ตกค้าง
-- **คำสั่งเทสอบ**:
+### Phase 1: Foundation, Security & 4-Tab Navigation (เสร็จสิ้นแล้ว 100%)
+- **สิ่งที่ทำสำเร็จแล้ว**:
+  1. เพิ่ม Passcode Guard ล็อกเส้นทาง `/admins` (PIN 8888)
+  2. ปรับลด Navigation สู่ 4 แถบหลัก: **Home, Play, Rank, Settings** (Desktop 240px macOS glass sidebar, Mobile 4-tab bar)
+  3. ตัดระบบ Community, Feeds, Clans, และ Stories ออกทั้งหมด (-1,020 บรรทัด) และส่งสัญญาณ Redirect `/community` ไปยัง `/rank`
+  4. ทำความสะอาดโค้ด ยุบ `icons.tsx` เข้ากับ `SFSymbols.tsx` และ Lucide React
+  5. บังคับใช้สีแบรนด์หลัก `#00ADFF` (Laser Cyan) และหมึก `#03121C` (WCAG AAA)
+  6. Unit Tests ผ่าน 17/17 tests (100%) และ Nitro SSR Build ผ่านสมบูรณ์ (1.67s)
+
+### Phase 2: Core Gameplay Viewport & Map Immersion (เริ่มทำลำดับถัดไป)
+- **สิ่งที่ทำ**:
+  1. ซ่อนแถบนำทาง (ทั้ง Sidebar และ Mobile Tab Bar) ทั้งหมดเมื่อเข้าสู่ห้องเกม เพื่อมอบประสบการณ์ Full Viewport 100%
+  2. ปรับกล่องคำใบ้เป็น **Dynamic Island แคปซูลโปร่งแสงลอยกึ่งกลางด้านบน (Top-Center)** เว้นพื้นที่ครึ่งล่างทั้งหมดให้เล็งหมุดได้อย่างอิสระ (คงสภาพ FLIP Animation ใน `SmartClue.tsx` ตามกฎ AGENTS.md)
+  3. ปรับระบบเฉลยรอบ **Round Reveal เป็น Interactive Map Arc**: แผนที่บิน (FlyTo) โฟกัสระยะเชื่อมต่อระหว่างหมุดที่ทายกับพิกัดจริงด้วยเส้นเลเซอร์สีฟ้า พร้อมการ์ด Inset Bottom Card แสดงระยะทางและปุ่มข้ามรอบ
+- **การทดสอบ**: รัน `npm test` และตรวจสอบการตอบสนองบนจอ iPhone 375px/393px และ MacBook 1440px
+
+### Phase 3: Screen-by-Screen Hub Redesign (Home, Play, Rank, Settings)
+- **สิ่งที่ทำ**:
+  1. **Home (`/`)**: ตัด Top Bar ด้านบนออกทั้งหมด, ดีไซน์พื้นผิวไร้เส้นขอบเทา (Zero Gray Borders), ตัดวงแหวน Activity Rings ออก, แสดง Hero Daily Challenge เด่นตรงกลางจอ และแถบแคปซูลหมวดหมู่แนวนอนตาม Mobbin 1
+  2. **Play Hub (`/play`)**: ปรับเป็น Apple Inset Clean List (ไร้เส้นขอบเทา) พร้อมไอคอนสี่เหลี่ยมมนสีสดใส แตะแล้วเปิด iOS Inset Bottom Sheet ตั้งค่าเกม
+  3. **Rank Hub (`/rank`)**: การ์ดแสดงเหรียญแรงก์และคะแนน RP ด้านบน (ไร้เส้นขอบเทา) พร้อมแท็บ Apple Inset Segmented Tabs สลับดู Ladder / Leaderboard / History
+  4. **Settings Hub (`/settings`)**: ปรับเป็น Apple iOS Inset Grouped Table (ไร้เส้นขอบเทา) มีการ์ดโปรไฟล์สไตล์ Apple ID ด้านบน ตามด้วยกลุ่มแถวตั้งค่า 4 หมวดพร้อมสวิตช์ iOS Switch และ Broadcast การเปลี่ยนภาษาทันที
+- **การทดสอบ**: ทดสอบการสลับภาษาแบบทันที และการปรับเปลี่ยน Appearance โหมดมืด/สว่าง
+
+### Phase 4: Multiplayer Party & Supabase Realtime Polish
+- **สิ่งที่ทำ**:
+  1. เชื่อมต่อห้อง Multiplayer Party & 1v1 Duel Arena ผ่าน Play Hub (`/play` -> Multiplayer Tab)
+  2. ปรับปรุงกล่องกรอกรหัสห้อง 4 ตัวอักษรให้เป็น Apple Wallet OTP Squircle
+  3. ระบบ Instant Guest-First เข้าเล่นได้ทันทีโดยไม่บังคับล็อกอิน และเปิดให้ผูกบัญชีใน Settings ได้อย่างอิสระ
+- **คำสั่งทดสอบขั้นสุดท้าย**:
   ```bash
-  npm test
+  npm test && npm run build
   ```
-- **ผลลัพธ์ที่คาดหวัง**: Pass 100% ไม่มีสีนอกระบบ และหน้า `/admins` ไม่สามารถเข้าถึงได้โดยไม่มีรหัส
-
-### Phase 2: Navigation & Viewport Isolation
-- **สิ่งที่ทำ**: ปรับปรุง `Sidebar.tsx` ให้แยก Mobile Tab Bar (5 ปุ่ม) และ Desktop Glass Rail (240px) โดยสมบูรณ์, อัปเดต `__root.tsx` ให้รองรับ Safe Area บน iPhone
-- **การทดสอบ**: ทดสอบการแสดงผลบน Viewport 375px (iPhone SE), 393px (iPhone 16), 768px (iPad), และ 1440px (MacBook)
-
-### Phase 3: Core Game Arena Overhaul
-- **สิ่งที่ทำ**: ปรับปรุง `game.$mode.tsx`, `GameHud.tsx`, `RoundReveal.tsx` สู่ Edge-to-Edge Map, Floating Action Pill, และ Trajectory Reveal แอนิเมชัน
-- **กฎเหล็ก**: รันเทสต์ `SmartClue.tsx` เพื่อให้มั่นใจว่า FLIP animation ทำงานถูกต้อง ไม่ผิดกติกาของ AGENTS.md
-
-### Phase 4: Hub Pages & Real Multiplayer Polish
-- **สิ่งที่ทำ**: ปรับปรุงหน้า Home (`/`), Play Hub (`/play` พร้อม Bottom Sheet), Rank (`/rank`), และเชื่อมต่อ Party (`/party`) กับ Supabase
-- **คำสั่งเทสอบขั้นสุดท้าย**:
-  ```bash
-  npm run build
-  ```
+- **ผลลัพธ์ที่คาดหวัง**: ผ่านทุก Unit Tests 100%, Build Nitro SSR สำเร็จ ไร้ข้อผิดพลาด Type Checking พร้อมนำขึ้น Production
 - **ผลลัพธ์ที่คาดหวัง**: Build สำเร็จสมบูรณ์ ไร้ข้อผิดพลาด Type Checking พร้อมส่งมอบงาน
