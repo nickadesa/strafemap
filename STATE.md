@@ -10,11 +10,28 @@
 - **รอบการทำงาน (Iteration Round)**: Round 3 (ผสานการตัดสินใจของผู้ใช้: 4-Tab Navigation, ลบ Community/Stories, สี #00ADFF)
 - **สถานะ Repo**: Clean, `main` ถูกล็อกและปลอดภัย 100%, 17/17 tests ผ่านฉลุย, Nitro build ผ่าน 100%
 
-## 2. ทักษะและเครื่องมือที่เรียกใช้ (Skills & Tools Active)
-- `security-audit` & `trufflehog`: ตรวจสอบความปลอดภัยและสแกน Secret ใน Git History (0 leaks)
-- `design-taste-frontend` (Taste 2.5): บังคับใช้กฎต่อต้าน AI Slop, Equal Edges, และ 1 Section ต่อ 1 Screen
-- `ui-ux-pro-max`: ควบคุม Touch Target 46x62px (mobile tab bar), Contrast WCAG AAA (#00ADFF / #03121C), และ High-Contrast Design Tokens
-- `writing-plans`: ควบคุมขั้นตอนการพัฒนาแบบ Bite-sized TDD
+## 2. ทักษะและเครื่องมือที่ติดตั้งและเรียกใช้ (Comprehensive Active Skills: 306+ Skills)
+- **Superpowers** (`obra/superpowers`): `writing-plans`, `executing-plans`, `test-driven-development`, `systematic-debugging`, `verification-before-completion`, `subagent-driven-development`, `brainstorming`
+- **Matt Pocock Skills** (`mattpocock/skills`): `grill-me`, `grilling`, `ask-matt`, `tdd`, `improve-codebase-architecture`, `codebase-design`, `diagnosing-bugs`, `domain-modeling`, `code-review`
+- **UI UX & Design System**:
+  - `impeccable` (`pbakaus/impeccable`): ขัดเกลา UI, จัดระเบียบ Typography, Color Tokens, Mobile Responsive, Zero Harsh Gray Borders
+  - `design-taste-frontend` (Taste 2.5): บังคับใช้ Anti-Slop, Equal Edges, 1 Section ต่อ 1 Screen บน Desktop, Liquid Frosted Materials
+  - `ui-ux-pro-max` (`nextlevelbuilder/ui-ux-pro-max-skill`): คุม Touch Target 46x62px, Contrast WCAG AAA (#00ADFF / #03121C), Thumb Ergonomics
+- **Engineering & Workflow**:
+  - `gsd` (`ctsstc/get-shit-done-skills`): Get Shit Done Project Management สำหรับการสร้างฟีเจอร์อย่างรวดเร็ว
+  - `gstack` (`garrytan/gstack`): Garry Tan's Gstack สำหรับตรวจสอบคุณภาพและสถาปัตยกรรมระดับ YC
+  - `bmad-method` (`bmad-code-org/bmad-method`): 32 สกิลสาย Agent Architect, Agile Dev, และ Code Review
+  - `understand-anything` (`matheus-rech/understand-anything`): ทำความเข้าใจสถาปัตยกรรมและการไหลของข้อมูลเชิงลึก
+  - `karpathy-skills` (`jokim1/karpathy-skills`): `karpathy-guidelines`, `karpathy-refactor`, `karpathy-diff`, `karpathy-audit`
+  - `caveman` (`juliusbrussee/caveman`): `safe-refactor`, `surgical-patch`, `lean-build`, `investigate-first`
+  - `claude-mem` (`thedotmack/claude-mem`): บันทึกบริบทและสถานะโครงการระยะยาว
+- **Growth, SEO & Marketing**:
+  - `marketingskills` (`coreyhaines31/marketingskills`): Content Loops, Schema Markup, Free Tool Strategy
+  - `claude-seo` & `seo-geo-claude-skills`: On-page SEO, Keyword Strategy, Backlink Analyzer
+  - `claude-blog`: การจัดการ Content และ Taxonomy ของเกม
+- **Security & Integrity**:
+  - `security-audit` (`cloudflare/security-audit-skill`): ตรวจจับช่องโหว่ Client-side & API Security
+  - `trufflehog`: สแกน Git History 4,416 chunks (0 leaks)
 
 ## 3. สิ่งที่ทำเสร็จแล้ว (Completed Steps)
 1. บันทึกแผนแม่บทตั้งต้นเข้าสู่ `PLAN.original.md` (ห้ามแก้ไข) และสร้าง `PLAN.md` (Living Plan)
