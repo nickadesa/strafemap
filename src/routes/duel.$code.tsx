@@ -172,7 +172,7 @@ function DuelRoom() {
         <Logo />
         <div className="flex flex-1 items-center justify-end gap-3 text-sm font-semibold">
           <Hp name={meName} hp={shownMyHp} />
-          <span className="rounded-full bg-foreground px-3 py-1.5 text-primary">R{round + 1} · ×{mult(round).toFixed(1)}</span>
+          <span className="rounded-full bg-accent-fill px-3.5 py-1.5 text-xs font-bold text-[#03121C] shadow-xs">R{round + 1} · ×{mult(round).toFixed(1)}</span>
           <Hp name={opName} hp={shownOpHp} right />
         </div>
       </header>
@@ -180,13 +180,13 @@ function DuelRoom() {
         <GameMap blind={false} guess={mine && mine.lat != null && mine.lng != null ? { lat: mine.lat, lng: mine.lng } : pin}
           target={revealed ? loc : null} others={opPin} locked={!!mine} onPick={(p) => { buzz(8); setPin(p); }} resetKey={`${duel.id}-${round}`} />
         <div className="pointer-events-none absolute inset-x-3 top-3 z-[500] flex justify-center">
-          <div className="plate pointer-events-auto max-w-md px-5 py-4 text-center">
+          <div className="plate pointer-events-auto max-w-md px-5 py-4 text-center shadow-lg">
             <p className="text-sm text-muted-foreground">Pin the location</p>
             <p className="font-display mt-1 text-3xl md:text-4xl">{loc.name}</p>
             {loc.category !== "country" && <p className="mt-1 text-sm text-muted-foreground">{loc.country}</p>}
             {!revealed && (
               <div className="mt-3">
-                <div className="h-2 overflow-hidden rounded-full bg-muted"><div className="h-full bg-foreground transition-[width] duration-200" style={{ width: `${(left / ROUND_SECONDS) * 100}%` }} /></div>
+                <div className="h-2 overflow-hidden rounded-full bg-muted"><div className="h-full bg-accent-fill transition-[width] duration-200" style={{ width: `${(left / ROUND_SECONDS) * 100}%` }} /></div>
                 <p className={`mt-1 text-xs font-semibold ${left < 5 ? "text-destructive" : ""}`}>{Math.ceil(left)}s{theirs ? ` · ${opName} has guessed` : ""}</p>
               </div>
             )}
@@ -194,19 +194,19 @@ function DuelRoom() {
         </div>
         <div className="absolute inset-x-3 bottom-6 z-[500] flex justify-center">
           {!mine ? (
-            <button onClick={() => send(pin)} disabled={!pin} className="btn btn-primary px-10 py-4 text-lg">
-              {pin ? <>Confirm guess <kbd className="hidden rounded-full bg-foreground/10 px-2 py-0.5 text-xs md:inline">Space</kbd></> : "Click the map to pin"}
+            <button onClick={() => send(pin)} disabled={!pin} className="btn btn-primary px-10 py-4 text-lg shadow-xl">
+              {pin ? <>Confirm guess <kbd className="hidden rounded-full bg-[#03121C]/20 px-2 py-0.5 text-xs md:inline">Space</kbd></> : "Click the map to pin"}
             </button>
           ) : !result ? (
-            <div className="plate px-6 py-4 font-semibold">Locked in. Waiting for {opName}…</div>
+            <div className="plate px-6 py-4 font-semibold shadow-lg">Locked in. Waiting for {opName}…</div>
           ) : (
-            <div className="plate w-full max-w-lg p-5">
+            <div className="plate w-full max-w-lg p-5 shadow-2xl">
               <p className="font-display text-4xl">{result.dmg === 0 ? "Even round" : result.iWin ? `You hit −${result.dmg.toLocaleString()}` : `You took −${result.dmg.toLocaleString()}`}</p>
               <div className="mt-3 grid grid-cols-2 gap-2 text-sm font-semibold">
-                <p className="rounded-full bg-primary-pale px-3 py-1">{meName}: {result.me.km === null ? "No guess" : formatDistance(result.me.km, settings.unit)}</p>
+                <p className="rounded-full bg-accent-fill/15 text-accent-text px-3 py-1">{meName}: {result.me.km === null ? "No guess" : formatDistance(result.me.km, settings.unit)}</p>
                 <p className="rounded-full bg-muted px-3 py-1">{opName}: {result.op.km === null ? "No guess" : formatDistance(result.op.km, settings.unit)}</p>
               </div>
-              {isHost ? <button onClick={next} className="btn btn-ink mt-4 w-full">Next round</button>
+              {isHost ? <button onClick={next} className="btn btn-primary mt-4 w-full py-3.5 text-base font-semibold shadow-md">Next round</button>
                 : <p className="mt-4 text-center text-sm text-muted-foreground">Waiting for host to start the next round…</p>}
             </div>
           )}
@@ -220,7 +220,7 @@ function Hp({ name, hp, right }: { name: string; hp: number; right?: boolean }) 
   return (
     <div className={`min-w-0 flex-1 max-w-[220px] ${right ? "text-right" : ""}`}>
       <p className="truncate text-xs">{name} · {hp.toLocaleString()}</p>
-      <div className="mt-1 h-2.5 overflow-hidden rounded-full bg-card"><div className={`h-full bg-primary transition-[width] duration-700 ${right ? "ml-auto" : ""}`} style={{ width: `${(hp / 6000) * 100}%` }} /></div>
+      <div className="mt-1 h-2.5 overflow-hidden rounded-full bg-muted"><div className={`h-full bg-accent-fill transition-[width] duration-700 ${right ? "ml-auto" : ""}`} style={{ width: `${(hp / 6000) * 100}%` }} /></div>
     </div>
   );
 }
